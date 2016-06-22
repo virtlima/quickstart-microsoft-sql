@@ -17,9 +17,6 @@ global:
   cis3bucket:  s3://quickstart-ci-bucket
  
 tests:
-  quickstart-microsoft-sqlt1:
-    template_file: quickstart-microsoft-sql-example1.template
-    parameter_input: quickstart-microsoft-sql-exampleparms1.json
-  quickstart-microsoft-sqlt2:
-    template_file: quickstart-microsoft-sql-example2.template
-    parameter_input: quickstart-microsoft-sql-exampleparms2.json
+  master-template:
+    template_file: SQL_AlwaysOn_Master.template
+    parameter_input: SQL_AlwaysOn_Master.json

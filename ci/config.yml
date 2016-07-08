@@ -1,12 +1,11 @@
 global:
-  qsname: quickstart-microsoft-sql
-  owner: quickstart-eng@amazon.com
   marketplace-ami: false
-  reporting: true
+  owner: quickstart-eng@amazon.com
+  qsname: quickstart-microsoft-sql
   regions:
     - ap-northeast-1
     - ap-northeast-2
-	- ap-south-1
+    - ap-south-1
     - ap-southeast-1
     - ap-southeast-2
     - eu-central-1
@@ -15,9 +14,8 @@ global:
     - us-east-1
     - us-west-1
     - us-west-2
-  cis3bucket:  s3://quickstart-ci-bucket
- 
+  reporting: true
 tests:
-  master-template:
+  master:
     template_file: SQL_AlwaysOn_Master.template
     parameter_input: SQL_AlwaysOn_Master.json

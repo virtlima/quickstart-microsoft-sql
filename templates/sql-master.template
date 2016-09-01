@@ -965,7 +965,6 @@
                     "QSS3KeyPrefix": {
                         "Ref": "QSS3KeyPrefix"
                     }
-                    }
                 }
             }
         }

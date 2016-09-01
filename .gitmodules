@@ -9,4 +9,4 @@
 	url = git@github.com:aws-quickstart/quickstart-microsoft-activedirectory.git
 [submodule "quickstart-microsoft-utilities"]
 	path = submodules/quickstart-microsoft-utilities
-	url = git@github.com:aws-quickstart/quickstart-microsoft-utilities.git
+	url = git@github.com:jaymccon/quickstart-microsoft-utilities.git

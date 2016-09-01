@@ -587,6 +587,20 @@
                     },
                     "VPCCIDR": {
                         "Ref": "VPCCIDR"
+                    },
+                    "QSS3BucketName": {
+                        "Ref": "QSS3BucketName"
+                    },
+                    "QSS3KeyPrefix": {
+                        "Fn::Join": [
+                            "/",
+                            [
+                                {
+                                    "Ref": "QSS3KeyPrefix"
+                                },
+                                "submodules/quickstart-aws-vpc"
+                            ]
+                        ]
                     }
                 }
             }
@@ -688,6 +702,20 @@
                             "VPCStack",
                             "Outputs.VPCID"
                         ]
+                    },
+                    "QSS3BucketName": {
+                        "Ref": "QSS3BucketName"
+                    },
+                    "QSS3KeyPrefix": {
+                        "Fn::Join": [
+                            "/",
+                            [
+                                {
+                                    "Ref": "QSS3KeyPrefix"
+                                },
+                                "submodules/quickstart-microsoft-activedirectory"
+                            ]
+                        ]
                     }
                 }
             }
@@ -785,6 +813,20 @@
                         "Fn::GetAtt": [
                             "VPCStack",
                             "Outputs.VPCID"
+                        ]
+                    },
+                    "QSS3BucketName": {
+                        "Ref": "QSS3BucketName"
+                    },
+                    "QSS3KeyPrefix": {
+                        "Fn::Join": [
+                            "/",
+                            [
+                                {
+                                    "Ref": "QSS3KeyPrefix"
+                                },
+                                "submodules/quickstart-microsoft-rdgateway"
+                            ]
                         ]
                     }
                 }
@@ -916,6 +958,13 @@
                     },
                     "WSFCNode2PrivateIP3": {
                         "Ref": "WSFCNode2PrivateIP3"
+                    },
+                    "QSS3BucketName": {
+                        "Ref": "QSS3BucketName"
+                    },
+                    "QSS3KeyPrefix": {
+                        "Ref": "QSS3KeyPrefix"
+                    }
                     }
                 }
             }

@@ -584,6 +584,31 @@
                                     ]
                                 }
                             },
+                            "C:\\cfn\\scripts\\AddUserToGroup.ps1": {
+                                "source": {
+                                    "Fn::Join": [
+                                        "/",
+                                        [
+                                            {
+                                                "Fn::FindInMap": [
+                                                    "AWSInfoRegionMap",
+                                                    {
+                                                        "Ref": "AWS::Region"
+                                                    },
+                                                    "QuickStartS3URL"
+                                                ]
+                                            },
+                                            {
+                                                "Ref": "QSS3BucketName"
+                                            },
+                                            {
+                                                "Ref": "QSS3KeyPrefix"
+                                            },
+                                            "scripts/AddUserToGroup.ps1"
+                                        ]
+                                    ]
+                                }
+                            },
                             "C:\\cfn\\scripts\\Install-WindowsFailoverClustering.ps1": {
                                 "source": {
                                     "Fn::Join": [
@@ -965,11 +990,7 @@
                                     "Fn::Join": [
                                         "",
                                         [
-                                            "powershell.exe -Command \"C:\\cfn\\scripts\\InstallSQLEE2.ps1 -DomainDNSName '",
-                                            {
-                                                "Ref": "DomainDNSName"
-                                            },
-                                            "' -DomainNetBIOSName '",
+                                            "powershell.exe -Command \"C:\\cfn\\scripts\\InstallSQLEE2.ps1 -DomainNetBIOSName '",
                                             {
                                                 "Ref": "DomainNetBIOSName"
                                             },

@@ -659,6 +659,31 @@
                                     ]
                                 }
                             },
+                            "C:\\cfn\\scripts\\OpenWSFCPorts.ps1": {
+                                "source": {
+                                    "Fn::Join": [
+                                        "/",
+                                        [
+                                            {
+                                                "Fn::FindInMap": [
+                                                    "AWSInfoRegionMap",
+                                                    {
+                                                        "Ref": "AWS::Region"
+                                                    },
+                                                    "QuickStartS3URL"
+                                                ]
+                                            },
+                                            {
+                                                "Ref": "QSS3BucketName"
+                                            },
+                                            {
+                                                "Ref": "QSS3KeyPrefix"
+                                            },
+                                            "scripts/OpenWSFCPorts.ps1"
+                                        ]
+                                    ]
+                                }
+                            },
                             "C:\\cfn\\scripts\\InstallSQLEE2.ps1": {
                                 "source": {
                                     "Fn::Join": [
@@ -874,7 +899,7 @@
                                 "waitAfterCompletion": "0"
                             },
                             "g-open-WSFC-ports": {
-                                "command": "C:\\cfn\\scripts\\OpenWSFCPorts.ps1",
+                                "command": "powershell.exe -ExecutionPolicy RemoteSigned C:\\cfn\\scripts\\OpenWSFCPorts.ps1",
                                 "waitAfterCompletion": "0"
                             },
                             "h-add-domadmin-user-to-group": {
@@ -1471,7 +1496,7 @@
                                 "waitAfterCompletion": "0"
                             },
                             "g-open-WSFC-ports": {
-                                "command": "C:\\cfn\\scripts\\OpenWSFCPorts.ps1",
+                                "command": "powershell.exe -ExecutionPolicy RemoteSigned C:\\cfn\\scripts\\OpenWSFCPorts.ps1",
                                 "waitAfterCompletion": "0"
                             }
                         }

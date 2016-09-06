@@ -596,6 +596,31 @@
                                     ]
                                 }
                             },
+                            "C:\\cfn\\scripts\\DownloadSQLEE2.ps1": {
+                                "source": {
+                                    "Fn::Join": [
+                                        "/",
+                                        [
+                                            {
+                                                "Fn::FindInMap": [
+                                                    "AWSInfoRegionMap",
+                                                    {
+                                                        "Ref": "AWS::Region"
+                                                    },
+                                                    "QuickStartS3URL"
+                                                ]
+                                            },
+                                            {
+                                                "Ref": "QSS3BucketName"
+                                            },
+                                            {
+                                                "Ref": "QSS3KeyPrefix"
+                                            },
+                                            "scripts/DownloadSQLEE2.ps1"
+                                        ]
+                                    ]
+                                }
+                            },
                             "C:\\cfn\\scripts\\InstallSQLEE2.ps1": {
                                 "source": {
                                     "Fn::Join": [

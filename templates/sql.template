@@ -340,6 +340,19 @@
         "WSFCNode1WaitHandle": {
             "Type": "AWS::CloudFormation::WaitConditionHandle"
         },
+        "WSFCNode2WaitCondition": {
+            "Type": "AWS::CloudFormation::WaitCondition",
+            "DependsOn": "WSFCNode2",
+            "Properties": {
+                "Handle": {
+                    "Ref": "WSFCNode2WaitHandle"
+                },
+                "Timeout": "5400"
+            }
+        },
+        "WSFCNode2WaitHandle": {
+            "Type": "AWS::CloudFormation::WaitConditionHandle"
+        },
         "WSFCNode1": {
             "Type": "AWS::EC2::Instance",
             "Metadata": {

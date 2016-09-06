@@ -34,7 +34,7 @@ try {
     $DomainAdminFullUser = $DomainNetBIOSName + '\' + $DomainAdminUser
     $DomainAdminSecurePassword = ConvertTo-SecureString $DomainAdminPassword -AsPlainText -Force
     $DomainAdminCreds = New-Object System.Management.Automation.PSCredential($DomainAdminFullUser, $DomainAdminSecurePassword)
-    Enable-WSManCredSSP Client –DelegateComputer * -Force
+    Enable-WSManCredSSP Client -DelegateComputer * -Force
     Enable-WSManCredSSP Server -Force
 
     $InstallSqlPs={
@@ -56,6 +56,5 @@ try {
 
 }
 catch {
-    echo $_
     $_ | Write-AWSQuickStartException
 }

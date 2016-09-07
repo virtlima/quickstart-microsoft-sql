@@ -10,12 +10,6 @@ param(
     [Parameter(Mandatory=$true)]
     [string]$DomainAdminPassword,
 
-    [Parameter(Mandatory=$true)]
-    [string]$ShareName,
-
-    [Parameter(Mandatory=$true)]
-    [string]$Path,
-
     [Parameter(Mandatory=$false)]
     [string]$ServerName='localhost',
 

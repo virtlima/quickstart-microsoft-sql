@@ -92,6 +92,7 @@
         },
         "SQLServerVersion": {
             "AllowedValues": [
+                "2016",
                 "2014",
                 "2012"
             ],
@@ -1196,7 +1197,9 @@
                     },
                     "Finalize": {
                         "commands": {
-                            "a-signal-success": "powershell -Command Write-AWSQuickStartStatus"
+                            "a-signal-success": {
+                                "command": "powershell -Command Write-AWSQuickStartStatus"
+                            }
                         }
                     }
                 }
@@ -1943,7 +1946,7 @@
                         "DeleteOnTermination": "true",
                         "DeviceIndex": 0,
                         "SubnetId": {
-                            "Ref": "PrivateSubnet1ID"
+                            "Ref": "PrivateSubnet2ID"
                         },
                         "PrivateIpAddresses": [
                             {

@@ -130,7 +130,8 @@
             "AllowedValues": [
                 "r3.xlarge",
                 "r3.2xlarge",
-                "r3.4xlarge"
+                "r3.4xlarge",
+                "r3.8xlarge"
             ],
             "ConstraintDescription": "Only EBS Optimized instance types r3.xlarge, r3.2xlarge, r3.4xlarge allowed",
             "Default": "r3.2xlarge",
@@ -501,7 +502,7 @@
                                 }
                             }
                         }
-                    },                    
+                    },
                     "Prep": {
                         "files": {
                             "C:\\cfn\\scripts\\Set-Dns.ps1": {
@@ -1193,7 +1194,7 @@
                                 "command": "powershell.exe -ExecutionPolicy RemoteSigned C:\\cfn\\scripts\\DisableCredSsp.ps1",
                                 "waitAfterCompletion": "0"
                             }
-                        }                        
+                        }
                     },
                     "Finalize": {
                         "commands": {
@@ -1473,7 +1474,7 @@
                                 }
                             }
                         }
-                    },                    
+                    },
                     "Prep": {
                         "files": {
                             "C:\\cfn\\scripts\\Set-Dns.ps1": {
@@ -1918,7 +1919,7 @@
                                 "command": "powershell.exe -ExecutionPolicy RemoteSigned C:\\cfn\\scripts\\DisableCredSsp.ps1",
                                 "waitAfterCompletion": "0"
                             }
-                        }                        
+                        }
                     },
                     "Finalize": {
                         "commands": {

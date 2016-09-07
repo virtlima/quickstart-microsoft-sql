@@ -1409,6 +1409,7 @@
                                     ]
                                 }
                             },
+
                             "C:\\cfn\\modules\\AWSQuickStart.zip": {
                                 "source": {
                                     "Fn::Join": [
@@ -1755,6 +1756,81 @@
                                                 "Ref": "QSS3KeyPrefix"
                                             },
                                             "scripts/InstallSQLEE2.ps1"
+                                        ]
+                                    ]
+                                },
+                                "C:\\cfn\\scripts\\Configure-WSFC.ps1": {
+                                "source": {
+                                    "Fn::Join": [
+                                        "/",
+                                        [
+                                            {
+                                                "Fn::FindInMap": [
+                                                    "AWSInfoRegionMap",
+                                                    {
+                                                        "Ref": "AWS::Region"
+                                                    },
+                                                    "QuickStartS3URL"
+                                                ]
+                                            },
+                                            {
+                                                "Ref": "QSS3BucketName"
+                                            },
+                                            {
+                                                "Ref": "QSS3KeyPrefix"
+                                            },
+                                            "scripts/Configure-WSFC.ps1"
+                                        ]
+                                    ]
+                                }
+                            },
+                            "C:\\cfn\\scripts\\Set-ClusterQuorum.ps1": {
+                                "source": {
+                                    "Fn::Join": [
+                                        "/",
+                                        [
+                                            {
+                                                "Fn::FindInMap": [
+                                                    "AWSInfoRegionMap",
+                                                    {
+                                                        "Ref": "AWS::Region"
+                                                    },
+                                                    "QuickStartS3URL"
+                                                ]
+                                            },
+                                            {
+                                                "Ref": "QSS3BucketName"
+                                            },
+                                            {
+                                                "Ref": "QSS3KeyPrefix"
+                                            },
+                                            "scripts/Set-ClusterQuorum.ps1"
+                                        ]
+                                    ]
+                                }
+                            }
+                        },
+                        "C:\\cfn\\scripts\\Enable-AlwaysOn.ps1": {
+                                "source": {
+                                    "Fn::Join": [
+                                        "/",
+                                        [
+                                            {
+                                                "Fn::FindInMap": [
+                                                    "AWSInfoRegionMap",
+                                                    {
+                                                        "Ref": "AWS::Region"
+                                                    },
+                                                    "QuickStartS3URL"
+                                                ]
+                                            },
+                                            {
+                                                "Ref": "QSS3BucketName"
+                                            },
+                                            {
+                                                "Ref": "QSS3KeyPrefix"
+                                            },
+                                            "scripts/Enable-AlwaysOn.ps1"
                                         ]
                                     ]
                                 }

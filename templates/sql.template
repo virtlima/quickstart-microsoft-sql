@@ -1897,16 +1897,68 @@
                                 "command": "powershell.exe -ExecutionPolicy RemoteSigned C:\\cfn\\scripts\\Configure-WSFC.ps1",
                                 "waitAfterCompletion": "0"
                             },
-                            "i-Create-Witness-Share": {
-                                "command": "powershell.exe -ExecutionPolicy RemoteSigned C:\\cfn\\scripts\\Create-Share.ps1",
+                            "i-create-witness-share": {
+                                "command": {
+                                    "Fn::Join": [
+                                        "",
+                                        [
+                                            "powershell.exe -Command \"C:\\cfn\\scripts\\Create-Share.ps1",
+                                            " -Path 'c:\\witness'",
+                                            " -ShareName 'witness'",
+                                            " -FolderPath 'c:\\'",
+                                            " -FolderName 'witness'",
+                                            " -DomainNetBIOSName '",
+                                            {
+                                                "Ref": "DomainNetBIOSName"
+                                            },
+                                            "' -DomainAdminUser '",
+                                            {
+                                                "Ref": "DomainAdminUser"
+                                            },
+                                            "' -DomainAdminPassword '",
+                                            {
+                                                "Ref": "DomainAdminPassword"
+                                            },
+                                            "' -ServerName '",
+                                            {
+                                                "Ref": "ADServer1NetBIOSName"
+                                            },
+                                            "'\""
+                                        ]
+                                    ]
+                                },
                                 "waitAfterCompletion": "0"
                             },
-                            "j-Create-Replica-Share": {
-                                "command": "powershell.exe -ExecutionPolicy RemoteSigned C:\\cfn\\scripts\\Create-Share.ps1",
-                                "waitAfterCompletion": "0"
-                            },
-                            "i-Create-Witness-Share": {
-                                "command": "powershell.exe -ExecutionPolicy RemoteSigned C:\\cfn\\scripts\\Create-Share.ps1",
+                            "j-create-Replica-share": {
+                                "command": {
+                                    "Fn::Join": [
+                                        "",
+                                        [
+                                            "powershell.exe -Command \"C:\\cfn\\scripts\\Create-Share.ps1",
+                                            " -Path 'c:\\replica'",
+                                            " -ShareName 'replica'",
+                                            " -FolderPath 'c:\\'",
+                                            " -FolderName 'replica'",
+                                            " -DomainNetBIOSName '",
+                                            {
+                                                "Ref": "DomainNetBIOSName"
+                                            },
+                                            "' -DomainAdminUser '",
+                                            {
+                                                "Ref": "DomainAdminUser"
+                                            },
+                                            "' -DomainAdminPassword '",
+                                            {
+                                                "Ref": "DomainAdminPassword"
+                                            },
+                                            "' -ServerName '",
+                                            {
+                                                "Ref": "ADServer1NetBIOSName"
+                                            },
+                                            "'\""
+                                        ]
+                                    ]
+                                },
                                 "waitAfterCompletion": "0"
                             },
                             "k-Set-Folder-Permissions": {

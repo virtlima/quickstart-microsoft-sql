@@ -484,7 +484,7 @@
                                     ]
                                 }
                             },
-                            "C:\\cfn\\scripts\\Join-ADDSDomain.ps1": {
+                            "C:\\cfn\\scripts\\Join-Domain.ps1": {
                                 "source": {
                                     "Fn::Join": [
                                         "/",
@@ -504,7 +504,32 @@
                                             {
                                                 "Ref": "QSS3KeyPrefix"
                                             },
-                                            "submodules/quickstart-microsoft-utilities/scripts/Join-ADDSDomain.ps1"
+                                            "submodules/quickstart-microsoft-utilities/scripts/Join-Domain.ps1"
+                                        ]
+                                    ]
+                                }
+                            },
+                            "C:\\cfn\\scripts\\Rename-Computer.ps1": {
+                                "source": {
+                                    "Fn::Join": [
+                                        "/",
+                                        [
+                                            {
+                                                "Fn::FindInMap": [
+                                                    "AWSInfoRegionMap",
+                                                    {
+                                                        "Ref": "AWS::Region"
+                                                    },
+                                                    "QuickStartS3URL"
+                                                ]
+                                            },
+                                            {
+                                                "Ref": "QSS3BucketName"
+                                            },
+                                            {
+                                                "Ref": "QSS3KeyPrefix"
+                                            },
+                                            "submodules/quickstart-microsoft-utilities/scripts/Rename-Computer.ps1"
                                         ]
                                     ]
                                 }
@@ -795,12 +820,27 @@
                                 },
                                 "waitAfterCompletion": "30"
                             },
+                            "b-rename-computer": {
+                                "command": {
+                                    "Fn::Join": [
+                                        "",
+                                        [
+                                            "powershell.exe -Command \"C:\\cfn\\scripts\\Rename-Computer.ps1 -Restart -NewName '",
+                                            {
+                                                "Ref": "WSFCNode1NetBIOSName"
+                                            },
+                                            "'\""
+                                        ]
+                                    ]
+                                },
+                                "waitAfterCompletion": "forever"
+                            },
                             "b-join-domain": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
                                         [
-                                            "powershell.exe -Command \"C:\\cfn\\scripts\\Join-ADDSDomain.ps1 -Restart -DomainName '",
+                                            "powershell.exe -Command \"C:\\cfn\\scripts\\Join-Domain.ps1 -Restart -DomainName '",
                                             {
                                                 "Ref": "DomainDNSName"
                                             },
@@ -815,10 +855,6 @@
                                             "' -Password '",
                                             {
                                                 "Ref": "DomainAdminPassword"
-                                            },
-                                            "' -NewName '",
-                                            {
-                                                "Ref": "WSFCNode1NetBIOSName"
                                             },
                                             "'\""
                                         ]

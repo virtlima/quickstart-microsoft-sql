@@ -1806,7 +1806,36 @@
                             "g-enable-credssp": {
                                 "command": "powershell.exe -ExecutionPolicy RemoteSigned C:\\cfn\\scripts\\EnableCredSsp.ps1",
                                 "waitAfterCompletion": "0"
+                            },
+                            "h-configure-WSFC": {
+                                "command": "powershell.exe -ExecutionPolicy RemoteSigned C:\\cfn\\scripts\\Configure-WSFC.ps1",
+                                "waitAfterCompletion": "0"
+                            },
+                            "i-Create-Witness-Share": {
+                                "command": "powershell.exe -ExecutionPolicy RemoteSigned C:\\cfn\\scripts\\Create-Share.ps1",
+                                "waitAfterCompletion": "0"
+                            },
+                            "j-Create-Replica-Share": {
+                                "command": "powershell.exe -ExecutionPolicy RemoteSigned C:\\cfn\\scripts\\Create-Share.ps1",
+                                "waitAfterCompletion": "0"
+                            },
+                            "i-Create-Witness-Share": {
+                                "command": "powershell.exe -ExecutionPolicy RemoteSigned C:\\cfn\\scripts\\Create-Share.ps1",
+                                "waitAfterCompletion": "0"
+                            },
+                            "k-Set-Folder-Permissions": {
+                                "command": "powershell.exe -ExecutionPolicy RemoteSigned C:\\cfn\\scripts\\Set-Folder-Permissions.ps1",
+                                "waitAfterCompletion": "0"
+                            },
+                            "l-Enable-AlwaysOn": {
+                                "command": "powershell.exe -ExecutionPolicy RemoteSigned C:\\cfn\\scripts\\Enable-AlwaysOn.ps1",
+                                "waitAfterCompletion": "0"
+                            },
+                            "m-Set-ClusterQuorum": {
+                                "command": "powershell.exe -ExecutionPolicy RemoteSigned C:\\cfn\\scripts\\Set-ClusterQuorum.ps1",
+                                "waitAfterCompletion": "0"
                             }
+
                         }
                     },
                     "Install": {

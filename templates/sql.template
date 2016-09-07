@@ -753,31 +753,6 @@
                                     ]
                                 }
                             },
-                            "C:\\cfn\\scripts\\OpenWSFCPorts.ps1": {
-                                "source": {
-                                    "Fn::Join": [
-                                        "/",
-                                        [
-                                            {
-                                                "Fn::FindInMap": [
-                                                    "AWSInfoRegionMap",
-                                                    {
-                                                        "Ref": "AWS::Region"
-                                                    },
-                                                    "QuickStartS3URL"
-                                                ]
-                                            },
-                                            {
-                                                "Ref": "QSS3BucketName"
-                                            },
-                                            {
-                                                "Ref": "QSS3KeyPrefix"
-                                            },
-                                            "scripts/OpenWSFCPorts.ps1"
-                                        ]
-                                    ]
-                                }
-                            },
                             "C:\\cfn\\scripts\\EnableCredSsp.ps1": {
                                 "source": {
                                     "Fn::Join": [
@@ -1573,81 +1548,6 @@
                                     ]
                                 }
                             },
-                            "C:\\cfn\\scripts\\Create-ADServiceAccount.ps1": {
-                                "source": {
-                                    "Fn::Join": [
-                                        "/",
-                                        [
-                                            {
-                                                "Fn::FindInMap": [
-                                                    "AWSInfoRegionMap",
-                                                    {
-                                                        "Ref": "AWS::Region"
-                                                    },
-                                                    "QuickStartS3URL"
-                                                ]
-                                            },
-                                            {
-                                                "Ref": "QSS3BucketName"
-                                            },
-                                            {
-                                                "Ref": "QSS3KeyPrefix"
-                                            },
-                                            "submodules/quickstart-microsoft-utilities/scripts/Create-ADServiceAccount.ps1"
-                                        ]
-                                    ]
-                                }
-                            },
-                            "C:\\cfn\\scripts\\Create-Share.ps1": {
-                                "source": {
-                                    "Fn::Join": [
-                                        "/",
-                                        [
-                                            {
-                                                "Fn::FindInMap": [
-                                                    "AWSInfoRegionMap",
-                                                    {
-                                                        "Ref": "AWS::Region"
-                                                    },
-                                                    "QuickStartS3URL"
-                                                ]
-                                            },
-                                            {
-                                                "Ref": "QSS3BucketName"
-                                            },
-                                            {
-                                                "Ref": "QSS3KeyPrefix"
-                                            },
-                                            "submodules/quickstart-microsoft-utilities/scripts/Create-Share.ps1"
-                                        ]
-                                    ]
-                                }
-                            },
-                            "C:\\cfn\\scripts\\AddUserToGroup.ps1": {
-                                "source": {
-                                    "Fn::Join": [
-                                        "/",
-                                        [
-                                            {
-                                                "Fn::FindInMap": [
-                                                    "AWSInfoRegionMap",
-                                                    {
-                                                        "Ref": "AWS::Region"
-                                                    },
-                                                    "QuickStartS3URL"
-                                                ]
-                                            },
-                                            {
-                                                "Ref": "QSS3BucketName"
-                                            },
-                                            {
-                                                "Ref": "QSS3KeyPrefix"
-                                            },
-                                            "scripts/AddUserToGroup.ps1"
-                                        ]
-                                    ]
-                                }
-                            },
                             "C:\\cfn\\scripts\\Install-WindowsFailoverClustering.ps1": {
                                 "source": {
                                     "Fn::Join": [
@@ -1694,56 +1594,6 @@
                                                 "Ref": "QSS3KeyPrefix"
                                             },
                                             "scripts/Install-NETFrameworkCore.ps1"
-                                        ]
-                                    ]
-                                }
-                            },
-                            "C:\\cfn\\scripts\\OpenWSFCPorts.ps1": {
-                                "source": {
-                                    "Fn::Join": [
-                                        "/",
-                                        [
-                                            {
-                                                "Fn::FindInMap": [
-                                                    "AWSInfoRegionMap",
-                                                    {
-                                                        "Ref": "AWS::Region"
-                                                    },
-                                                    "QuickStartS3URL"
-                                                ]
-                                            },
-                                            {
-                                                "Ref": "QSS3BucketName"
-                                            },
-                                            {
-                                                "Ref": "QSS3KeyPrefix"
-                                            },
-                                            "scripts/OpenWSFCPorts.ps1"
-                                        ]
-                                    ]
-                                }
-                            },
-                            "C:\\cfn\\scripts\\DownloadSQLEE2.ps1": {
-                                "source": {
-                                    "Fn::Join": [
-                                        "/",
-                                        [
-                                            {
-                                                "Fn::FindInMap": [
-                                                    "AWSInfoRegionMap",
-                                                    {
-                                                        "Ref": "AWS::Region"
-                                                    },
-                                                    "QuickStartS3URL"
-                                                ]
-                                            },
-                                            {
-                                                "Ref": "QSS3BucketName"
-                                            },
-                                            {
-                                                "Ref": "QSS3KeyPrefix"
-                                            },
-                                            "scripts/DownloadSQLEE2.ps1"
                                         ]
                                     ]
                                 }
@@ -1861,166 +1711,19 @@
                                 },
                                 "waitAfterCompletion": "forever"
                             },
-                            "d-create-sql-account": {
-                                "command": {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "powershell.exe -Command \"C:\\cfn\\scripts\\Create-ADServiceAccount.ps1 -DomainDNSName '",
-                                            {
-                                                "Ref": "DomainDNSName"
-                                            },
-                                            "' -DomainNetBIOSName '",
-                                            {
-                                                "Ref": "DomainNetBIOSName"
-                                            },
-                                            "' -DomainAdminUser '",
-                                            {
-                                                "Ref": "DomainAdminUser"
-                                            },
-                                            "' -DomainAdminPassword '",
-                                            {
-                                                "Ref": "DomainAdminPassword"
-                                            },
-                                            "' -ServiceAccountUser '",
-                                            {
-                                                "Ref": "SQLServiceAccount"
-                                            },
-                                            "' -ServiceAccountPassword '",
-                                            {
-                                                "Ref": "SQLServiceAccountPassword"
-                                            },
-                                            "' -ADServerNetBIOSName '",
-                                            {
-                                                "Ref": "ADServer1NetBIOSName"
-                                            },
-                                            "'\""
-                                        ]
-                                    ]
-                                },
-                                "waitAfterCompletion": "0"
-                            },
-                            "e-install-windows-failover-clustering": {
+                            "d-install-windows-failover-clustering": {
                                 "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Install-WindowsFailoverClustering.ps1",
                                 "waitAfterCompletion": "0"
                             },
-                            "f-install-net-framework-core": {
+                            "e-install-net-framework-core": {
                                 "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Install-NETFrameworkCore.ps1",
                                 "waitAfterCompletion": "0"
                             },
-                            "g-create-share": {
-                                "command": {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "powershell.exe -Command \"C:\\cfn\\scripts\\Create-Share.ps1",
-                                            " -Path 'c:\\sqlinstall'",
-                                            " -ShareName 'sqlinstall'",
-                                            " -FolderPath 'c:\\'",
-                                            " -FolderName 'sqlinstall'",
-                                            " -DomainNetBIOSName '",
-                                            {
-                                                "Ref": "DomainNetBIOSName"
-                                            },
-                                            "' -DomainAdminUser '",
-                                            {
-                                                "Ref": "DomainAdminUser"
-                                            },
-                                            "' -DomainAdminPassword '",
-                                            {
-                                                "Ref": "DomainAdminPassword"
-                                            },
-                                            "' -ServerName '",
-                                            {
-                                                "Ref": "ADServer1NetBIOSName"
-                                            },
-                                            "'\""
-                                        ]
-                                    ]
-                                },
-                                "waitAfterCompletion": "0"
-                            },
-                            "h-download-sql-installer": {
-                                "command": {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "powershell.exe ",
-                                            "-ExecutionPolicy",
-                                            " RemoteSigned",
-                                            " C:\\cfn\\scripts\\DownloadSQLEE2.ps1 -SQLServerVersion ",
-                                            {
-                                                "Ref": "SQLServerVersion"
-                                            },
-                                            " -DestServer ",
-                                            {
-                                                "Ref": "ADServer1NetBIOSName"
-                                            },
-                                            " -DestShare sqlinstall"
-                                        ]
-                                    ]
-                                },
-                                "waitAfterCompletion": "0"
-                            },
-                            "i-open-WSFC-ports": {
+                            "f-open-WSFC-ports": {
                                 "command": "powershell.exe -ExecutionPolicy RemoteSigned C:\\cfn\\scripts\\OpenWSFCPorts.ps1",
                                 "waitAfterCompletion": "0"
                             },
-                            "j-add-domadmin-user-to-group": {
-                                "command": {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "powershell.exe ",
-                                            "-ExecutionPolicy",
-                                            " RemoteSigned",
-                                            " C:\\cfn\\scripts\\AddUserToGroup.ps1 -UserName ",
-                                            {
-                                                "Ref": "DomainAdminUser"
-                                            },
-                                            " -ServerName ",
-                                            {
-                                                "Ref": "WSFCNode2NetBIOSName"
-                                            },
-                                            " -DomainNetBIOSName ",
-                                            {
-                                                "Ref": "DomainNetBIOSName"
-                                            },
-                                            " -GroupName \"Administrators\"",
-                                            "\n"
-                                        ]
-                                    ]
-                                },
-                                "waitAfterCompletion": "0"
-                            },
-                            "k-add-sqlservice-user-to-group": {
-                                "command": {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "powershell.exe ",
-                                            "-ExecutionPolicy",
-                                            " RemoteSigned",
-                                            " C:\\cfn\\scripts\\AddUserToGroup.ps1 -UserName ",
-                                            {
-                                                "Ref": "SQLServiceAccount"
-                                            },
-                                            " -ServerName ",
-                                            {
-                                                "Ref": "WSFCNode2NetBIOSName"
-                                            },
-                                            " -DomainNetBIOSName ",
-                                            {
-                                                "Ref": "DomainNetBIOSName"
-                                            },
-                                            " -GroupName \"Administrators\"",
-                                            "\n"
-                                        ]
-                                    ]
-                                },
-                                "waitAfterCompletion": "0"
-                            },
-                            "l-enable-credssp": {
+                            "g-enable-credssp": {
                                 "command": "powershell.exe -ExecutionPolicy RemoteSigned C:\\cfn\\scripts\\EnableCredSsp.ps1",
                                 "waitAfterCompletion": "0"
                             }

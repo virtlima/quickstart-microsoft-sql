@@ -362,6 +362,8 @@
                             "QuickStartSetup",
                             "Prep",
                             "Install",
+                            "Configure",
+                            "Cleanup",
                             "Finalize"
                         ]
                     },
@@ -458,7 +460,49 @@
                                         ]
                                     ]
                                 }
+                            }
+                        },
+                        "commands": {
+                            "a-set-execution-policy": {
+                                "command": "powershell.exe -Command \"Set-ExecutionPolicy RemoteSigned -Force\"",
+                                "waitAfterCompletion": "0"
                             },
+                            "b-unpack-quickstart-module": {
+                                "command": "powershell.exe -Command C:\\cfn\\scripts\\Unzip-Archive.ps1 -Source C:\\cfn\\modules\\AWSQuickStart.zip -Destination C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\Modules\\",
+                                "waitAfterCompletion": "0"
+                            },
+                            "c-init-quickstart-module": {
+                                "command": {
+                                    "Fn::Join": [
+                                        "",
+                                        [
+                                            "powershell.exe -Command \"",
+                                            "New-AWSQuickStartWaitHandle -Handle '",
+                                            {
+                                                "Ref": "WSFCNode1WaitHandle"
+                                            },
+                                            "'\""
+                                        ]
+                                    ]
+                                },
+                                "waitAfterCompletion": "0"
+                            }
+                        },
+                        "services": {
+                            "windows": {
+                                "cfn-hup": {
+                                    "enabled": "true",
+                                    "ensureRunning": "true",
+                                    "files": [
+                                        "C:\\cfn\\cfn-hup.conf",
+                                        "C:\\cfn\\hooks.d\\cfn-auto-reloader.conf"
+                                    ]
+                                }
+                            }
+                        }
+                    },                    
+                    "Prep": {
+                        "files": {
                             "C:\\cfn\\scripts\\Set-Dns.ps1": {
                                 "source": {
                                     "Fn::Join": [
@@ -484,7 +528,7 @@
                                     ]
                                 }
                             },
-                            "C:\\cfn\\scripts\\Join-ADDSDomain.ps1": {
+                            "C:\\cfn\\scripts\\Join-Domain.ps1": {
                                 "source": {
                                     "Fn::Join": [
                                         "/",
@@ -504,7 +548,32 @@
                                             {
                                                 "Ref": "QSS3KeyPrefix"
                                             },
-                                            "submodules/quickstart-microsoft-utilities/scripts/Join-ADDSDomain.ps1"
+                                            "submodules/quickstart-microsoft-utilities/scripts/Join-Domain.ps1"
+                                        ]
+                                    ]
+                                }
+                            },
+                            "C:\\cfn\\scripts\\Rename-Computer.ps1": {
+                                "source": {
+                                    "Fn::Join": [
+                                        "/",
+                                        [
+                                            {
+                                                "Fn::FindInMap": [
+                                                    "AWSInfoRegionMap",
+                                                    {
+                                                        "Ref": "AWS::Region"
+                                                    },
+                                                    "QuickStartS3URL"
+                                                ]
+                                            },
+                                            {
+                                                "Ref": "QSS3BucketName"
+                                            },
+                                            {
+                                                "Ref": "QSS3KeyPrefix"
+                                            },
+                                            "submodules/quickstart-microsoft-utilities/scripts/Rename-Computer.ps1"
                                         ]
                                     ]
                                 }
@@ -530,31 +599,6 @@
                                                 "Ref": "QSS3KeyPrefix"
                                             },
                                             "submodules/quickstart-microsoft-utilities/scripts/Create-ADServiceAccount.ps1"
-                                        ]
-                                    ]
-                                }
-                            },
-                            "C:\\cfn\\scripts\\Create-Folder.ps1": {
-                                "source": {
-                                    "Fn::Join": [
-                                        "/",
-                                        [
-                                            {
-                                                "Fn::FindInMap": [
-                                                    "AWSInfoRegionMap",
-                                                    {
-                                                        "Ref": "AWS::Region"
-                                                    },
-                                                    "QuickStartS3URL"
-                                                ]
-                                            },
-                                            {
-                                                "Ref": "QSS3BucketName"
-                                            },
-                                            {
-                                                "Ref": "QSS3KeyPrefix"
-                                            },
-                                            "submodules/quickstart-microsoft-utilities/scripts/Create-Folder.ps1"
                                         ]
                                     ]
                                 }
@@ -634,6 +678,31 @@
                                     ]
                                 }
                             },
+                            "C:\\cfn\\scripts\\Install-NETFrameworkCore.ps1": {
+                                "source": {
+                                    "Fn::Join": [
+                                        "/",
+                                        [
+                                            {
+                                                "Fn::FindInMap": [
+                                                    "AWSInfoRegionMap",
+                                                    {
+                                                        "Ref": "AWS::Region"
+                                                    },
+                                                    "QuickStartS3URL"
+                                                ]
+                                            },
+                                            {
+                                                "Ref": "QSS3BucketName"
+                                            },
+                                            {
+                                                "Ref": "QSS3KeyPrefix"
+                                            },
+                                            "scripts/Install-NETFrameworkCore.ps1"
+                                        ]
+                                    ]
+                                }
+                            },
                             "C:\\cfn\\scripts\\OpenWSFCPorts.ps1": {
                                 "source": {
                                     "Fn::Join": [
@@ -684,7 +753,7 @@
                                     ]
                                 }
                             },
-                            "C:\\cfn\\scripts\\OpenWSFCPorts.ps1": {
+                            "C:\\cfn\\scripts\\EnableCredSsp.ps1": {
                                 "source": {
                                     "Fn::Join": [
                                         "/",
@@ -704,77 +773,12 @@
                                             {
                                                 "Ref": "QSS3KeyPrefix"
                                             },
-                                            "scripts/OpenWSFCPorts.ps1"
-                                        ]
-                                    ]
-                                }
-                            },
-                            "C:\\cfn\\scripts\\InstallSQLEE2.ps1": {
-                                "source": {
-                                    "Fn::Join": [
-                                        "/",
-                                        [
-                                            {
-                                                "Fn::FindInMap": [
-                                                    "AWSInfoRegionMap",
-                                                    {
-                                                        "Ref": "AWS::Region"
-                                                    },
-                                                    "QuickStartS3URL"
-                                                ]
-                                            },
-                                            {
-                                                "Ref": "QSS3BucketName"
-                                            },
-                                            {
-                                                "Ref": "QSS3KeyPrefix"
-                                            },
-                                            "scripts/InstallSQLEE2.ps1"
+                                            "scripts/EnableCredSsp.ps1"
                                         ]
                                     ]
                                 }
                             }
                         },
-                        "commands": {
-                            "a-set-execution-policy": {
-                                "command": "powershell.exe -Command \"Set-ExecutionPolicy RemoteSigned -Force\"",
-                                "waitAfterCompletion": "0"
-                            },
-                            "b-unpack-quickstart-module": {
-                                "command": "powershell.exe -Command C:\\cfn\\scripts\\Unzip-Archive.ps1 -Source C:\\cfn\\modules\\AWSQuickStart.zip -Destination C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\Modules\\",
-                                "waitAfterCompletion": "0"
-                            },
-                            "c-init-quickstart-module": {
-                                "command": {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "powershell.exe -Command \"",
-                                            "New-AWSQuickStartWaitHandle -Handle '",
-                                            {
-                                                "Ref": "WSFCNode1WaitHandle"
-                                            },
-                                            "'\""
-                                        ]
-                                    ]
-                                },
-                                "waitAfterCompletion": "0"
-                            }
-                        },
-                        "services": {
-                            "windows": {
-                                "cfn-hup": {
-                                    "enabled": "true",
-                                    "ensureRunning": "true",
-                                    "files": [
-                                        "C:\\cfn\\cfn-hup.conf",
-                                        "C:\\cfn\\hooks.d\\cfn-auto-reloader.conf"
-                                    ]
-                                }
-                            }
-                        }
-                    },                    
-                    "Prep": {
                         "commands": {
                             "a-set-dns": {
                                 "command": {
@@ -795,12 +799,27 @@
                                 },
                                 "waitAfterCompletion": "30"
                             },
-                            "b-join-domain": {
+                            "b-rename-computer": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
                                         [
-                                            "powershell.exe -Command \"C:\\cfn\\scripts\\Join-ADDSDomain.ps1 -Restart -DomainName '",
+                                            "powershell.exe -Command \"C:\\cfn\\scripts\\Rename-Computer.ps1 -Restart -NewName '",
+                                            {
+                                                "Ref": "WSFCNode1NetBIOSName"
+                                            },
+                                            "'\""
+                                        ]
+                                    ]
+                                },
+                                "waitAfterCompletion": "forever"
+                            },
+                            "c-join-domain": {
+                                "command": {
+                                    "Fn::Join": [
+                                        "",
+                                        [
+                                            "powershell.exe -Command \"C:\\cfn\\scripts\\Join-Domain.ps1 -DomainName '",
                                             {
                                                 "Ref": "DomainDNSName"
                                             },
@@ -816,17 +835,13 @@
                                             {
                                                 "Ref": "DomainAdminPassword"
                                             },
-                                            "' -NewName '",
-                                            {
-                                                "Ref": "WSFCNode1NetBIOSName"
-                                            },
                                             "'\""
                                         ]
                                     ]
                                 },
                                 "waitAfterCompletion": "forever"
                             },
-                            "c-create-sql-account": {
+                            "d-create-sql-account": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
@@ -865,11 +880,15 @@
                                 },
                                 "waitAfterCompletion": "0"
                             },
-                            "d-install-windows-failover-clustering": {
+                            "e-install-windows-failover-clustering": {
                                 "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Install-WindowsFailoverClustering.ps1",
                                 "waitAfterCompletion": "0"
                             },
-                            "e-create-share": {
+                            "f-install-net-framework-core": {
+                                "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Install-NETFrameworkCore.ps1",
+                                "waitAfterCompletion": "0"
+                            },
+                            "g-create-share": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
@@ -901,7 +920,7 @@
                                 },
                                 "waitAfterCompletion": "0"
                             },
-                            "f-download-sql-installer": {
+                            "h-download-sql-installer": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
@@ -923,11 +942,11 @@
                                 },
                                 "waitAfterCompletion": "0"
                             },
-                            "g-open-WSFC-ports": {
+                            "i-open-WSFC-ports": {
                                 "command": "powershell.exe -ExecutionPolicy RemoteSigned C:\\cfn\\scripts\\OpenWSFCPorts.ps1",
                                 "waitAfterCompletion": "0"
                             },
-                            "h-add-domadmin-user-to-group": {
+                            "j-add-domadmin-user-to-group": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
@@ -954,7 +973,7 @@
                                 },
                                 "waitAfterCompletion": "0"
                             },
-                            "i-add-sqlservice-user-to-group": {
+                            "k-add-sqlservice-user-to-group": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
@@ -980,10 +999,41 @@
                                     ]
                                 },
                                 "waitAfterCompletion": "0"
+                            },
+                            "l-enable-credssp": {
+                                "command": "powershell.exe -ExecutionPolicy RemoteSigned C:\\cfn\\scripts\\EnableCredSsp.ps1",
+                                "waitAfterCompletion": "0"
                             }
                         }
                     },
                     "Install": {
+                        "files": {
+                            "C:\\cfn\\scripts\\InstallSQLEE2.ps1": {
+                                "source": {
+                                    "Fn::Join": [
+                                        "/",
+                                        [
+                                            {
+                                                "Fn::FindInMap": [
+                                                    "AWSInfoRegionMap",
+                                                    {
+                                                        "Ref": "AWS::Region"
+                                                    },
+                                                    "QuickStartS3URL"
+                                                ]
+                                            },
+                                            {
+                                                "Ref": "QSS3BucketName"
+                                            },
+                                            {
+                                                "Ref": "QSS3KeyPrefix"
+                                            },
+                                            "scripts/InstallSQLEE2.ps1"
+                                        ]
+                                    ]
+                                }
+                            }
+                        },
                         "commands": {
                             "a-install-sql": {
                                 "command": {
@@ -1014,6 +1064,10 @@
                                             {
                                                 "Ref": "ADServer1NetBIOSName"
                                             },
+                                            "' -NetBIOSName '",
+                                            {
+                                                "Ref": "WSFCNode1NetBIOSName"
+                                            },
                                             "'\""
                                         ]
                                     ]
@@ -1022,22 +1076,127 @@
                             }
                         }
                     },
-                    "Finalize": {
-                        "commands": {
-                            "1-signal-success": {
-                                "command": {
+                    "Configure": {
+                        "files": {
+                            "C:\\cfn\\scripts\\MaxDOP.sql": {
+                                "source": {
                                     "Fn::Join": [
-                                        "",
+                                        "/",
                                         [
-                                            "cfn-signal.exe -e 0 \"",
                                             {
-                                                "Ref": "WSFCNode1WaitHandle"
+                                                "Fn::FindInMap": [
+                                                    "AWSInfoRegionMap",
+                                                    {
+                                                        "Ref": "AWS::Region"
+                                                    },
+                                                    "QuickStartS3URL"
+                                                ]
                                             },
-                                            "\""
+                                            {
+                                                "Ref": "QSS3BucketName"
+                                            },
+                                            {
+                                                "Ref": "QSS3KeyPrefix"
+                                            },
+                                            "scripts/MaxDOP.sql"
+                                        ]
+                                    ]
+                                }
+                            },
+                            "C:\\cfn\\scripts\\SetMaxDOP.ps1": {
+                                "source": {
+                                    "Fn::Join": [
+                                        "/",
+                                        [
+                                            {
+                                                "Fn::FindInMap": [
+                                                    "AWSInfoRegionMap",
+                                                    {
+                                                        "Ref": "AWS::Region"
+                                                    },
+                                                    "QuickStartS3URL"
+                                                ]
+                                            },
+                                            {
+                                                "Ref": "QSS3BucketName"
+                                            },
+                                            {
+                                                "Ref": "QSS3KeyPrefix"
+                                            },
+                                            "scripts/SetMaxDOP.ps1"
                                         ]
                                     ]
                                 }
                             }
+                        },
+                        "commands": {
+                            "a-set-maxdop": {
+                                "command": {
+                                    "Fn::Join": [
+                                        "",
+                                        [
+                                            "powershell.exe -Command \"C:\\cfn\\scripts\\SetMaxDOP.ps1 -DomainNetBIOSName '",
+                                            {
+                                                "Ref": "DomainNetBIOSName"
+                                            },
+                                            "' -DomainAdminUser '",
+                                            {
+                                                "Ref": "DomainAdminUser"
+                                            },
+                                            "' -DomainAdminPassword '",
+                                            {
+                                                "Ref": "DomainAdminPassword"
+                                            },
+                                            "' -NetBIOSName '",
+                                            {
+                                                "Ref": "WSFCNode1NetBIOSName"
+                                            },
+                                            "'\""
+                                        ]
+                                    ]
+                                },
+                                "waitAfterCompletion": "0"
+                            }
+                        }
+                    },
+                    "Cleanup": {
+                        "files": {
+                            "C:\\cfn\\scripts\\DisableCredSsp.ps1": {
+                                "source": {
+                                    "Fn::Join": [
+                                        "/",
+                                        [
+                                            {
+                                                "Fn::FindInMap": [
+                                                    "AWSInfoRegionMap",
+                                                    {
+                                                        "Ref": "AWS::Region"
+                                                    },
+                                                    "QuickStartS3URL"
+                                                ]
+                                            },
+                                            {
+                                                "Ref": "QSS3BucketName"
+                                            },
+                                            {
+                                                "Ref": "QSS3KeyPrefix"
+                                            },
+                                            "scripts/DisableCredSsp.ps1"
+                                        ]
+                                    ]
+                                }
+                            }
+                        },
+                        "commands": {
+                            "a-disable-credssp": {
+                                "command": "powershell.exe -ExecutionPolicy RemoteSigned C:\\cfn\\scripts\\DisableCredSsp.ps1",
+                                "waitAfterCompletion": "0"
+                            }
+                        }                        
+                    },
+                    "Finalize": {
+                        "commands": {
+                            "a-signal-success": "powershell -Command Write-AWSQuickStartStatus"
                         }
                     }
                 }
@@ -1173,6 +1332,8 @@
                             "QuickStartSetup",
                             "Prep",
                             "Install",
+                            "Configure",
+                            "Cleanup",
                             "Finalize"
                         ]
                     },
@@ -1269,156 +1430,6 @@
                                         ]
                                     ]
                                 }
-                            },
-                            "C:\\cfn\\scripts\\Set-Dns.ps1": {
-                                "source": {
-                                    "Fn::Join": [
-                                        "/",
-                                        [
-                                            {
-                                                "Fn::FindInMap": [
-                                                    "AWSInfoRegionMap",
-                                                    {
-                                                        "Ref": "AWS::Region"
-                                                    },
-                                                    "QuickStartS3URL"
-                                                ]
-                                            },
-                                            {
-                                                "Ref": "QSS3BucketName"
-                                            },
-                                            {
-                                                "Ref": "QSS3KeyPrefix"
-                                            },
-                                            "submodules/quickstart-microsoft-utilities/scripts/Set-Dns.ps1"
-                                        ]
-                                    ]
-                                }
-                            },
-                            "C:\\cfn\\scripts\\Join-ADDSDomain.ps1": {
-                                "source": {
-                                    "Fn::Join": [
-                                        "/",
-                                        [
-                                            {
-                                                "Fn::FindInMap": [
-                                                    "AWSInfoRegionMap",
-                                                    {
-                                                        "Ref": "AWS::Region"
-                                                    },
-                                                    "QuickStartS3URL"
-                                                ]
-                                            },
-                                            {
-                                                "Ref": "QSS3BucketName"
-                                            },
-                                            {
-                                                "Ref": "QSS3KeyPrefix"
-                                            },
-                                            "submodules/quickstart-microsoft-utilities/scripts/Join-ADDSDomain.ps1"
-                                        ]
-                                    ]
-                                }
-                            },
-                            "C:\\cfn\\scripts\\Create-Share.ps1": {
-                                "source": {
-                                    "Fn::Join": [
-                                        "/",
-                                        [
-                                            {
-                                                "Fn::FindInMap": [
-                                                    "AWSInfoRegionMap",
-                                                    {
-                                                        "Ref": "AWS::Region"
-                                                    },
-                                                    "QuickStartS3URL"
-                                                ]
-                                            },
-                                            {
-                                                "Ref": "QSS3BucketName"
-                                            },
-                                            {
-                                                "Ref": "QSS3KeyPrefix"
-                                            },
-                                            "submodules/quickstart-microsoft-utilities/scripts/Create-Share.ps1"
-                                        ]
-                                    ]
-                                }
-                            },
-                            "C:\\cfn\\scripts\\Install-WindowsFailoverClustering.ps1": {
-                                "source": {
-                                    "Fn::Join": [
-                                        "/",
-                                        [
-                                            {
-                                                "Fn::FindInMap": [
-                                                    "AWSInfoRegionMap",
-                                                    {
-                                                        "Ref": "AWS::Region"
-                                                    },
-                                                    "QuickStartS3URL"
-                                                ]
-                                            },
-                                            {
-                                                "Ref": "QSS3BucketName"
-                                            },
-                                            {
-                                                "Ref": "QSS3KeyPrefix"
-                                            },
-                                            "scripts/Install-WindowsFailoverClustering.ps1"
-                                        ]
-                                    ]
-                                }
-                            },
-                            "C:\\cfn\\scripts\\OpenWSFCPorts.ps1": {
-                                "source": {
-                                    "Fn::Join": [
-                                        "/",
-                                        [
-                                            {
-                                                "Fn::FindInMap": [
-                                                    "AWSInfoRegionMap",
-                                                    {
-                                                        "Ref": "AWS::Region"
-                                                    },
-                                                    "QuickStartS3URL"
-                                                ]
-                                            },
-                                            {
-                                                "Ref": "QSS3BucketName"
-                                            },
-                                            {
-                                                "Ref": "QSS3KeyPrefix"
-                                            },
-                                            "scripts/OpenWSFCPorts.ps1"
-                                        ]
-                                    ]
-                                }
-                            },
-                            "C:\\cfn\\scripts\\InstallSQLEE2.ps1": {
-                                "source": {
-                                    "Fn::Join": [
-                                        "/",
-                                        [
-                                            {
-                                                "Fn::FindInMap": [
-                                                    "AWSInfoRegionMap",
-                                                    {
-                                                        "Ref": "AWS::Region"
-                                                    },
-                                                    "QuickStartS3URL"
-                                                ]
-                                            },
-                                            {
-                                                "Ref": "QSS3BucketName"
-                                            },
-                                            {
-                                                "Ref": "QSS3KeyPrefix"
-                                            },
-                                            "scripts/InstallSQLEE2.ps1"
-                                        ]
-                                    ]
-                                }
                             }
                         },
                         "commands": {
@@ -1461,6 +1472,183 @@
                         }
                     },                    
                     "Prep": {
+                        "files": {
+                            "C:\\cfn\\scripts\\Set-Dns.ps1": {
+                                "source": {
+                                    "Fn::Join": [
+                                        "/",
+                                        [
+                                            {
+                                                "Fn::FindInMap": [
+                                                    "AWSInfoRegionMap",
+                                                    {
+                                                        "Ref": "AWS::Region"
+                                                    },
+                                                    "QuickStartS3URL"
+                                                ]
+                                            },
+                                            {
+                                                "Ref": "QSS3BucketName"
+                                            },
+                                            {
+                                                "Ref": "QSS3KeyPrefix"
+                                            },
+                                            "submodules/quickstart-microsoft-utilities/scripts/Set-Dns.ps1"
+                                        ]
+                                    ]
+                                }
+                            },
+                            "C:\\cfn\\scripts\\Join-Domain.ps1": {
+                                "source": {
+                                    "Fn::Join": [
+                                        "/",
+                                        [
+                                            {
+                                                "Fn::FindInMap": [
+                                                    "AWSInfoRegionMap",
+                                                    {
+                                                        "Ref": "AWS::Region"
+                                                    },
+                                                    "QuickStartS3URL"
+                                                ]
+                                            },
+                                            {
+                                                "Ref": "QSS3BucketName"
+                                            },
+                                            {
+                                                "Ref": "QSS3KeyPrefix"
+                                            },
+                                            "submodules/quickstart-microsoft-utilities/scripts/Join-Domain.ps1"
+                                        ]
+                                    ]
+                                }
+                            },
+                            "C:\\cfn\\scripts\\Rename-Computer.ps1": {
+                                "source": {
+                                    "Fn::Join": [
+                                        "/",
+                                        [
+                                            {
+                                                "Fn::FindInMap": [
+                                                    "AWSInfoRegionMap",
+                                                    {
+                                                        "Ref": "AWS::Region"
+                                                    },
+                                                    "QuickStartS3URL"
+                                                ]
+                                            },
+                                            {
+                                                "Ref": "QSS3BucketName"
+                                            },
+                                            {
+                                                "Ref": "QSS3KeyPrefix"
+                                            },
+                                            "submodules/quickstart-microsoft-utilities/scripts/Rename-Computer.ps1"
+                                        ]
+                                    ]
+                                }
+                            },
+                            "C:\\cfn\\scripts\\Install-WindowsFailoverClustering.ps1": {
+                                "source": {
+                                    "Fn::Join": [
+                                        "/",
+                                        [
+                                            {
+                                                "Fn::FindInMap": [
+                                                    "AWSInfoRegionMap",
+                                                    {
+                                                        "Ref": "AWS::Region"
+                                                    },
+                                                    "QuickStartS3URL"
+                                                ]
+                                            },
+                                            {
+                                                "Ref": "QSS3BucketName"
+                                            },
+                                            {
+                                                "Ref": "QSS3KeyPrefix"
+                                            },
+                                            "scripts/Install-WindowsFailoverClustering.ps1"
+                                        ]
+                                    ]
+                                }
+                            },
+                            "C:\\cfn\\scripts\\Install-NETFrameworkCore.ps1": {
+                                "source": {
+                                    "Fn::Join": [
+                                        "/",
+                                        [
+                                            {
+                                                "Fn::FindInMap": [
+                                                    "AWSInfoRegionMap",
+                                                    {
+                                                        "Ref": "AWS::Region"
+                                                    },
+                                                    "QuickStartS3URL"
+                                                ]
+                                            },
+                                            {
+                                                "Ref": "QSS3BucketName"
+                                            },
+                                            {
+                                                "Ref": "QSS3KeyPrefix"
+                                            },
+                                            "scripts/Install-NETFrameworkCore.ps1"
+                                        ]
+                                    ]
+                                }
+                            },
+                            "C:\\cfn\\scripts\\OpenWSFCPorts.ps1": {
+                                "source": {
+                                    "Fn::Join": [
+                                        "/",
+                                        [
+                                            {
+                                                "Fn::FindInMap": [
+                                                    "AWSInfoRegionMap",
+                                                    {
+                                                        "Ref": "AWS::Region"
+                                                    },
+                                                    "QuickStartS3URL"
+                                                ]
+                                            },
+                                            {
+                                                "Ref": "QSS3BucketName"
+                                            },
+                                            {
+                                                "Ref": "QSS3KeyPrefix"
+                                            },
+                                            "scripts/OpenWSFCPorts.ps1"
+                                        ]
+                                    ]
+                                }
+                            },
+                            "C:\\cfn\\scripts\\EnableCredSsp.ps1": {
+                                "source": {
+                                    "Fn::Join": [
+                                        "/",
+                                        [
+                                            {
+                                                "Fn::FindInMap": [
+                                                    "AWSInfoRegionMap",
+                                                    {
+                                                        "Ref": "AWS::Region"
+                                                    },
+                                                    "QuickStartS3URL"
+                                                ]
+                                            },
+                                            {
+                                                "Ref": "QSS3BucketName"
+                                            },
+                                            {
+                                                "Ref": "QSS3KeyPrefix"
+                                            },
+                                            "scripts/EnableCredSsp.ps1"
+                                        ]
+                                    ]
+                                }
+                            }
+                        },
                         "commands": {
                             "a-set-dns": {
                                 "command": {
@@ -1481,12 +1669,27 @@
                                 },
                                 "waitAfterCompletion": "30"
                             },
-                            "b-join-domain": {
+                            "b-rename-computer": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
                                         [
-                                            "powershell.exe -Command \"C:\\cfn\\scripts\\Join-ADDSDomain.ps1 -Restart -DomainName '",
+                                            "powershell.exe -Command \"C:\\cfn\\scripts\\Rename-Computer.ps1 -Restart -NewName '",
+                                            {
+                                                "Ref": "WSFCNode2NetBIOSName"
+                                            },
+                                            "'\""
+                                        ]
+                                    ]
+                                },
+                                "waitAfterCompletion": "forever"
+                            },
+                            "c-join-domain": {
+                                "command": {
+                                    "Fn::Join": [
+                                        "",
+                                        [
+                                            "powershell.exe -Command \"C:\\cfn\\scripts\\Join-Domain.ps1 -DomainName '",
                                             {
                                                 "Ref": "DomainDNSName"
                                             },
@@ -1502,10 +1705,6 @@
                                             {
                                                 "Ref": "DomainAdminPassword"
                                             },
-                                            "' -NewName '",
-                                            {
-                                                "Ref": "WSFCNode2NetBIOSName"
-                                            },
                                             "'\""
                                         ]
                                     ]
@@ -1516,24 +1715,55 @@
                                 "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Install-WindowsFailoverClustering.ps1",
                                 "waitAfterCompletion": "0"
                             },
-                            "g-open-WSFC-ports": {
+                            "e-install-net-framework-core": {
+                                "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Install-NETFrameworkCore.ps1",
+                                "waitAfterCompletion": "0"
+                            },
+                            "f-open-WSFC-ports": {
                                 "command": "powershell.exe -ExecutionPolicy RemoteSigned C:\\cfn\\scripts\\OpenWSFCPorts.ps1",
+                                "waitAfterCompletion": "0"
+                            },
+                            "g-enable-credssp": {
+                                "command": "powershell.exe -ExecutionPolicy RemoteSigned C:\\cfn\\scripts\\EnableCredSsp.ps1",
                                 "waitAfterCompletion": "0"
                             }
                         }
                     },
                     "Install": {
+                        "files": {
+                            "C:\\cfn\\scripts\\InstallSQLEE2.ps1": {
+                                "source": {
+                                    "Fn::Join": [
+                                        "/",
+                                        [
+                                            {
+                                                "Fn::FindInMap": [
+                                                    "AWSInfoRegionMap",
+                                                    {
+                                                        "Ref": "AWS::Region"
+                                                    },
+                                                    "QuickStartS3URL"
+                                                ]
+                                            },
+                                            {
+                                                "Ref": "QSS3BucketName"
+                                            },
+                                            {
+                                                "Ref": "QSS3KeyPrefix"
+                                            },
+                                            "scripts/InstallSQLEE2.ps1"
+                                        ]
+                                    ]
+                                }
+                            }
+                        },
                         "commands": {
                             "a-install-sql": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
                                         [
-                                            "powershell.exe -Command \"C:\\cfn\\scripts\\InstallSQLEE2.ps1 -DomainDNSName '",
-                                            {
-                                                "Ref": "DomainDNSName"
-                                            },
-                                            "' -DomainNetBIOSName '",
+                                            "powershell.exe -Command \"C:\\cfn\\scripts\\InstallSQLEE2.ps1 -DomainNetBIOSName '",
                                             {
                                                 "Ref": "DomainNetBIOSName"
                                             },
@@ -1557,6 +1787,10 @@
                                             {
                                                 "Ref": "ADServer1NetBIOSName"
                                             },
+                                            "' -NetBIOSName '",
+                                            {
+                                                "Ref": "WSFCNode2NetBIOSName"
+                                            },
                                             "'\""
                                         ]
                                     ]
@@ -1565,22 +1799,127 @@
                             }
                         }
                     },
-                    "Finalize": {
-                        "commands": {
-                            "1-signal-success": {
-                                "command": {
+                    "Configure": {
+                        "files": {
+                            "C:\\cfn\\scripts\\MaxDOP.sql": {
+                                "source": {
                                     "Fn::Join": [
-                                        "",
+                                        "/",
                                         [
-                                            "cfn-signal.exe -e 0 \"",
                                             {
-                                                "Ref": "WSFCNode2WaitHandle"
+                                                "Fn::FindInMap": [
+                                                    "AWSInfoRegionMap",
+                                                    {
+                                                        "Ref": "AWS::Region"
+                                                    },
+                                                    "QuickStartS3URL"
+                                                ]
                                             },
-                                            "\""
+                                            {
+                                                "Ref": "QSS3BucketName"
+                                            },
+                                            {
+                                                "Ref": "QSS3KeyPrefix"
+                                            },
+                                            "scripts/MaxDOP.sql"
+                                        ]
+                                    ]
+                                }
+                            },
+                            "C:\\cfn\\scripts\\SetMaxDOP.ps1": {
+                                "source": {
+                                    "Fn::Join": [
+                                        "/",
+                                        [
+                                            {
+                                                "Fn::FindInMap": [
+                                                    "AWSInfoRegionMap",
+                                                    {
+                                                        "Ref": "AWS::Region"
+                                                    },
+                                                    "QuickStartS3URL"
+                                                ]
+                                            },
+                                            {
+                                                "Ref": "QSS3BucketName"
+                                            },
+                                            {
+                                                "Ref": "QSS3KeyPrefix"
+                                            },
+                                            "scripts/SetMaxDOP.ps1"
                                         ]
                                     ]
                                 }
                             }
+                        },
+                        "commands": {
+                            "a-set-maxdop": {
+                                "command": {
+                                    "Fn::Join": [
+                                        "",
+                                        [
+                                            "powershell.exe -Command \"C:\\cfn\\scripts\\SetMaxDOP.ps1 -DomainNetBIOSName '",
+                                            {
+                                                "Ref": "DomainNetBIOSName"
+                                            },
+                                            "' -DomainAdminUser '",
+                                            {
+                                                "Ref": "DomainAdminUser"
+                                            },
+                                            "' -DomainAdminPassword '",
+                                            {
+                                                "Ref": "DomainAdminPassword"
+                                            },
+                                            "' -NetBIOSName '",
+                                            {
+                                                "Ref": "WSFCNode2NetBIOSName"
+                                            },
+                                            "'\""
+                                        ]
+                                    ]
+                                },
+                                "waitAfterCompletion": "0"
+                            }
+                        }
+                    },
+                    "Cleanup": {
+                        "files": {
+                            "C:\\cfn\\scripts\\DisableCredSsp.ps1": {
+                                "source": {
+                                    "Fn::Join": [
+                                        "/",
+                                        [
+                                            {
+                                                "Fn::FindInMap": [
+                                                    "AWSInfoRegionMap",
+                                                    {
+                                                        "Ref": "AWS::Region"
+                                                    },
+                                                    "QuickStartS3URL"
+                                                ]
+                                            },
+                                            {
+                                                "Ref": "QSS3BucketName"
+                                            },
+                                            {
+                                                "Ref": "QSS3KeyPrefix"
+                                            },
+                                            "scripts/DisableCredSsp.ps1"
+                                        ]
+                                    ]
+                                }
+                            }
+                        },
+                        "commands": {
+                            "a-disable-credssp": {
+                                "command": "powershell.exe -ExecutionPolicy RemoteSigned C:\\cfn\\scripts\\DisableCredSsp.ps1",
+                                "waitAfterCompletion": "0"
+                            }
+                        }                        
+                    },
+                    "Finalize": {
+                        "commands": {
+                            "a-signal-success": "powershell -Command Write-AWSQuickStartStatus"
                         }
                     }
                 }

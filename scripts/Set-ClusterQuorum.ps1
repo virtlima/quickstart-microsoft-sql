@@ -14,33 +14,30 @@ param(
     [string]$ServerName='localhost',
 
     [Parameter(Mandatory=$true)]
-    [string]$WSFCNode1NetBIOSName,
-
-    [Parameter(Mandatory=$true)]
     [string]$WSFCNode2NetBIOSName
+    
+    [Parameter(Mandatory=$true)]
+    [string]$ADServer1NetBIOSName
 
 )
 try {
-    Start-Transcript -Path C:\cfn\log\Enable-SqlAlwaysOn.ps1.txt -Append
+    Start-Transcript -Path C:\cfn\log\Set-ClusterQuorum.ps1.txt -Append
     $ErrorActionPreference = "Stop"
 
     $DomainAdminFullUser = $DomainNetBIOSName + '\' + $DomainAdminUser
     $DomainAdminSecurePassword = ConvertTo-SecureString $DomainAdminPassword -AsPlainText -Force
     $DomainAdminCreds = New-Object System.Management.Automation.PSCredential($DomainAdminFullUser, $DomainAdminSecurePassword)
 
-$Enable-AlwaysOn-WFCNode1={
+$Set-ClusterQuorum={
         $ErrorActionPreference = "Stop"
-        Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned;Enable-SqlAlwaysOn -ServerInstance $WSFCNode1NetBIOSName -Force 
+        Set-ClusterQuorum -NodeAndFileShareMajority \\$ADServer1NetBIOSName\witness
     }
 
-$Enable-AlwaysOn-WFCNode2={
-        $ErrorActionPreference = "Stop"
-        Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned;Enable-SqlAlwaysOn -ServerInstance $WSFCNode2NetBIOSName -Force 
-    }
+    Invoke-Command -Scriptblock $Set-ClusterQuorum -ComputerName $WSFCNode2NetBIOSName -Credential $DomainAdminCreds
 
-Invoke-Command -Scriptblock $Enable-AlwaysOn-WFCNode1 -ComputerName $WSFCNode1NetBIOSName -Credential $DomainAdminCreds
-Invoke-Command -Scriptblock $Enable-AlwaysOn-WFCNode2 -ComputerName $WSFCNode2NetBIOSName -Credential $DomainAdminCreds
 }
 catch {
     $_ | Write-AWSQuickStartException
 }
+                                            
+                                         

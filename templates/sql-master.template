@@ -476,6 +476,66 @@
             "Default": "microsoft/sql/latest",
             "Description": "S3 key prefix for the Quick Start assets. Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/). It cannot start or end with forward slash (/) because they are automatically appended.",
             "Type": "String"
+        },
+        "Volume1Size": {
+            "Default": "500",
+            "MinValue": "100",
+            "MaxValue": "16000",
+            "Description": "Volume size for the SQL Data drive",
+            "Type": "Number"
+        },
+        "Volume2Size": {
+            "Default": "500",
+            "MinValue": "100",
+            "MaxValue": "16000",
+            "Description": "Volume size for the SQL Logs drive",
+            "Type": "Number"
+        },
+        "Volume3Size": {
+            "Default": "500",
+            "MinValue": "100",
+            "MaxValue": "16000",
+            "Description": "Volume size for the SQL TempDB drive",
+            "Type": "Number"
+        },
+        "Volume1Type": {
+            "Default": "gp2",
+            "AllowedValues": ["gp2","io1"],
+            "Description": "Volume type for the SQL Data drive",
+            "Type": "String"
+        },
+        "Volume2Type": {
+            "Default": "gp2",
+            "AllowedValues": ["gp2","io1"],
+            "Description": "Volume type for the SQL Logs drive",
+            "Type": "String"
+        },
+        "Volume3Type": {
+            "Default": "gp2",
+            "AllowedValues": ["gp2","io1"],
+            "Description": "Volume type for the SQL TempDB drive",
+            "Type": "String"
+        },
+        "Volume1Iops": {
+            "Default": "1000",
+            "MinValue": "100",
+            "MaxValue": "16000",
+            "Description": "Iops for the SQL Data drive (Only used when volume type is io1)",
+            "Type": "Number"
+        },
+        "Volume2Iops": {
+            "Default": "1000",
+            "MinValue": "100",
+            "MaxValue": "16000",
+            "Description": "Iops for the SQL Logs drive (Only used when volume type is io1)",
+            "Type": "Number"
+        },
+        "Volume3Iops": {
+            "Default": "1000",
+            "MinValue": "100",
+            "MaxValue": "16000",
+            "Description": "Iops for the SQL TempDB drive (Only used when volume type is io1)",
+            "Type": "Number"
         }
     },
     "Mappings": {
@@ -529,7 +589,7 @@
                 "QuickStartS3URL": "https://s3.amazonaws.com"
             }
         }
-    },    
+    },
     "Resources": {
         "VPCStack": {
             "Type": "AWS::CloudFormation::Stack",
@@ -951,6 +1011,33 @@
                     },
                     "QSS3KeyPrefix": {
                         "Ref": "QSS3KeyPrefix"
+                    },
+                    "Volume1Size": {
+                        "Ref": "Volume1Size"
+                    },
+                    "Volume2Size": {
+                        "Ref": "Volume2Size"
+                    },
+                    "Volume3Size": {
+                        "Ref": "Volume3Size"
+                    },
+                    "Volume1Type": {
+                        "Ref": "Volume1Type"
+                    },
+                    "Volume2Type": {
+                        "Ref": "Volume2Type"
+                    },
+                    "Volume3Type": {
+                        "Ref": "Volume3Type"
+                    },
+                    "Volume1Iops": {
+                        "Ref": "Volume1Iops"
+                    },
+                    "Volume2Iops": {
+                        "Ref": "Volume2Iops"
+                    },
+                    "Volume3Iops": {
+                        "Ref": "Volume3Iops"
                     }
                 }
             }

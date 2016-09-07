@@ -214,6 +214,92 @@
             "Default": "microsoft/sql/latest",
             "Description": "S3 key prefix for the Quick Start assets. Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/). It cannot start or end with forward slash (/) because they are automatically appended.",
             "Type": "String"
+        },
+        "Volume1Size": {
+            "Default": "500",
+            "MinValue": "100",
+            "MaxValue": "16000",
+            "Description": "Volume size for the SQL Data drive",
+            "Type": "Number"
+        },
+        "Volume2Size": {
+            "Default": "500",
+            "MinValue": "100",
+            "MaxValue": "16000",
+            "Description": "Volume size for the SQL Logs drive",
+            "Type": "Number"
+        },
+        "Volume3Size": {
+            "Default": "500",
+            "MinValue": "100",
+            "MaxValue": "16000",
+            "Description": "Volume size for the SQL TempDB drive",
+            "Type": "Number"
+        },
+        "Volume1Type": {
+            "Default": "gp2",
+            "AllowedValues": ["gp2","io1"],
+            "Description": "Volume type for the SQL Data drive",
+            "Type": "String"
+        },
+        "Volume2Type": {
+            "Default": "gp2",
+            "AllowedValues": ["gp2","io1"],
+            "Description": "Volume type for the SQL Logs drive",
+            "Type": "String"
+        },
+        "Volume3Type": {
+            "Default": "gp2",
+            "AllowedValues": ["gp2","io1"],
+            "Description": "Volume type for the SQL TempDB drive",
+            "Type": "String"
+        },
+        "Volume1Iops": {
+            "Default": "1000",
+            "MinValue": "100",
+            "MaxValue": "16000",
+            "Description": "Iops for the SQL Data drive (Only used when volume type is io1)",
+            "Type": "Number"
+        },
+        "Volume2Iops": {
+            "Default": "1000",
+            "MinValue": "100",
+            "MaxValue": "16000",
+            "Description": "Iops for the SQL Logs drive (Only used when volume type is io1)",
+            "Type": "Number"
+        },
+        "Volume3Iops": {
+            "Default": "1000",
+            "MinValue": "100",
+            "MaxValue": "16000",
+            "Description": "Iops for the SQL TempDB drive (Only used when volume type is io1)",
+            "Type": "Number"
+        }
+    },
+    "Conditions" : {
+        "Vol1IsIo1": {
+            "Fn::Equals" : [
+                {
+                    "Ref": "Volume1Type"
+                },
+                "io1"
+            ]
+        },
+        "Vol2IsIo1": {
+            "Fn::Equals" : [
+                {
+                    "Ref": "Volume1Type"
+                },
+                "io1"
+            ]
+        },
+        "Vol3IsIo1": {
+            "Fn::Equals" : [
+                {
+                    "Ref": "Volume1Type"
+                },
+                "io1"
+            ]
         }
     },
     "Rules": {
@@ -2128,13 +2214,30 @@
         "WSFCNode1Volume1": {
             "Type": "AWS::EC2::Volume",
             "Properties": {
-                "Size": "500",
-                "VolumeType": "gp2",
+                "Size":
+                    {
+                        "Ref": "Volume1Size"
+                    },
+                "VolumeType":
+                    {
+                        "Ref": "Volume1Type"
+                    },
                 "AvailabilityZone": {
                     "Fn::Select": [
                         0,
                         {
                             "Fn::GetAZs": ""
+                        }
+                    ]
+                },
+                "Iops": {
+                    "Fn::If" : [
+                        "Vol1IsIo1",
+                        {
+                            "Ref" : "Volume1Iops"
+                        },
+                        {
+                            "Ref" : "AWS::NoValue"
                         }
                     ]
                 }
@@ -2143,13 +2246,30 @@
         "WSFCNode1Volume2": {
             "Type": "AWS::EC2::Volume",
             "Properties": {
-                "Size": "500",
-                "VolumeType": "gp2",
+                "Size":
+                    {
+                        "Ref": "Volume2Size"
+                    },
+                "VolumeType":
+                    {
+                        "Ref": "Volume2Type"
+                    },
                 "AvailabilityZone": {
                     "Fn::Select": [
                         0,
                         {
                             "Fn::GetAZs": ""
+                        }
+                    ]
+                },
+                "Iops": {
+                    "Fn::If" : [
+                        "Vol2IsIo1",
+                        {
+                            "Ref" : "Volume2Iops"
+                        },
+                        {
+                            "Ref" : "AWS::NoValue"
                         }
                     ]
                 }
@@ -2158,13 +2278,30 @@
         "WSFCNode1Volume3": {
             "Type": "AWS::EC2::Volume",
             "Properties": {
-                "Size": "500",
-                "VolumeType": "gp2",
+                "Size":
+                    {
+                        "Ref": "Volume3Size"
+                    },
+                "VolumeType":
+                    {
+                        "Ref": "Volume3Type"
+                    },
                 "AvailabilityZone": {
                     "Fn::Select": [
                         0,
                         {
                             "Fn::GetAZs": ""
+                        }
+                    ]
+                },
+                "Iops": {
+                    "Fn::If" : [
+                        "Vol3IsIo1",
+                        {
+                            "Ref" : "Volume3Iops"
+                        },
+                        {
+                            "Ref" : "AWS::NoValue"
                         }
                     ]
                 }
@@ -2173,13 +2310,30 @@
         "WSFCNode2Volume1": {
             "Type": "AWS::EC2::Volume",
             "Properties": {
-                "Size": "500",
-                "VolumeType": "gp2",
+                "Size":
+                    {
+                        "Ref": "Volume1Size"
+                    },
+                "VolumeType":
+                    {
+                        "Ref": "Volume1Type"
+                    },
                 "AvailabilityZone": {
                     "Fn::Select": [
                         1,
                         {
                             "Fn::GetAZs": ""
+                        }
+                    ]
+                },
+                "Iops": {
+                    "Fn::If" : [
+                        "Vol1IsIo1",
+                        {
+                            "Ref" : "Volume1Iops"
+                        },
+                        {
+                            "Ref" : "AWS::NoValue"
                         }
                     ]
                 }
@@ -2188,13 +2342,30 @@
         "WSFCNode2Volume2": {
             "Type": "AWS::EC2::Volume",
             "Properties": {
-                "Size": "500",
-                "VolumeType": "gp2",
+                "Size":
+                    {
+                        "Ref": "Volume2Size"
+                    },
+                "VolumeType":
+                    {
+                        "Ref": "Volume2Type"
+                    },
                 "AvailabilityZone": {
                     "Fn::Select": [
                         1,
                         {
                             "Fn::GetAZs": ""
+                        }
+                    ]
+                },
+                "Iops": {
+                    "Fn::If" : [
+                        "Vol2IsIo1",
+                        {
+                            "Ref" : "Volume2Iops"
+                        },
+                        {
+                            "Ref" : "AWS::NoValue"
                         }
                     ]
                 }
@@ -2203,13 +2374,30 @@
         "WSFCNode2Volume3": {
             "Type": "AWS::EC2::Volume",
             "Properties": {
-                "Size": "500",
-                "VolumeType": "gp2",
+                "Size":
+                    {
+                        "Ref": "Volume3Size"
+                    },
+                "VolumeType":
+                    {
+                        "Ref": "Volume3Type"
+                    },
                 "AvailabilityZone": {
                     "Fn::Select": [
                         1,
                         {
                             "Fn::GetAZs": ""
+                        }
+                    ]
+                },
+                "Iops": {
+                    "Fn::If" : [
+                        "Vol2IsIo1",
+                        {
+                            "Ref" : "Volume2Iops"
+                        },
+                        {
+                            "Ref" : "AWS::NoValue"
                         }
                     ]
                 }

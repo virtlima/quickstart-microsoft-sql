@@ -519,21 +519,21 @@
         "Volume1Iops": {
             "Default": "1000",
             "MinValue": "100",
-            "MaxValue": "16000",
+            "MaxValue": "20000",
             "Description": "Iops for the SQL Data drive (Only used when volume type is io1)",
             "Type": "Number"
         },
         "Volume2Iops": {
             "Default": "1000",
             "MinValue": "100",
-            "MaxValue": "16000",
+            "MaxValue": "20000",
             "Description": "Iops for the SQL Logs drive (Only used when volume type is io1)",
             "Type": "Number"
         },
         "Volume3Iops": {
             "Default": "1000",
             "MinValue": "100",
-            "MaxValue": "16000",
+            "MaxValue": "20000",
             "Description": "Iops for the SQL TempDB drive (Only used when volume type is io1)",
             "Type": "Number"
         }

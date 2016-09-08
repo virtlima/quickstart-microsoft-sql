@@ -976,7 +976,7 @@
                                 "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Install-NETFrameworkCore.ps1",
                                 "waitAfterCompletion": "0"
                             },
-                            "g-create-share": {
+                            "g-create-sqlinstall-share": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
@@ -1496,7 +1496,6 @@
                                     ]
                                 }
                             },
-
                             "C:\\cfn\\modules\\AWSQuickStart.zip": {
                                 "source": {
                                     "Fn::Join": [
@@ -1639,7 +1638,7 @@
                                     ]
                                 }
                             },
-                             "C:\\cfn\\scripts\\Invoke-ADReplication.ps1": {
+                            "C:\\cfn\\scripts\\Invoke-ADReplication.ps1": {
                                 "source": {
                                     "Fn::Join": [
                                         "/",

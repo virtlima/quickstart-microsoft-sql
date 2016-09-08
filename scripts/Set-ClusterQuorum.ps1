@@ -3,19 +3,16 @@ param(
 
     [Parameter(Mandatory=$true)]
     [string]$DomainNetBIOSName,
-    
+
     [Parameter(Mandatory=$true)]
     [string]$DomainAdminUser,
-    
+
     [Parameter(Mandatory=$true)]
     [string]$DomainAdminPassword,
 
-    [Parameter(Mandatory=$false)]
-    [string]$ServerName='localhost',
-
     [Parameter(Mandatory=$true)]
-    [string]$WSFCNode2NetBIOSName
-    
+    [string]$WSFCNode2NetBIOSName,
+
     [Parameter(Mandatory=$true)]
     [string]$ADServer1NetBIOSName
 
@@ -28,16 +25,15 @@ try {
     $DomainAdminSecurePassword = ConvertTo-SecureString $DomainAdminPassword -AsPlainText -Force
     $DomainAdminCreds = New-Object System.Management.Automation.PSCredential($DomainAdminFullUser, $DomainAdminSecurePassword)
 
-$Set-ClusterQuorum={
+    $SetClusterQuorum={
         $ErrorActionPreference = "Stop"
-        Set-ClusterQuorum -NodeAndFileShareMajority \\$ADServer1NetBIOSName\witness
+        $ShareName = "\\" + $args[0] + "\witness"
+        Set-ClusterQuorum -NodeAndFileShareMajority
     }
 
-    Invoke-Command -Scriptblock $Set-ClusterQuorum -ComputerName $WSFCNode2NetBIOSName -Credential $DomainAdminCreds
+    Invoke-Command -Scriptblock $SetClusterQuorum -ComputerName $WSFCNode2NetBIOSName -Credential $DomainAdminCreds -ArgumentList $ADServer1NetBIOSName
 
 }
 catch {
     $_ | Write-AWSQuickStartException
 }
-                                            
-                                         

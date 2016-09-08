@@ -536,6 +536,22 @@
             "MaxValue": "20000",
             "Description": "Iops for the SQL TempDB drive (Only used when volume type is io1)",
             "Type": "Number"
+        },
+        "HostTypeIsDefault": {
+            "Fn:Equals": [
+              {
+                "Ref": "HostType"
+              },
+              "default"
+            ]
+        },
+        "HostTypeIsDediHost": {
+          "Fn:Equals": [
+            {
+              "Ref": "HostType"
+            },
+            "host"
+          ]
         }
     },
     "Mappings": {
@@ -1038,6 +1054,12 @@
                     },
                     "Volume3Iops": {
                         "Ref": "Volume3Iops"
+                    },
+                    "HostType": {
+                      "Ref": "HostType"
+                    },
+                    "DedicatedHostID": {
+                      "Ref": "DedicatedHostID" 
                     }
                 }
             }

@@ -2027,7 +2027,22 @@
                 "waitAfterCompletion": "0"
               },
               "h-configure-WSFC": {
-                "command": "powershell.exe -ExecutionPolicy RemoteSigned C:\\cfn\\scripts\\Configure-WSFC.ps1",
+                "command": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "powershell.exe -ExecutionPolicy RemoteSigned C:\\cfn\\scripts\\Configure-WSFC.ps1",
+                      " -WSFCNode1PrivateIP2 ",
+                      {
+                        "Ref": "WSFCNode1PrivateIP2"
+                      },
+                      " -WSFCNode2PrivateIP2 ",
+                      {
+                        "Ref": "WSFCNode2PrivateIP2"
+                      }
+                    ]
+                  ]
+                },
                 "waitAfterCompletion": "0"
               },
               "i-create-witness-share": {
@@ -2095,15 +2110,95 @@
                 "waitAfterCompletion": "0"
               },
               "k-Set-Folder-Permissions": {
-                "command": "powershell.exe -ExecutionPolicy RemoteSigned C:\\cfn\\scripts\\Set-Folder-Permissions.ps1",
+                "command": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "powershell.exe -ExecutionPolicy RemoteSigned C:\\cfn\\scripts\\Set-Folder-Permissions.ps1",
+                      " -DomainNetBIOSName '",
+                      {
+                        "Ref": "DomainNetBIOSName"
+                      },
+                      "' -DomainAdminUser '",
+                      {
+                        "Ref": "DomainAdminUser"
+                      },
+                      "' -DomainAdminPassword '",
+                      {
+                        "Ref": "DomainAdminPassword"
+                      },
+                      "' -SQLServiceAccount '",
+                      {
+                        "Ref": "SQLServiceAccount"
+                      },
+                      "'\""
+                    ]
+                  ]
+                },
                 "waitAfterCompletion": "0"
               },
               "l-Enable-AlwaysOn": {
-                "command": "powershell.exe -ExecutionPolicy RemoteSigned C:\\cfn\\scripts\\Enable-AlwaysOn.ps1",
+                "command": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "powershell.exe -ExecutionPolicy RemoteSigned C:\\cfn\\scripts\\Enable-AlwaysOn.ps1",
+                      " -DomainNetBIOSName '",
+                      {
+                        "Ref": "DomainNetBIOSName"
+                      },
+                      "' -DomainAdminUser '",
+                      {
+                        "Ref": "DomainAdminUser"
+                      },
+                      "' -DomainAdminPassword '",
+                      {
+                        "Ref": "DomainAdminPassword"
+                      },
+                      "' -WSFCNode1NetBIOSName '",
+                      {
+                        "Ref": "WSFCNode1NetBIOSName"
+                      },
+                      "' -WSFCNode2NetBIOSName '",
+                      {
+                        "Ref": "WSFCNode2NetBIOSName"
+                      },
+                      "'\""
+                    ]
+                  ]
+                },
                 "waitAfterCompletion": "0"
               },
               "m-Set-ClusterQuorum": {
-                "command": "powershell.exe -ExecutionPolicy RemoteSigned C:\\cfn\\scripts\\Set-ClusterQuorum.ps1",
+                "command": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "powershell.exe -ExecutionPolicy RemoteSigned C:\\cfn\\scripts\\Set-ClusterQuorum.ps1",
+                      " -DomainNetBIOSName '",
+                      {
+                        "Ref": "DomainNetBIOSName"
+                      },
+                      "' -DomainAdminUser '",
+                      {
+                        "Ref": "DomainAdminUser"
+                      },
+                      "' -DomainAdminPassword '",
+                      {
+                        "Ref": "DomainAdminPassword"
+                      },
+                      "' -ADServer1NetBIOSName '",
+                      {
+                        "Ref": "ADServer1NetBIOSName"
+                      },
+                      "' -WSFCNode2NetBIOSName '",
+                      {
+                        "Ref": "WSFCNode2NetBIOSName"
+                      },
+                      "'\""
+                    ]
+                  ]
+                },
                 "waitAfterCompletion": "0"
               }
             }

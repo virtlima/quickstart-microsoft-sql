@@ -49,4 +49,4 @@ Invoke-Command -ScriptBlock $SetPermissions -ComputerName $ADServer1NetBIOSName 
 }
 Catch{
      $_ | Write-AWSQuickStartException
-     }
+}

@@ -19,7 +19,7 @@ try {
     $ErrorActionPreference = "Stop"
 
     New-Cluster -Name WSFCluster1 -Node $WSFCNode1NetBIOSName, $WSFCNode2NetBIOSName -StaticAddress $WSFCNode1PrivateIP2, $WSFCNode2PrivateIP2
-    }
+}
 catch {
     $_ | Write-AWSQuickStartException
 }

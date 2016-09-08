@@ -6,7 +6,7 @@ param(
     $NetBIOSName,
 
     [Parameter(Mandatory=$true)]
-    [string]    
+    [string]
     $DomainNetBIOSName,
 
     [Parameter(Mandatory=$true)]
@@ -29,9 +29,10 @@ try {
 
     $SetupMaxDOPPs={
         $ErrorActionPreference = "Stop"
-        $maxdop = "C:\PROGRA~1\MICROS~1\CLIENT~1\ODBC\110\Tools\Binn\SQLCMD.EXE"
+        $sqlver = (dir -Path "C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\").Name
+        $maxdop = "C:\PROGRA~1\MICROS~1\CLIENT~1\ODBC\" + $sqlver + "\Tools\Binn\SQLCMD.EXE"
         $arguments = "-i c:\cfn\scripts\MaxDOP.sql"
-        Start-Process $maxdop $arguments -Wait -RedirectStandardOutput "C:\cfn\log\MaxDOPOutput.txt" -RedirectStandardError "C:\cfn\log\MaxDOPErrors.txt"    
+        Start-Process $maxdop $arguments -Wait -RedirectStandardOutput "C:\cfn\log\MaxDOPOutput.txt" -RedirectStandardError "C:\cfn\log\MaxDOPErrors.txt"
     }
 
     Invoke-Command -Authentication Credssp -Scriptblock $SetupMaxDOPPs -ComputerName $NetBIOSName -Credential $DomainAdminCreds

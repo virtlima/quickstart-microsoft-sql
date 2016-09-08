@@ -2,13 +2,13 @@
 param(
 
     [Parameter(Mandatory=$true)]
-    [string]$WSFCNode2NetBIOSName
+    [string]$WSFCNode2NetBIOSName,
 
     [Parameter(Mandatory=$true)]
-    [string]$WSFCNode1NetBIOSName
+    [string]$WSFCNode1NetBIOSName,
 
     [Parameter(Mandatory=$true)]
-    [string]$WSFCNode1PrivateIP2
+    [string]$WSFCNode1PrivateIP2,
 
     [Parameter(Mandatory=$true)]
     [string]$WSFCNode2PrivateIP2

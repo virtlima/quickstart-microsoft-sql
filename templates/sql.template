@@ -2039,7 +2039,32 @@
                       " -WSFCNode2PrivateIP2 ",
                       {
                         "Ref": "WSFCNode2PrivateIP2"
-                      }
+                      },
+                      " -WSFCNode1NetBIOSName ",
+                      {
+                        "Ref": "WSFCNode1NetBIOSName"
+                      },
+                      " -WSFCNode2NetBIOSName ",
+                      {
+                        "Ref": "WSFCNode2NetBIOSName"
+                      },
+                      " -DomainNetBIOSName ",
+                      {
+                        "Ref": "DomainNetBIOSName"
+                      },
+                      " -DomainAdminUser '",
+                      {
+                        "Ref": "DomainAdminUser"
+                      },
+                      "' -DomainAdminPassword '",
+                      {
+                        "Ref": "DomainAdminPassword"
+                      },
+                      "' -NetBIOSName '",
+                      {
+                        "Ref": "WSFCNode2NetBIOSName"
+                      },
+                      "'\""
                     ]
                   ]
                 },

@@ -2,16 +2,20 @@
 param(
 
     [Parameter(Mandatory=$true)]
-    [string]$DomainNetBIOSName,
+    [string]
+    $DomainNetBIOSName,
 
     [Parameter(Mandatory=$true)]
-    [string]$DomainAdminUser,
+    [string]
+    $DomainAdminUser,
 
     [Parameter(Mandatory=$true)]
-    [string]$DomainAdminPassword,
+    [string]
+    $DomainAdminPassword,
 
     [Parameter(Mandatory=$true)]
-    [string]$ADServer1NetBIOSName,
+    [string]
+    $ADServer1NetBIOSName,
 
     [Parameter(Mandatory=$false)]
     [string]
@@ -32,9 +36,8 @@ param(
     [Parameter(Mandatory=$false)]
     [string]
     $NetBIOSName
-
+    
 )
-
 try {
     Start-Transcript -Path C:\cfn\log\Configure-WSFC.ps1.txt -Append
     $ErrorActionPreference = "Stop"
@@ -44,7 +47,9 @@ try {
     $DomainAdminCreds = New-Object System.Management.Automation.PSCredential($DomainAdminFullUser, $DomainAdminSecurePassword)
 
     $ConfigWSFCPs={
-        New-Cluster -Name WSFCluster1 -Node $args[0], $args[1] -StaticAddress $args[2], $args[3]
+        $nodes=$args[0], $args[1]
+        $addr =  $args[2], $args[3]
+        New-Cluster -Name WSFCluster1 -Node $nodes -StaticAddress $addr
     }
 
     Invoke-Command -Authentication Credssp -Scriptblock $ConfigWSFCPs -ComputerName $NetBIOSName -Credential $DomainAdminCreds -ArgumentList $WSFCNode1NetBIOSName,$WSFCNode2NetBIOSName,$WSFCNode1PrivateIP2,$WSFCNode2PrivateIP2

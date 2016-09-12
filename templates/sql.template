@@ -1797,6 +1797,184 @@
                   ]
                 }
               },
+              "C:\\cfn\\scripts\\EnableCredSsp.ps1": {
+                "source": {
+                  "Fn::Join": [
+                    "/",
+                    [
+                      {
+                        "Fn::FindInMap": [
+                          "AWSInfoRegionMap",
+                          {
+                            "Ref": "AWS::Region"
+                          },
+                          "QuickStartS3URL"
+                        ]
+                      },
+                      {
+                        "Ref": "QSS3BucketName"
+                      },
+                      {
+                        "Ref": "QSS3KeyPrefix"
+                      },
+                      "scripts/EnableCredSsp.ps1"
+                    ]
+                  ]
+                }
+              }
+            },
+            "commands": {
+              "a-set-dns": {
+                "command": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "powershell.exe -Command \"C:\\cfn\\scripts\\Set-Dns.ps1 -ns1 ",
+                      {
+                        "Ref": "ADServer1PrivateIP"
+                      },
+                      " -ns2 ",
+                      {
+                        "Ref": "ADServer2PrivateIP"
+                      },
+                      "\""
+                    ]
+                  ]
+                },
+                "waitAfterCompletion": "30"
+              },
+              "b-rename-computer": {
+                "command": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "powershell.exe -Command \"C:\\cfn\\scripts\\Rename-Computer.ps1 -Restart -NewName '",
+                      {
+                        "Ref": "WSFCNode2NetBIOSName"
+                      },
+                      "'\""
+                    ]
+                  ]
+                },
+                "waitAfterCompletion": "forever"
+              },
+              "c-join-domain": {
+                "command": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "powershell.exe -Command \"C:\\cfn\\scripts\\Join-Domain.ps1 -DomainName '",
+                      {
+                        "Ref": "DomainDNSName"
+                      },
+                      "' -UserName '",
+                      {
+                        "Ref": "DomainNetBIOSName"
+                      },
+                      "\\",
+                      {
+                        "Ref": "DomainAdminUser"
+                      },
+                      "' -Password '",
+                      {
+                        "Ref": "DomainAdminPassword"
+                      },
+                      "'\""
+                    ]
+                  ]
+                },
+                "waitAfterCompletion": "forever"
+              },
+              "d-install-windows-failover-clustering": {
+                "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Install-WindowsFailoverClustering.ps1",
+                "waitAfterCompletion": "0"
+              },
+              "e-install-net-framework-core": {
+                "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Install-NETFrameworkCore.ps1",
+                "waitAfterCompletion": "0"
+              },
+              "f-open-WSFC-ports": {
+                "command": "powershell.exe -ExecutionPolicy RemoteSigned C:\\cfn\\scripts\\OpenWSFCPorts.ps1",
+                "waitAfterCompletion": "0"
+              },
+              "g-enable-credssp": {
+                "command": "powershell.exe -ExecutionPolicy RemoteSigned C:\\cfn\\scripts\\EnableCredSsp.ps1",
+                "waitAfterCompletion": "0"
+              }
+            }
+          },
+          "Install": {
+            "files": {
+              "C:\\cfn\\scripts\\InstallSQLEE2.ps1": {
+                "source": {
+                  "Fn::Join": [
+                    "/",
+                    [
+                      {
+                        "Fn::FindInMap": [
+                          "AWSInfoRegionMap",
+                          {
+                            "Ref": "AWS::Region"
+                          },
+                          "QuickStartS3URL"
+                        ]
+                      },
+                      {
+                        "Ref": "QSS3BucketName"
+                      },
+                      {
+                        "Ref": "QSS3KeyPrefix"
+                      },
+                      "scripts/InstallSQLEE2.ps1"
+                    ]
+                  ]
+                }
+              }
+            },
+            "commands": {
+              "a-install-sql": {
+                "command": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "powershell.exe -Command \"C:\\cfn\\scripts\\InstallSQLEE2.ps1 -DomainNetBIOSName '",
+                      {
+                        "Ref": "DomainNetBIOSName"
+                      },
+                      "' -DomainAdminUser '",
+                      {
+                        "Ref": "DomainAdminUser"
+                      },
+                      "' -DomainAdminPassword '",
+                      {
+                        "Ref": "DomainAdminPassword"
+                      },
+                      "' -SQLServiceAccount '",
+                      {
+                        "Ref": "SQLServiceAccount"
+                      },
+                      "' -SQLServiceAccountPassword '",
+                      {
+                        "Ref": "SQLServiceAccountPassword"
+                      },
+                      "' -ADServerNetBIOSName '",
+                      {
+                        "Ref": "ADServer1NetBIOSName"
+                      },
+                      "' -NetBIOSName '",
+                      {
+                        "Ref": "WSFCNode2NetBIOSName"
+                      },
+                      "'\""
+                    ]
+                  ]
+                },
+                "waitAfterCompletion": "0"
+              }
+            }
+          },
+          "Configure": {
+            "files": {
               "C:\\cfn\\scripts\\Create-Share.ps1": {
                 "source": {
                   "Fn::Join": [
@@ -1922,459 +2100,6 @@
                   ]
                 }
               },
-              "C:\\cfn\\scripts\\EnableCredSsp.ps1": {
-                "source": {
-                  "Fn::Join": [
-                    "/",
-                    [
-                      {
-                        "Fn::FindInMap": [
-                          "AWSInfoRegionMap",
-                          {
-                            "Ref": "AWS::Region"
-                          },
-                          "QuickStartS3URL"
-                        ]
-                      },
-                      {
-                        "Ref": "QSS3BucketName"
-                      },
-                      {
-                        "Ref": "QSS3KeyPrefix"
-                      },
-                      "scripts/EnableCredSsp.ps1"
-                    ]
-                  ]
-                }
-              }
-            },
-            "commands": {
-              "a-set-dns": {
-                "command": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "powershell.exe -Command \"C:\\cfn\\scripts\\Set-Dns.ps1 -ns1 ",
-                      {
-                        "Ref": "ADServer1PrivateIP"
-                      },
-                      " -ns2 ",
-                      {
-                        "Ref": "ADServer2PrivateIP"
-                      },
-                      "\""
-                    ]
-                  ]
-                },
-                "waitAfterCompletion": "30"
-              },
-              "b-rename-computer": {
-                "command": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "powershell.exe -Command \"C:\\cfn\\scripts\\Rename-Computer.ps1 -Restart -NewName '",
-                      {
-                        "Ref": "WSFCNode2NetBIOSName"
-                      },
-                      "'\""
-                    ]
-                  ]
-                },
-                "waitAfterCompletion": "forever"
-              },
-              "c-join-domain": {
-                "command": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "powershell.exe -Command \"C:\\cfn\\scripts\\Join-Domain.ps1 -DomainName '",
-                      {
-                        "Ref": "DomainDNSName"
-                      },
-                      "' -UserName '",
-                      {
-                        "Ref": "DomainNetBIOSName"
-                      },
-                      "\\",
-                      {
-                        "Ref": "DomainAdminUser"
-                      },
-                      "' -Password '",
-                      {
-                        "Ref": "DomainAdminPassword"
-                      },
-                      "'\""
-                    ]
-                  ]
-                },
-                "waitAfterCompletion": "forever"
-              },
-              "d-install-windows-failover-clustering": {
-                "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Install-WindowsFailoverClustering.ps1",
-                "waitAfterCompletion": "0"
-              },
-              "e-install-net-framework-core": {
-                "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Install-NETFrameworkCore.ps1",
-                "waitAfterCompletion": "0"
-              },
-              "f-open-WSFC-ports": {
-                "command": "powershell.exe -ExecutionPolicy RemoteSigned C:\\cfn\\scripts\\OpenWSFCPorts.ps1",
-                "waitAfterCompletion": "0"
-              },
-              "g-enable-credssp": {
-                "command": "powershell.exe -ExecutionPolicy RemoteSigned C:\\cfn\\scripts\\EnableCredSsp.ps1",
-                "waitAfterCompletion": "0"
-              },
-              "h-configure-WSFC": {
-                "command": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "powershell.exe -ExecutionPolicy RemoteSigned C:\\cfn\\scripts\\Configure-WSFC.ps1",
-                      " -WSFCNode1PrivateIP2 ",
-                      {
-                        "Ref": "WSFCNode1PrivateIP2"
-                      },
-                      " -WSFCNode2PrivateIP2 ",
-                      {
-                        "Ref": "WSFCNode2PrivateIP2"
-                      },
-                      " -WSFCNode1NetBIOSName ",
-                      {
-                        "Ref": "WSFCNode1NetBIOSName"
-                      },
-                      " -WSFCNode2NetBIOSName ",
-                      {
-                        "Ref": "WSFCNode2NetBIOSName"
-                      },
-                      " -DomainNetBIOSName ",
-                      {
-                        "Ref": "DomainNetBIOSName"
-                      },
-                      " -DomainAdminUser '",
-                      {
-                        "Ref": "DomainAdminUser"
-                      },
-                      "' -DomainAdminPassword '",
-                      {
-                        "Ref": "DomainAdminPassword"
-                      },
-                      "' -NetBIOSName '",
-                      {
-                        "Ref": "WSFCNode2NetBIOSName"
-                      },
-                      "'\""
-                    ]
-                  ]
-                },
-                "waitAfterCompletion": "0"
-              },
-              "i-create-witness-share": {
-                "command": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "powershell.exe -Command \"C:\\cfn\\scripts\\Create-Share.ps1",
-                      " -Path 'c:\\witness'",
-                      " -ShareName 'witness'",
-                      " -FolderPath 'c:\\'",
-                      " -FolderName 'witness'",
-                      " -DomainNetBIOSName '",
-                      {
-                        "Ref": "DomainNetBIOSName"
-                      },
-                      "' -DomainAdminUser '",
-                      {
-                        "Ref": "DomainAdminUser"
-                      },
-                      "' -DomainAdminPassword '",
-                      {
-                        "Ref": "DomainAdminPassword"
-                      },
-                      "' -ServerName '",
-                      {
-                        "Ref": "ADServer1NetBIOSName"
-                      },
-                      "'\""
-                    ]
-                  ]
-                },
-                "waitAfterCompletion": "0"
-              },
-              "j-create-Replica-share": {
-                "command": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "powershell.exe -Command \"C:\\cfn\\scripts\\Create-Share.ps1",
-                      " -Path 'c:\\replica'",
-                      " -ShareName 'replica'",
-                      " -FolderPath 'c:\\'",
-                      " -FolderName 'replica'",
-                      " -DomainNetBIOSName '",
-                      {
-                        "Ref": "DomainNetBIOSName"
-                      },
-                      "' -DomainAdminUser '",
-                      {
-                        "Ref": "DomainAdminUser"
-                      },
-                      "' -DomainAdminPassword '",
-                      {
-                        "Ref": "DomainAdminPassword"
-                      },
-                      "' -ServerName '",
-                      {
-                        "Ref": "ADServer1NetBIOSName"
-                      },
-                      "'\""
-                    ]
-                  ]
-                },
-                "waitAfterCompletion": "0"
-              },
-              "k-Set-Folder-Permissions": {
-                "command": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "powershell.exe -ExecutionPolicy RemoteSigned C:\\cfn\\scripts\\Set-Folder-Permissions.ps1",
-                      " -DomainNetBIOSName '",
-                      {
-                        "Ref": "DomainNetBIOSName"
-                      },
-                      "' -DomainAdminUser '",
-                      {
-                        "Ref": "DomainAdminUser"
-                      },
-                      "' -DomainAdminPassword '",
-                      {
-                        "Ref": "DomainAdminPassword"
-                      },
-                      "' -SQLServiceAccount '",
-                      {
-                        "Ref": "SQLServiceAccount"
-                      },
-                      "'\""
-                    ]
-                  ]
-                },
-                "waitAfterCompletion": "0"
-              },
-              "l-Enable-AlwaysOn": {
-                "command": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "powershell.exe -ExecutionPolicy RemoteSigned C:\\cfn\\scripts\\Enable-AlwaysOn.ps1",
-                      " -DomainNetBIOSName '",
-                      {
-                        "Ref": "DomainNetBIOSName"
-                      },
-                      "' -DomainAdminUser '",
-                      {
-                        "Ref": "DomainAdminUser"
-                      },
-                      "' -DomainAdminPassword '",
-                      {
-                        "Ref": "DomainAdminPassword"
-                      },
-                      "' -WSFCNode1NetBIOSName '",
-                      {
-                        "Ref": "WSFCNode1NetBIOSName"
-                      },
-                      "' -WSFCNode2NetBIOSName '",
-                      {
-                        "Ref": "WSFCNode2NetBIOSName"
-                      },
-                      "'\""
-                    ]
-                  ]
-                },
-                "waitAfterCompletion": "0"
-              },
-              "m-Set-ClusterQuorum": {
-                "command": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "powershell.exe -ExecutionPolicy RemoteSigned C:\\cfn\\scripts\\Set-ClusterQuorum.ps1",
-                      " -DomainNetBIOSName '",
-                      {
-                        "Ref": "DomainNetBIOSName"
-                      },
-                      "' -DomainAdminUser '",
-                      {
-                        "Ref": "DomainAdminUser"
-                      },
-                      "' -DomainAdminPassword '",
-                      {
-                        "Ref": "DomainAdminPassword"
-                      },
-                      "' -ADServer1NetBIOSName '",
-                      {
-                        "Ref": "ADServer1NetBIOSName"
-                      },
-                      "' -WSFCNode2NetBIOSName '",
-                      {
-                        "Ref": "WSFCNode2NetBIOSName"
-                      },
-                      "'\""
-                    ]
-                  ]
-                },
-                "waitAfterCompletion": "0"
-              }
-            }
-          },
-          "Install": {
-            "files": {
-              "C:\\cfn\\scripts\\InstallSQLEE2.ps1": {
-                "source": {
-                  "Fn::Join": [
-                    "/",
-                    [
-                      {
-                        "Fn::FindInMap": [
-                          "AWSInfoRegionMap",
-                          {
-                            "Ref": "AWS::Region"
-                          },
-                          "QuickStartS3URL"
-                        ]
-                      },
-                      {
-                        "Ref": "QSS3BucketName"
-                      },
-                      {
-                        "Ref": "QSS3KeyPrefix"
-                      },
-                      "scripts/InstallSQLEE2.ps1"
-                    ]
-                  ]
-                },
-                "C:\\cfn\\scripts\\Configure-WSFC.ps1": {
-                  "source": {
-                    "Fn::Join": [
-                      "/",
-                      [
-                        {
-                          "Fn::FindInMap": [
-                            "AWSInfoRegionMap",
-                            {
-                              "Ref": "AWS::Region"
-                            },
-                            "QuickStartS3URL"
-                          ]
-                        },
-                        {
-                          "Ref": "QSS3BucketName"
-                        },
-                        {
-                          "Ref": "QSS3KeyPrefix"
-                        },
-                        "scripts/Configure-WSFC.ps1"
-                      ]
-                    ]
-                  }
-                },
-                "C:\\cfn\\scripts\\Set-ClusterQuorum.ps1": {
-                  "source": {
-                    "Fn::Join": [
-                      "/",
-                      [
-                        {
-                          "Fn::FindInMap": [
-                            "AWSInfoRegionMap",
-                            {
-                              "Ref": "AWS::Region"
-                            },
-                            "QuickStartS3URL"
-                          ]
-                        },
-                        {
-                          "Ref": "QSS3BucketName"
-                        },
-                        {
-                          "Ref": "QSS3KeyPrefix"
-                        },
-                        "scripts/Set-ClusterQuorum.ps1"
-                      ]
-                    ]
-                  }
-                }
-              },
-              "C:\\cfn\\scripts\\Enable-AlwaysOn.ps1": {
-                "source": {
-                  "Fn::Join": [
-                    "/",
-                    [
-                      {
-                        "Fn::FindInMap": [
-                          "AWSInfoRegionMap",
-                          {
-                            "Ref": "AWS::Region"
-                          },
-                          "QuickStartS3URL"
-                        ]
-                      },
-                      {
-                        "Ref": "QSS3BucketName"
-                      },
-                      {
-                        "Ref": "QSS3KeyPrefix"
-                      },
-                      "scripts/Enable-AlwaysOn.ps1"
-                    ]
-                  ]
-                }
-              }
-            },
-            "commands": {
-              "a-install-sql": {
-                "command": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "powershell.exe -Command \"C:\\cfn\\scripts\\InstallSQLEE2.ps1 -DomainNetBIOSName '",
-                      {
-                        "Ref": "DomainNetBIOSName"
-                      },
-                      "' -DomainAdminUser '",
-                      {
-                        "Ref": "DomainAdminUser"
-                      },
-                      "' -DomainAdminPassword '",
-                      {
-                        "Ref": "DomainAdminPassword"
-                      },
-                      "' -SQLServiceAccount '",
-                      {
-                        "Ref": "SQLServiceAccount"
-                      },
-                      "' -SQLServiceAccountPassword '",
-                      {
-                        "Ref": "SQLServiceAccountPassword"
-                      },
-                      "' -ADServerNetBIOSName '",
-                      {
-                        "Ref": "ADServer1NetBIOSName"
-                      },
-                      "' -NetBIOSName '",
-                      {
-                        "Ref": "WSFCNode2NetBIOSName"
-                      },
-                      "'\""
-                    ]
-                  ]
-                },
-                "waitAfterCompletion": "0"
-              }
-            }
-          },
-          "Configure": {
-            "files": {
               "C:\\cfn\\scripts\\MaxDOP.sql": {
                 "source": {
                   "Fn::Join": [
@@ -2445,6 +2170,206 @@
                         "Ref": "DomainAdminPassword"
                       },
                       "' -NetBIOSName '",
+                      {
+                        "Ref": "WSFCNode2NetBIOSName"
+                      },
+                      "'\""
+                    ]
+                  ]
+                },
+                "waitAfterCompletion": "0"
+              },
+              "b-configure-WSFC": {
+                "command": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "powershell.exe -ExecutionPolicy RemoteSigned C:\\cfn\\scripts\\Configure-WSFC.ps1",
+                      " -WSFCNode1PrivateIP2 ",
+                      {
+                        "Ref": "WSFCNode1PrivateIP2"
+                      },
+                      " -WSFCNode2PrivateIP2 ",
+                      {
+                        "Ref": "WSFCNode2PrivateIP2"
+                      },
+                      " -WSFCNode1NetBIOSName ",
+                      {
+                        "Ref": "WSFCNode1NetBIOSName"
+                      },
+                      " -WSFCNode2NetBIOSName ",
+                      {
+                        "Ref": "WSFCNode2NetBIOSName"
+                      },
+                      " -DomainNetBIOSName ",
+                      {
+                        "Ref": "DomainNetBIOSName"
+                      },
+                      " -DomainAdminUser '",
+                      {
+                        "Ref": "DomainAdminUser"
+                      },
+                      "' -DomainAdminPassword '",
+                      {
+                        "Ref": "DomainAdminPassword"
+                      },
+                      "' -NetBIOSName '",
+                      {
+                        "Ref": "WSFCNode2NetBIOSName"
+                      },
+                      "'\""
+                    ]
+                  ]
+                },
+                "waitAfterCompletion": "0"
+              },
+              "c-create-witness-share": {
+                "command": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "powershell.exe -Command \"C:\\cfn\\scripts\\Create-Share.ps1",
+                      " -Path 'c:\\witness'",
+                      " -ShareName 'witness'",
+                      " -FolderPath 'c:\\'",
+                      " -FolderName 'witness'",
+                      " -DomainNetBIOSName '",
+                      {
+                        "Ref": "DomainNetBIOSName"
+                      },
+                      "' -DomainAdminUser '",
+                      {
+                        "Ref": "DomainAdminUser"
+                      },
+                      "' -DomainAdminPassword '",
+                      {
+                        "Ref": "DomainAdminPassword"
+                      },
+                      "' -ServerName '",
+                      {
+                        "Ref": "ADServer1NetBIOSName"
+                      },
+                      "'\""
+                    ]
+                  ]
+                },
+                "waitAfterCompletion": "0"
+              },
+              "d-create-Replica-share": {
+                "command": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "powershell.exe -Command \"C:\\cfn\\scripts\\Create-Share.ps1",
+                      " -Path 'c:\\replica'",
+                      " -ShareName 'replica'",
+                      " -FolderPath 'c:\\'",
+                      " -FolderName 'replica'",
+                      " -DomainNetBIOSName '",
+                      {
+                        "Ref": "DomainNetBIOSName"
+                      },
+                      "' -DomainAdminUser '",
+                      {
+                        "Ref": "DomainAdminUser"
+                      },
+                      "' -DomainAdminPassword '",
+                      {
+                        "Ref": "DomainAdminPassword"
+                      },
+                      "' -ServerName '",
+                      {
+                        "Ref": "ADServer1NetBIOSName"
+                      },
+                      "'\""
+                    ]
+                  ]
+                },
+                "waitAfterCompletion": "0"
+              },
+              "e-Set-Folder-Permissions": {
+                "command": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "powershell.exe -ExecutionPolicy RemoteSigned C:\\cfn\\scripts\\Set-Folder-Permissions.ps1",
+                      " -DomainNetBIOSName '",
+                      {
+                        "Ref": "DomainNetBIOSName"
+                      },
+                      "' -DomainAdminUser '",
+                      {
+                        "Ref": "DomainAdminUser"
+                      },
+                      "' -DomainAdminPassword '",
+                      {
+                        "Ref": "DomainAdminPassword"
+                      },
+                      "' -SQLServiceAccount '",
+                      {
+                        "Ref": "SQLServiceAccount"
+                      },
+                      "'\""
+                    ]
+                  ]
+                },
+                "waitAfterCompletion": "0"
+              },
+              "f-Enable-AlwaysOn": {
+                "command": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "powershell.exe -ExecutionPolicy RemoteSigned C:\\cfn\\scripts\\Enable-AlwaysOn.ps1",
+                      " -DomainNetBIOSName '",
+                      {
+                        "Ref": "DomainNetBIOSName"
+                      },
+                      "' -DomainAdminUser '",
+                      {
+                        "Ref": "DomainAdminUser"
+                      },
+                      "' -DomainAdminPassword '",
+                      {
+                        "Ref": "DomainAdminPassword"
+                      },
+                      "' -WSFCNode1NetBIOSName '",
+                      {
+                        "Ref": "WSFCNode1NetBIOSName"
+                      },
+                      "' -WSFCNode2NetBIOSName '",
+                      {
+                        "Ref": "WSFCNode2NetBIOSName"
+                      },
+                      "'\""
+                    ]
+                  ]
+                },
+                "waitAfterCompletion": "0"
+              },
+              "g-Set-ClusterQuorum": {
+                "command": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "powershell.exe -ExecutionPolicy RemoteSigned C:\\cfn\\scripts\\Set-ClusterQuorum.ps1",
+                      " -DomainNetBIOSName '",
+                      {
+                        "Ref": "DomainNetBIOSName"
+                      },
+                      "' -DomainAdminUser '",
+                      {
+                        "Ref": "DomainAdminUser"
+                      },
+                      "' -DomainAdminPassword '",
+                      {
+                        "Ref": "DomainAdminPassword"
+                      },
+                      "' -ADServer1NetBIOSName '",
+                      {
+                        "Ref": "ADServer1NetBIOSName"
+                      },
+                      "' -WSFCNode2NetBIOSName '",
                       {
                         "Ref": "WSFCNode2NetBIOSName"
                       },

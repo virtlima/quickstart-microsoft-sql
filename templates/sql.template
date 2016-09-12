@@ -326,7 +326,7 @@
       ]
     },
     "HostTypeIsDefault": {
-        "Fn:Equals": [
+        "Fn::Equals": [
           {
             "Ref": "HostType"
           },
@@ -334,7 +334,7 @@
         ]
     },
     "HostTypeIsDediHost": {
-      "Fn:Equals": [
+      "Fn::Equals": [
         {
           "Ref": "HostType"
         },
@@ -1333,19 +1333,21 @@
       },
       "Properties": {
         "Affinity": {
-          "Fn:If": [
+          "Fn::If": [
             "HostTypeIsDediHost",
             "host",
             "default"
           ]
         },
         "HostId": {
-          "Fn:If": [
+          "Fn::If": [
             "HostTypeIsDediHost",
             {
               "Ref": "DedicatedHostID"
             },
-            "AWS::NoValue"
+            {
+              "Ref": "AWS::NoValue"
+            }
           ]
         },
         "Tenancy": {
@@ -2425,19 +2427,21 @@
       },
       "Properties": {
         "Affinity": {
-          "Fn:If": [
+          "Fn::If": [
             "HostTypeIsDediHost",
             "host",
             "default"
           ]
         },
         "HostId": {
-          "Fn:If": [
+          "Fn::If": [
             "HostTypeIsDediHost",
             {
               "Ref": "DedicatedHostID"
             },
-            "AWS::NoValue"
+            {
+              "Ref": "AWS::NoValue"
+            }
           ]
         },
         "Tenancy": {

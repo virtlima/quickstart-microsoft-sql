@@ -26,27 +26,29 @@ Try{
     $DomainAdminSecurePassword = ConvertTo-SecureString $DomainAdminPassword -AsPlainText -Force
     $DomainAdminCreds = New-Object System.Management.Automation.PSCredential($DomainAdminFullUser, $DomainAdminSecurePassword)
 
-$SetPermissions={
-    $ErrorActionPreference = "Stop"
-    $acl = Get-Acl C:\witness;
-    $rule = New-Object System.Security.AccessControl.FileSystemAccessRule( $args[0] + '\WSFCluster1$','FullControl', 'ContainerInherit, ObjectInherit', 'None', 'Allow');
-    $acl.AddAccessRule($rule);
-    Set-Acl C:\witness $acl
-}
+    $SetPermissions={
+        $ErrorActionPreference = "Stop"
+        $acl = Get-Acl C:\witness
+        $obj = $args[0] + '\WSFCluster1$'
+        $rule = New-Object System.Security.AccessControl.FileSystemAccessRule( $obj,'FullControl', 'ContainerInherit, ObjectInherit', 'None', 'Allow')
+        $acl.AddAccessRule($rule)
+        Set-Acl C:\witness $acl
+    }
 
-Invoke-Command -ScriptBlock $SetPermissions -ComputerName $ADServer1NetBIOSName -Credential $DomainAdminCreds -ArgumentList $DomainNetBIOSName
+    Invoke-Command -ScriptBlock $SetPermissions -ComputerName $ADServer1NetBIOSName -Credential $DomainAdminCreds -ArgumentList $DomainNetBIOSName
 
-$SetPermissions2={
-    $ErrorActionPreference = "Stop"
-    $acl = Get-Acl C:\replica;
-    $rule = New-Object System.Security.AccessControl.FileSystemAccessRule( $args[0] + '\' + $args[1], 'FullControl', 'ContainerInherit, ObjectInherit', 'None', 'Allow');
-    $acl.AddAccessRule($rule);
-    Set-Acl C:\replica $acl
-}
+    $SetPermissions2={
+        $ErrorActionPreference = "Stop"
+        $acl = Get-Acl C:\replica
+        $obj = $args[0] + '\' + $args[1]
+        $rule = New-Object System.Security.AccessControl.FileSystemAccessRule( $obj, 'FullControl', 'ContainerInherit, ObjectInherit', 'None', 'Allow');
+        $acl.AddAccessRule($rule)
+        Set-Acl C:\replica $acl
+    }
 
-Invoke-Command -ScriptBlock $SetPermissions -ComputerName $ADServer1NetBIOSName -Credential $DomainAdminCreds -ArgumentList $DomainNetBIOSName, $SQLServiceAccount
+    Invoke-Command -ScriptBlock $SetPermissions -ComputerName $ADServer1NetBIOSName -Credential $DomainAdminCreds -ArgumentList $DomainNetBIOSName, $SQLServiceAccount
 
 }
 Catch{
-     $_ | Write-AWSQuickStartException
+    $_ | Write-AWSQuickStartException
 }

@@ -28,7 +28,7 @@ try {
     $SetClusterQuorum={
         $ErrorActionPreference = "Stop"
         $ShareName = "\\" + $args[0] + "\witness"
-        Set-ClusterQuorum -NodeAndFileShareMajority
+        Set-ClusterQuorum -NodeAndFileShareMajority $ShareName
     }
 
     Invoke-Command -Scriptblock $SetClusterQuorum -ComputerName $WSFCNode2NetBIOSName -Credential $DomainAdminCreds -ArgumentList $ADServer1NetBIOSName

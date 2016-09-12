@@ -46,7 +46,9 @@ try {
         Mount-DiskImage -ImagePath $fname
         $installer = "G:\SETUP.EXE"
         if ((get-volume -DriveLetter G).FileSystemLabel -eq "SQL2016_x64_ENU") {
-            Start-Process "SSMS-Setup-ENU.exe" "/quiet /norestart"  -Wait -RedirectStandardOutput "C:\cfn\log\SSMSInstallerOutput.txt" -RedirectStandardError "C:\cfn\log\SSMSInstallerErrors.txt"
+            $ssms = $share + "SSMS-Setup-ENU.exe"
+            $ssmsargs = "/quiet /norestart"
+            Start-Process $ssms $ssmsargs -Wait -RedirectStandardOutput "C:\cfn\log\SSMSInstallerOutput.txt" -RedirectStandardError "C:\cfn\log\SSMSInstallerErrors.txt"
             $arguments =  '/Q /Action=Install /UpdateEnabled=False /Features=SQLEngine,Replication,FullText,Conn,BOL /INSTANCENAME=MSSQLSERVER /SQLSVCACCOUNT="' + $args[1] + '\' + $args[2] + '" /SQLSVCPASSWORD="' + $args[3] + '" /AGTSVCACCOUNT="' + $args[4] + '\' + $args[5] + '" /AGTSVCPASSWORD="' + $args[6] + '" /SQLSYSADMINACCOUNTS="' + $args[7] + '\' + $args[8] + '" /SQLUSERDBDIR="D:\MSSQL\DATA" /SQLUSERDBLOGDIR="E:\MSSQL\LOG" /SQLBACKUPDIR="F:\MSSQL\Backup" /SQLTEMPDBDIR="F:\MSSQL\TempDB" /SQLTEMPDBLOGDIR="F:\MSSQL\TempDB" /IACCEPTSQLSERVERLICENSETERMS'
         }else{
             $arguments =  '/Q /Action=Install /UpdateEnabled=False /Features=SQLEngine,Replication,FullText,Conn,BOL,ADV_SSMS /INSTANCENAME=MSSQLSERVER /SQLSVCACCOUNT="' + $args[1] + '\' + $args[2] + '" /SQLSVCPASSWORD="' + $args[3] + '" /AGTSVCACCOUNT="' + $args[4] + '\' + $args[5] + '" /AGTSVCPASSWORD="' + $args[6] + '" /SQLSYSADMINACCOUNTS="' + $args[7] + '\' + $args[8] + '" /SQLUSERDBDIR="D:\MSSQL\DATA" /SQLUSERDBLOGDIR="E:\MSSQL\LOG" /SQLBACKUPDIR="F:\MSSQL\Backup" /SQLTEMPDBDIR="F:\MSSQL\TempDB" /SQLTEMPDBLOGDIR="F:\MSSQL\TempDB" /IACCEPTSQLSERVERLICENSETERMS'

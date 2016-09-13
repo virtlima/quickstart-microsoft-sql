@@ -2315,6 +2315,10 @@
                       {
                         "Ref": "SQLServiceAccount"
                       },
+                      "' -ADServer1NetBIOSName '",
+                      {
+                        "Ref": "ADServer1NetBIOSName"
+                      },
                       "'\""
                     ]
                   ]

@@ -42,7 +42,7 @@ try {
     $InstallSqlPs={
         $ErrorActionPreference = "Stop"
         $share= "//" + $args[0] + "/sqlinstall/"
-        $fname= $share + (dir -File -Path $share)
+        $fname= $share + (dir -File -Path $share *.iso)
         Mount-DiskImage -ImagePath $fname
         $installer = "G:\SETUP.EXE"
         if ((get-volume -DriveLetter G).FileSystemLabel -eq "SQL2016_x64_ENU") {

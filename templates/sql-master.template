@@ -500,19 +500,28 @@
         },
         "Volume1Type": {
             "Default": "gp2",
-            "AllowedValues": ["gp2","io1"],
+            "AllowedValues": [
+                "gp2",
+                "io1"
+            ],
             "Description": "Volume type for the SQL Data drive",
             "Type": "String"
         },
         "Volume2Type": {
             "Default": "gp2",
-            "AllowedValues": ["gp2","io1"],
+            "AllowedValues": [
+                "gp2",
+                "io1"
+            ],
             "Description": "Volume type for the SQL Logs drive",
             "Type": "String"
         },
         "Volume3Type": {
             "Default": "gp2",
-            "AllowedValues": ["gp2","io1"],
+            "AllowedValues": [
+                "gp2",
+                "io1"
+            ],
             "Description": "Volume type for the SQL TempDB drive",
             "Type": "String"
         },
@@ -538,37 +547,37 @@
             "Type": "Number"
         },
         "HostType": {
-          "Default": "default",
-          "AllowedValues": [
-            "default",
-            "dedicated",
-            "host"
-          ],
-          "Description": "Host Type, NB: For dedicated types, you must already have suitable dedicated hosts in your account",
-          "Type": "String"
+            "Default": "default",
+            "AllowedValues": [
+                "default",
+                "dedicated",
+                "host"
+            ],
+            "Description": "Host Type, NB: For dedicated types, you must already have suitable dedicated hosts in your account",
+            "Type": "String"
         },
         "DedicatedHostID": {
-          "Default": "",
-          "Description": "Dedicated HostID, Only used if HostType is set to \"host\"",
-          "Type": "String"
+            "Default": "",
+            "Description": "Dedicated HostID, Only used if HostType is set to \"host\"",
+            "Type": "String"
         }
     },
     "Conditions": {
         "HostTypeIsDefault": {
             "Fn::Equals": [
-              {
-                "Ref": "HostType"
-              },
-              "default"
+                {
+                    "Ref": "HostType"
+                },
+                "default"
             ]
         },
         "HostTypeIsDediHost": {
-          "Fn::Equals": [
-            {
-              "Ref": "HostType"
-            },
-            "host"
-          ]
+            "Fn::Equals": [
+                {
+                    "Ref": "HostType"
+                },
+                "host"
+            ]
         }
     },
     "Mappings": {
@@ -1073,10 +1082,10 @@
                         "Ref": "Volume3Iops"
                     },
                     "HostType": {
-                      "Ref": "HostType"
+                        "Ref": "HostType"
                     },
                     "DedicatedHostID": {
-                      "Ref": "DedicatedHostID"
+                        "Ref": "DedicatedHostID"
                     }
                 }
             }

@@ -537,8 +537,25 @@
             "Description": "Iops for the SQL TempDB drive (Only used when volume type is io1)",
             "Type": "Number"
         },
+        "HostType": {
+          "Default": "default",
+          "AllowedValues": [
+            "default",
+            "dedicated",
+            "host"
+          ],
+          "Description": "Host Type, NB: For dedicated types, you must already have suitable dedicated hosts in your account",
+          "Type": "String"
+        },
+        "DedicatedHostID": {
+          "Default": "",
+          "Description": "Dedicated HostID, Only used if HostType is set to \"host\"",
+          "Type": "String"
+        }
+    },
+    "Conditions": {
         "HostTypeIsDefault": {
-            "Fn:Equals": [
+            "Fn::Equals": [
               {
                 "Ref": "HostType"
               },
@@ -546,7 +563,7 @@
             ]
         },
         "HostTypeIsDediHost": {
-          "Fn:Equals": [
+          "Fn::Equals": [
             {
               "Ref": "HostType"
             },
@@ -1059,7 +1076,7 @@
                       "Ref": "HostType"
                     },
                     "DedicatedHostID": {
-                      "Ref": "DedicatedHostID" 
+                      "Ref": "DedicatedHostID"
                     }
                 }
             }

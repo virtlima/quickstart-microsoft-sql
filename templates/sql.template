@@ -2219,6 +2219,10 @@
                       {
                         "Ref": "WSFCNode2NetBIOSName"
                       },
+                      "' -ADServer1NetBIOSName '",
+                      {
+                        "Ref": "ADServer1NetBIOSName"
+                      },
                       "'\""
                     ]
                   ]

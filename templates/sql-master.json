@@ -25,11 +25,11 @@
     },
     {
         "ParameterKey": "AvailabilityZones",
-        "ParameterValue": "$[alfred_genaz_2]"
+        "ParameterValue": "eu-west-1a,eu-west-1b"
     },
     {
         "ParameterKey": "DomainAdminPassword",
-        "ParameterValue": "$[alfred_genpass_32]"
+        "ParameterValue": "D@D@P455w0rd"
     },
     {
         "ParameterKey": "DomainAdminUser",
@@ -37,15 +37,15 @@
     },
     {
         "ParameterKey": "DomainDNSName",
-        "ParameterValue": "example.com"
+        "ParameterValue": "mydomain.local"
     },
     {
         "ParameterKey": "DomainNetBIOSName",
-        "ParameterValue": "example"
+        "ParameterValue": "mydomain"
     },
     {
         "ParameterKey": "KeyPairName",
-        "ParameterValue": "cikey"
+        "ParameterValue": "tester"
     },
     {
         "ParameterKey": "NATInstanceType",
@@ -93,15 +93,15 @@
     },
     {
         "ParameterKey": "RDGWCIDR",
-        "ParameterValue": "10.0.0.0/16"
+        "ParameterValue": "0.0.0.0/0"
     },
     {
         "ParameterKey": "RestoreModePassword",
-        "ParameterValue": "$[alfred_genpass_32]"
+        "ParameterValue": "D@D@P455w0rd"
     },
     {
         "ParameterKey": "SQLServerVersion",
-        "ParameterValue": "2014"
+        "ParameterValue": "2016"
     },
     {
         "ParameterKey": "SQLServiceAccount",
@@ -109,7 +109,7 @@
     },
     {
         "ParameterKey": "SQLServiceAccountPassword",
-        "ParameterValue": "$[alfred_genpass_32]"
+        "ParameterValue": "D@D@P455w0rd"
     },
     {
         "ParameterKey": "VPCCIDR",
@@ -156,3 +156,4 @@
         "ParameterValue": "10.0.32.102"
     }
 ]
+

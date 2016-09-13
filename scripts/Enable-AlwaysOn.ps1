@@ -25,18 +25,14 @@ try {
     $DomainAdminSecurePassword = ConvertTo-SecureString $DomainAdminPassword -AsPlainText -Force
     $DomainAdminCreds = New-Object System.Management.Automation.PSCredential($DomainAdminFullUser, $DomainAdminSecurePassword)
 
-    $Enable-AlwaysOn-WFCNode1={
+    $EnableAlwaysOnPs={
         $ErrorActionPreference = "Stop"
-        Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned;Enable-SqlAlwaysOn -ServerInstance $args[0] -Force
+        Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned
+        Enable-SqlAlwaysOn -ServerInstance $args[0] -Force
     }
 
-    $Enable-AlwaysOn-WFCNode2={
-        $ErrorActionPreference = "Stop"
-        Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned;Enable-SqlAlwaysOn -ServerInstance $args[0] -Force
-    }
-
-    Invoke-Command -Scriptblock $Enable-AlwaysOn-WFCNode1 -ComputerName $WSFCNode1NetBIOSName -Credential $DomainAdminCreds -ArgumentList $WSFCNode1NetBIOSName
-    Invoke-Command -Scriptblock $Enable-AlwaysOn-WFCNode2 -ComputerName $WSFCNode2NetBIOSName -Credential $DomainAdminCreds -ArgumentList $WSFCNode2NetBIOSName
+    Invoke-Command -Scriptblock $EnableAlwaysOnPs -ComputerName $WSFCNode1NetBIOSName -Credential $DomainAdminCreds -ArgumentList $WSFCNode1NetBIOSName
+    Invoke-Command -Scriptblock $EnableAlwaysOnPs -ComputerName $WSFCNode2NetBIOSName -Credential $DomainAdminCreds -ArgumentList $WSFCNode2NetBIOSName
 }
 catch {
     $_ | Write-AWSQuickStartException

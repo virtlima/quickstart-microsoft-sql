@@ -66,6 +66,21 @@
             "MinLength": "1",
             "Type": "String"
         },
+        "DedicatedHostID": {
+            "Default": "",
+            "Description": "Dedicated HostID, Only used if HostType is set to \"host\"",
+            "Type": "String"
+        },
+        "HostType": {
+            "Default": "default",
+            "AllowedValues": [
+                "default",
+                "dedicated",
+                "host"
+            ],
+            "Description": "Host Type, NB: For dedicated types, you must already have suitable dedicated hosts in your account",
+            "Type": "String"
+        },
         "KeyPairName": {
             "Description": "Public/private key pairs allow you to securely connect to your instance after it launches",
             "Type": "AWS::EC2::KeyPair::KeyName"
@@ -89,6 +104,20 @@
         "PrivateSubnet2ID": {
             "Description": "ID of the private subnet 2 in Availability Zone 2 (e.g., subnet-a0246dcd)",
             "Type": "AWS::EC2::Subnet::Id"
+        },
+        "QSS3BucketName": {
+            "AllowedPattern": "^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$",
+            "ConstraintDescription": "Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).",
+            "Default": "quickstart-reference",
+            "Description": "S3 bucket name for the Quick Start assets. Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).",
+            "Type": "String"
+        },
+        "QSS3KeyPrefix": {
+            "AllowedPattern": "^[0-9a-zA-Z-]+(/[0-9a-zA-Z-]+)*$",
+            "ConstraintDescription": "Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/). It cannot start or end with forward slash (/) because they are automatically appended.",
+            "Default": "microsoft/sql/latest",
+            "Description": "S3 key prefix for the Quick Start assets. Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/). It cannot start or end with forward slash (/) because they are automatically appended.",
+            "Type": "String"
         },
         "SQLServerVersion": {
             "AllowedValues": [
@@ -114,6 +143,75 @@
             "MaxLength": "32",
             "MinLength": "8",
             "NoEcho": "true",
+            "Type": "String"
+        },
+        "Volume1Iops": {
+            "Default": "1000",
+            "MinValue": "100",
+            "MaxValue": "20000",
+            "Description": "Iops for the SQL Data drive (Only used when volume type is io1)",
+            "Type": "Number"
+        },
+        "Volume1Size": {
+            "Default": "500",
+            "MinValue": "100",
+            "MaxValue": "16000",
+            "Description": "Volume size for the SQL Data drive",
+            "Type": "Number"
+        },
+        "Volume1Type": {
+            "Default": "gp2",
+            "AllowedValues": [
+                "gp2",
+                "io1"
+            ],
+            "Description": "Volume type for the SQL Data drive",
+            "Type": "String"
+        },
+        "Volume2Iops": {
+            "Default": "1000",
+            "MinValue": "100",
+            "MaxValue": "20000",
+            "Description": "Iops for the SQL Logs drive (Only used when volume type is io1)",
+            "Type": "Number"
+        },
+        "Volume2Size": {
+            "Default": "500",
+            "MinValue": "100",
+            "MaxValue": "16000",
+            "Description": "Volume size for the SQL Logs drive",
+            "Type": "Number"
+        },
+        "Volume2Type": {
+            "Default": "gp2",
+            "AllowedValues": [
+                "gp2",
+                "io1"
+            ],
+            "Description": "Volume type for the SQL Logs drive",
+            "Type": "String"
+        },
+        "Volume3Iops": {
+            "Default": "1000",
+            "MinValue": "100",
+            "MaxValue": "20000",
+            "Description": "Iops for the SQL TempDB drive (Only used when volume type is io1)",
+            "Type": "Number"
+        },
+        "Volume3Size": {
+            "Default": "500",
+            "MinValue": "100",
+            "MaxValue": "16000",
+            "Description": "Volume size for the SQL TempDB drive",
+            "Type": "Number"
+        },
+        "Volume3Type": {
+            "Default": "gp2",
+            "AllowedValues": [
+                "gp2",
+                "io1"
+            ],
+            "Description": "Volume type for the SQL TempDB drive",
             "Type": "String"
         },
         "VPCCIDR": {
@@ -199,104 +297,6 @@
             "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$",
             "Default": "10.0.32.102",
             "Description": "Third private IP for Availability Group Listener on second WSFC Node",
-            "Type": "String"
-        },
-        "QSS3BucketName": {
-            "AllowedPattern": "^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$",
-            "ConstraintDescription": "Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).",
-            "Default": "quickstart-reference",
-            "Description": "S3 bucket name for the Quick Start assets. Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).",
-            "Type": "String"
-        },
-        "QSS3KeyPrefix": {
-            "AllowedPattern": "^[0-9a-zA-Z-]+(/[0-9a-zA-Z-]+)*$",
-            "ConstraintDescription": "Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/). It cannot start or end with forward slash (/) because they are automatically appended.",
-            "Default": "microsoft/sql/latest",
-            "Description": "S3 key prefix for the Quick Start assets. Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/). It cannot start or end with forward slash (/) because they are automatically appended.",
-            "Type": "String"
-        },
-        "Volume1Size": {
-            "Default": "500",
-            "MinValue": "100",
-            "MaxValue": "16000",
-            "Description": "Volume size for the SQL Data drive",
-            "Type": "Number"
-        },
-        "Volume2Size": {
-            "Default": "500",
-            "MinValue": "100",
-            "MaxValue": "16000",
-            "Description": "Volume size for the SQL Logs drive",
-            "Type": "Number"
-        },
-        "Volume3Size": {
-            "Default": "500",
-            "MinValue": "100",
-            "MaxValue": "16000",
-            "Description": "Volume size for the SQL TempDB drive",
-            "Type": "Number"
-        },
-        "Volume1Type": {
-            "Default": "gp2",
-            "AllowedValues": [
-                "gp2",
-                "io1"
-            ],
-            "Description": "Volume type for the SQL Data drive",
-            "Type": "String"
-        },
-        "Volume2Type": {
-            "Default": "gp2",
-            "AllowedValues": [
-                "gp2",
-                "io1"
-            ],
-            "Description": "Volume type for the SQL Logs drive",
-            "Type": "String"
-        },
-        "Volume3Type": {
-            "Default": "gp2",
-            "AllowedValues": [
-                "gp2",
-                "io1"
-            ],
-            "Description": "Volume type for the SQL TempDB drive",
-            "Type": "String"
-        },
-        "Volume1Iops": {
-            "Default": "1000",
-            "MinValue": "100",
-            "MaxValue": "20000",
-            "Description": "Iops for the SQL Data drive (Only used when volume type is io1)",
-            "Type": "Number"
-        },
-        "Volume2Iops": {
-            "Default": "1000",
-            "MinValue": "100",
-            "MaxValue": "20000",
-            "Description": "Iops for the SQL Logs drive (Only used when volume type is io1)",
-            "Type": "Number"
-        },
-        "Volume3Iops": {
-            "Default": "1000",
-            "MinValue": "100",
-            "MaxValue": "20000",
-            "Description": "Iops for the SQL TempDB drive (Only used when volume type is io1)",
-            "Type": "Number"
-        },
-        "HostType": {
-            "Default": "default",
-            "AllowedValues": [
-                "default",
-                "dedicated",
-                "host"
-            ],
-            "Description": "Host Type, NB: For dedicated types, you must already have suitable dedicated hosts in your account",
-            "Type": "String"
-        },
-        "DedicatedHostID": {
-            "Default": "",
-            "Description": "Dedicated HostID, Only used if HostType is set to \"host\"",
             "Type": "String"
         }
     },
@@ -559,7 +559,8 @@
                                             {
                                                 "Ref": "QSS3KeyPrefix"
                                             },
-                                            "submodules/quickstart-microsoft-utilities/scripts/Unzip-Archive.ps1"
+                                            "submodules/quickstart-microsoft-utilities",
+                                            "scripts/Unzip-Archive.ps1"
                                         ]
                                     ]
                                 }
@@ -584,7 +585,8 @@
                                             {
                                                 "Ref": "QSS3KeyPrefix"
                                             },
-                                            "submodules/quickstart-microsoft-utilities/modules/AWSQuickStart.zip"
+                                            "submodules/quickstart-microsoft-utilities",
+                                            "modules/AWSQuickStart.zip"
                                         ]
                                     ]
                                 }
@@ -596,7 +598,7 @@
                                 "waitAfterCompletion": "0"
                             },
                             "b-unpack-quickstart-module": {
-                                "command": "powershell.exe -Command C:\\cfn\\scripts\\Unzip-Archive.ps1 -Source C:\\cfn\\modules\\AWSQuickStart.zip -Destination C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\Modules\\",
+                                "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Unzip-Archive.ps1 -Source C:\\cfn\\modules\\AWSQuickStart.zip -Destination C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\Modules\\\"",
                                 "waitAfterCompletion": "0"
                             },
                             "c-init-quickstart-module": {
@@ -651,7 +653,8 @@
                                             {
                                                 "Ref": "QSS3KeyPrefix"
                                             },
-                                            "submodules/quickstart-microsoft-utilities/scripts/Set-Dns.ps1"
+                                            "submodules/quickstart-microsoft-utilities",
+                                            "scripts/Set-Dns.ps1"
                                         ]
                                     ]
                                 }
@@ -676,7 +679,8 @@
                                             {
                                                 "Ref": "QSS3KeyPrefix"
                                             },
-                                            "submodules/quickstart-microsoft-utilities/scripts/Join-Domain.ps1"
+                                            "submodules/quickstart-microsoft-utilities",
+                                            "scripts/Join-Domain.ps1"
                                         ]
                                     ]
                                 }
@@ -701,7 +705,8 @@
                                             {
                                                 "Ref": "QSS3KeyPrefix"
                                             },
-                                            "submodules/quickstart-microsoft-utilities/scripts/Rename-Computer.ps1"
+                                            "submodules/quickstart-microsoft-utilities",
+                                            "scripts/Rename-Computer.ps1"
                                         ]
                                     ]
                                 }
@@ -726,7 +731,8 @@
                                             {
                                                 "Ref": "QSS3KeyPrefix"
                                             },
-                                            "submodules/quickstart-microsoft-utilities/scripts/Create-ADServiceAccount.ps1"
+                                            "submodules/quickstart-microsoft-utilities",
+                                            "scripts/Create-ADServiceAccount.ps1"
                                         ]
                                     ]
                                 }
@@ -751,7 +757,8 @@
                                             {
                                                 "Ref": "QSS3KeyPrefix"
                                             },
-                                            "submodules/quickstart-microsoft-utilities/scripts/Create-Share.ps1"
+                                            "submodules/quickstart-microsoft-utilities",
+                                            "scripts/Create-Share.ps1"
                                         ]
                                     ]
                                 }
@@ -913,15 +920,15 @@
                                     "Fn::Join": [
                                         "",
                                         [
-                                            "powershell.exe -Command \"C:\\cfn\\scripts\\Set-Dns.ps1 -ns1 ",
+                                            "powershell.exe -Command \"C:\\cfn\\scripts\\Set-Dns.ps1 -ns1 '",
                                             {
                                                 "Ref": "ADServer1PrivateIP"
                                             },
-                                            " -ns2 ",
+                                            "' -ns2 '",
                                             {
                                                 "Ref": "ADServer2PrivateIP"
                                             },
-                                            "\""
+                                            "'\""
                                         ]
                                     ]
                                 },
@@ -1009,11 +1016,11 @@
                                 "waitAfterCompletion": "0"
                             },
                             "e-install-windows-failover-clustering": {
-                                "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Install-WindowsFailoverClustering.ps1",
+                                "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Install-WindowsFailoverClustering.ps1\"",
                                 "waitAfterCompletion": "0"
                             },
                             "f-install-net-framework-core": {
-                                "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Install-NETFrameworkCore.ps1",
+                                "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Install-NETFrameworkCore.ps1\"",
                                 "waitAfterCompletion": "0"
                             },
                             "g-create-sqlinstall-share": {
@@ -1054,24 +1061,24 @@
                                         "",
                                         [
                                             "powershell.exe ",
-                                            "-ExecutionPolicy",
-                                            " RemoteSigned",
-                                            " C:\\cfn\\scripts\\DownloadSQLEE2.ps1 -SQLServerVersion ",
+                                            "-ExecutionPolicy RemoteSigned ",
+                                            "-Command \"",
+                                            " C:\\cfn\\scripts\\DownloadSQLEE2.ps1 -SQLServerVersion '",
                                             {
                                                 "Ref": "SQLServerVersion"
                                             },
-                                            " -DestServer ",
+                                            "' -DestServer '",
                                             {
                                                 "Ref": "ADServer1NetBIOSName"
                                             },
-                                            " -DestShare sqlinstall"
+                                            "' -DestShare 'sqlinstall'\""
                                         ]
                                     ]
                                 },
                                 "waitAfterCompletion": "0"
                             },
                             "i-open-WSFC-ports": {
-                                "command": "powershell.exe -ExecutionPolicy RemoteSigned C:\\cfn\\scripts\\OpenWSFCPorts.ps1",
+                                "command": "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\OpenWSFCPorts.ps1\"",
                                 "waitAfterCompletion": "0"
                             },
                             "j-add-domadmin-user-to-group": {
@@ -1080,22 +1087,21 @@
                                         "",
                                         [
                                             "powershell.exe ",
-                                            "-ExecutionPolicy",
-                                            " RemoteSigned",
-                                            " C:\\cfn\\scripts\\AddUserToGroup.ps1 -UserName ",
+                                            "-ExecutionPolicy RemoteSigned ",
+                                            "-Command \"",
+                                            " C:\\cfn\\scripts\\AddUserToGroup.ps1 -UserName '",
                                             {
                                                 "Ref": "DomainAdminUser"
                                             },
-                                            " -ServerName ",
+                                            "' -ServerName '",
                                             {
                                                 "Ref": "WSFCNode1NetBIOSName"
                                             },
-                                            " -DomainNetBIOSName ",
+                                            "' -DomainNetBIOSName '",
                                             {
                                                 "Ref": "DomainNetBIOSName"
                                             },
-                                            " -GroupName \"Administrators\"",
-                                            "\n"
+                                            "' -GroupName 'Administrators'\""
                                         ]
                                     ]
                                 },
@@ -1107,29 +1113,28 @@
                                         "",
                                         [
                                             "powershell.exe ",
-                                            "-ExecutionPolicy",
-                                            " RemoteSigned",
-                                            " C:\\cfn\\scripts\\AddUserToGroup.ps1 -UserName ",
+                                            "-ExecutionPolicy RemoteSigned ",
+                                            "-Command \"",
+                                            "C:\\cfn\\scripts\\AddUserToGroup.ps1 -UserName '",
                                             {
                                                 "Ref": "SQLServiceAccount"
                                             },
-                                            " -ServerName ",
+                                            "' -ServerName '",
                                             {
                                                 "Ref": "WSFCNode1NetBIOSName"
                                             },
-                                            " -DomainNetBIOSName ",
+                                            "' -DomainNetBIOSName '",
                                             {
                                                 "Ref": "DomainNetBIOSName"
                                             },
-                                            " -GroupName \"Administrators\"",
-                                            "\n"
+                                            "' -GroupName 'Administrators'\""
                                         ]
                                     ]
                                 },
                                 "waitAfterCompletion": "0"
                             },
                             "l-enable-credssp": {
-                                "command": "powershell.exe -ExecutionPolicy RemoteSigned C:\\cfn\\scripts\\EnableCredSsp.ps1",
+                                "command": "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\EnableCredSsp.ps1\"",
                                 "waitAfterCompletion": "0"
                             }
                         }
@@ -1317,7 +1322,7 @@
                         },
                         "commands": {
                             "a-disable-credssp": {
-                                "command": "powershell.exe -ExecutionPolicy RemoteSigned C:\\cfn\\scripts\\DisableCredSsp.ps1",
+                                "command": "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\DisableCredSsp.ps1\"",
                                 "waitAfterCompletion": "0"
                             }
                         }
@@ -1325,7 +1330,7 @@
                     "Finalize": {
                         "commands": {
                             "a-signal-success": {
-                                "command": "powershell -Command Write-AWSQuickStartStatus"
+                                "command": "powershell -Command \"Write-AWSQuickStartStatus\""
                             }
                         }
                     }
@@ -1552,7 +1557,8 @@
                                             {
                                                 "Ref": "QSS3KeyPrefix"
                                             },
-                                            "submodules/quickstart-microsoft-utilities/scripts/Unzip-Archive.ps1"
+                                            "submodules/quickstart-microsoft-utilities",
+                                            "scripts/Unzip-Archive.ps1"
                                         ]
                                     ]
                                 }
@@ -1577,7 +1583,8 @@
                                             {
                                                 "Ref": "QSS3KeyPrefix"
                                             },
-                                            "submodules/quickstart-microsoft-utilities/modules/AWSQuickStart.zip"
+                                            "submodules/quickstart-microsoft-utilities",
+                                            "modules/AWSQuickStart.zip"
                                         ]
                                     ]
                                 }
@@ -1589,7 +1596,7 @@
                                 "waitAfterCompletion": "0"
                             },
                             "b-unpack-quickstart-module": {
-                                "command": "powershell.exe -Command C:\\cfn\\scripts\\Unzip-Archive.ps1 -Source C:\\cfn\\modules\\AWSQuickStart.zip -Destination C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\Modules\\",
+                                "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Unzip-Archive.ps1 -Source C:\\cfn\\modules\\AWSQuickStart.zip -Destination C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\Modules\\\"",
                                 "waitAfterCompletion": "0"
                             },
                             "c-init-quickstart-module": {
@@ -1644,7 +1651,8 @@
                                             {
                                                 "Ref": "QSS3KeyPrefix"
                                             },
-                                            "submodules/quickstart-microsoft-utilities/scripts/Set-Dns.ps1"
+                                            "submodules/quickstart-microsoft-utilities",
+                                            "scripts/Set-Dns.ps1"
                                         ]
                                     ]
                                 }
@@ -1669,7 +1677,8 @@
                                             {
                                                 "Ref": "QSS3KeyPrefix"
                                             },
-                                            "submodules/quickstart-microsoft-utilities/scripts/Join-Domain.ps1"
+                                            "submodules/quickstart-microsoft-utilities",
+                                            "scripts/Join-Domain.ps1"
                                         ]
                                     ]
                                 }
@@ -1694,7 +1703,8 @@
                                             {
                                                 "Ref": "QSS3KeyPrefix"
                                             },
-                                            "submodules/quickstart-microsoft-utilities/scripts/Rename-Computer.ps1"
+                                            "submodules/quickstart-microsoft-utilities",
+                                            "scripts/Rename-Computer.ps1"
                                         ]
                                     ]
                                 }
@@ -1719,7 +1729,8 @@
                                             {
                                                 "Ref": "QSS3KeyPrefix"
                                             },
-                                            "submodules/quickstart-microsoft-utilities/scripts/Invoke-ADReplication.ps1"
+                                            "submodules/quickstart-microsoft-utilities",
+                                            "scripts/Invoke-ADReplication.ps1"
                                         ]
                                     ]
                                 }
@@ -1831,15 +1842,15 @@
                                     "Fn::Join": [
                                         "",
                                         [
-                                            "powershell.exe -Command \"C:\\cfn\\scripts\\Set-Dns.ps1 -ns1 ",
+                                            "powershell.exe -Command \"C:\\cfn\\scripts\\Set-Dns.ps1 -ns1 '",
                                             {
                                                 "Ref": "ADServer1PrivateIP"
                                             },
-                                            " -ns2 ",
+                                            "' -ns2 '",
                                             {
                                                 "Ref": "ADServer2PrivateIP"
                                             },
-                                            "\""
+                                            "'\""
                                         ]
                                     ]
                                 },
@@ -1888,19 +1899,19 @@
                                 "waitAfterCompletion": "forever"
                             },
                             "d-install-windows-failover-clustering": {
-                                "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Install-WindowsFailoverClustering.ps1",
+                                "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Install-WindowsFailoverClustering.ps1\"",
                                 "waitAfterCompletion": "0"
                             },
                             "e-install-net-framework-core": {
-                                "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Install-NETFrameworkCore.ps1",
+                                "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Install-NETFrameworkCore.ps1\"",
                                 "waitAfterCompletion": "0"
                             },
                             "f-open-WSFC-ports": {
-                                "command": "powershell.exe -ExecutionPolicy RemoteSigned C:\\cfn\\scripts\\OpenWSFCPorts.ps1",
+                                "command": "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\OpenWSFCPorts.ps1\"",
                                 "waitAfterCompletion": "0"
                             },
                             "g-enable-credssp": {
-                                "command": "powershell.exe -ExecutionPolicy RemoteSigned C:\\cfn\\scripts\\EnableCredSsp.ps1",
+                                "command": "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\EnableCredSsp.ps1\"",
                                 "waitAfterCompletion": "0"
                             }
                         }
@@ -1997,7 +2008,8 @@
                                             {
                                                 "Ref": "QSS3KeyPrefix"
                                             },
-                                            "submodules/quickstart-microsoft-utilities/scripts/Create-Share.ps1"
+                                            "submodules/quickstart-microsoft-utilities",
+                                            "scripts/Create-Share.ps1"
                                         ]
                                     ]
                                 }
@@ -2186,7 +2198,7 @@
                                     "Fn::Join": [
                                         "",
                                         [
-                                            "powershell.exe -ExecutionPolicy RemoteSigned C:\\cfn\\scripts\\Configure-WSFC.ps1",
+                                            "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\Configure-WSFC.ps1",
                                             " -WSFCNode1PrivateIP2 ",
                                             {
                                                 "Ref": "WSFCNode1PrivateIP2"
@@ -2298,7 +2310,7 @@
                                     "Fn::Join": [
                                         "",
                                         [
-                                            "powershell.exe -ExecutionPolicy RemoteSigned C:\\cfn\\scripts\\Set-Folder-Permissions.ps1",
+                                            "powershell.exe -ExecutionPolicy RemoteSigned \"C:\\cfn\\scripts\\Set-Folder-Permissions.ps1",
                                             " -DomainNetBIOSName '",
                                             {
                                                 "Ref": "DomainNetBIOSName"
@@ -2330,7 +2342,7 @@
                                     "Fn::Join": [
                                         "",
                                         [
-                                            "powershell.exe -ExecutionPolicy RemoteSigned C:\\cfn\\scripts\\Enable-AlwaysOn.ps1",
+                                            "powershell.exe -ExecutionPolicy RemoteSigned \"C:\\cfn\\scripts\\Enable-AlwaysOn.ps1",
                                             " -DomainNetBIOSName '",
                                             {
                                                 "Ref": "DomainNetBIOSName"
@@ -2362,7 +2374,7 @@
                                     "Fn::Join": [
                                         "",
                                         [
-                                            "powershell.exe -ExecutionPolicy RemoteSigned C:\\cfn\\scripts\\Set-ClusterQuorum.ps1",
+                                            "powershell.exe -ExecutionPolicy RemoteSigned \"C:\\cfn\\scripts\\Set-ClusterQuorum.ps1",
                                             " -DomainNetBIOSName '",
                                             {
                                                 "Ref": "DomainNetBIOSName"
@@ -2421,7 +2433,7 @@
                         },
                         "commands": {
                             "a-disable-credssp": {
-                                "command": "powershell.exe -ExecutionPolicy RemoteSigned C:\\cfn\\scripts\\DisableCredSsp.ps1",
+                                "command": "powershell.exe -ExecutionPolicy RemoteSigned \"C:\\cfn\\scripts\\DisableCredSsp.ps1\"",
                                 "waitAfterCompletion": "0"
                             }
                         }
@@ -2429,7 +2441,7 @@
                     "Finalize": {
                         "commands": {
                             "a-signal-success": {
-                                "command": "powershell -Command Write-AWSQuickStartStatus"
+                                "command": "powershell -Command \"Write-AWSQuickStartStatus\""
                             }
                         }
                     }

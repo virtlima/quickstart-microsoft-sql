@@ -943,6 +943,7 @@
                                             {
                                                 "Ref": "QSS3KeyPrefix"
                                             },
+                                            "submodules/quickstart-microsoft-utilities",
                                             "scripts/EnableCredSsp.ps1"
                                         ]
                                     ]
@@ -1351,6 +1352,7 @@
                                             {
                                                 "Ref": "QSS3KeyPrefix"
                                             },
+                                            "submodules/quickstart-microsoft-utilities",
                                             "scripts/DisableCredSsp.ps1"
                                         ]
                                     ]
@@ -1867,6 +1869,7 @@
                                             {
                                                 "Ref": "QSS3KeyPrefix"
                                             },
+                                            "submodules/quickstart-microsoft-utilities",
                                             "scripts/EnableCredSsp.ps1"
                                         ]
                                     ]
@@ -2462,6 +2465,7 @@
                                             {
                                                 "Ref": "QSS3KeyPrefix"
                                             },
+                                            "submodules/quickstart-microsoft-utilities",
                                             "scripts/DisableCredSsp.ps1"
                                         ]
                                     ]

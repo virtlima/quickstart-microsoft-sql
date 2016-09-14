@@ -1748,32 +1748,6 @@
                                     ]
                                 }
                             },
-                            "C:\\cfn\\scripts\\Invoke-ADReplication.ps1": {
-                                "source": {
-                                    "Fn::Join": [
-                                        "/",
-                                        [
-                                            {
-                                                "Fn::FindInMap": [
-                                                    "AWSInfoRegionMap",
-                                                    {
-                                                        "Ref": "AWS::Region"
-                                                    },
-                                                    "QuickStartS3URL"
-                                                ]
-                                            },
-                                            {
-                                                "Ref": "QSS3BucketName"
-                                            },
-                                            {
-                                                "Ref": "QSS3KeyPrefix"
-                                            },
-                                            "submodules/quickstart-microsoft-utilities",
-                                            "scripts/Invoke-ADReplication.ps1"
-                                        ]
-                                    ]
-                                }
-                            },
                             "C:\\cfn\\scripts\\Install-WindowsFailoverClustering.ps1": {
                                 "source": {
                                     "Fn::Join": [
@@ -2028,6 +2002,32 @@
                     },
                     "Configure": {
                         "files": {
+                            "C:\\cfn\\scripts\\Invoke-ADReplication.ps1": {
+                                "source": {
+                                    "Fn::Join": [
+                                        "/",
+                                        [
+                                            {
+                                                "Fn::FindInMap": [
+                                                    "AWSInfoRegionMap",
+                                                    {
+                                                        "Ref": "AWS::Region"
+                                                    },
+                                                    "QuickStartS3URL"
+                                                ]
+                                            },
+                                            {
+                                                "Ref": "QSS3BucketName"
+                                            },
+                                            {
+                                                "Ref": "QSS3KeyPrefix"
+                                            },
+                                            "submodules/quickstart-microsoft-utilities",
+                                            "scripts/Invoke-ADReplication.ps1"
+                                        ]
+                                    ]
+                                }
+                            },
                             "C:\\cfn\\scripts\\Create-Share.ps1": {
                                 "source": {
                                     "Fn::Join": [
@@ -2345,7 +2345,31 @@
                                 },
                                 "waitAfterCompletion": "0"
                             },
-                            "e-Set-Folder-Permissions": {
+                            "e-Invoke-ADReplication": {
+                                "command": {
+                                    "Fn::Join": [
+                                        "",
+                                        [
+                                            "powershell.exe -Command \"C:\\cfn\\scripts\\Invoke-ADReplication.ps1",
+                                            " -UserName '",
+                                            {
+                                                "Ref": "DomainAdminUser"
+                                            },
+                                            "' -Password '",
+                                            {
+                                                "Ref": "DomainAdminPassword"
+                                            },
+                                            "' -DomainController '",
+                                            {
+                                                "Ref": "ADServer1NetBIOSName"
+                                            },
+                                            "'\""
+                                        ]
+                                    ]
+                                },
+                              "waitAfterCompletion": "30"
+                            },
+                            "f-Set-Folder-Permissions": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
@@ -2377,7 +2401,7 @@
                                 },
                                 "waitAfterCompletion": "0"
                             },
-                            "f-Enable-AlwaysOn": {
+                            "g-Enable-AlwaysOn": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
@@ -2409,7 +2433,7 @@
                                 },
                                 "waitAfterCompletion": "0"
                             },
-                            "g-Set-ClusterQuorum": {
+                            "h-Set-ClusterQuorum": {
                                 "command": {
                                     "Fn::Join": [
                                         "",

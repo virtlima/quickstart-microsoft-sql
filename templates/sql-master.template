@@ -481,6 +481,15 @@
             "NoEcho": "True",
             "Type": "String"
         },
+        "SQLLicenseProvided": {
+            "AllowedValues": [
+                "yes",
+                "no"
+            ],
+            "Default": "no",
+            "Description": "License SQL Server from AWS Marketplace. Note: this is only available for SQL 2014 and 2016, in us-east-1, us-west-2 and eu-west-1 regions and limits instance type to r3.2xlarge, r3.4xlarge and r3.8xlarge",
+            "Type": "String"
+        },
         "SQLServerVersion": {
             "AllowedValues": [
                 "2016",
@@ -1094,6 +1103,9 @@
                             "VPCStack",
                             "Outputs.PrivateSubnet2AID"
                         ]
+                    },
+                    "SQLLicenseProvided": {
+                        "Ref": "SQLLicenseProvided"
                     },
                     "SQLServerVersion": {
                         "Ref": "SQLServerVersion"

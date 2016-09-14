@@ -119,6 +119,15 @@
             "Description": "S3 key prefix for the Quick Start assets. Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/). It cannot start or end with forward slash (/) because they are automatically appended.",
             "Type": "String"
         },
+        "SQLLicenseProvided": {
+            "AllowedValues": [
+                "yes",
+                "no"
+            ],
+            "Default": "no",
+            "Description": "License SQL Server from AWS Marketplace. Note: this is only available for SQL 2014 and 2016, in us-east-1, us-west-2 and eu-west-1 regions and limits instance type to r3.2xlarge, r3.4xlarge and r3.8xlarge",
+            "Type": "String"
+        },
         "SQLServerVersion": {
             "AllowedValues": [
                 "2016",
@@ -340,6 +349,14 @@
                 },
                 "host"
             ]
+        },
+        "SQLBakedInAMI": {
+            "Fn::Equals" : [
+                {
+                    "Ref" : "EnvType"
+                },
+                "yes"
+            ]
         }
     },
     "Rules": {
@@ -388,19 +405,25 @@
                 "WS2012R2": "ami-1db84972"
             },
             "eu-west-1": {
-                "WS2012R2": "ami-a8592cdb"
+                "WS2012R2": "ami-a8592cdb",
+                "SQL2014": "ami-97ea9fe4",
+                "SQL2016": "ami-b9582dca"
             },
             "sa-east-1": {
                 "WS2012R2": "ami-2a70e646"
             },
             "us-east-1": {
-                "WS2012R2": "ami-bd3ba0aa"
+                "WS2012R2": "ami-bd3ba0aa",
+                "SQL2014": "ami-9f1e8488",
+                "SQL2016": "ami-693fa47e"
             },
             "us-west-1": {
                 "WS2012R2": "ami-69febd09"
             },
             "us-west-2": {
-                "WS2012R2": "ami-1712d877"
+                "WS2012R2": "ami-1712d877",
+                "SQL2014": "ami-2e61ab4e",
+                "SQL2016": "ami-2d0fc54d"
             }
         },
         "AWSInfoRegionMap": {
@@ -488,8 +511,20 @@
                     "configSets": {
                         "config": [
                             "QuickStartSetup",
-                            "Prep",
-                            "Install",
+                            {
+                                "Fn::If": [
+                                    "SQLBakedInAMI",
+                                    "SQLIncludedPrep",
+                                    "Prep"
+                                ]
+                            },
+                            {
+                                "Fn::If": [
+                                    "SQLBakedInAMI",
+                                    "SQLIncludedInstall",
+                                    "Install"
+                                ]
+                            },
                             "Configure",
                             "Cleanup",
                             "Finalize"
@@ -1139,6 +1174,7 @@
                             }
                         }
                     },
+                    "SQLIncludedPrep":{},
                     "Install": {
                         "files": {
                             "C:\\cfn\\scripts\\InstallSQLEE2.ps1": {
@@ -1209,6 +1245,7 @@
                             }
                         }
                     },
+                    "SQLIncludedInstall": {},
                     "Configure": {
                         "files": {
                             "C:\\cfn\\scripts\\MaxDOP.sql": {

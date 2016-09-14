@@ -353,7 +353,7 @@
         "SQLBakedInAMI": {
             "Fn::Equals" : [
                 {
-                    "Ref" : "EnvType"
+                    "Ref" : "SQLLicenseProvided"
                 },
                 "yes"
             ]

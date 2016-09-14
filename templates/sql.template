@@ -633,7 +633,7 @@
                                 "waitAfterCompletion": "0"
                             },
                             "b-unpack-quickstart-module": {
-                                "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Unzip-Archive.ps1 -Source C:\\cfn\\modules\\AWSQuickStart.zip -Destination C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\Modules\\\"",
+                                "command": "powershell.exe -Command C:\\cfn\\scripts\\Unzip-Archive.ps1 -Source C:\\cfn\\modules\\AWSQuickStart.zip -Destination C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\Modules\\",
                                 "waitAfterCompletion": "0"
                             },
                             "c-init-quickstart-module": {
@@ -1633,7 +1633,7 @@
                                 "waitAfterCompletion": "0"
                             },
                             "b-unpack-quickstart-module": {
-                                "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Unzip-Archive.ps1 -Source C:\\cfn\\modules\\AWSQuickStart.zip -Destination C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\Modules\\\"",
+                                "command": "powershell.exe -Command C:\\cfn\\scripts\\Unzip-Archive.ps1 -Source C:\\cfn\\modules\\AWSQuickStart.zip -Destination C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\Modules\\",
                                 "waitAfterCompletion": "0"
                             },
                             "c-init-quickstart-module": {

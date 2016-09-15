@@ -14,7 +14,7 @@ param(
     [string]$WSFCNode2NetBIOSName,
 
     [Parameter(Mandatory=$true)]
-    [string]$ADServer1NetBIOSName
+    [string]$FileServerNetBIOSName
 
 )
 try {
@@ -27,11 +27,11 @@ try {
 
     $SetClusterQuorum={
         $ErrorActionPreference = "Stop"
-        $ShareName = "\\" + $args[0] + "\witness"
+        $ShareName = "\\" + $Using:FileServerNetBIOSName + "\witness"
         Set-ClusterQuorum -NodeAndFileShareMajority $ShareName
     }
 
-    Invoke-Command -Scriptblock $SetClusterQuorum -ComputerName $WSFCNode2NetBIOSName -Credential $DomainAdminCreds -ArgumentList $ADServer1NetBIOSName
+    Invoke-Command -Scriptblock $SetClusterQuorum -ComputerName $WSFCNode2NetBIOSName -Credential $DomainAdminCreds
 
 }
 catch {

@@ -15,7 +15,11 @@ param(
 
     [Parameter(Mandatory=$true)]
     [string]
-    $DomainAdminPassword
+    $DomainAdminPassword,
+
+    [Parameter(Mandatory=$false)]
+    [string]
+    $dop="50"
 
 )
 
@@ -28,11 +32,8 @@ try {
     $DomainAdminCreds = New-Object System.Management.Automation.PSCredential($DomainAdminFullUser, $DomainAdminSecurePassword)
 
     $SetupMaxDOPPs={
-        $ErrorActionPreference = "Stop"
-        $sqlver = (dir -Path "C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\").Name
-        $maxdop = "C:\PROGRA~1\MICROS~1\CLIENT~1\ODBC\" + $sqlver + "\Tools\Binn\SQLCMD.EXE"
-        $arguments = "-i c:\cfn\scripts\MaxDOP.sql"
-        Start-Process $maxdop $arguments -Wait -RedirectStandardOutput "C:\cfn\log\MaxDOPOutput.txt" -RedirectStandardError "C:\cfn\log\MaxDOPErrors.txt"
+        $sql = "EXEC sp_configure 'show advanced options', 1; RECONFIGURE WITH OVERRIDE; EXEC sp_configure 'max degree of parallelism', " + $Using:dop + "; RECONFIGURE WITH OVERRIDE; "
+        Invoke-Sqlcmd -AbortOnError -ErrorAction Stop -Query $sql
     }
 
     Invoke-Command -Authentication Credssp -Scriptblock $SetupMaxDOPPs -ComputerName $NetBIOSName -Credential $DomainAdminCreds

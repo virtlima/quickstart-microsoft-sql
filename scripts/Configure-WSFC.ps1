@@ -13,10 +13,6 @@ param(
     [string]
     $DomainAdminPassword,
 
-    [Parameter(Mandatory=$true)]
-    [string]
-    $ADServer1NetBIOSName,
-
     [Parameter(Mandatory=$false)]
     [string]
     $WSFCNode2NetBIOSName,
@@ -36,7 +32,7 @@ param(
     [Parameter(Mandatory=$false)]
     [string]
     $NetBIOSName
-    
+
 )
 try {
     Start-Transcript -Path C:\cfn\log\Configure-WSFC.ps1.txt -Append
@@ -47,12 +43,12 @@ try {
     $DomainAdminCreds = New-Object System.Management.Automation.PSCredential($DomainAdminFullUser, $DomainAdminSecurePassword)
 
     $ConfigWSFCPs={
-        $nodes=$args[0], $args[1]
-        $addr =  $args[2], $args[3]
+        $nodes = $Using:WSFCNode1NetBIOSName, $Using:WSFCNode2NetBIOSName
+        $addr =  $Using:WSFCNode1PrivateIP2, $Using:WSFCNode2PrivateIP2
         New-Cluster -Name WSFCluster1 -Node $nodes -StaticAddress $addr
     }
 
-    Invoke-Command -Authentication Credssp -Scriptblock $ConfigWSFCPs -ComputerName $NetBIOSName -Credential $DomainAdminCreds -ArgumentList $WSFCNode1NetBIOSName,$WSFCNode2NetBIOSName,$WSFCNode1PrivateIP2,$WSFCNode2PrivateIP2
+    Invoke-Command -Authentication Credssp -Scriptblock $ConfigWSFCPs -ComputerName $NetBIOSName -Credential $DomainAdminCreds
 }
 catch {
     $_ | Write-AWSQuickStartException

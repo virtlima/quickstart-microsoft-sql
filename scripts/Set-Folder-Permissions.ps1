@@ -11,7 +11,7 @@ param(
     [string]$DomainAdminPassword,
 
     [Parameter(Mandatory=$true)]
-    [string]$ADServer1NetBIOSName,
+    [string]$FileServerNetBIOSName,
 
     [Parameter(Mandatory=$true)]
     [string]$SQLServiceAccount
@@ -29,24 +29,16 @@ Try{
     $SetPermissions={
         $ErrorActionPreference = "Stop"
         $acl = Get-Acl C:\witness
-        $obj = $args[0] + '\WSFCluster1$'
-        $rule = New-Object System.Security.AccessControl.FileSystemAccessRule( $obj,'FullControl', 'ContainerInherit, ObjectInherit', 'None', 'Allow')
+        $rule = New-Object System.Security.AccessControl.FileSystemAccessRule( $Using:obj,'FullControl', 'ContainerInherit, ObjectInherit', 'None', 'Allow')
         $acl.AddAccessRule($rule)
         Set-Acl C:\witness $acl
     }
 
-    Invoke-Command -ScriptBlock $SetPermissions -ComputerName $ADServer1NetBIOSName -Credential $DomainAdminCreds -ArgumentList $DomainNetBIOSName
+    $obj = $DomainNetBIOSName + '\WSFCluster1$'
+    Invoke-Command -ScriptBlock $SetPermissions -ComputerName $FileServerNetBIOSName -Credential $DomainAdminCreds
 
-    $SetPermissions2={
-        $ErrorActionPreference = "Stop"
-        $acl = Get-Acl C:\replica
-        $obj = $args[0] + '\' + $args[1]
-        $rule = New-Object System.Security.AccessControl.FileSystemAccessRule( $obj, 'FullControl', 'ContainerInherit, ObjectInherit', 'None', 'Allow');
-        $acl.AddAccessRule($rule)
-        Set-Acl C:\replica $acl
-    }
-
-    Invoke-Command -ScriptBlock $SetPermissions -ComputerName $ADServer1NetBIOSName -Credential $DomainAdminCreds -ArgumentList $DomainNetBIOSName, $SQLServiceAccount
+    $obj = $DomainNetBIOSName + '\' + $SQLServiceAccount
+    Invoke-Command -ScriptBlock $SetPermissions -ComputerName $FileServerNetBIOSName -Credential $DomainAdminCreds
 
 }
 Catch{

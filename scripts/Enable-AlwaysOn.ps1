@@ -28,11 +28,13 @@ try {
     $EnableAlwaysOnPs={
         $ErrorActionPreference = "Stop"
         Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned
-        Enable-SqlAlwaysOn -ServerInstance $args[0] -Force
+        Enable-SqlAlwaysOn -ServerInstance $Using:serverInstance -Force
     }
-
-    Invoke-Command -Scriptblock $EnableAlwaysOnPs -ComputerName $WSFCNode1NetBIOSName -Credential $DomainAdminCreds -ArgumentList $WSFCNode1NetBIOSName
-    Invoke-Command -Scriptblock $EnableAlwaysOnPs -ComputerName $WSFCNode2NetBIOSName -Credential $DomainAdminCreds -ArgumentList $WSFCNode2NetBIOSName
+    
+    $serverInstance = $WSFCNode1NetBIOSName
+    Invoke-Command -Scriptblock $EnableAlwaysOnPs -ComputerName $WSFCNode1NetBIOSName -Credential $DomainAdminCreds
+    $serverInstance = $WSFCNode2NetBIOSName
+    Invoke-Command -Scriptblock $EnableAlwaysOnPs -ComputerName $WSFCNode2NetBIOSName -Credential $DomainAdminCreds
 }
 catch {
     $_ | Write-AWSQuickStartException

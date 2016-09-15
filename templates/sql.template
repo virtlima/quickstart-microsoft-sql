@@ -2367,7 +2367,7 @@
                                         ]
                                     ]
                                 },
-                              "waitAfterCompletion": "30"
+                                "waitAfterCompletion": "30"
                             },
                             "f-Set-Folder-Permissions": {
                                 "command": {

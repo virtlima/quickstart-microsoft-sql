@@ -1,13 +1,5 @@
 [
     {
-        "ParameterKey": "QSS3BucketName",
-        "ParameterValue": "qs-jmmccon"
-    },
-    {
-        "ParameterKey": "QSS3KeyPrefix",
-        "ParameterValue": "mssql"
-    },
-    {
         "ParameterKey": "ADServer1InstanceType",
         "ParameterValue": "t2.large"
     },
@@ -33,11 +25,11 @@
     },
     {
         "ParameterKey": "AvailabilityZones",
-        "ParameterValue": "eu-west-1a,eu-west-1b"
+        "ParameterValue": "$[alfred_genaz_2]"
     },
     {
         "ParameterKey": "DomainAdminPassword",
-        "ParameterValue": "D@D@P455w0rd"
+        "ParameterValue": "$[alfred_genpass_32]"
     },
     {
         "ParameterKey": "DomainAdminUser",
@@ -53,7 +45,7 @@
     },
     {
         "ParameterKey": "KeyPairName",
-        "ParameterValue": "tester"
+        "ParameterValue": "cikey"
     },
     {
         "ParameterKey": "NATInstanceType",
@@ -101,11 +93,11 @@
     },
     {
         "ParameterKey": "RDGWCIDR",
-        "ParameterValue": "0.0.0.0/0"
+        "ParameterValue": "10.0.0.0/16"
     },
     {
         "ParameterKey": "RestoreModePassword",
-        "ParameterValue": "D@D@P455w0rd"
+        "ParameterValue": "$[alfred_genpass_32]"
     },
     {
         "ParameterKey": "SQLServerVersion",
@@ -117,7 +109,7 @@
     },
     {
         "ParameterKey": "SQLServiceAccountPassword",
-        "ParameterValue": "D@D@P455w0rd"
+        "ParameterValue": "$[alfred_genpass_32]"
     },
     {
         "ParameterKey": "VPCCIDR",

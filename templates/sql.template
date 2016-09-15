@@ -373,9 +373,9 @@
             ]
         },
         "SQLBakedInAMI": {
-            "Fn::Equals" : [
+            "Fn::Equals": [
                 {
-                    "Ref" : "SQLLicenseProvided"
+                    "Ref": "SQLLicenseProvided"
                 },
                 "yes"
             ]
@@ -407,8 +407,8 @@
         "AWSAMIRegionMap": {
             "AMI": {
                 "WS2012R2": "Windows_Server-2012-R2_RTM-English-64Bit-Base-2016.08.11",
-                "WS2012R2SQLENT2014": "update",
-                "WS2012R2SQLENT2016": "update"
+                "WS2012R2SQLENT2014": "Windows_Server-2012-R2_RTM-English-64Bit-SQL_2014_SP1_Enterprise-2016.08.11",
+                "WS2012R2SQLENT2016": "Windows_Server-2012-R2_RTM-English-64Bit-SQL_2016_Enterprise-2016.08.11"
             },
             "ap-northeast-1": {
                 "WS2012R2": "ami-281ad849"
@@ -1612,7 +1612,7 @@
                             }
                         }
                     },
-                    "SQLIncludedPrep":{},
+                    "SQLIncludedPrep": {},
                     "Install": {
                         "files": {
                             "C:\\cfn\\scripts\\InstallSQLEE.ps1": {

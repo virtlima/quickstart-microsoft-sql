@@ -86,7 +86,8 @@
             "Type": "AWS::EC2::KeyPair::KeyName"
         },
         "PrivateSubnet1CIDR": {
-            "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/([0-9]|[1-2][0-9]|3[0-2]))$",
+            "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/(1[6-9]|2[0-8]))$",
+            "ConstraintDescription": "CIDR block parameter must be in the form x.x.x.x/16-28",
             "Default": "10.0.0.0/19",
             "Description": "CIDR block for private subnet 1 located in Availability Zone 1.",
             "Type": "String"
@@ -96,7 +97,8 @@
             "Type": "AWS::EC2::Subnet::Id"
         },
         "PrivateSubnet2CIDR": {
-            "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/([0-9]|[1-2][0-9]|3[0-2]))$",
+            "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/(1[6-9]|2[0-8]))$",
+            "ConstraintDescription": "CIDR block parameter must be in the form x.x.x.x/16-28",
             "Default": "10.0.64.0/19",
             "Description": "CIDR block for private subnet 2 located in Availability Zone 2.",
             "Type": "String"
@@ -224,7 +226,8 @@
             "Type": "String"
         },
         "VPCCIDR": {
-            "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/([0-9]|[1-2][0-9]|3[0-2]))$",
+            "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/(1[6-9]|2[0-8]))$",
+            "ConstraintDescription": "CIDR block parameter must be in the form x.x.x.x/16-28",
             "Default": "10.0.0.0/16",
             "Description": "CIDR Block for the VPC",
             "Type": "String"
@@ -384,7 +387,9 @@
     "Mappings": {
         "AWSAMIRegionMap": {
             "AMI": {
-                "WS2012R2": "Windows_Server-2012-R2_RTM-English-64Bit-Base-2016.08.11"
+                "WS2012R2": "Windows_Server-2012-R2_RTM-English-64Bit-Base-2016.08.11",
+                "WS2012R2SQLENT2014": "update",
+                "WS2012R2SQLENT2016": "update"
             },
             "ap-northeast-1": {
                 "WS2012R2": "ami-281ad849"
@@ -406,24 +411,24 @@
             },
             "eu-west-1": {
                 "WS2012R2": "ami-a8592cdb",
-                "SQL2014": "ami-97ea9fe4",
-                "SQL2016": "ami-b9582dca"
+                "WS2012R2SQLENT2014": "ami-97ea9fe4",
+                "WS2012R2SQLENT2016": "ami-b9582dca"
             },
             "sa-east-1": {
                 "WS2012R2": "ami-2a70e646"
             },
             "us-east-1": {
                 "WS2012R2": "ami-bd3ba0aa",
-                "SQL2014": "ami-9f1e8488",
-                "SQL2016": "ami-693fa47e"
+                "WS2012R2SQLENT2014": "ami-9f1e8488",
+                "WS2012R2SQLENT2016": "ami-693fa47e"
             },
             "us-west-1": {
                 "WS2012R2": "ami-69febd09"
             },
             "us-west-2": {
                 "WS2012R2": "ami-1712d877",
-                "SQL2014": "ami-2e61ab4e",
-                "SQL2016": "ami-2d0fc54d"
+                "WS2012R2SQLENT2014": "ami-2e61ab4e",
+                "WS2012R2SQLENT2016": "ami-2d0fc54d"
             }
         },
         "AWSInfoRegionMap": {
@@ -474,6 +479,14 @@
             "us-west-2": {
                 "Partition": "aws",
                 "QuickStartS3URL": "https://s3.amazonaws.com"
+            }
+        },
+        "SQLAMINameMap": {
+            "SQL2014": {
+                "Code": "WS2012R2SQLENT2014"
+            },
+            "SQL2016": {
+                "Code": "WS2012R2SQLENT2016"
             }
         }
     },

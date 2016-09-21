@@ -517,7 +517,7 @@
                 "Handle": {
                     "Ref": "WSFCFileServerWaitHandle"
                 },
-                "Timeout": "5400"
+                "Timeout": "3600"
             }
         },
         "WSFCFileServerWaitHandle": {
@@ -530,7 +530,7 @@
                 "Handle": {
                     "Ref": "WSFCNode1WaitHandle"
                 },
-                "Timeout": "5400"
+                "Timeout": "3600"
             }
         },
         "WSFCNode1WaitHandle": {

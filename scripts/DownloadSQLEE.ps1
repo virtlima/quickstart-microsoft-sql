@@ -17,7 +17,7 @@ param(
 )
 
 try {
-    Start-Transcript -Path C:\cfn\log\DownloadSQLEE2.ps1.txt -Append
+    Start-Transcript -Path C:\cfn\log\DownloadSQLEE.ps1.txt -Append
 
     $ErrorActionPreference = "Stop"
 

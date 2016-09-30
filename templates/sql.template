@@ -1910,7 +1910,15 @@
                     "Fn::If": [
                         "HostTypeIsDediHost",
                         "host",
-                        "default"
+                        {
+                            "Fn::If": [
+                                "HostTypeIsDefault",
+                                {
+                                    "Ref": "AWS::NoValue"
+                                },
+                                "default"
+                            ]
+                        }
                     ]
                 },
                 "HostId": {
@@ -2657,7 +2665,15 @@
                     "Fn::If": [
                         "HostTypeIsDediHost",
                         "host",
-                        "default"
+                        {
+                            "Fn::If": [
+                                "HostTypeIsDefault",
+                                {
+                                    "Ref": "AWS::NoValue"
+                                },
+                                "default"
+                            ]
+                        }
                     ]
                 },
                 "HostId": {
@@ -3793,7 +3809,15 @@
                     "Fn::If": [
                         "HostTypeIsDediHost",
                         "host",
-                        "default"
+                        {
+                            "Fn::If": [
+                                "HostTypeIsDefault",
+                                {
+                                    "Ref": "AWS::NoValue"
+                                },
+                                "default"
+                            ]
+                        }
                     ]
                 },
                 "HostId": {

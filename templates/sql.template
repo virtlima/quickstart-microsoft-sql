@@ -1726,7 +1726,7 @@
                             }
                         }
                     },
-                    "SQLIncludedPrep":{},
+                    "SQLIncludedPrep": {},
                     "Install": {
                         "files": {
                             "C:\\cfn\\scripts\\InstallSQLEE.ps1": {

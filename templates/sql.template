@@ -600,11 +600,16 @@
             }
         },
         "SQLAMINameMap": {
-            "SQL2014": {
-                "Code": "WS2012R2SQLENT2014"
+            "2012": {
+                "no": "WS2012R2"
             },
-            "SQL2016": {
-                "Code": "WS2012R2SQLENT2016"
+            "2014": {
+                "no": "WS2012R2",
+                "yes": "WS2012R2SQLENT2014"
+            },
+            "2016": {
+                "no": "WS2012R2",
+                "yes": "WS2012R2SQLENT2016"
             }
         }
     },
@@ -1309,17 +1314,11 @@
                     "configSets": {
                         "config": [
                             "QuickStartSetup",
+                            "Prep",
                             {
                                 "Fn::If": [
                                     "SQLBakedInAMI",
-                                    "SQLIncludedPrep",
-                                    "Prep"
-                                ]
-                            },
-                            {
-                                "Fn::If": [
-                                    "SQLBakedInAMI",
-                                    "SQLIncludedInstall",
+                                    "SQLIncludedConfigure",
                                     "Install"
                                 ]
                             },
@@ -1726,7 +1725,6 @@
                             }
                         }
                     },
-                    "SQLIncludedPrep": {},
                     "Install": {
                         "files": {
                             "C:\\cfn\\scripts\\InstallSQLEE.ps1": {
@@ -1797,7 +1795,72 @@
                             }
                         }
                     },
-                    "SQLIncludedInstall": {},
+                    "SQLIncludedConfigure": {
+                        "files": {
+                            "C:\\cfn\\scripts\\Reconfigure-SQL.ps1": {
+                                "source": {
+                                    "Fn::Join": [
+                                        "/",
+                                        [
+                                            {
+                                                "Fn::FindInMap": [
+                                                    "AWSInfoRegionMap",
+                                                    {
+                                                        "Ref": "AWS::Region"
+                                                    },
+                                                    "QuickStartS3URL"
+                                                ]
+                                            },
+                                            {
+                                                "Ref": "QSS3BucketName"
+                                            },
+                                            {
+                                                "Ref": "QSS3KeyPrefix"
+                                            },
+                                            "scripts/Reconfigure-SQL.ps1"
+                                        ]
+                                    ]
+                                }
+                            }
+                        },
+                        "commands": {
+                            "a-configure-sql": {
+                                "command": {
+                                    "Fn::Join": [
+                                        "",
+                                        [
+                                            "powershell.exe -Command \"C:\\cfn\\scripts\\Reconfigure-SQL.ps1 -DomainNetBIOSName '",
+                                            {
+                                                "Ref": "DomainNetBIOSName"
+                                            },
+                                            "' -DomainAdminUser '",
+                                            {
+                                                "Ref": "DomainAdminUser"
+                                            },
+                                            "' -DomainAdminPassword '",
+                                            {
+                                                "Ref": "DomainAdminPassword"
+                                            },
+                                            "' -SQLServiceAccount '",
+                                            {
+                                                "Ref": "SQLServiceAccount"
+                                            },
+                                            "' -SQLServiceAccountPassword '",
+                                            {
+                                                "Ref": "SQLServiceAccountPassword"
+                                            },
+                                            "' -NetBIOSName '",
+                                            {
+                                                "Ref": "WSFCNode1NetBIOSName"
+                                            },
+                                            "'\""
+                                        ]
+                                    ]
+                                },
+                                "waitAfterCompletion": "0"
+                            }
+                        }
+                    },
                     "Configure": {
                         "files": {
                             "C:\\cfn\\scripts\\SetMaxDOP.ps1": {
@@ -1941,7 +2004,17 @@
                         {
                             "Ref": "AWS::Region"
                         },
-                        "WS2012R2"
+                        {
+                            "Fn::FindInMap": [
+                                "SQLAMINameMap",
+                                {
+                                    "Ref": "SQLServerVersion"
+                                },
+                                {
+                                    "Ref": "SQLLicenseProvided"
+                                }
+                            ]
+                        }
                     ]
                 },
                 "InstanceType": {
@@ -2064,17 +2137,11 @@
                     "configSets": {
                         "config": [
                             "QuickStartSetup",
+                            "Prep",
                             {
                                 "Fn::If": [
                                     "SQLBakedInAMI",
-                                    "SQLIncludedPrep",
-                                    "Prep"
-                                ]
-                            },
-                            {
-                                "Fn::If": [
-                                    "SQLBakedInAMI",
-                                    "SQLIncludedInstall",
+                                    "SQLIncludedConfigure",
                                     "Install"
                                 ]
                             },
@@ -2481,7 +2548,6 @@
                             }
                         }
                     },
-                    "SQLIncludedPrep": {},
                     "Install": {
                         "files": {
                             "C:\\cfn\\scripts\\InstallSQLEE.ps1": {
@@ -2552,7 +2618,72 @@
                             }
                         }
                     },
-                    "SQLIncludedInstall": {},
+                    "SQLIncludedConfigure": {
+                        "files": {
+                            "C:\\cfn\\scripts\\Reconfigure-SQL.ps1": {
+                                "source": {
+                                    "Fn::Join": [
+                                        "/",
+                                        [
+                                            {
+                                                "Fn::FindInMap": [
+                                                    "AWSInfoRegionMap",
+                                                    {
+                                                        "Ref": "AWS::Region"
+                                                    },
+                                                    "QuickStartS3URL"
+                                                ]
+                                            },
+                                            {
+                                                "Ref": "QSS3BucketName"
+                                            },
+                                            {
+                                                "Ref": "QSS3KeyPrefix"
+                                            },
+                                            "scripts/Reconfigure-SQL.ps1"
+                                        ]
+                                    ]
+                                }
+                            }
+                        },
+                        "commands": {
+                            "a-configure-sql": {
+                                "command": {
+                                    "Fn::Join": [
+                                        "",
+                                        [
+                                            "powershell.exe -Command \"C:\\cfn\\scripts\\Reconfigure-SQL.ps1 -DomainNetBIOSName '",
+                                            {
+                                                "Ref": "DomainNetBIOSName"
+                                            },
+                                            "' -DomainAdminUser '",
+                                            {
+                                                "Ref": "DomainAdminUser"
+                                            },
+                                            "' -DomainAdminPassword '",
+                                            {
+                                                "Ref": "DomainAdminPassword"
+                                            },
+                                            "' -SQLServiceAccount '",
+                                            {
+                                                "Ref": "SQLServiceAccount"
+                                            },
+                                            "' -SQLServiceAccountPassword '",
+                                            {
+                                                "Ref": "SQLServiceAccountPassword"
+                                            },
+                                            "' -NetBIOSName '",
+                                            {
+                                                "Ref": "WSFCNode1NetBIOSName"
+                                            },
+                                            "'\""
+                                        ]
+                                    ]
+                                },
+                                "waitAfterCompletion": "0"
+                            }
+                        }
+                    },
                     "Configure": {
                         "files": {
                             "C:\\cfn\\scripts\\SetMaxDOP.ps1": {
@@ -2696,7 +2827,17 @@
                         {
                             "Ref": "AWS::Region"
                         },
-                        "WS2012R2"
+                        {
+                            "Fn::FindInMap": [
+                                "SQLAMINameMap",
+                                {
+                                    "Ref": "SQLServerVersion"
+                                },
+                                {
+                                    "Ref": "SQLLicenseProvided"
+                                }
+                            ]
+                        }
                     ]
                 },
                 "InstanceType": {
@@ -2819,7 +2960,13 @@
                         "config": [
                             "QuickStartSetup",
                             "Prep",
-                            "Install",
+                            {
+                                "Fn::If": [
+                                    "SQLBakedInAMI",
+                                    "SQLIncludedConfigure",
+                                    "Install"
+                                ]
+                            },
                             "Configure",
                             "Cleanup",
                             "Finalize"
@@ -3280,6 +3427,72 @@
                                             "' -FileServerNetBIOSName '",
                                             {
                                                 "Ref": "WSFCFileServerNetBIOSName"
+                                            },
+                                            "' -NetBIOSName '",
+                                            {
+                                                "Ref": "WSFCNode2NetBIOSName"
+                                            },
+                                            "'\""
+                                        ]
+                                    ]
+                                },
+                                "waitAfterCompletion": "0"
+                            }
+                        }
+                    },
+                    "SQLIncludedConfigure": {
+                        "files": {
+                            "C:\\cfn\\scripts\\Reconfigure-SQL.ps1": {
+                                "source": {
+                                    "Fn::Join": [
+                                        "/",
+                                        [
+                                            {
+                                                "Fn::FindInMap": [
+                                                    "AWSInfoRegionMap",
+                                                    {
+                                                        "Ref": "AWS::Region"
+                                                    },
+                                                    "QuickStartS3URL"
+                                                ]
+                                            },
+                                            {
+                                                "Ref": "QSS3BucketName"
+                                            },
+                                            {
+                                                "Ref": "QSS3KeyPrefix"
+                                            },
+                                            "scripts/Reconfigure-SQL.ps1"
+                                        ]
+                                    ]
+                                }
+                            }
+                        },
+                        "commands": {
+                            "a-configure-sql": {
+                                "command": {
+                                    "Fn::Join": [
+                                        "",
+                                        [
+                                            "powershell.exe -Command \"C:\\cfn\\scripts\\Reconfigure-SQL.ps1 -DomainNetBIOSName '",
+                                            {
+                                                "Ref": "DomainNetBIOSName"
+                                            },
+                                            "' -DomainAdminUser '",
+                                            {
+                                                "Ref": "DomainAdminUser"
+                                            },
+                                            "' -DomainAdminPassword '",
+                                            {
+                                                "Ref": "DomainAdminPassword"
+                                            },
+                                            "' -SQLServiceAccount '",
+                                            {
+                                                "Ref": "SQLServiceAccount"
+                                            },
+                                            "' -SQLServiceAccountPassword '",
+                                            {
+                                                "Ref": "SQLServiceAccountPassword"
                                             },
                                             "' -NetBIOSName '",
                                             {
@@ -3840,7 +4053,17 @@
                         {
                             "Ref": "AWS::Region"
                         },
-                        "WS2012R2"
+                        {
+                            "Fn::FindInMap": [
+                                "SQLAMINameMap",
+                                {
+                                    "Ref": "SQLServerVersion"
+                                },
+                                {
+                                    "Ref": "SQLLicenseProvided"
+                                }
+                            ]
+                        }
                     ]
                 },
                 "InstanceType": {

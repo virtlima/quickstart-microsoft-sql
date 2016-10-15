@@ -82,11 +82,11 @@
             "Type": "String"
         },
         "HostType": {
-            "Default": "default",
+            "Default": "Shared",
             "AllowedValues": [
-                "default",
-                "dedicated",
-                "host"
+                "Shared",
+                "Dedicated",
+                "Dedicated Host"
             ],
             "Description": "Host Type, NB: For dedicated types, you must already have suitable dedicated hosts in your account",
             "Type": "String"
@@ -460,7 +460,7 @@
                 {
                     "Ref": "HostType"
                 },
-                "default"
+                "Shared"
             ]
         },
         "HostTypeIsDediHost": {
@@ -468,7 +468,7 @@
                 {
                     "Ref": "HostType"
                 },
-                "host"
+                "Dedicated Host"
             ]
         },
         "SQLBakedInAMI": {

@@ -6,61 +6,42 @@
             "ParameterGroups": [
                 {
                     "Label": {
-                        "default": "Network Configuration"
+                        "default": "Microsoft SQL Server Configuration"
                     },
                     "Parameters": [
-                        "AvailabilityZones",
-                        "VPCCIDR",
-                        "PrivateSubnet1CIDR",
-                        "PublicSubnet1CIDR",
-                        "PrivateSubnet2CIDR",
-                        "PublicSubnet2CIDR",
-                        "PrivateSubnet3CIDR",
-                        "PublicSubnet3CIDR",
-                        "RDGWCIDR"
+                        "SQLServerVersion",
+                        "SQLServiceAccount",
+                        "SQLServiceAccountPassword",
+                        "SQLLicenseProvided",
+                        "VolumeIops",
+                        "VolumeSize",
+                        "VolumeType",
+                        "HostType",
+                        "DedicatedHostIDNode1",
+                        "DedicatedHostIDNode2",
+                        "DedicatedHostIDNode3"
                     ]
                 },
                 {
                     "Label": {
-                        "default": "Amazon EC2 Configuration"
+                        "default": "Failover Cluster Configuration"
                     },
                     "Parameters": [
-                        "KeyPairName",
-                        "NATInstanceType",
-                        "ADServer1InstanceType",
-                        "ADServer1NetBIOSName",
-                        "ADServer1PrivateIP",
-                        "ADServer2InstanceType",
-                        "ADServer2NetBIOSName",
-                        "ADServer2PrivateIP",
-                        "RDGW1InstanceType",
-                        "RDGW1NetBIOSName",
-                        "RDGW1PrivateIP",
-                        "RDGW2InstanceType",
-                        "RDGW2NetBIOSName",
-                        "RDGW2PrivateIP",
-                        "WSFCNodeInstanceType",
-                        "WSFCNode1NetBIOSName",
-                        "WSFCNode1PrivateIP1",
-                        "WSFCNode1PrivateIP2",
-                        "WSFCNode1PrivateIP3",
-                        "WSFCNode2NetBIOSName",
-                        "WSFCNode2PrivateIP1",
-                        "WSFCNode2PrivateIP2",
-                        "WSFCNode2PrivateIP3",
-                        "WSFCNode3NetBIOSName",
-                        "WSFCNode3PrivateIP1",
-                        "WSFCNode3PrivateIP2",
-                        "WSFCNode3PrivateIP3",
-                        "Volume1Iops",
-                        "Volume1Size",
-                        "Volume1Type",
-                        "Volume2Iops",
-                        "Volume2Size",
-                        "Volume2Type",
-                        "Volume3Iops",
-                        "Volume3Size",
-                        "Volume3Type"
+                      "WSFCNodeInstanceType",
+                      "WSFCNode1NetBIOSName",
+                      "WSFCNode1PrivateIP1",
+                      "WSFCNode1PrivateIP2",
+                      "WSFCNode1PrivateIP3",
+                      "WSFCNode2NetBIOSName",
+                      "WSFCNode2PrivateIP1",
+                      "WSFCNode2PrivateIP2",
+                      "WSFCNode2PrivateIP3",
+                      "WSFCNode3NetBIOSName",
+                      "WSFCNode3PrivateIP1",
+                      "WSFCNode3PrivateIP2",
+                      "WSFCNode3PrivateIP3",
+                      "WSFCFileServerInstanceType",
+                      "WSFCFileServerPrivateIP"
                     ]
                 },
                 {
@@ -72,17 +53,45 @@
                         "DomainNetBIOSName",
                         "RestoreModePassword",
                         "DomainAdminUser",
-                        "DomainAdminPassword"
+                        "DomainAdminPassword",
+                        "ADServer1InstanceType",
+                        "ADServer1NetBIOSName",
+                        "ADServer1PrivateIP",
+                        "ADServer2InstanceType",
+                        "ADServer2NetBIOSName",
+                        "ADServer2PrivateIP"
                     ]
                 },
                 {
                     "Label": {
-                        "default": "Microsoft SQL Server Configuration"
+                        "default": "Network Configuration"
                     },
                     "Parameters": [
-                        "SQLServerVersion",
-                        "SQLServiceAccount",
-                        "SQLServiceAccountPassword"
+                        "AvailabilityZones",
+                        "ThirdAz",
+                        "VPCCIDR",
+                        "PublicSubnet1CIDR",
+                        "PublicSubnet2CIDR",
+                        "PublicSubnet3CIDR",
+                        "PrivateSubnet1CIDR",
+                        "PrivateSubnet2CIDR",
+                        "PrivateSubnet3CIDR",
+                        "NATInstanceType"
+                    ]
+                },
+                {
+                    "Label": {
+                        "default": "Remote Desktop Configuration"
+                    },
+                    "Parameters": [
+                        "KeyPairName",
+                        "RDGWCIDR",
+                        "RDGW1InstanceType",
+                        "RDGW1NetBIOSName",
+                        "RDGW1PrivateIP",
+                        "RDGW2InstanceType",
+                        "RDGW2NetBIOSName",
+                        "RDGW2PrivateIP"
                     ]
                 },
                 {
@@ -117,6 +126,15 @@
                 "AvailabilityZones": {
                     "default": "Availability Zones"
                 },
+                "DedicatedHostIDNode1": {
+                    "default": "Node1 Dedicated HostID"
+                },
+                "DedicatedHostIDNode2": {
+                    "default": "Node2 Dedicated HostID"
+                },
+                "DedicatedHostIDNode3": {
+                    "default": "Node3 Dedicated HostID"
+                },
                 "DomainAdminPassword": {
                     "default": "Domain Admin Password"
                 },
@@ -128,6 +146,9 @@
                 },
                 "DomainNetBIOSName": {
                     "default": "Domain NetBIOS Name"
+                },
+                "HostType": {
+                    "default": "Tenancy"
                 },
                 "KeyPairName": {
                     "default": "Key Pair Name"
@@ -183,6 +204,9 @@
                 "RestoreModePassword": {
                     "default": "Restore Mode Password"
                 },
+                "SQLLicenseProvided": {
+                    "default": "AWS Marketplace Provided SQL License"
+                },
                 "SQLServerVersion": {
                     "default": "Version"
                 },
@@ -191,6 +215,9 @@
                 },
                 "SQLServiceAccountPassword": {
                     "default": "Service Account Password"
+                },
+                "ThirdAz": {
+                    "default": "Third AZ"
                 },
                 "Volume1Iops": {
                     "default": "Data Volume IOPS"
@@ -219,44 +246,62 @@
                 "Volume3Type": {
                     "default": "TempDB Volume Type"
                 },
+                "VolumeIops": {
+                    "default": "SQL Server Volume IOPS"
+                },
+                "VolumeSize": {
+                    "default": "SQL Server Volume Size (GiB)"
+                },
+                "VolumeType": {
+                    "default": "SQL Server Volume Type"
+                },
                 "VPCCIDR": {
                     "default": "VPC CIDR"
                 },
+                "WSFCFileServerInstanceType": {
+                    "default": "File Server Instance Type"
+                },
+                "WSFCFileServerPrivateIP": {
+                    "default": "File Server Private IP Address"
+                },
                 "WSFCNodeInstanceType": {
-                    "default": "WSFC Node 1 Instance Type"
+                    "default": "Instance Type for Cluster Nodes"
                 },
                 "WSFCNode1NetBIOSName": {
-                    "default": "WSFC Node 1 NetBIOS Name"
+                    "default": "Cluster Node 1 NetBIOS Name"
                 },
                 "WSFCNode1PrivateIP1": {
-                    "default": "WSFC Node 1 Private IP Address 1"
+                    "default": "Cluster Node 1 Private IP Address 1"
                 },
                 "WSFCNode1PrivateIP2": {
-                    "default": "WSFC Node 1 Private IP Address 2"
+                    "default": "Cluster Node 1 Private IP Address 2"
                 },
                 "WSFCNode1PrivateIP3": {
-                    "default": "WSFC Node 1 Private IP Address 3"
-                },
-                "WSFCNode2PrivateIP1": {
-                    "default": "WSFC Node 2 Private IP Address 1"
-                },
-                "WSFCNode2PrivateIP2": {
-                    "default": "WSFC Node 2 Private IP Address 2"
-                },
-                "WSFCNode2PrivateIP3": {
-                    "default": "WSFC Node 2 Private IP Address 3"
-                },
-                "WSFCNode3PrivateIP1": {
-                    "default": "WSFC Node 3 Private IP Address 1"
-                },
-                "WSFCNode3PrivateIP2": {
-                    "default": "WSFC Node 3 Private IP Address 2"
-                },
-                "WSFCNode3PrivateIP3": {
-                    "default": "WSFC Node 3 Private IP Address 3"
+                    "default": "Cluster Node 1 Private IP Address 3"
                 },
                 "WSFCNode2NetBIOSName": {
-                    "default": "WSFC Node 2 NetBIOS Name"
+                    "default": "Cluster Node 2 NetBIOS Name"
+                },
+                "WSFCNode2PrivateIP1": {
+                    "default": "Cluster Node 2 Private IP Address 1"
+                },
+                "WSFCNode2PrivateIP2": {
+                    "default": "Cluster Node 2 Private IP Address 2"
+                },
+                "WSFCNode2PrivateIP3": {
+                    "default": "Cluster Node 2 Private IP Address 3"
+                },
+                "WSFCNode3NetBIOSName": {
+                    "default": "Cluster Node 3 NetBIOS Name"
+                },
+                "WSFCNode3PrivateIP1": {
+                    "default": "Cluster Node 3 Private IP Address 1"
+                },
+                "WSFCNode3PrivateIP2": {
+                    "default": "Cluster Node 3 Private IP Address 2"
+                },
+                "WSFCNode3PrivateIP3": {
+                    "default": "Cluster Node 3 Private IP Address 3"
                 }
             }
         }
@@ -321,22 +366,22 @@
             "Type": "String"
         },
         "AvailabilityZones": {
-            "Description": "List of Availability Zones to use for the subnets in the VPC. Note: The logical order is preserved and that 2 AZ's must be provided unless the ThrirdAZ parameter is specified, in which case 3 AZ's must me provided.",
+            "Description": "List of Availability Zones to use for the subnets in the VPC. Note: The logical order is preserved and that 2 AZ's must be provided unless the Third AZ parameter is specified, in which case 3 AZ's must me provided.",
             "Type": "List<AWS::EC2::AvailabilityZone::Name>"
         },
         "DedicatedHostIDNode1": {
             "Default": "",
-            "Description": "Dedicated HostID for Node1, Only used if HostType is set to \"host\"",
+            "Description": "Dedicated HostID for Node1, Only used if the Host Type parameter is set to \"Dedicated Host\"",
             "Type": "String"
         },
         "DedicatedHostIDNode2": {
             "Default": "",
-            "Description": "Dedicated HostID for Node2, Only used if HostType is set to \"host\"",
+            "Description": "Dedicated HostID for Node2, Only used if the Host Type parameter is set to \"Dedicated Host\"",
             "Type": "String"
         },
         "DedicatedHostIDNode3": {
             "Default": "",
-            "Description": "Dedicated HostID for the optional Node3, Only used if HostType is set to \"host\"",
+            "Description": "Dedicated HostID for the optional Node3, Only used if the Host Type parameter is set to \"Dedicated Host\"",
             "Type": "String"
         },
         "DomainAdminPassword": {
@@ -372,11 +417,11 @@
             "Type": "String"
         },
         "HostType": {
-            "Default": "default",
+            "Default": "Shared",
             "AllowedValues": [
-                "default",
-                "dedicated",
-                "host"
+                "Shared",
+                "Dedicated",
+                "Dedicated Host"
             ],
             "Description": "Host Type, NB: For dedicated types, you must already have suitable dedicated hosts in your account",
             "Type": "String"
@@ -403,7 +448,7 @@
         "PrivateSubnet1CIDR": {
             "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/([0-9]|[1-2][0-9]|3[0-2]))$",
             "Default": "10.0.0.0/19",
-            "Description": "CIDR block for private subnet 1 located in Availability Zone 1.",
+            "Description": "CIDR Block for private subnet 1 located in Availability Zone 1.",
             "Type": "String"
         },
         "PublicSubnet1CIDR": {
@@ -414,7 +459,7 @@
         "PrivateSubnet2CIDR": {
             "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/([0-9]|[1-2][0-9]|3[0-2]))$",
             "Default": "10.0.32.0/19",
-            "Description": "CIDR block for private subnet 2 located in Availability Zone 2.",
+            "Description": "CIDR Block for private subnet 2 located in Availability Zone 2.",
             "Type": "String"
         },
         "PublicSubnet2CIDR": {
@@ -425,7 +470,7 @@
         "PrivateSubnet3CIDR": {
             "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/([0-9]|[1-2][0-9]|3[0-2]))$",
             "Default": "10.0.64.0/19",
-            "Description": "CIDR block for optional private subnet 3 located in Availability Zone 3.",
+            "Description": "CIDR Block for optional private subnet 3 located in Availability Zone 3.",
             "Type": "String"
         },
         "PublicSubnet3CIDR": {
@@ -533,7 +578,7 @@
                 "2012"
             ],
             "Default": "2014",
-            "Description": "Version of SQL Server to install on WSFC Nodes. Options include either \"2014\" or \"2012\"",
+            "Description": "Version of SQL Server to install on Failover Cluster Nodes. Note: 2012 is not compatible with AWS Marketplace Provided SQL Licenses",
             "Type": "String"
         },
         "SQLServiceAccount": {
@@ -559,14 +604,14 @@
                 "witness",
                 "full"
             ],
-            "Description": "Enable a 3 AZ deployment, the 3rd AZ can either be used just for the witness, or can be a full SQL cluster node. Note that if witness is chosen, WSFCFileServerPrivateIP must be set to an IP in the 3rd subnet range.",
+            "Description": "Enable a 3 AZ deployment, the 3rd AZ can either be used just for the witness, or can be a full SQL cluster node. Note that if witness is chosen, the WFC File Server Private IP Address parameter must be set to an IP in the 3rd subnet range.",
             "Type": "String"
         },
         "VolumeIops": {
             "Default": "1000",
             "MinValue": "100",
             "MaxValue": "20000",
-            "Description": "Provisioned Iops for the SQL Data, Logs and TempDb volumes (Only used when volume type is io1)",
+            "Description": "Provisioned IOPS for the SQL Data, Logs and TempDb volumes. This parameter is only applicable when SQL Server Volume Type is set to \"io1\"",
             "Type": "Number"
         },
         "VolumeSize": {
@@ -707,7 +752,7 @@
                 {
                     "Ref": "HostType"
                 },
-                "default"
+                "Shared"
             ]
         },
         "HostTypeIsDediHost": {
@@ -715,7 +760,7 @@
                 {
                     "Ref": "HostType"
                 },
-                "host"
+                "Dedicated Host"
             ]
         }
     },

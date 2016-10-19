@@ -1996,7 +1996,17 @@
                     ]
                 },
                 "Tenancy": {
-                    "Ref": "HostType"
+                    "Fn::If": [
+                        "HostTypeIsDediHost",
+                        "host",
+                        {
+                            "Fn::If": [
+                                "HostTypeIsDefault",
+                                "default",
+                                "dedicated"
+                            ]
+                        }
+                    ]
                 },
                 "ImageId": {
                     "Fn::FindInMap": [
@@ -2819,7 +2829,17 @@
                     ]
                 },
                 "Tenancy": {
-                    "Ref": "HostType"
+                    "Fn::If": [
+                        "HostTypeIsDediHost",
+                        "host",
+                        {
+                            "Fn::If": [
+                                "HostTypeIsDefault",
+                                "default",
+                                "dedicated"
+                            ]
+                        }
+                    ]
                 },
                 "ImageId": {
                     "Fn::FindInMap": [
@@ -4045,7 +4065,17 @@
                     ]
                 },
                 "Tenancy": {
-                    "Ref": "HostType"
+                    "Fn::If": [
+                        "HostTypeIsDediHost",
+                        "host",
+                        {
+                            "Fn::If": [
+                                "HostTypeIsDefault",
+                                "default",
+                                "dedicated"
+                            ]
+                        }
+                    ]
                 },
                 "ImageId": {
                     "Fn::FindInMap": [

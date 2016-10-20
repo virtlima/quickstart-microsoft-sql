@@ -306,6 +306,34 @@
             }
         }
     },
+    "Rules": {
+        "EbsOptimisationSupported": {
+            "RuleCondition": {
+                "Fn::Equals": [
+                    {
+                        "Ref": "AWS::Region"
+                    },
+                    "sa-east-1"
+                ]
+            },
+            "Assertions": [
+                {
+                    "Assert": {
+                        "Fn::Contains": [
+                            [
+                                "r3.4xlarge",
+                                "r3.8xlarge"
+                            ],
+                            {
+                                "Ref": "WSFCNodeInstanceType"
+                            }
+                        ]
+                    },
+                    "AssertDescription": "Only r3.4xlarge and r3.8xlarge instances are supported in the sa-east-1 region."
+                }
+            ]
+        }
+    },
     "Parameters": {
         "ADServer1InstanceType": {
             "AllowedValues": [

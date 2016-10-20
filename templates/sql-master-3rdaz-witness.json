@@ -1,0 +1,30 @@
+[
+    {
+        "ParameterValue": "10.0.0.0/16",
+        "ParameterKey": "RDGWCIDR"
+    },
+    {
+        "ParameterValue": "cikey",
+        "ParameterKey": "KeyPairName"
+    },
+    {
+        "ParameterValue": "$[alfred_genpass_32]",
+        "ParameterKey": "SQLServiceAccountPassword"
+    },
+    {
+        "ParameterValue": "$[alfred_genpass_32]",
+        "ParameterKey": "DomainAdminPassword"
+    },
+    {
+        "ParameterValue": "$[alfred_genpass_32]",
+        "ParameterKey": "RestoreModePassword"
+    },
+    {
+        "ParameterValue": "$[alfred_genaz_3]",
+        "ParameterKey": "AvailabilityZones"
+    },
+    {
+        "ParameterValue": "witness",
+        "ParameterKey": "ThirdAz"
+    }
+]

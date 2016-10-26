@@ -46,7 +46,6 @@ tests:
       - ap-southeast-2
       - eu-west-1
       - us-east-1
-      - us-west-1
       - us-west-2
     template_file: sql-master.template
   nextgen-3rdaz-full:
@@ -55,6 +54,5 @@ tests:
       - ap-southeast-2
       - eu-west-1
       - us-east-1
-      - us-west-1
       - us-west-2
     template_file: sql-master.template

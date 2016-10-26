@@ -20,7 +20,7 @@
         "ParameterKey": "RestoreModePassword"
     },
     {
-        "ParameterValue": "$[alfred_genaz_3]",
+        "ParameterValue": "$[alfred_genaz_2]",
         "ParameterKey": "AvailabilityZones"
     },
     {

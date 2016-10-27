@@ -1698,7 +1698,15 @@
                             }
                         },
                         "commands": {
-                            "a-set-dns": {
+                            "a-install-net-framework-core": {
+                                "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Install-NETFrameworkCore.ps1\"",
+                                "waitAfterCompletion": "0"
+                            },
+                            "b-install-windows-failover-clustering": {
+                                "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Install-WindowsFailoverClustering.ps1\"",
+                                "waitAfterCompletion": "0"
+                            },
+                            "c-set-dns": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
@@ -1717,7 +1725,7 @@
                                 },
                                 "waitAfterCompletion": "30"
                             },
-                            "b-rename-computer": {
+                            "d-rename-computer": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
@@ -1732,7 +1740,7 @@
                                 },
                                 "waitAfterCompletion": "forever"
                             },
-                            "c-join-domain": {
+                            "e-join-domain": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
@@ -1759,19 +1767,11 @@
                                 },
                                 "waitAfterCompletion": "forever"
                             },
-                            "e-install-windows-failover-clustering": {
-                                "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Install-WindowsFailoverClustering.ps1\"",
-                                "waitAfterCompletion": "0"
-                            },
-                            "f-install-net-framework-core": {
-                                "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Install-NETFrameworkCore.ps1\"",
-                                "waitAfterCompletion": "0"
-                            },
-                            "g-open-WSFC-ports": {
+                            "f-open-WSFC-ports": {
                                 "command": "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\OpenWSFCPorts.ps1\"",
                                 "waitAfterCompletion": "0"
                             },
-                            "j-enable-credssp": {
+                            "g-enable-credssp": {
                                 "command": "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\EnableCredSsp.ps1\"",
                                 "waitAfterCompletion": "0"
                             }
@@ -2531,7 +2531,15 @@
                             }
                         },
                         "commands": {
-                            "a-set-dns": {
+                            "a-install-net-framework-core": {
+                                "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Install-NETFrameworkCore.ps1\"",
+                                "waitAfterCompletion": "0"
+                            },
+                            "b-install-windows-failover-clustering": {
+                                "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Install-WindowsFailoverClustering.ps1\"",
+                                "waitAfterCompletion": "0"
+                            },
+                            "c-set-dns": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
@@ -2550,7 +2558,7 @@
                                 },
                                 "waitAfterCompletion": "30"
                             },
-                            "b-rename-computer": {
+                            "d-rename-computer": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
@@ -2565,7 +2573,7 @@
                                 },
                                 "waitAfterCompletion": "forever"
                             },
-                            "c-join-domain": {
+                            "e-join-domain": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
@@ -2592,19 +2600,11 @@
                                 },
                                 "waitAfterCompletion": "forever"
                             },
-                            "e-install-windows-failover-clustering": {
-                                "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Install-WindowsFailoverClustering.ps1\"",
-                                "waitAfterCompletion": "0"
-                            },
-                            "f-install-net-framework-core": {
-                                "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Install-NETFrameworkCore.ps1\"",
-                                "waitAfterCompletion": "0"
-                            },
-                            "g-open-WSFC-ports": {
+                            "f-open-WSFC-ports": {
                                 "command": "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\OpenWSFCPorts.ps1\"",
                                 "waitAfterCompletion": "0"
                             },
-                            "j-enable-credssp": {
+                            "g-enable-credssp": {
                                 "command": "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\EnableCredSsp.ps1\"",
                                 "waitAfterCompletion": "0"
                             }
@@ -3363,7 +3363,15 @@
                             }
                         },
                         "commands": {
-                            "a-set-dns": {
+                            "a-install-net-framework-core": {
+                                "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Install-NETFrameworkCore.ps1\"",
+                                "waitAfterCompletion": "0"
+                            },
+                            "b-install-windows-failover-clustering": {
+                                "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Install-WindowsFailoverClustering.ps1\"",
+                                "waitAfterCompletion": "0"
+                            },
+                            "c-set-dns": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
@@ -3382,7 +3390,7 @@
                                 },
                                 "waitAfterCompletion": "30"
                             },
-                            "b-rename-computer": {
+                            "d-rename-computer": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
@@ -3397,7 +3405,7 @@
                                 },
                                 "waitAfterCompletion": "forever"
                             },
-                            "c-join-domain": {
+                            "e-join-domain": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
@@ -3423,14 +3431,6 @@
                                     ]
                                 },
                                 "waitAfterCompletion": "forever"
-                            },
-                            "d-install-windows-failover-clustering": {
-                                "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Install-WindowsFailoverClustering.ps1\"",
-                                "waitAfterCompletion": "0"
-                            },
-                            "e-install-net-framework-core": {
-                                "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Install-NETFrameworkCore.ps1\"",
-                                "waitAfterCompletion": "0"
                             },
                             "f-open-WSFC-ports": {
                                 "command": "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\OpenWSFCPorts.ps1\"",

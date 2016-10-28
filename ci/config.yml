@@ -17,7 +17,7 @@ global:
   reporting: true
 tests:
   master-old:
-    template_file: SQL_AlwaysOn_Master.template
+    parameter_input: SQL_AlwaysOn_Master.json
     regions:
       - ap-northeast-1
       - ap-northeast-2
@@ -30,19 +30,29 @@ tests:
       - us-east-1
       - us-west-1
       - us-west-2
-    parameter_input: SQL_AlwaysOn_Master.json
+    template_file: SQL_AlwaysOn_Master.template
   nextgen-defaults:
-    template_file: sql-master.template
     parameter_input: sql-master-defaults.json
+    template_file: sql-master.template
   nextgen-sql-2016:
-    template_file: sql-master.template
     parameter_input: sql-master-sql-2016.json
+    template_file: sql-master.template
   nextgen-ebs-io1:
-    template_file: sql-master.template
     parameter_input: sql-master-ebs-io1.json
+    template_file: sql-master.template
   nextgen-3rdaz-witness:
-    template_file: sql-master.template
     parameter_input: sql-master-3rdaz-witness.json
-  nextgen-3rdaz-full:
+    regions:
+      - ap-southeast-2
+      - eu-west-1
+      - us-east-1
+      - us-west-2
     template_file: sql-master.template
+  nextgen-3rdaz-full:
     parameter_input: sql-master-3rdaz-full.json
+    regions:
+      - ap-southeast-2
+      - eu-west-1
+      - us-east-1
+      - us-west-2
+    template_file: sql-master.template

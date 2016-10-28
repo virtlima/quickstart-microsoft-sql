@@ -30,6 +30,10 @@
             "Description": "Fixed private IP for the second Active Directory server located in Availability Zone 2",
             "Type": "String"
         },
+        "AvailabilityZones": {
+            "Description": "List of Availability Zones to use for the subnets in the VPC. Note: The logical order is preserved and that 2 AZ's must be provided unless the Third AZ parameter is specified, in which case 3 AZ's must me provided.",
+            "Type": "List<AWS::EC2::AvailabilityZone::Name>"
+        },
         "DomainAdminPassword": {
             "AllowedPattern": "(?=^.{6,255}$)((?=.*\\d)(?=.*[A-Z])(?=.*[a-z])|(?=.*\\d)(?=.*[^A-Za-z0-9])(?=.*[a-z])|(?=.*[^A-Za-z0-9])(?=.*[A-Z])(?=.*[a-z])|(?=.*\\d)(?=.*[A-Z])(?=.*[^A-Za-z0-9]))^.*",
             "Description": "Password for the domain admin user. Must be at least 8 characters containing letters, numbers and symbols",
@@ -4272,7 +4276,7 @@
                     "Fn::Select": [
                         0,
                         {
-                            "Fn::GetAZs": ""
+                            "Ref": "AvailabilityZones"
                         }
                     ]
                 },
@@ -4302,7 +4306,7 @@
                     "Fn::Select": [
                         0,
                         {
-                            "Fn::GetAZs": ""
+                            "Ref": "AvailabilityZones"
                         }
                     ]
                 },
@@ -4332,7 +4336,7 @@
                     "Fn::Select": [
                         0,
                         {
-                            "Fn::GetAZs": ""
+                            "Ref": "AvailabilityZones"
                         }
                     ]
                 },
@@ -4362,7 +4366,7 @@
                     "Fn::Select": [
                         1,
                         {
-                            "Fn::GetAZs": ""
+                            "Ref": "AvailabilityZones"
                         }
                     ]
                 },
@@ -4392,7 +4396,7 @@
                     "Fn::Select": [
                         1,
                         {
-                            "Fn::GetAZs": ""
+                            "Ref": "AvailabilityZones"
                         }
                     ]
                 },
@@ -4422,7 +4426,7 @@
                     "Fn::Select": [
                         1,
                         {
-                            "Fn::GetAZs": ""
+                            "Ref": "AvailabilityZones"
                         }
                     ]
                 },
@@ -4453,7 +4457,7 @@
                     "Fn::Select": [
                         2,
                         {
-                            "Fn::GetAZs": ""
+                            "Ref": "AvailabilityZones"
                         }
                     ]
                 },
@@ -4484,7 +4488,7 @@
                     "Fn::Select": [
                         2,
                         {
-                            "Fn::GetAZs": ""
+                            "Ref": "AvailabilityZones"
                         }
                     ]
                 },
@@ -4515,7 +4519,7 @@
                     "Fn::Select": [
                         2,
                         {
-                            "Fn::GetAZs": ""
+                            "Ref": "AvailabilityZones"
                         }
                     ]
                 },

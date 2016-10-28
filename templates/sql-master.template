@@ -1201,6 +1201,14 @@
                     "ADServer2PrivateIP": {
                         "Ref": "ADServer2PrivateIP"
                     },
+                    "AvailabilityZones": {
+                        "Fn::Join": [
+                            ",",
+                            {
+                                "Ref": "AvailabilityZones"
+                            }
+                        ]
+                    },
                     "DomainAdminPassword": {
                         "Ref": "DomainAdminPassword"
                     },

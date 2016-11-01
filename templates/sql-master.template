@@ -306,34 +306,6 @@
             }
         }
     },
-    "Rules": {
-        "EbsOptimisationSupported": {
-            "RuleCondition": {
-                "Fn::Equals": [
-                    {
-                        "Ref": "AWS::Region"
-                    },
-                    "sa-east-1"
-                ]
-            },
-            "Assertions": [
-                {
-                    "Assert": {
-                        "Fn::Contains": [
-                            [
-                                "r3.4xlarge",
-                                "r3.8xlarge"
-                            ],
-                            {
-                                "Ref": "WSFCNodeInstanceType"
-                            }
-                        ]
-                    },
-                    "AssertDescription": "Only r3.4xlarge and r3.8xlarge instances are supported in the sa-east-1 region."
-                }
-            ]
-        }
-    },
     "Parameters": {
         "ADServer1InstanceType": {
             "AllowedValues": [
@@ -698,7 +670,7 @@
                 "r3.8xlarge"
             ],
             "ConstraintDescription": "Only EBS Optimized instance types r3.xlarge, r3.2xlarge, r3.4xlarge allowed",
-            "Default": "r3.4xlarge",
+            "Default": "r3.2xlarge",
             "Description": "Amazon EC2 instance type for the WSFC Nodes",
             "Type": "String"
         },

@@ -70,6 +70,11 @@
             "MinLength": "1",
             "Type": "String"
         },
+        "DedicatedHostAMI": {
+            "Default": "",
+            "Description": "If host type is set to \"Dedicated\" or \"Dedicated Host\", you need to specify your imported BYOL AMI id",
+            "Type": "String"
+        },
         "DedicatedHostIDNode1": {
             "Default": "",
             "Description": "Dedicated HostID for Node1, Only used if HostType is set to \"host\"",
@@ -473,6 +478,18 @@
                     "Ref": "HostType"
                 },
                 "Dedicated Host"
+            ]
+        },
+        "ByolAmi": {
+            "Fn::Not": [
+                {
+                    "Fn::Equals": [
+                        {
+                            "Ref": "HostType"
+                        },
+                        "Shared"
+                    ]
+                }
             ]
         },
         "SQLBakedInAMI": {
@@ -2069,19 +2086,27 @@
                     ]
                 },
                 "ImageId": {
-                    "Fn::FindInMap": [
-                        "AWSAMIRegionMap",
+                    "Fn::If": [
+                        "ByolAmi",
                         {
-                            "Ref": "AWS::Region"
+                            "Ref": "DedicatedHostAMI"
                         },
                         {
                             "Fn::FindInMap": [
-                                "SQLAMINameMap",
+                                "AWSAMIRegionMap",
                                 {
-                                    "Ref": "SQLServerVersion"
+                                    "Ref": "AWS::Region"
                                 },
                                 {
-                                    "Ref": "SQLLicenseProvided"
+                                    "Fn::FindInMap": [
+                                        "SQLAMINameMap",
+                                        {
+                                            "Ref": "SQLServerVersion"
+                                        },
+                                        {
+                                            "Ref": "SQLLicenseProvided"
+                                        }
+                                    ]
                                 }
                             ]
                         }
@@ -2906,19 +2931,27 @@
                     ]
                 },
                 "ImageId": {
-                    "Fn::FindInMap": [
-                        "AWSAMIRegionMap",
+                    "Fn::If": [
+                        "ByolAmi",
                         {
-                            "Ref": "AWS::Region"
+                            "Ref": "DedicatedHostAMI"
                         },
                         {
                             "Fn::FindInMap": [
-                                "SQLAMINameMap",
+                                "AWSAMIRegionMap",
                                 {
-                                    "Ref": "SQLServerVersion"
+                                    "Ref": "AWS::Region"
                                 },
                                 {
-                                    "Ref": "SQLLicenseProvided"
+                                    "Fn::FindInMap": [
+                                        "SQLAMINameMap",
+                                        {
+                                            "Ref": "SQLServerVersion"
+                                        },
+                                        {
+                                            "Ref": "SQLLicenseProvided"
+                                        }
+                                    ]
                                 }
                             ]
                         }
@@ -4146,19 +4179,27 @@
                     ]
                 },
                 "ImageId": {
-                    "Fn::FindInMap": [
-                        "AWSAMIRegionMap",
+                    "Fn::If": [
+                        "ByolAmi",
                         {
-                            "Ref": "AWS::Region"
+                            "Ref": "DedicatedHostAMI"
                         },
                         {
                             "Fn::FindInMap": [
-                                "SQLAMINameMap",
+                                "AWSAMIRegionMap",
                                 {
-                                    "Ref": "SQLServerVersion"
+                                    "Ref": "AWS::Region"
                                 },
                                 {
-                                    "Ref": "SQLLicenseProvided"
+                                    "Fn::FindInMap": [
+                                        "SQLAMINameMap",
+                                        {
+                                            "Ref": "SQLServerVersion"
+                                        },
+                                        {
+                                            "Ref": "SQLLicenseProvided"
+                                        }
+                                    ]
                                 }
                             ]
                         }

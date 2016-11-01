@@ -27,21 +27,21 @@
                         "default": "Failover Cluster Configuration"
                     },
                     "Parameters": [
-                      "WSFCNodeInstanceType",
-                      "WSFCNode1NetBIOSName",
-                      "WSFCNode1PrivateIP1",
-                      "WSFCNode1PrivateIP2",
-                      "WSFCNode1PrivateIP3",
-                      "WSFCNode2NetBIOSName",
-                      "WSFCNode2PrivateIP1",
-                      "WSFCNode2PrivateIP2",
-                      "WSFCNode2PrivateIP3",
-                      "WSFCNode3NetBIOSName",
-                      "WSFCNode3PrivateIP1",
-                      "WSFCNode3PrivateIP2",
-                      "WSFCNode3PrivateIP3",
-                      "WSFCFileServerInstanceType",
-                      "WSFCFileServerPrivateIP"
+                        "WSFCNodeInstanceType",
+                        "WSFCNode1NetBIOSName",
+                        "WSFCNode1PrivateIP1",
+                        "WSFCNode1PrivateIP2",
+                        "WSFCNode1PrivateIP3",
+                        "WSFCNode2NetBIOSName",
+                        "WSFCNode2PrivateIP1",
+                        "WSFCNode2PrivateIP2",
+                        "WSFCNode2PrivateIP3",
+                        "WSFCNode3NetBIOSName",
+                        "WSFCNode3PrivateIP1",
+                        "WSFCNode3PrivateIP2",
+                        "WSFCNode3PrivateIP3",
+                        "WSFCFileServerInstanceType",
+                        "WSFCFileServerPrivateIP"
                     ]
                 },
                 {
@@ -397,19 +397,9 @@
             "Description": "List of Availability Zones to use for the subnets in the VPC. Note: The logical order is preserved and that 2 AZ's must be provided unless the Third AZ parameter is specified, in which case 3 AZ's must me provided.",
             "Type": "List<AWS::EC2::AvailabilityZone::Name>"
         },
-        "DedicatedHostIDNode1": {
+        "DedicatedHostAMI": {
             "Default": "",
-            "Description": "Dedicated HostID for Node1, Only used if the Host Type parameter is set to \"Dedicated Host\"",
-            "Type": "String"
-        },
-        "DedicatedHostIDNode2": {
-            "Default": "",
-            "Description": "Dedicated HostID for Node2, Only used if the Host Type parameter is set to \"Dedicated Host\"",
-            "Type": "String"
-        },
-        "DedicatedHostIDNode3": {
-            "Default": "",
-            "Description": "Dedicated HostID for the optional Node3, Only used if the Host Type parameter is set to \"Dedicated Host\"",
+            "Description": "If host type is set to \"Dedicated\" or \"Dedicated Host\", you need to specify your imported BYOL AMI id",
             "Type": "String"
         },
         "DomainAdminPassword": {
@@ -451,7 +441,7 @@
                 "Dedicated",
                 "Dedicated Host"
             ],
-            "Description": "Host Type, NB: For dedicated types, you must already have suitable dedicated hosts in your account",
+            "Description": "Host Type, If dedicated or Dedicated Host is selected hosts will be created in each AZ",
             "Type": "String"
         },
         "KeyPairName": {
@@ -782,6 +772,18 @@
                     "Ref": "HostType"
                 },
                 "Shared"
+            ]
+        },
+        "CreateDediHosts": {
+            "Fn::Not": [
+                {
+                    "Fn::Equals": [
+                        {
+                            "Ref": "HostType"
+                        },
+                        "Shared"
+                    ]
+                }
             ]
         },
         "HostTypeIsDediHost": {
@@ -1162,6 +1164,62 @@
                 }
             }
         },
+        "DediHostStack": {
+            "DependsOn": "VPCStack",
+            "Type": "AWS::CloudFormation::Stack",
+            "Properties": {
+                "TemplateURL": {
+                    "Fn::Join": [
+                        "/",
+                        [
+                            {
+                                "Fn::FindInMap": [
+                                    "AWSInfoRegionMap",
+                                    {
+                                        "Ref": "AWS::Region"
+                                    },
+                                    "QuickStartS3URL"
+                                ]
+                            },
+                            {
+                                "Ref": "QSS3BucketName"
+                            },
+                            {
+                                "Ref": "QSS3KeyPrefix"
+                            },
+                            "templates/dedicated-hosts.template"
+                        ]
+                    ]
+                },
+                "Parameters": {
+                    "AvailabilityZones": {
+                        "Fn::Join": [
+                            ",",
+                            {
+                                "Ref": "AvailabilityZones"
+                            }
+                        ]
+                    },
+                    "WSFCNodeInstanceType": {
+                        "Ref": "WSFCNodeInstanceType"
+                    },
+                    "AutoPlacement": {
+                        "Fn::If": [
+                            "HostTypeIsDediHost",
+                            "off",
+                            "on"
+                        ]
+                    },
+                    "3rdAZ": {
+                        "Fn::If": [
+                            "IsTwoAz",
+                            "no",
+                            "yes"
+                        ]
+                    }
+                }
+            }
+        },
         "SQLStack": {
             "DependsOn": "ADStack",
             "Type": "AWS::CloudFormation::Stack",
@@ -1208,6 +1266,27 @@
                             {
                                 "Ref": "AvailabilityZones"
                             }
+                        ]
+                    },
+                    "DedicatedHostAMI": {
+                        "Ref": "DedicatedHostAMI"
+                    },
+                    "DedicatedHostIDNode1": {
+                        "Fn::GetAtt": [
+                            "DediHostStack",
+                            "Outputs.DedicatedHost1"
+                        ]
+                    },
+                    "DedicatedHostIDNode2": {
+                        "Fn::GetAtt": [
+                            "DediHostStack",
+                            "Outputs.DedicatedHost1"
+                        ]
+                    },
+                    "DedicatedHostIDNode3": {
+                        "Fn::GetAtt": [
+                            "DediHostStack",
+                            "Outputs.DedicatedHost1"
                         ]
                     },
                     "DomainAdminPassword": {
@@ -1396,15 +1475,6 @@
                     },
                     "HostType": {
                         "Ref": "HostType"
-                    },
-                    "DedicatedHostIDNode1": {
-                        "Ref": "DedicatedHostIDNode1"
-                    },
-                    "DedicatedHostIDNode2": {
-                        "Ref": "DedicatedHostIDNode2"
-                    },
-                    "DedicatedHostIDNode3": {
-                        "Ref": "DedicatedHostIDNode3"
                     }
                 }
             }

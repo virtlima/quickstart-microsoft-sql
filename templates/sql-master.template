@@ -1130,6 +1130,7 @@
         },
         "DediHostStack": {
             "DependsOn": "VPCStack",
+            "Condition": "CreateDediHosts",
             "Type": "AWS::CloudFormation::Stack",
             "Properties": {
                 "TemplateURL": {

@@ -17,9 +17,7 @@
                         "VolumeSize",
                         "VolumeType",
                         "HostType",
-                        "DedicatedHostIDNode1",
-                        "DedicatedHostIDNode2",
-                        "DedicatedHostIDNode3"
+                        "DedicatedHostAMI"
                     ]
                 },
                 {
@@ -126,14 +124,8 @@
                 "AvailabilityZones": {
                     "default": "Availability Zones"
                 },
-                "DedicatedHostIDNode1": {
-                    "default": "Node1 Dedicated HostID"
-                },
-                "DedicatedHostIDNode2": {
-                    "default": "Node2 Dedicated HostID"
-                },
-                "DedicatedHostIDNode3": {
-                    "default": "Node3 Dedicated HostID"
+                "DedicatedHostAMI": {
+                    "default": "BYOL AMI to use on dedicated host"
                 },
                 "DomainAdminPassword": {
                     "default": "Domain Admin Password"

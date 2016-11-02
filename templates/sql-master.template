@@ -1237,21 +1237,53 @@
                         "Ref": "DedicatedHostAMI"
                     },
                     "DedicatedHostIDNode1": {
-                        "Fn::GetAtt": [
-                            "DediHostStack",
-                            "Outputs.DedicatedHost1"
+                        "Fn::If": [
+                            "CreateDediHosts",
+                            {
+                                "Fn::GetAtt": [
+                                    "DediHostStack",
+                                    "Outputs.DedicatedHost1"
+                                ]
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
                         ]
                     },
                     "DedicatedHostIDNode2": {
-                        "Fn::GetAtt": [
-                            "DediHostStack",
-                            "Outputs.DedicatedHost1"
+                        "Fn::If": [
+                            "CreateDediHosts",
+                            {
+                                "Fn::GetAtt": [
+                                    "DediHostStack",
+                                    "Outputs.DedicatedHost2"
+                                ]
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
                         ]
                     },
                     "DedicatedHostIDNode3": {
-                        "Fn::GetAtt": [
-                            "DediHostStack",
-                            "Outputs.DedicatedHost1"
+                        "Fn::If": [
+                            "IsTwoAz",
+                            {
+                                "Ref": "AWS::NoValue"
+                            },
+                            {
+                                "Fn::If": [
+                                    "CreateDediHosts",
+                                    {
+                                        "Fn::GetAtt": [
+                                            "DediHostStack",
+                                            "Outputs.DedicatedHost1"
+                                        ]
+                                    },
+                                    {
+                                        "Ref": "AWS::NoValue"
+                                    }
+                                ]
+                            }
                         ]
                     },
                     "DomainAdminPassword": {

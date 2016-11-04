@@ -30,10 +30,6 @@
             "Description": "Fixed private IP for the second Active Directory server located in Availability Zone 2",
             "Type": "String"
         },
-        "AvailabilityZones": {
-            "Description": "List of Availability Zones to use for the subnets in the VPC. Note: The logical order is preserved and that 2 AZ's must be provided unless the Third AZ parameter is specified, in which case 3 AZ's must me provided.",
-            "Type": "List<AWS::EC2::AvailabilityZone::Name>"
-        },
         "DomainAdminPassword": {
             "AllowedPattern": "(?=^.{6,255}$)((?=.*\\d)(?=.*[A-Z])(?=.*[a-z])|(?=.*\\d)(?=.*[^A-Za-z0-9])(?=.*[a-z])|(?=.*[^A-Za-z0-9])(?=.*[A-Z])(?=.*[a-z])|(?=.*\\d)(?=.*[A-Z])(?=.*[^A-Za-z0-9]))^.*",
             "Description": "Password for the domain admin user. Must be at least 8 characters containing letters, numbers and symbols",
@@ -2125,26 +2121,6 @@
                         "VirtualName": "ephemeral0"
                     }
                 ],
-                "Volumes": [
-                    {
-                        "VolumeId": {
-                            "Ref": "WSFCNode1Volume1"
-                        },
-                        "Device": "/dev/xvdb"
-                    },
-                    {
-                        "VolumeId": {
-                            "Ref": "WSFCNode1Volume2"
-                        },
-                        "Device": "/dev/xvdc"
-                    },
-                    {
-                        "VolumeId": {
-                            "Ref": "WSFCNode1Volume3"
-                        },
-                        "Device": "/dev/xvdd"
-                    }
-                ],
                 "KeyName": {
                     "Ref": "KeyPairName"
                 },
@@ -2968,26 +2944,6 @@
                     {
                         "DeviceName": "/dev/xvdca",
                         "VirtualName": "ephemeral0"
-                    }
-                ],
-                "Volumes": [
-                    {
-                        "VolumeId": {
-                            "Ref": "WSFCNode3Volume1"
-                        },
-                        "Device": "/dev/xvdb"
-                    },
-                    {
-                        "VolumeId": {
-                            "Ref": "WSFCNode3Volume2"
-                        },
-                        "Device": "/dev/xvdc"
-                    },
-                    {
-                        "VolumeId": {
-                            "Ref": "WSFCNode3Volume3"
-                        },
-                        "Device": "/dev/xvdd"
                     }
                 ],
                 "KeyName": {
@@ -4218,26 +4174,6 @@
                         "VirtualName": "ephemeral0"
                     }
                 ],
-                "Volumes": [
-                    {
-                        "VolumeId": {
-                            "Ref": "WSFCNode2Volume1"
-                        },
-                        "Device": "/dev/xvdb"
-                    },
-                    {
-                        "VolumeId": {
-                            "Ref": "WSFCNode2Volume2"
-                        },
-                        "Device": "/dev/xvdc"
-                    },
-                    {
-                        "VolumeId": {
-                            "Ref": "WSFCNode2Volume3"
-                        },
-                        "Device": "/dev/xvdd"
-                    }
-                ],
                 "KeyName": {
                     "Ref": "KeyPairName"
                 },
@@ -4274,11 +4210,9 @@
                     "Ref": "Volume1Type"
                 },
                 "AvailabilityZone": {
-                    "Fn::Select": [
-                        0,
-                        {
-                            "Ref": "AvailabilityZones"
-                        }
+                    "Fn::GetAtt": [
+                        "WSFCNode1",
+                        "AvailabilityZone"
                     ]
                 },
                 "Iops": {
@@ -4304,11 +4238,9 @@
                     "Ref": "Volume2Type"
                 },
                 "AvailabilityZone": {
-                    "Fn::Select": [
-                        0,
-                        {
-                            "Ref": "AvailabilityZones"
-                        }
+                    "Fn::GetAtt": [
+                        "WSFCNode1",
+                        "AvailabilityZone"
                     ]
                 },
                 "Iops": {
@@ -4334,11 +4266,9 @@
                     "Ref": "Volume3Type"
                 },
                 "AvailabilityZone": {
-                    "Fn::Select": [
-                        0,
-                        {
-                            "Ref": "AvailabilityZones"
-                        }
+                    "Fn::GetAtt": [
+                        "WSFCNode1",
+                        "AvailabilityZone"
                     ]
                 },
                 "Iops": {
@@ -4364,11 +4294,9 @@
                     "Ref": "Volume1Type"
                 },
                 "AvailabilityZone": {
-                    "Fn::Select": [
-                        1,
-                        {
-                            "Ref": "AvailabilityZones"
-                        }
+                    "Fn::GetAtt": [
+                        "WSFCNode2",
+                        "AvailabilityZone"
                     ]
                 },
                 "Iops": {
@@ -4394,11 +4322,9 @@
                     "Ref": "Volume2Type"
                 },
                 "AvailabilityZone": {
-                    "Fn::Select": [
-                        1,
-                        {
-                            "Ref": "AvailabilityZones"
-                        }
+                    "Fn::GetAtt": [
+                        "WSFCNode2",
+                        "AvailabilityZone"
                     ]
                 },
                 "Iops": {
@@ -4424,11 +4350,9 @@
                     "Ref": "Volume3Type"
                 },
                 "AvailabilityZone": {
-                    "Fn::Select": [
-                        1,
-                        {
-                            "Ref": "AvailabilityZones"
-                        }
+                    "Fn::GetAtt": [
+                        "WSFCNode2",
+                        "AvailabilityZone"
                     ]
                 },
                 "Iops": {
@@ -4455,11 +4379,9 @@
                     "Ref": "Volume1Type"
                 },
                 "AvailabilityZone": {
-                    "Fn::Select": [
-                        2,
-                        {
-                            "Ref": "AvailabilityZones"
-                        }
+                    "Fn::GetAtt": [
+                        "WSFCNode3",
+                        "AvailabilityZone"
                     ]
                 },
                 "Iops": {
@@ -4486,11 +4408,9 @@
                     "Ref": "Volume2Type"
                 },
                 "AvailabilityZone": {
-                    "Fn::Select": [
-                        2,
-                        {
-                            "Ref": "AvailabilityZones"
-                        }
+                    "Fn::GetAtt": [
+                        "WSFCNode3",
+                        "AvailabilityZone"
                     ]
                 },
                 "Iops": {
@@ -4517,11 +4437,9 @@
                     "Ref": "Volume3Type"
                 },
                 "AvailabilityZone": {
-                    "Fn::Select": [
-                        2,
-                        {
-                            "Ref": "AvailabilityZones"
-                        }
+                    "Fn::GetAtt": [
+                        "WSFCNode3",
+                        "AvailabilityZone"
                     ]
                 },
                 "Iops": {
@@ -4534,6 +4452,117 @@
                             "Ref": "AWS::NoValue"
                         }
                     ]
+                }
+            }
+        },
+        "WSFCNode1Volume1Attachment": {
+            "Type": "AWS::EC2::VolumeAttachment",
+            "Properties": {
+                "Device": "/dev/xvdb",
+                "InstanceId": {
+                    "Ref": "WSFCNode1"
+                },
+                "VolumeId": {
+                    "Ref": "WSFCNode1Volume1"
+                }
+            }
+        },
+        "WSFCNode1Volume2Attachment": {
+            "Type": "AWS::EC2::VolumeAttachment",
+            "Properties": {
+                "Device": "/dev/xvdc",
+                "InstanceId": {
+                    "Ref": "WSFCNode1"
+                },
+                "VolumeId": {
+                    "Ref": "WSFCNode1Volume2"
+                }
+            }
+        },
+        "WSFCNode1Volume3Attachment": {
+            "Type": "AWS::EC2::VolumeAttachment",
+            "Properties": {
+                "Device": "/dev/xvdd",
+                "InstanceId": {
+                    "Ref": "WSFCNode1"
+                },
+                "VolumeId": {
+                    "Ref": "WSFCNode1Volume3"
+                }
+            }
+        },
+        "WSFCNode2Volume1Attachment": {
+            "Type": "AWS::EC2::VolumeAttachment",
+            "Properties": {
+                "Device": "/dev/xvdb",
+                "InstanceId": {
+                    "Ref": "WSFCNode2"
+                },
+                "VolumeId": {
+                    "Ref": "WSFCNode2Volume1"
+                }
+            }
+        },
+        "WSFCNode2Volume2Attachment": {
+            "Type": "AWS::EC2::VolumeAttachment",
+            "Properties": {
+                "Device": "/dev/xvdc",
+                "InstanceId": {
+                    "Ref": "WSFCNode2"
+                },
+                "VolumeId": {
+                    "Ref": "WSFCNode2Volume2"
+                }
+            }
+        },
+        "WSFCNode2Volume3Attachment": {
+            "Type": "AWS::EC2::VolumeAttachment",
+            "Properties": {
+                "Device": "/dev/xvdd",
+                "InstanceId": {
+                    "Ref": "WSFCNode2"
+                },
+                "VolumeId": {
+                    "Ref": "WSFCNode2Volume3"
+                }
+            }
+        },
+        "WSFCNode3Volume1Attachment": {
+            "Type": "AWS::EC2::VolumeAttachment",
+            "Condition": "ThirdAzIsFullNode",
+            "Properties": {
+                "Device": "/dev/xvdb",
+                "InstanceId": {
+                    "Ref": "WSFCNode3"
+                },
+                "VolumeId": {
+                    "Ref": "WSFCNode3Volume1"
+                }
+            }
+        },
+        "WSFCNode3Volume2Attachment": {
+            "Type": "AWS::EC2::VolumeAttachment",
+            "Condition": "ThirdAzIsFullNode",
+            "Properties": {
+                "Device": "/dev/xvdc",
+                "InstanceId": {
+                    "Ref": "WSFCNode3"
+                },
+                "VolumeId": {
+                    "Ref": "WSFCNode3Volume2"
+                }
+            }
+        },
+        "WSFCNode3Volume3Attachment": {
+            "Type": "AWS::EC2::VolumeAttachment",
+            "Condition": "ThirdAzIsFullNode",
+            "Properties": {
+                "Device": "/dev/xvdd",
+                "InstanceId": {
+                    "Ref": "WSFCNode3"
+                },
+                "VolumeId": {
+                    "Ref": "WSFCNode3Volume3"
                 }
             }
         },

@@ -1354,6 +1354,9 @@
                     "SQLServiceAccountPassword": {
                         "Ref": "SQLServiceAccountPassword"
                     },
+                    "ThirdAz": {
+                        "Ref": "ThirdAz"
+                    },
                     "VPCCIDR": {
                         "Ref": "VPCCIDR"
                     },

@@ -1257,7 +1257,15 @@
                         "DeleteOnTermination": "true",
                         "DeviceIndex": 0,
                         "SubnetId": {
-                            "Ref": "PrivateSubnet1ID"
+                            "Fn::If": [
+                                "ThirdAzIsWitness",
+                                {
+                                    "Ref": "PrivateSubnet3ID"
+                                },
+                                {
+                                    "Ref": "PrivateSubnet1ID"
+                                }
+                            ]
                         },
                         "PrivateIpAddresses": [
                             {
@@ -4591,6 +4599,22 @@
                         }
                     },
                     {
+                        "Fn::If": [
+                            "IsThreeAz",
+                            {
+                                "IpProtocol": "icmp",
+                                "FromPort": "-1",
+                                "ToPort": "-1",
+                                "CidrIp": {
+                                    "Ref": "PrivateSubnet3CIDR"
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
                         "IpProtocol": "tcp",
                         "FromPort": "135",
                         "ToPort": "135",
@@ -4607,6 +4631,22 @@
                         }
                     },
                     {
+                        "Fn::If": [
+                            "IsThreeAz",
+                            {
+                                "IpProtocol": "tcp",
+                                "FromPort": "135",
+                                "ToPort": "135",
+                                "CidrIp": {
+                                    "Ref": "PrivateSubnet3CIDR"
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
                         "IpProtocol": "tcp",
                         "FromPort": "137",
                         "ToPort": "137",
@@ -4621,6 +4661,22 @@
                         "CidrIp": {
                             "Ref": "PrivateSubnet2CIDR"
                         }
+                    },
+                    {
+                        "Fn::If": [
+                            "IsThreeAz",
+                            {
+                                "IpProtocol": "tcp",
+                                "FromPort": "137",
+                                "ToPort": "137",
+                                "CidrIp": {
+                                    "Ref": "PrivateSubnet3CIDR"
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
                     },
                     {
                         "IpProtocol": "tcp",
@@ -4639,6 +4695,22 @@
                         }
                     },
                     {
+                        "Fn::If": [
+                            "IsThreeAz",
+                            {
+                                "IpProtocol": "tcp",
+                                "FromPort": "445",
+                                "ToPort": "445",
+                                "CidrIp": {
+                                    "Ref": "PrivateSubnet3CIDR"
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
                         "IpProtocol": "tcp",
                         "FromPort": "1433",
                         "ToPort": "1433",
@@ -4655,6 +4727,22 @@
                         }
                     },
                     {
+                        "Fn::If": [
+                            "IsThreeAz",
+                            {
+                                "IpProtocol": "tcp",
+                                "FromPort": "1433",
+                                "ToPort": "1433",
+                                "CidrIp": {
+                                    "Ref": "PrivateSubnet3CIDR"
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
                         "IpProtocol": "tcp",
                         "FromPort": "3343",
                         "ToPort": "3343",
@@ -4669,6 +4757,22 @@
                         "CidrIp": {
                             "Ref": "PrivateSubnet2CIDR"
                         }
+                    },
+                    {
+                        "Fn::If": [
+                            "IsThreeAz",
+                            {
+                                "IpProtocol": "tcp",
+                                "FromPort": "3343",
+                                "ToPort": "3343",
+                                "CidrIp": {
+                                    "Ref": "PrivateSubnet3CIDR"
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
                     },
                     {
                         "IpProtocol": "tcp",
@@ -4687,6 +4791,22 @@
                         }
                     },
                     {
+                        "Fn::If": [
+                            "IsThreeAz",
+                            {
+                                "IpProtocol": "tcp",
+                                "FromPort": "5022",
+                                "ToPort": "5022",
+                                "CidrIp": {
+                                    "Ref": "PrivateSubnet3CIDR"
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
                         "IpProtocol": "tcp",
                         "FromPort": "5985",
                         "ToPort": "5985",
@@ -4703,6 +4823,22 @@
                         }
                     },
                     {
+                        "Fn::If": [
+                            "IsThreeAz",
+                            {
+                                "IpProtocol": "tcp",
+                                "FromPort": "5985",
+                                "ToPort": "5985",
+                                "CidrIp": {
+                                    "Ref": "PrivateSubnet3CIDR"
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
                         "IpProtocol": "tcp",
                         "FromPort": "49152",
                         "ToPort": "65535",
@@ -4717,6 +4853,22 @@
                         "CidrIp": {
                             "Ref": "PrivateSubnet2CIDR"
                         }
+                    },
+                    {
+                        "Fn::If": [
+                            "IsThreeAz",
+                            {
+                                "IpProtocol": "tcp",
+                                "FromPort": "49152",
+                                "ToPort": "65535",
+                                "CidrIp": {
+                                    "Ref": "PrivateSubnet3CIDR"
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
                     },
                     {
                         "IpProtocol": "udp",
@@ -4735,6 +4887,22 @@
                         }
                     },
                     {
+                        "Fn::If": [
+                            "IsThreeAz",
+                            {
+                                "IpProtocol": "udp",
+                                "FromPort": "137",
+                                "ToPort": "137",
+                                "CidrIp": {
+                                    "Ref": "PrivateSubnet3CIDR"
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
                         "IpProtocol": "udp",
                         "FromPort": "3343",
                         "ToPort": "3343",
@@ -4749,6 +4917,22 @@
                         "CidrIp": {
                             "Ref": "PrivateSubnet2CIDR"
                         }
+                    },
+                    {
+                        "Fn::If": [
+                            "IsThreeAz",
+                            {
+                                "IpProtocol": "udp",
+                                "FromPort": "3343",
+                                "ToPort": "3343",
+                                "CidrIp": {
+                                    "Ref": "PrivateSubnet3CIDR"
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
                     },
                     {
                         "IpProtocol": "udp",
@@ -4767,6 +4951,22 @@
                         }
                     },
                     {
+                        "Fn::If": [
+                            "IsThreeAz",
+                            {
+                                "IpProtocol": "udp",
+                                "FromPort": "49152",
+                                "ToPort": "65535",
+                                "CidrIp": {
+                                    "Ref": "PrivateSubnet3CIDR"
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
                         "IpProtocol": "tcp",
                         "FromPort": "1433",
                         "ToPort": "1434",
@@ -4783,6 +4983,22 @@
                         }
                     },
                     {
+                        "Fn::If": [
+                            "IsThreeAz",
+                            {
+                                "IpProtocol": "tcp",
+                                "FromPort": "1433",
+                                "ToPort": "1434",
+                                "CidrIp": {
+                                    "Ref": "PrivateSubnet3CIDR"
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
+                    },
+                    {
                         "IpProtocol": "tcp",
                         "FromPort": "1433",
                         "ToPort": "1434",
@@ -4797,6 +5013,22 @@
                         "CidrIp": {
                             "Ref": "PrivateSubnet2CIDR"
                         }
+                    },
+                    {
+                        "Fn::If": [
+                            "IsThreeAz",
+                            {
+                                "IpProtocol": "tcp",
+                                "FromPort": "1433",
+                                "ToPort": "1434",
+                                "CidrIp": {
+                                    "Ref": "PrivateSubnet3CIDR"
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
                     }
                 ]
             }
@@ -4824,6 +5056,22 @@
                         "CidrIp": {
                             "Ref": "PrivateSubnet2CIDR"
                         }
+                    },
+                    {
+                        "Fn::If": [
+                            "ThirdAzIsFullNode",
+                            {
+                                "IpProtocol": "tcp",
+                                "FromPort": "1433",
+                                "ToPort": "1433",
+                                "CidrIp": {
+                                    "Ref": "PrivateSubnet3CIDR"
+                                }
+                            },
+                            {
+                                "Ref": "AWS::NoValue"
+                            }
+                        ]
                     }
                 ]
             }

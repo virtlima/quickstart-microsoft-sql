@@ -26,5 +26,9 @@
     {
         "ParameterValue": "witness",
         "ParameterKey": "ThirdAz"
+    },
+    {
+        "ParameterValue": "10.0.64.200",
+        "ParameterKey": "WSFCFileServerPrivateIP"
     }
 ]

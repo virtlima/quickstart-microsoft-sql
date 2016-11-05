@@ -56,3 +56,10 @@ tests:
       - us-east-1
       - us-west-2
     template_file: sql-master.template
+  nextgen-license-included:
+    parameter_input: sql-master-license-included.json
+    regions:
+      - eu-west-1
+      - us-east-1
+      - us-west-2
+    template_file: sql-master.template

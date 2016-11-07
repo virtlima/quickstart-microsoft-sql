@@ -15,11 +15,15 @@ param(
 
     [Parameter(Mandatory=$false)]
     [string]
+    $WSFCNode1NetBIOSName,
+
+    [Parameter(Mandatory=$false)]
+    [string]
     $WSFCNode2NetBIOSName,
 
     [Parameter(Mandatory=$false)]
     [string]
-    $WSFCNode1NetBIOSName,
+    $WSFCNode3NetBIOSName=$null,
 
     [Parameter(Mandatory=$false)]
     [string]
@@ -28,6 +32,10 @@ param(
     [Parameter(Mandatory=$false)]
     [string]
     $WSFCNode2PrivateIP2,
+
+    [Parameter(Mandatory=$false)]
+    [string]
+    $WSFCNode3PrivateIP2=$null,
 
     [Parameter(Mandatory=$false)]
     [string]
@@ -46,6 +54,13 @@ try {
         $nodes = $Using:WSFCNode1NetBIOSName, $Using:WSFCNode2NetBIOSName
         $addr =  $Using:WSFCNode1PrivateIP2, $Using:WSFCNode2PrivateIP2
         New-Cluster -Name WSFCluster1 -Node $nodes -StaticAddress $addr
+    }
+    if ($WSFCNode3NetBIOSName) {
+        $ConfigWSFCPs={
+            $nodes = $Using:WSFCNode1NetBIOSName, $Using:WSFCNode2NetBIOSName, $Using:WSFCNode3NetBIOSName
+            $addr =  $Using:WSFCNode1PrivateIP2, $Using:WSFCNode2PrivateIP2, $Using:WSFCNode3PrivateIP2
+            New-Cluster -Name WSFCluster1 -Node $nodes -StaticAddress $addr
+        }
     }
 
     Invoke-Command -Authentication Credssp -Scriptblock $ConfigWSFCPs -ComputerName $NetBIOSName -Credential $DomainAdminCreds

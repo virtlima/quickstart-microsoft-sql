@@ -3761,6 +3761,26 @@
                                             {
                                                 "Ref": "WSFCNode2PrivateIP2"
                                             },
+                                            {
+                                                "Fn::If": [
+                                                    "ThirdAzIsFullNode",
+                                                    " -WSFCNode3PrivateIP2 ",
+                                                    {
+                                                        "Ref": "AWS::NoValue"
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "Fn::If": [
+                                                    "ThirdAzIsFullNode",
+                                                    {
+                                                        "Ref": "WSFCNode3PrivateIP2"
+                                                    },
+                                                    {
+                                                        "Ref": "AWS::NoValue"
+                                                    }
+                                                ]
+                                            },
                                             " -WSFCNode1NetBIOSName ",
                                             {
                                                 "Ref": "WSFCNode1NetBIOSName"
@@ -3768,6 +3788,26 @@
                                             " -WSFCNode2NetBIOSName ",
                                             {
                                                 "Ref": "WSFCNode2NetBIOSName"
+                                            },
+                                            {
+                                                "Fn::If": [
+                                                    "ThirdAzIsFullNode",
+                                                    " -WSFCNode3NetBIOSName ",
+                                                    {
+                                                        "Ref": "AWS::NoValue"
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "Fn::If": [
+                                                    "ThirdAzIsFullNode",
+                                                    {
+                                                        "Ref": "WSFCNode3NetBIOSName"
+                                                    },
+                                                    {
+                                                        "Ref": "AWS::NoValue"
+                                                    }
+                                                ]
                                             },
                                             " -DomainNetBIOSName ",
                                             {
@@ -3960,6 +4000,26 @@
                                             "' -WSFCNode2NetBIOSName '",
                                             {
                                                 "Ref": "WSFCNode2NetBIOSName"
+                                            },
+                                            {
+                                                "Fn::If": [
+                                                    "ThirdAzIsFullNode",
+                                                    "' -WSFCNode3NetBIOSName '",
+                                                    {
+                                                        "Ref": "AWS::NoValue"
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "Fn::If": [
+                                                    "ThirdAzIsFullNode",
+                                                    {
+                                                        "Ref": "WSFCNode3NetBIOSName"
+                                                    },
+                                                    {
+                                                        "Ref": "AWS::NoValue"
+                                                    }
+                                                ]
                                             },
                                             "'\""
                                         ]

@@ -14,7 +14,10 @@ param(
     [string]$WSFCNode1NetBIOSName,
 
     [Parameter(Mandatory=$true)]
-    [string]$WSFCNode2NetBIOSName
+    [string]$WSFCNode2NetBIOSName,
+
+    [Parameter(Mandatory=$false)]
+    [string]$WSFCNode3NetBIOSName=$null
 
 )
 try {
@@ -30,11 +33,16 @@ try {
         Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned
         Enable-SqlAlwaysOn -ServerInstance $Using:serverInstance -Force
     }
-    
+
     $serverInstance = $WSFCNode1NetBIOSName
     Invoke-Command -Scriptblock $EnableAlwaysOnPs -ComputerName $WSFCNode1NetBIOSName -Credential $DomainAdminCreds
     $serverInstance = $WSFCNode2NetBIOSName
     Invoke-Command -Scriptblock $EnableAlwaysOnPs -ComputerName $WSFCNode2NetBIOSName -Credential $DomainAdminCreds
+    if ($WSFCNode3NetBIOSName) {
+        $serverInstance = $WSFCNode3NetBIOSName
+        Invoke-Command -Scriptblock $EnableAlwaysOnPs -ComputerName $WSFCNode3NetBIOSName -Credential $DomainAdminCreds
+    }
+
 }
 catch {
     $_ | Write-AWSQuickStartException

@@ -1366,6 +1366,9 @@
                             "Outputs.VPCID"
                         ]
                     },
+                    "WSFCFileServerPrivateIP": {
+                        "Ref": "WSFCFileServerPrivateIP"
+                    },
                     "WSFCNode1InstanceType": {
                         "Ref": "WSFCNodeInstanceType"
                     },

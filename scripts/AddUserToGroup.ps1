@@ -24,7 +24,16 @@ try {
     $ErrorActionPreference = "Stop"
 
 	$de = [ADSI]"WinNT://$ServerName/$GroupName,group"
-	$de.psbase.Invoke("Add",([ADSI]"WinNT://$DomainNetBIOSName/$UserName").path)
+
+	$UserPath = ([ADSI]"WinNT://$DomainNetBIOSName/$UserName").path
+	$Retries = 0
+	while (($Retries -lt 8) -and (!$UserPath)) {
+		$Retries++
+		Start-Sleep -Seconds ($Retries * 60)
+		$UserPath = ([ADSI]"WinNT://$DomainNetBIOSName/$UserName").path
+	}
+
+	$de.psbase.Invoke("Add",$UserPath)
 
 }
 catch {

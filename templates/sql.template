@@ -523,8 +523,8 @@
         "AWSAMIRegionMap": {
             "AMI": {
                 "WS2012R2": "Windows_Server-2012-R2_RTM-English-64Bit-Base-2016.10.12",
-                "WS2012R2SQLENT2014": "Windows_Server-2012-R2_RTM-English-64Bit-SQL_2014_SP1_Enterprise-2016.10.12",
-                "WS2012R2SQLENT2016": "Windows_Server-2012-R2_RTM-English-64Bit-SQL_2016_Enterprise-2016.10.12"
+                "WS2012R2SQLENT2014": "Windows_Server-2012-R2_RTM-English-64Bit-SQL_2014_SP1_Enterprise-2016.08.11",
+                "WS2012R2SQLENT2016": "Windows_Server-2012-R2_RTM-English-64Bit-SQL_2016_Enterprise-2016.08.11"
             },
             "ap-northeast-1": {
                 "WS2012R2": "ami-7c449e1d"
@@ -546,24 +546,29 @@
             },
             "eu-west-1": {
                 "WS2012R2": "ami-55084526",
-                "WS2012R2SQLENT2014": "ami-7f09440c",
-                "WS2012R2SQLENT2016": "ami-1e08456d"
+                "WS2012R2SQLENT2014": "ami-97ea9fe4",
+                "WS2012R2SQLENT2016": "ami-b9582dca"
             },
             "sa-east-1": {
                 "WS2012R2": "ami-42ee732e"
             },
             "us-east-1": {
                 "WS2012R2": "ami-3f0c4628",
-                "WS2012R2SQLENT2014": "ami-8c0f459b",
-                "WS2012R2SQLENT2016": "ami-2e024839"
+                "WS2012R2SQLENT2014": "ami-9f1e8488",
+                "WS2012R2SQLENT2016": "ami-693fa47e"
+            },
+            "us-east-2": {
+                "WS2012R2": "ami-de164cbb",
+                "WS2012R2SQLENT2014": "ami-ac2f74c9",
+                "WS2012R2SQLENT2016": "ami-fd306b98"
             },
             "us-west-1": {
                 "WS2012R2": "ami-123c7472"
             },
             "us-west-2": {
                 "WS2012R2": "ami-b871aad8",
-                "WS2012R2SQLENT2014": "ami-b670abd6",
-                "WS2012R2SQLENT2016": "ami-c276ada2"
+                "WS2012R2SQLENT2014": "ami-2e61ab4e",
+                "WS2012R2SQLENT2016": "ami-2d0fc54d"
             }
         },
         "AWSInfoRegionMap": {

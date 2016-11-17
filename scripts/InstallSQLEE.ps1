@@ -64,8 +64,24 @@ try {
         }
     }
 
-    Invoke-Command -Authentication Credssp -Scriptblock $InstallSqlPs -ComputerName $NetBIOSName -Credential $DomainAdminCreds
-
+    $Retries = 0
+    $Installed = $false
+    while (($Retries -lt 4) -and (!$Installed)) {
+        try {
+            Invoke-Command -Authentication Credssp -Scriptblock $InstallSqlPs -ComputerName $NetBIOSName -Credential $DomainAdminCreds
+            $Installed = $true
+        }
+        catch {
+            $Exception = $_
+            $Retries++
+            if ($Retries -lt 4) {
+                Start-Sleep ($Retries * 60)
+            }
+        }
+    }
+    if (!$Installed) {
+          throw $Exception
+    }
 }
 catch {
     $_ | Write-AWSQuickStartException

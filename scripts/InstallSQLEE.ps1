@@ -43,13 +43,12 @@ try {
         $ErrorActionPreference = "Stop"
         $share= "//" + $Using:FileServerNetBIOSName + "/sqlinstall/"
         $fname= $share + (dir -File -Path $share *.iso)
-        Mount-DiskImage -ImagePath $fname
         $driveLetter = Get-Volume | ?{$_.DriveType -eq 'CD-ROM'} | select -ExpandProperty DriveLetter
-        if ($driveLetter.Count -gt 1) {
-            throw "More than 1 mounted ISO found"
+        if ($driveLetter.Count -lt 1) {
+            Mount-DiskImage -ImagePath $fname
         }
         $installer = "$($driveLetter):\SETUP.EXE"
-        if ((get-volume -DriveLetter $($driveLetter)).FileSystemLabel -eq "SQL2016_x64_ENU") {
+        if ((Get-Volume -DriveLetter $($driveLetter)).FileSystemLabel -eq "SQL2016_x64_ENU") {
             $ssms = $share + "SSMS-Setup-ENU.exe"
             $ssmsargs = "/quiet /norestart"
             Start-Process $ssms $ssmsargs -Wait -ErrorAction Stop -RedirectStandardOutput "C:\cfn\log\SSMSInstallerOutput.txt" -RedirectStandardError "C:\cfn\log\SSMSInstallerErrors.txt"
@@ -75,7 +74,7 @@ try {
             $Exception = $_
             $Retries++
             if ($Retries -lt 4) {
-                Start-Sleep ($Retries * 60)
+                Start-Sleep (([math]::pow($Retries, 2)) * 60)
             }
         }
     }

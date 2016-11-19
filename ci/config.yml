@@ -12,6 +12,7 @@ global:
     - eu-west-1
     - sa-east-1
     - us-east-1
+    - us-east-2
     - us-west-1
     - us-west-2
   reporting: true
@@ -28,6 +29,7 @@ tests:
       - eu-west-1
       # - sa-east-1 Unsupported only in CI due to GetAZs on ref acct
       - us-east-1
+      - us-east-2
       - us-west-1
       - us-west-2
     template_file: SQL_AlwaysOn_Master.template

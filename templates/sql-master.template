@@ -6,18 +6,52 @@
             "ParameterGroups": [
                 {
                     "Label": {
-                        "default": "Microsoft SQL Server Configuration"
+                        "default": "Network Configuration"
                     },
                     "Parameters": [
-                        "SQLServerVersion",
-                        "SQLServiceAccount",
-                        "SQLServiceAccountPassword",
-                        "SQLLicenseProvided",
-                        "VolumeIops",
-                        "VolumeSize",
-                        "VolumeType",
-                        "HostType",
-                        "DedicatedHostAMI"
+                        "AvailabilityZones",
+                        "ThirdAz",
+                        "VPCCIDR",
+                        "PublicSubnet1CIDR",
+                        "PublicSubnet2CIDR",
+                        "PublicSubnet3CIDR",
+                        "PrivateSubnet1CIDR",
+                        "PrivateSubnet2CIDR",
+                        "PrivateSubnet3CIDR",
+                        "NATInstanceType"
+                    ]
+                },
+                {
+                    "Label": {
+                        "default": "Microsoft Active Directory Configuration"
+                    },
+                    "Parameters": [
+                        "DomainDNSName",
+                        "DomainNetBIOSName",
+                        "RestoreModePassword",
+                        "DomainAdminUser",
+                        "DomainAdminPassword",
+                        "ADServer1InstanceType",
+                        "ADServer1NetBIOSName",
+                        "ADServer1PrivateIP",
+                        "ADServer2InstanceType",
+                        "ADServer2NetBIOSName",
+                        "ADServer2PrivateIP"
+                    ]
+                },
+                {
+                    "Label": {
+                        "default": "Remote Desktop Configuration"
+                    },
+                    "Parameters": [
+                        "KeyPairName",
+                        "RDGWCIDR",
+                        "RDGW1InstanceType",
+                        "RDGW1NetBIOSName",
+                        "RDGW1PrivateIP",
+                        "RDGW2InstanceType",
+                        "RDGW2NetBIOSName",
+                        "RDGW2PrivateIP"
                     ]
                 },
                 {
@@ -44,52 +78,18 @@
                 },
                 {
                     "Label": {
-                        "default": "Microsoft Active Directory Configuration"
+                        "default": "Microsoft SQL Server Configuration"
                     },
                     "Parameters": [
-                        "DomainDNSName",
-                        "DomainNetBIOSName",
-                        "RestoreModePassword",
-                        "DomainAdminUser",
-                        "DomainAdminPassword",
-                        "ADServer1InstanceType",
-                        "ADServer1NetBIOSName",
-                        "ADServer1PrivateIP",
-                        "ADServer2InstanceType",
-                        "ADServer2NetBIOSName",
-                        "ADServer2PrivateIP"
-                    ]
-                },
-                {
-                    "Label": {
-                        "default": "Network Configuration"
-                    },
-                    "Parameters": [
-                        "AvailabilityZones",
-                        "ThirdAz",
-                        "VPCCIDR",
-                        "PublicSubnet1CIDR",
-                        "PublicSubnet2CIDR",
-                        "PublicSubnet3CIDR",
-                        "PrivateSubnet1CIDR",
-                        "PrivateSubnet2CIDR",
-                        "PrivateSubnet3CIDR",
-                        "NATInstanceType"
-                    ]
-                },
-                {
-                    "Label": {
-                        "default": "Remote Desktop Configuration"
-                    },
-                    "Parameters": [
-                        "KeyPairName",
-                        "RDGWCIDR",
-                        "RDGW1InstanceType",
-                        "RDGW1NetBIOSName",
-                        "RDGW1PrivateIP",
-                        "RDGW2InstanceType",
-                        "RDGW2NetBIOSName",
-                        "RDGW2PrivateIP"
+                        "SQLServerVersion",
+                        "SQLServiceAccount",
+                        "SQLServiceAccountPassword",
+                        "SQLLicenseProvided",
+                        "VolumeIops",
+                        "VolumeSize",
+                        "VolumeType",
+                        "HostType",
+                        "DedicatedHostAMI"
                     ]
                 },
                 {
@@ -794,6 +794,10 @@
                 "QuickStartS3URL": "https://s3.amazonaws.com"
             },
             "us-east-1": {
+                "Partition": "aws",
+                "QuickStartS3URL": "https://s3.amazonaws.com"
+            },
+            "us-east-2": {
                 "Partition": "aws",
                 "QuickStartS3URL": "https://s3.amazonaws.com"
             },

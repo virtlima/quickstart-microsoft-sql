@@ -522,53 +522,69 @@
     "Mappings": {
         "AWSAMIRegionMap": {
             "AMI": {
-                "WS2012R2": "Windows_Server-2012-R2_RTM-English-64Bit-Base-2016.10.12",
-                "WS2012R2SQLENT2014": "Windows_Server-2012-R2_RTM-English-64Bit-SQL_2014_SP1_Enterprise-2016.08.11",
-                "WS2012R2SQLENT2016": "Windows_Server-2012-R2_RTM-English-64Bit-SQL_2016_Enterprise-2016.08.11"
+                "WS2012R2": "Windows_Server-2012-R2_RTM-English-64Bit-Base-2016.11.09",
+                "WS2012R2SQLENT2014": "Windows_Server-2012-R2_RTM-English-64Bit-SQL_2014_SP1_Enterprise-2016.11.09",
+                "WS2012R2SQLENT2016": "Windows_Server-2012-R2_RTM-English-64Bit-SQL_2016_Enterprise-2016.11.09"
             },
             "ap-northeast-1": {
-                "WS2012R2": "ami-7c449e1d"
+                "WS2012R2": "ami-b779d3d6",
+                "WS2012R2SQLENT2014": "ami-fc7ed49d",
+                "WS2012R2SQLENT2016": "ami-627fd503"
             },
             "ap-northeast-2": {
-                "WS2012R2": "ami-4fd30721"
+                "WS2012R2": "ami-b08b5cde",
+                "WS2012R2SQLENT2014": "ami-7f895e11",
+                "WS2012R2SQLENT2016": "ami-72b7601c"
             },
             "ap-south-1": {
-                "WS2012R2": "ami-f90f7b96"
+                "WS2012R2": "ami-14dca87b",
+                "WS2012R2SQLENT2014": "ami-12dca87d",
+                "WS2012R2SQLENT2016": "ami-bbc0b4d4"
             },
             "ap-southeast-1": {
-                "WS2012R2": "ami-2b309748"
+                "WS2012R2": "ami-b1e240d2",
+                "WS2012R2SQLENT2014": "ami-b9e240da",
+                "WS2012R2SQLENT2016": "ami-fc1cbf9f"
             },
             "ap-southeast-2": {
-                "WS2012R2": "ami-74043617"
+                "WS2012R2": "ami-16645a75",
+                "WS2012R2SQLENT2014": "ami-5e655b3d",
+                "WS2012R2SQLENT2016": "ami-52655b31"
             },
             "eu-central-1": {
-                "WS2012R2": "ami-0c34ca63"
+                "WS2012R2": "ami-c208cdad",
+                "WS2012R2SQLENT2014": "ami-360bce59",
+                "WS2012R2SQLENT2016": "ami-500acf3f"
             },
             "eu-west-1": {
-                "WS2012R2": "ami-55084526",
-                "WS2012R2SQLENT2014": "ami-97ea9fe4",
-                "WS2012R2SQLENT2016": "ami-b9582dca"
+                "WS2012R2": "ami-d8d586ab",
+                "WS2012R2SQLENT2014": "ami-6dd5861e",
+                "WS2012R2SQLENT2016": "ami-06d58675"
             },
             "sa-east-1": {
-                "WS2012R2": "ami-42ee732e"
+                "WS2012R2": "ami-b91c83d5",
+                "WS2012R2SQLENT2014": "ami-ca2db2a6",
+                "WS2012R2SQLENT2016": "ami-c92db2a5"
             },
             "us-east-1": {
-                "WS2012R2": "ami-3f0c4628",
-                "WS2012R2SQLENT2014": "ami-9f1e8488",
-                "WS2012R2SQLENT2016": "ami-693fa47e"
+                "WS2012R2": "ami-83d2f894",
+                "WS2012R2SQLENT2014": "ami-59d2f84e",
+                "WS2012R2SQLENT2016": "ami-d4d2f8c3"
             },
             "us-east-2": {
-                "WS2012R2": "ami-de164cbb",
-                "WS2012R2SQLENT2014": "ami-ac2f74c9",
-                "WS2012R2SQLENT2016": "ami-fd306b98"
+                "WS2012R2": "ami-1d752f78",
+                "WS2012R2SQLENT2014": "ami-ed623888",
+                "WS2012R2SQLENT2016": "ami-13693376"
             },
             "us-west-1": {
-                "WS2012R2": "ami-123c7472"
+                "WS2012R2": "ami-b1c792d1",
+                "WS2012R2SQLENT2014": "ami-6fc7920f",
+                "WS2012R2SQLENT2016": "ami-efc7928f"
             },
             "us-west-2": {
-                "WS2012R2": "ami-b871aad8",
-                "WS2012R2SQLENT2014": "ami-2e61ab4e",
-                "WS2012R2SQLENT2016": "ami-2d0fc54d"
+                "WS2012R2": "ami-1c7ad77c",
+                "WS2012R2SQLENT2014": "ami-aa74d9ca",
+                "WS2012R2SQLENT2016": "ami-8d78d5ed"
             }
         },
         "AWSInfoRegionMap": {

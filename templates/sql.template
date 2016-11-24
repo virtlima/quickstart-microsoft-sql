@@ -436,17 +436,18 @@
                 "full"
             ]
         },
-        "IsTwoNode": {"Fn::Not": [
-            {
-                "Fn::Equals": [
-                    {
-                        "Ref": "ThirdAz"
-                    },
-                    "full"
-                ]
-            }
-            ]}
-        ,
+        "IsTwoNode": {
+            "Fn::Not": [
+                {
+                    "Fn::Equals": [
+                        {
+                            "Ref": "ThirdAz"
+                        },
+                        "full"
+                    ]
+                }
+            ]
+        },
         "Vol1IsIo1": {
             "Fn::Equals": [
                 {
@@ -3416,11 +3417,24 @@
             "Type": "AWS::EC2::Instance",
             "Metadata": {
                 "PseudoDependsOn": {
-                    "Fn::If":
-                    [
+                    "Fn::If": [
                         "IsTwoNode",
-                        [{ "Ref": "WSFCFileServerWaitCondition" },{ "Ref": "WSFCNode1WaitCondition" }],
-                        [{ "Ref": "WSFCNode1WaitCondition" },{ "Ref": "WSFCNode3WaitCondition" }]
+                        [
+                            {
+                                "Ref": "WSFCFileServerWaitCondition"
+                            },
+                            {
+                                "Ref": "WSFCNode1WaitCondition"
+                            }
+                        ],
+                        [
+                            {
+                                "Ref": "WSFCNode1WaitCondition"
+                            },
+                            {
+                                "Ref": "WSFCNode3WaitCondition"
+                            }
+                        ]
                     ]
                 },
                 "AWS::CloudFormation::Init": {
@@ -4483,29 +4497,29 @@
                                 "Fn::If": [
                                     "IsTwoNode",
                                     {
-                                "command": {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "powershell.exe -Command \"C:\\cfn\\scripts\\Invoke-ADReplication.ps1",
-                                            " -UserName '",
-                                            {
-                                                "Ref": "DomainAdminUser"
-                                            },
-                                            "' -Password '",
-                                            {
-                                                "Ref": "DomainAdminPassword"
-                                            },
-                                            "' -DomainController '",
-                                            {
-                                                "Ref": "ADServer1NetBIOSName"
-                                            },
-                                            "'\""
-                                        ]
-                                    ]
-                                },
-                                "waitAfterCompletion": "0"
-                            },
+                                        "command": {
+                                            "Fn::Join": [
+                                                "",
+                                                [
+                                                    "powershell.exe -Command \"C:\\cfn\\scripts\\Invoke-ADReplication.ps1",
+                                                    " -UserName '",
+                                                    {
+                                                        "Ref": "DomainAdminUser"
+                                                    },
+                                                    "' -Password '",
+                                                    {
+                                                        "Ref": "DomainAdminPassword"
+                                                    },
+                                                    "' -DomainController '",
+                                                    {
+                                                        "Ref": "ADServer1NetBIOSName"
+                                                    },
+                                                    "'\""
+                                                ]
+                                            ]
+                                        },
+                                        "waitAfterCompletion": "0"
+                                    },
                                     {
                                         "Ref": "AWS::NoValue"
                                     }
@@ -4515,29 +4529,29 @@
                                 "Fn::If": [
                                     "IsTwoNode",
                                     {
-                                "command": {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "powershell.exe -Command \"C:\\cfn\\scripts\\Invoke-ADReplication.ps1",
-                                            " -UserName '",
-                                            {
-                                                "Ref": "DomainAdminUser"
-                                            },
-                                            "' -Password '",
-                                            {
-                                                "Ref": "DomainAdminPassword"
-                                            },
-                                            "' -DomainController '",
-                                            {
-                                                "Ref": "ADServer2NetBIOSName"
-                                            },
-                                            "'\""
-                                        ]
-                                    ]
-                                },
-                                "waitAfterCompletion": "0"
-                            },
+                                        "command": {
+                                            "Fn::Join": [
+                                                "",
+                                                [
+                                                    "powershell.exe -Command \"C:\\cfn\\scripts\\Invoke-ADReplication.ps1",
+                                                    " -UserName '",
+                                                    {
+                                                        "Ref": "DomainAdminUser"
+                                                    },
+                                                    "' -Password '",
+                                                    {
+                                                        "Ref": "DomainAdminPassword"
+                                                    },
+                                                    "' -DomainController '",
+                                                    {
+                                                        "Ref": "ADServer2NetBIOSName"
+                                                    },
+                                                    "'\""
+                                                ]
+                                            ]
+                                        },
+                                        "waitAfterCompletion": "0"
+                                    },
                                     {
                                         "Ref": "AWS::NoValue"
                                     }

@@ -436,6 +436,17 @@
                 "full"
             ]
         },
+        "IsTwoNode": {"Fn::Not": [
+            {
+                "Fn::Equals": [
+                    {
+                        "Ref": "ThirdAz"
+                    },
+                    "full"
+                ]
+            }
+            ]}
+        ,
         "Vol1IsIo1": {
             "Fn::Equals": [
                 {
@@ -658,6 +669,7 @@
     "Resources": {
         "WSFCFileServerWaitCondition": {
             "Type": "AWS::CloudFormation::WaitCondition",
+            "Condition": "IsTwoNode",
             "DependsOn": "WSFCFileServer",
             "Properties": {
                 "Handle": {
@@ -712,6 +724,7 @@
         },
         "WSFCFileServer": {
             "Type": "AWS::EC2::Instance",
+            "Condition": "IsTwoNode",
             "Metadata": {
                 "AWS::CloudFormation::Init": {
                     "configSets": {
@@ -1017,31 +1030,6 @@
                                     ]
                                 }
                             },
-                            "C:\\cfn\\scripts\\DownloadSQLEE.ps1": {
-                                "source": {
-                                    "Fn::Join": [
-                                        "/",
-                                        [
-                                            {
-                                                "Fn::FindInMap": [
-                                                    "AWSInfoRegionMap",
-                                                    {
-                                                        "Ref": "AWS::Region"
-                                                    },
-                                                    "QuickStartS3URL"
-                                                ]
-                                            },
-                                            {
-                                                "Ref": "QSS3BucketName"
-                                            },
-                                            {
-                                                "Ref": "QSS3KeyPrefix"
-                                            },
-                                            "scripts/DownloadSQLEE.ps1"
-                                        ]
-                                    ]
-                                }
-                            },
                             "C:\\cfn\\scripts\\Invoke-ADReplication.ps1": {
                                 "source": {
                                     "Fn::Join": [
@@ -1131,61 +1119,7 @@
                                 },
                                 "waitAfterCompletion": "forever"
                             },
-                            "d-create-sqlinstall-share": {
-                                "command": {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "powershell.exe -Command \"C:\\cfn\\scripts\\Create-Share.ps1",
-                                            " -Path 'c:\\sqlinstall'",
-                                            " -ShareName 'sqlinstall'",
-                                            " -FolderPath 'c:\\'",
-                                            " -FolderName 'sqlinstall'",
-                                            " -DomainNetBIOSName '",
-                                            {
-                                                "Ref": "DomainNetBIOSName"
-                                            },
-                                            "' -DomainAdminUser '",
-                                            {
-                                                "Ref": "DomainAdminUser"
-                                            },
-                                            "' -DomainAdminPassword '",
-                                            {
-                                                "Ref": "DomainAdminPassword"
-                                            },
-                                            "' -ServerName '",
-                                            {
-                                                "Ref": "WSFCFileServerNetBIOSName"
-                                            },
-                                            "'\""
-                                        ]
-                                    ]
-                                },
-                                "waitAfterCompletion": "0"
-                            },
-                            "e-download-sql-installer": {
-                                "command": {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "powershell.exe ",
-                                            "-ExecutionPolicy RemoteSigned ",
-                                            "-Command \"",
-                                            " C:\\cfn\\scripts\\DownloadSQLEE.ps1 -SQLServerVersion '",
-                                            {
-                                                "Ref": "SQLServerVersion"
-                                            },
-                                            "' -DestServer '",
-                                            {
-                                                "Ref": "WSFCFileServerNetBIOSName"
-                                            },
-                                            "' -DestShare 'sqlinstall'\""
-                                        ]
-                                    ]
-                                },
-                                "waitAfterCompletion": "0"
-                            },
-                            "f-create-sql-account": {
+                            "d-create-sql-account": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
@@ -1224,7 +1158,7 @@
                                 },
                                 "waitAfterCompletion": "0"
                             },
-                            "g-Invoke-ADReplication-DC1": {
+                            "e-Invoke-ADReplication-DC1": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
@@ -1248,7 +1182,7 @@
                                 },
                                 "waitAfterCompletion": "0"
                             },
-                            "h-Invoke-ADReplication-DC2": {
+                            "f-Invoke-ADReplication-DC2": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
@@ -1272,7 +1206,7 @@
                                 },
                                 "waitAfterCompletion": "15"
                             },
-                            "i-add-domadmin-user-to-group": {
+                            "g-add-domadmin-user-to-group": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
@@ -1298,7 +1232,7 @@
                                 },
                                 "waitAfterCompletion": "0"
                             },
-                            "j-add-sqlservice-user-to-group": {
+                            "h-add-sqlservice-user-to-group": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
@@ -1432,7 +1366,6 @@
         },
         "WSFCNode1": {
             "Type": "AWS::EC2::Instance",
-            "DependsOn": "WSFCFileServerWaitCondition",
             "Metadata": {
                 "AWS::CloudFormation::Init": {
                     "configSets": {
@@ -1768,6 +1701,82 @@
                                     ]
                                 }
                             },
+                            "C:\\cfn\\scripts\\DownloadSQLEE.ps1": {
+                                "source": {
+                                    "Fn::Join": [
+                                        "/",
+                                        [
+                                            {
+                                                "Fn::FindInMap": [
+                                                    "AWSInfoRegionMap",
+                                                    {
+                                                        "Ref": "AWS::Region"
+                                                    },
+                                                    "QuickStartS3URL"
+                                                ]
+                                            },
+                                            {
+                                                "Ref": "QSS3BucketName"
+                                            },
+                                            {
+                                                "Ref": "QSS3KeyPrefix"
+                                            },
+                                            "scripts/DownloadSQLEE.ps1"
+                                        ]
+                                    ]
+                                }
+                            },
+                            "C:\\cfn\\scripts\\Create-ADServiceAccount.ps1": {
+                                "source": {
+                                    "Fn::Join": [
+                                        "/",
+                                        [
+                                            {
+                                                "Fn::FindInMap": [
+                                                    "AWSInfoRegionMap",
+                                                    {
+                                                        "Ref": "AWS::Region"
+                                                    },
+                                                    "QuickStartS3URL"
+                                                ]
+                                            },
+                                            {
+                                                "Ref": "QSS3BucketName"
+                                            },
+                                            {
+                                                "Ref": "QSS3KeyPrefix"
+                                            },
+                                            "submodules/quickstart-microsoft-utilities",
+                                            "scripts/Create-ADServiceAccount.ps1"
+                                        ]
+                                    ]
+                                }
+                            },
+                            "C:\\cfn\\scripts\\AddUserToGroup.ps1": {
+                                "source": {
+                                    "Fn::Join": [
+                                        "/",
+                                        [
+                                            {
+                                                "Fn::FindInMap": [
+                                                    "AWSInfoRegionMap",
+                                                    {
+                                                        "Ref": "AWS::Region"
+                                                    },
+                                                    "QuickStartS3URL"
+                                                ]
+                                            },
+                                            {
+                                                "Ref": "QSS3BucketName"
+                                            },
+                                            {
+                                                "Ref": "QSS3KeyPrefix"
+                                            },
+                                            "scripts/AddUserToGroup.ps1"
+                                        ]
+                                    ]
+                                }
+                            },
                             "C:\\cfn\\scripts\\Invoke-ADReplication.ps1": {
                                 "source": {
                                     "Fn::Join": [
@@ -1893,7 +1902,46 @@
                                 },
                                 "waitAfterCompletion": "0"
                             },
-                            "i-Invoke-ADReplication-DC1": {
+                            "i-create-sql-account": {
+                                "command": {
+                                    "Fn::Join": [
+                                        "",
+                                        [
+                                            "powershell.exe -Command \"C:\\cfn\\scripts\\Create-ADServiceAccount.ps1 -DomainDNSName '",
+                                            {
+                                                "Ref": "DomainDNSName"
+                                            },
+                                            "' -DomainNetBIOSName '",
+                                            {
+                                                "Ref": "DomainNetBIOSName"
+                                            },
+                                            "' -DomainAdminUser '",
+                                            {
+                                                "Ref": "DomainAdminUser"
+                                            },
+                                            "' -DomainAdminPassword '",
+                                            {
+                                                "Ref": "DomainAdminPassword"
+                                            },
+                                            "' -ServiceAccountUser '",
+                                            {
+                                                "Ref": "SQLServiceAccount"
+                                            },
+                                            "' -ServiceAccountPassword '",
+                                            {
+                                                "Ref": "SQLServiceAccountPassword"
+                                            },
+                                            "' -ADServerNetBIOSName '",
+                                            {
+                                                "Ref": "ADServer1NetBIOSName"
+                                            },
+                                            "'\""
+                                        ]
+                                    ]
+                                },
+                                "waitAfterCompletion": "0"
+                            },
+                            "j-Invoke-ADReplication-DC1": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
@@ -1917,7 +1965,7 @@
                                 },
                                 "waitAfterCompletion": "0"
                             },
-                            "j-Invoke-ADReplication-DC2": {
+                            "k-Invoke-ADReplication-DC2": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
@@ -1940,6 +1988,76 @@
                                     ]
                                 },
                                 "waitAfterCompletion": "15"
+                            },
+                            "l-add-domadmin-user-to-group": {
+                                "command": {
+                                    "Fn::Join": [
+                                        "",
+                                        [
+                                            "powershell.exe ",
+                                            "-ExecutionPolicy RemoteSigned ",
+                                            "-Command \"",
+                                            " C:\\cfn\\scripts\\AddUserToGroup.ps1 -UserName '",
+                                            {
+                                                "Ref": "DomainAdminUser"
+                                            },
+                                            "' -ServerName '",
+                                            {
+                                                "Ref": "WSFCNode1NetBIOSName"
+                                            },
+                                            "' -DomainNetBIOSName '",
+                                            {
+                                                "Ref": "DomainNetBIOSName"
+                                            },
+                                            "' -GroupName 'Administrators'\""
+                                        ]
+                                    ]
+                                },
+                                "waitAfterCompletion": "0"
+                            },
+                            "m-add-sqlservice-user-to-group": {
+                                "command": {
+                                    "Fn::Join": [
+                                        "",
+                                        [
+                                            "powershell.exe ",
+                                            "-ExecutionPolicy RemoteSigned ",
+                                            "-Command \"",
+                                            "C:\\cfn\\scripts\\AddUserToGroup.ps1 -UserName '",
+                                            {
+                                                "Ref": "SQLServiceAccount"
+                                            },
+                                            "' -ServerName '",
+                                            {
+                                                "Ref": "WSFCNode1NetBIOSName"
+                                            },
+                                            "' -DomainNetBIOSName '",
+                                            {
+                                                "Ref": "DomainNetBIOSName"
+                                            },
+                                            "' -GroupName 'Administrators'\""
+                                        ]
+                                    ]
+                                },
+                                "waitAfterCompletion": "0"
+                            },
+                            "n-download-sql-installer": {
+                                "command": {
+                                    "Fn::Join": [
+                                        "",
+                                        [
+                                            "powershell.exe ",
+                                            "-ExecutionPolicy RemoteSigned ",
+                                            "-Command \"",
+                                            " C:\\cfn\\scripts\\DownloadSQLEE.ps1 -SQLServerVersion '",
+                                            {
+                                                "Ref": "SQLServerVersion"
+                                            },
+                                            "'\""
+                                        ]
+                                    ]
+                                },
+                                "waitAfterCompletion": "0"
                             }
                         }
                     },
@@ -1996,10 +2114,6 @@
                                             "' -SQLServiceAccountPassword '",
                                             {
                                                 "Ref": "SQLServiceAccountPassword"
-                                            },
-                                            "' -FileServerNetBIOSName '",
-                                            {
-                                                "Ref": "WSFCFileServerNetBIOSName"
                                             },
                                             "' -NetBIOSName '",
                                             {
@@ -2346,8 +2460,8 @@
         },
         "WSFCNode3": {
             "Type": "AWS::EC2::Instance",
-            "DependsOn": "WSFCFileServerWaitCondition",
             "Condition": "ThirdAzIsFullNode",
+            "DependsOn": "WSFCNode1WaitCondition",
             "Metadata": {
                 "AWS::CloudFormation::Init": {
                     "configSets": {
@@ -2683,6 +2797,31 @@
                                     ]
                                 }
                             },
+                            "C:\\cfn\\scripts\\DownloadSQLEE.ps1": {
+                                "source": {
+                                    "Fn::Join": [
+                                        "/",
+                                        [
+                                            {
+                                                "Fn::FindInMap": [
+                                                    "AWSInfoRegionMap",
+                                                    {
+                                                        "Ref": "AWS::Region"
+                                                    },
+                                                    "QuickStartS3URL"
+                                                ]
+                                            },
+                                            {
+                                                "Ref": "QSS3BucketName"
+                                            },
+                                            {
+                                                "Ref": "QSS3KeyPrefix"
+                                            },
+                                            "scripts/DownloadSQLEE.ps1"
+                                        ]
+                                    ]
+                                }
+                            },
                             "C:\\cfn\\scripts\\Invoke-ADReplication.ps1": {
                                 "source": {
                                     "Fn::Join": [
@@ -2855,6 +2994,24 @@
                                     ]
                                 },
                                 "waitAfterCompletion": "15"
+                            },
+                            "k-download-sql-installer": {
+                                "command": {
+                                    "Fn::Join": [
+                                        "",
+                                        [
+                                            "powershell.exe ",
+                                            "-ExecutionPolicy RemoteSigned ",
+                                            "-Command \"",
+                                            " C:\\cfn\\scripts\\DownloadSQLEE.ps1 -SQLServerVersion '",
+                                            {
+                                                "Ref": "SQLServerVersion"
+                                            },
+                                            "'\""
+                                        ]
+                                    ]
+                                },
+                                "waitAfterCompletion": "0"
                             }
                         }
                     },
@@ -2911,10 +3068,6 @@
                                             "' -SQLServiceAccountPassword '",
                                             {
                                                 "Ref": "SQLServiceAccountPassword"
-                                            },
-                                            "' -FileServerNetBIOSName '",
-                                            {
-                                                "Ref": "WSFCFileServerNetBIOSName"
                                             },
                                             "' -NetBIOSName '",
                                             {
@@ -3261,8 +3414,15 @@
         },
         "WSFCNode2": {
             "Type": "AWS::EC2::Instance",
-            "DependsOn": "WSFCNode1WaitCondition",
             "Metadata": {
+                "PseudoDependsOn": {
+                    "Fn::If":
+                    [
+                        "IsTwoNode",
+                        [{ "Ref": "WSFCFileServerWaitCondition" },{ "Ref": "WSFCNode1WaitCondition" }],
+                        [{ "Ref": "WSFCNode1WaitCondition" },{ "Ref": "WSFCNode3WaitCondition" }]
+                    ]
+                },
                 "AWS::CloudFormation::Init": {
                     "configSets": {
                         "config": [
@@ -3597,6 +3757,31 @@
                                     ]
                                 }
                             },
+                            "C:\\cfn\\scripts\\DownloadSQLEE.ps1": {
+                                "source": {
+                                    "Fn::Join": [
+                                        "/",
+                                        [
+                                            {
+                                                "Fn::FindInMap": [
+                                                    "AWSInfoRegionMap",
+                                                    {
+                                                        "Ref": "AWS::Region"
+                                                    },
+                                                    "QuickStartS3URL"
+                                                ]
+                                            },
+                                            {
+                                                "Ref": "QSS3BucketName"
+                                            },
+                                            {
+                                                "Ref": "QSS3KeyPrefix"
+                                            },
+                                            "scripts/DownloadSQLEE.ps1"
+                                        ]
+                                    ]
+                                }
+                            },
                             "C:\\cfn\\scripts\\Invoke-ADReplication.ps1": {
                                 "source": {
                                     "Fn::Join": [
@@ -3769,6 +3954,24 @@
                                     ]
                                 },
                                 "waitAfterCompletion": "15"
+                            },
+                            "k-download-sql-installer": {
+                                "command": {
+                                    "Fn::Join": [
+                                        "",
+                                        [
+                                            "powershell.exe ",
+                                            "-ExecutionPolicy RemoteSigned ",
+                                            "-Command \"",
+                                            " C:\\cfn\\scripts\\DownloadSQLEE.ps1 -SQLServerVersion '",
+                                            {
+                                                "Ref": "SQLServerVersion"
+                                            },
+                                            "'\""
+                                        ]
+                                    ]
+                                },
+                                "waitAfterCompletion": "0"
                             }
                         }
                     },
@@ -3825,10 +4028,6 @@
                                             "' -SQLServiceAccountPassword '",
                                             {
                                                 "Ref": "SQLServiceAccountPassword"
-                                            },
-                                            "' -FileServerNetBIOSName '",
-                                            {
-                                                "Ref": "WSFCFileServerNetBIOSName"
                                             },
                                             "' -NetBIOSName '",
                                             {
@@ -4201,36 +4400,44 @@
                                 "waitAfterCompletion": "0"
                             },
                             "c-create-witness-share": {
-                                "command": {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "powershell.exe -Command \"C:\\cfn\\scripts\\Create-Share.ps1",
-                                            " -Path 'c:\\witness'",
-                                            " -ShareName 'witness'",
-                                            " -FolderPath 'c:\\'",
-                                            " -FolderName 'witness'",
-                                            " -DomainNetBIOSName '",
-                                            {
-                                                "Ref": "DomainNetBIOSName"
-                                            },
-                                            "' -DomainAdminUser '",
-                                            {
-                                                "Ref": "DomainAdminUser"
-                                            },
-                                            "' -DomainAdminPassword '",
-                                            {
-                                                "Ref": "DomainAdminPassword"
-                                            },
-                                            "' -ServerName '",
-                                            {
-                                                "Ref": "WSFCFileServerNetBIOSName"
-                                            },
-                                            "'\""
-                                        ]
-                                    ]
-                                },
-                                "waitAfterCompletion": "0"
+                                "Fn::If": [
+                                    "IsTwoNode",
+                                    {
+                                        "command": {
+                                            "Fn::Join": [
+                                                "",
+                                                [
+                                                    "powershell.exe -Command \"C:\\cfn\\scripts\\Create-Share.ps1",
+                                                    " -Path 'c:\\witness'",
+                                                    " -ShareName 'witness'",
+                                                    " -FolderPath 'c:\\'",
+                                                    " -FolderName 'witness'",
+                                                    " -DomainNetBIOSName '",
+                                                    {
+                                                        "Ref": "DomainNetBIOSName"
+                                                    },
+                                                    "' -DomainAdminUser '",
+                                                    {
+                                                        "Ref": "DomainAdminUser"
+                                                    },
+                                                    "' -DomainAdminPassword '",
+                                                    {
+                                                        "Ref": "DomainAdminPassword"
+                                                    },
+                                                    "' -ServerName '",
+                                                    {
+                                                        "Ref": "WSFCFileServerNetBIOSName"
+                                                    },
+                                                    "'\""
+                                                ]
+                                            ]
+                                        },
+                                        "waitAfterCompletion": "0"
+                                    },
+                                    {
+                                        "Ref": "AWS::NoValue"
+                                    }
+                                ]
                             },
                             "d-create-Replica-share": {
                                 "command": {
@@ -4256,7 +4463,15 @@
                                             },
                                             "' -ServerName '",
                                             {
-                                                "Ref": "WSFCFileServerNetBIOSName"
+                                                "Fn::If": [
+                                                    "IsTwoNode",
+                                                    {
+                                                        "Ref": "WSFCFileServerNetBIOSName"
+                                                    },
+                                                    {
+                                                        "Ref": "WSFCNode1NetBIOSName"
+                                                    }
+                                                ]
                                             },
                                             "'\""
                                         ]
@@ -4265,6 +4480,9 @@
                                 "waitAfterCompletion": "0"
                             },
                             "e-Invoke-ADReplication-DC1": {
+                                "Fn::If": [
+                                    "IsTwoNode",
+                                    {
                                 "command": {
                                     "Fn::Join": [
                                         "",
@@ -4288,7 +4506,15 @@
                                 },
                                 "waitAfterCompletion": "0"
                             },
+                                    {
+                                        "Ref": "AWS::NoValue"
+                                    }
+                                ]
+                            },
                             "f-Invoke-ADReplication-DC2": {
+                                "Fn::If": [
+                                    "IsTwoNode",
+                                    {
                                 "command": {
                                     "Fn::Join": [
                                         "",
@@ -4310,39 +4536,52 @@
                                         ]
                                     ]
                                 },
-                                "waitAfterCompletion": "15"
+                                "waitAfterCompletion": "0"
+                            },
+                                    {
+                                        "Ref": "AWS::NoValue"
+                                    }
+                                ]
                             },
                             "g-Set-Folder-Permissions": {
-                                "command": {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "powershell.exe -ExecutionPolicy RemoteSigned \"C:\\cfn\\scripts\\Set-Folder-Permissions.ps1",
-                                            " -DomainNetBIOSName '",
-                                            {
-                                                "Ref": "DomainNetBIOSName"
-                                            },
-                                            "' -DomainAdminUser '",
-                                            {
-                                                "Ref": "DomainAdminUser"
-                                            },
-                                            "' -DomainAdminPassword '",
-                                            {
-                                                "Ref": "DomainAdminPassword"
-                                            },
-                                            "' -SQLServiceAccount '",
-                                            {
-                                                "Ref": "SQLServiceAccount"
-                                            },
-                                            "' -FileServerNetBIOSName '",
-                                            {
-                                                "Ref": "WSFCFileServerNetBIOSName"
-                                            },
-                                            "'\""
-                                        ]
-                                    ]
-                                },
-                                "waitAfterCompletion": "0"
+                                "Fn::If": [
+                                    "IsTwoNode",
+                                    {
+                                        "command": {
+                                            "Fn::Join": [
+                                                "",
+                                                [
+                                                    "powershell.exe -ExecutionPolicy RemoteSigned \"C:\\cfn\\scripts\\Set-Folder-Permissions.ps1",
+                                                    " -DomainNetBIOSName '",
+                                                    {
+                                                        "Ref": "DomainNetBIOSName"
+                                                    },
+                                                    "' -DomainAdminUser '",
+                                                    {
+                                                        "Ref": "DomainAdminUser"
+                                                    },
+                                                    "' -DomainAdminPassword '",
+                                                    {
+                                                        "Ref": "DomainAdminPassword"
+                                                    },
+                                                    "' -SQLServiceAccount '",
+                                                    {
+                                                        "Ref": "SQLServiceAccount"
+                                                    },
+                                                    "' -FileServerNetBIOSName '",
+                                                    {
+                                                        "Ref": "WSFCFileServerNetBIOSName"
+                                                    },
+                                                    "'\""
+                                                ]
+                                            ]
+                                        },
+                                        "waitAfterCompletion": "0"
+                                    },
+                                    {
+                                        "Ref": "AWS::NoValue"
+                                    }
+                                ]
                             },
                             "h-Enable-AlwaysOn": {
                                 "command": {
@@ -4402,6 +4641,15 @@
                                         "",
                                         [
                                             "powershell.exe -ExecutionPolicy RemoteSigned \"C:\\cfn\\scripts\\Set-ClusterQuorum.ps1",
+                                            {
+                                                "Fn::If": [
+                                                    "ThirdAzIsFullNode",
+                                                    " -Witness $false",
+                                                    {
+                                                        "Ref": "AWS::NoValue"
+                                                    }
+                                                ]
+                                            },
                                             " -DomainNetBIOSName '",
                                             {
                                                 "Ref": "DomainNetBIOSName"
@@ -4414,13 +4662,29 @@
                                             {
                                                 "Ref": "DomainAdminPassword"
                                             },
-                                            "' -FileServerNetBIOSName '",
-                                            {
-                                                "Ref": "WSFCFileServerNetBIOSName"
-                                            },
                                             "' -WSFCNode2NetBIOSName '",
                                             {
                                                 "Ref": "WSFCNode2NetBIOSName"
+                                            },
+                                            {
+                                                "Fn::If": [
+                                                    "IsTwoNode",
+                                                    "' -FileServerNetBIOSName '",
+                                                    {
+                                                        "Ref": "AWS::NoValue"
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "Fn::If": [
+                                                    "IsTwoNode",
+                                                    {
+                                                        "Ref": "WSFCFileServerNetBIOSName"
+                                                    },
+                                                    {
+                                                        "Ref": "AWS::NoValue"
+                                                    }
+                                                ]
                                             },
                                             "'\""
                                         ]
@@ -5539,6 +5803,13 @@
                 "Ref": "WSFCNode2NetBIOSName"
             },
             "Description": "NetBIOS name of the 2nd WSFC Node"
+        },
+        "WSFCNode3NetBIOSName": {
+            "Condition": "ThirdAzIsFullNode",
+            "Value": {
+                "Ref": "WSFCNode3NetBIOSName"
+            },
+            "Description": "NetBIOS name of the 3rd WSFC Node"
         }
     }
 }

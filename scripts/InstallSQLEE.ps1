@@ -3,10 +3,6 @@ param(
 
     [Parameter(Mandatory=$true)]
     [string]
-    $FileServerNetBIOSName,
-
-    [Parameter(Mandatory=$true)]
-    [string]
     $NetBIOSName,
 
     [Parameter(Mandatory=$true)]
@@ -41,15 +37,14 @@ try {
 
     $InstallSqlPs={
         $ErrorActionPreference = "Stop"
-        $share= "//" + $Using:FileServerNetBIOSName + "/sqlinstall/"
-        $fname= $share + (dir -File -Path $share *.iso)
+        $fname= "C:\sqlinstall\" + (dir -File -Path "C:\sqlinstall\" *.iso)
         $driveLetter = Get-Volume | ?{$_.DriveType -eq 'CD-ROM'} | select -ExpandProperty DriveLetter
         if ($driveLetter.Count -lt 1) {
             Mount-DiskImage -ImagePath $fname
         }
         $installer = "$($driveLetter):\SETUP.EXE"
         if ((Get-Volume -DriveLetter $($driveLetter)).FileSystemLabel -eq "SQL2016_x64_ENU") {
-            $ssms = $share + "SSMS-Setup-ENU.exe"
+            $ssms = "C:\sqlinstall\SSMS-Setup-ENU.exe"
             $ssmsargs = "/quiet /norestart"
             Start-Process $ssms $ssmsargs -Wait -ErrorAction Stop -RedirectStandardOutput "C:\cfn\log\SSMSInstallerOutput.txt" -RedirectStandardError "C:\cfn\log\SSMSInstallerErrors.txt"
             $arguments =  '/Q /Action=Install /UpdateEnabled=False /Features=SQLEngine,Replication,FullText,Conn,BOL /INSTANCENAME=MSSQLSERVER /SQLSVCACCOUNT="' + $Using:DomainNetBIOSName + '\' + $Using:SQLServiceAccount + '" /SQLSVCPASSWORD="' + $Using:SQLServiceAccountPassword + '" /AGTSVCACCOUNT="' + $Using:DomainNetBIOSName + '\' + $Using:SQLServiceAccount + '" /AGTSVCPASSWORD="' + $Using:SQLServiceAccountPassword + '" /SQLSYSADMINACCOUNTS="' + $Using:DomainNetBIOSName + '\' + $Using:DomainAdminUser + '" /SQLUSERDBDIR="D:\MSSQL\DATA" /SQLUSERDBLOGDIR="E:\MSSQL\LOG" /SQLBACKUPDIR="F:\MSSQL\Backup" /SQLTEMPDBDIR="F:\MSSQL\TempDB" /SQLTEMPDBLOGDIR="F:\MSSQL\TempDB" /IACCEPTSQLSERVERLICENSETERMS'

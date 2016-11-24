@@ -4,14 +4,6 @@ param(
 
     [Parameter(Mandatory=$true)]
     [string]
-    $DestShare,
-
-    [Parameter(Mandatory=$true)]
-    [string]
-    $DestServer,
-
-    [Parameter(Mandatory=$true)]
-    [string]
     $SQLServerVersion
 
 )
@@ -20,6 +12,9 @@ try {
     Start-Transcript -Path C:\cfn\log\DownloadSQLEE.ps1.txt -Append
 
     $ErrorActionPreference = "Stop"
+
+    $DestPath = "C:\sqlinstall"
+    New-Item "$DestPath" -Type directory -Force
 
     if($SQLServerVersion -eq "2014") {
         $source = "http://download.microsoft.com/download/6/1/9/619E068C-7115-490A-BFE3-09BFDEF83CB9/SQLServer2014-x64-ENU.iso"
@@ -35,9 +30,9 @@ try {
     $tries = 5
     while ($tries -ge 1) {
         try {
-            Start-BitsTransfer -Source $source -Destination "\\$DestServer\$DestShare\" -ErrorAction Stop
+            Start-BitsTransfer -Source $source -Destination "$DestPath" -ErrorAction Stop
             if ($SQLServerVersion -eq "2016") {
-                Start-BitsTransfer -Source $ssmssource -Destination "\\$DestServer\$DestShare\" -ErrorAction Stop
+                Start-BitsTransfer -Source $ssmssource -Destination "$DestPath" -ErrorAction Stop
             }
             break
         }

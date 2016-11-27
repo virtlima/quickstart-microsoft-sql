@@ -1893,10 +1893,6 @@
                                             {
                                                 "Ref": "DomainDNSName"
                                             },
-                                            "' -ServerName '",
-                                            {
-                                                "Ref": "WSFCNode1NetBIOSName"
-                                            },
                                             "'\""
                                         ]
                                     ]
@@ -2938,10 +2934,6 @@
                                             {
                                                 "Ref": "DomainDNSName"
                                             },
-                                            "' -ServerName '",
-                                            {
-                                                "Ref": "WSFCNode3NetBIOSName"
-                                            },
                                             "'\""
                                         ]
                                     ]
@@ -3910,10 +3902,6 @@
                                             " -DomainDNSName '",
                                             {
                                                 "Ref": "DomainDNSName"
-                                            },
-                                            "' -ServerName '",
-                                            {
-                                                "Ref": "WSFCNode2NetBIOSName"
                                             },
                                             "'\""
                                         ]

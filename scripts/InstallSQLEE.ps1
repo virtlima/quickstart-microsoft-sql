@@ -41,6 +41,7 @@ try {
         $driveLetter = Get-Volume | ?{$_.DriveType -eq 'CD-ROM'} | select -ExpandProperty DriveLetter
         if ($driveLetter.Count -lt 1) {
             Mount-DiskImage -ImagePath $fname
+            $driveLetter = Get-Volume | ?{$_.DriveType -eq 'CD-ROM'} | select -ExpandProperty DriveLetter
         }
         $installer = "$($driveLetter):\SETUP.EXE"
         if ((Get-Volume -DriveLetter $($driveLetter)).FileSystemLabel -eq "SQL2016_x64_ENU") {

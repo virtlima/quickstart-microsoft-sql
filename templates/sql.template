@@ -1875,28 +1875,16 @@
                                 "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Install-WindowsFailoverClustering.ps1\"",
                                 "waitAfterCompletion": "0"
                             },
-                            "f-reboot": {
+                            "f-enable-credssp": {
+                                "command": "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\EnableCredSsp.ps1",
+                                "waitAfterCompletion": "0"
+                            },
+                            "g-reboot": {
                                 "command": "powershell.exe -Command \"Restart-Computer -Force\"",
                                 "waitAfterCompletion": "forever"
                             },
-                            "g-open-WSFC-ports": {
+                            "h-open-WSFC-ports": {
                                 "command": "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\OpenWSFCPorts.ps1\"",
-                                "waitAfterCompletion": "0"
-                            },
-                            "h-enable-credssp": {
-                                "command": {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\EnableCredSsp.ps1",
-                                            " -DomainDNSName '",
-                                            {
-                                                "Ref": "DomainDNSName"
-                                            },
-                                            "'\""
-                                        ]
-                                    ]
-                                },
                                 "waitAfterCompletion": "0"
                             },
                             "i-create-sql-account": {
@@ -2916,28 +2904,16 @@
                                 "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Install-WindowsFailoverClustering.ps1\"",
                                 "waitAfterCompletion": "0"
                             },
-                            "f-reboot": {
+                            "f-enable-credssp": {
+                                "command": "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\EnableCredSsp.ps1",
+                                "waitAfterCompletion": "0"
+                            },
+                            "g-reboot": {
                                 "command": "powershell.exe -Command \"Restart-Computer -Force\"",
                                 "waitAfterCompletion": "forever"
                             },
-                            "g-open-WSFC-ports": {
+                            "h-open-WSFC-ports": {
                                 "command": "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\OpenWSFCPorts.ps1\"",
-                                "waitAfterCompletion": "0"
-                            },
-                            "h-enable-credssp": {
-                                "command": {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\EnableCredSsp.ps1",
-                                            " -DomainDNSName '",
-                                            {
-                                                "Ref": "DomainDNSName"
-                                            },
-                                            "'\""
-                                        ]
-                                    ]
-                                },
                                 "waitAfterCompletion": "0"
                             },
                             "i-Invoke-ADReplication-DC1": {
@@ -3885,28 +3861,16 @@
                                 "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Install-WindowsFailoverClustering.ps1\"",
                                 "waitAfterCompletion": "0"
                             },
-                            "f-reboot": {
+                            "f-enable-credssp": {
+                                "command": "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\EnableCredSsp.ps1",
+                                "waitAfterCompletion": "0"
+                            },
+                            "g-reboot": {
                                 "command": "powershell.exe -Command \"Restart-Computer -Force\"",
                                 "waitAfterCompletion": "forever"
                             },
-                            "g-open-WSFC-ports": {
+                            "h-open-WSFC-ports": {
                                 "command": "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\OpenWSFCPorts.ps1\"",
-                                "waitAfterCompletion": "0"
-                            },
-                            "h-enable-credssp": {
-                                "command": {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\EnableCredSsp.ps1",
-                                            " -DomainDNSName '",
-                                            {
-                                                "Ref": "DomainDNSName"
-                                            },
-                                            "'\""
-                                        ]
-                                    ]
-                                },
                                 "waitAfterCompletion": "0"
                             },
                             "i-Invoke-ADReplication-DC1": {

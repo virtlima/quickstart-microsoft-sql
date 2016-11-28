@@ -61,7 +61,7 @@ try {
 
     $Retries = 0
     $Installed = $false
-    while (($Retries -lt 4) -and (!$Installed)) {
+    while (($Retries -lt 8) -and (!$Installed)) {
         try {
             Invoke-Command -Authentication Credssp -Scriptblock $InstallSqlPs -ComputerName $NetBIOSName -Credential $DomainAdminCreds
             $Installed = $true
@@ -69,7 +69,7 @@ try {
         catch {
             $Exception = $_
             $Retries++
-            if ($Retries -lt 4) {
+            if ($Retries -lt 8) {
                 powershell.exe -ExecutionPolicy RemoteSigned -Command C:\cfn\scripts\EnableCredSsp.ps1
                 Start-Sleep (([math]::pow($Retries, 2)) * 60)
             }

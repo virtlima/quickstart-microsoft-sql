@@ -1,0 +1,42 @@
+[
+    {
+        "ParameterValue": "10.0.0.0/16",
+        "ParameterKey": "RDGWCIDR"
+    },
+    {
+        "ParameterValue": "cikey",
+        "ParameterKey": "KeyPairName"
+    },
+    {
+        "ParameterValue": "$[alfred_genpass_32]",
+        "ParameterKey": "SQLServiceAccountPassword"
+    },
+    {
+        "ParameterValue": "$[alfred_genpass_32]",
+        "ParameterKey": "DomainAdminPassword"
+    },
+    {
+        "ParameterValue": "$[alfred_genpass_32]",
+        "ParameterKey": "RestoreModePassword"
+    },
+    {
+        "ParameterValue": "$[alfred_genaz_2]",
+        "ParameterKey": "AvailabilityZones"
+    },
+    {
+        "ParameterValue": "hostid1",
+        "ParameterKey": "DedicatedHostIDNode2"
+    },
+    {
+        "ParameterValue": "hostid2",
+        "ParameterKey": "DedicatedHostIDNode3"
+    },
+    {
+        "ParameterValue": "hostid3",
+        "ParameterKey": "DedicatedHostIDNode1"
+    },
+    {
+        "ParameterValue": "Dedicated Host",
+        "ParameterKey": "HostType"
+    }
+]

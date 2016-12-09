@@ -195,40 +195,43 @@
     "Mappings": {
         "AWSAMIRegionMap": {
             "AMI": {
-                "WS2012R2": "Windows_Server-2012-R2_RTM-English-64Bit-Base-2016.08.11"
+                "WS2012R2": "Windows_Server-2012-R2_RTM-English-64Bit-Base-2016.11.23"
             },
             "ap-northeast-1": {
-                "WS2012R2": "ami-281ad849"
+                "WS2012R2": "ami-5b299d3a"
             },
             "ap-northeast-2": {
-                "WS2012R2": "ami-ab549ec5"
+                "WS2012R2": "ami-69d30407"
             },
             "ap-south-1": {
-                "WS2012R2": "ami-4b7d0824"
+                "WS2012R2": "ami-79255216"
             },
             "ap-southeast-1": {
-                "WS2012R2": "ami-d6f32ab5"
+                "WS2012R2": "ami-9d7ad8fe"
             },
             "ap-southeast-2": {
-                "WS2012R2": "ami-47bf8b24"
+                "WS2012R2": "ami-9fe7d9fc"
             },
             "eu-central-1": {
-                "WS2012R2": "ami-1db84972"
+                "WS2012R2": "ami-21cb0f4e"
             },
             "eu-west-1": {
-                "WS2012R2": "ami-a8592cdb"
+                "WS2012R2": "ami-95d984e6"
             },
             "sa-east-1": {
-                "WS2012R2": "ami-2a70e646"
+                "WS2012R2": "ami-628e100e"
             },
             "us-east-1": {
-                "WS2012R2": "ami-bd3ba0aa"
+                "WS2012R2": "ami-bfeddca8"
+            },
+            "us-east-2": {
+                "WS2012R2": "ami-e999c38c"
             },
             "us-west-1": {
-                "WS2012R2": "ami-69febd09"
+                "WS2012R2": "ami-8b590deb"
             },
             "us-west-2": {
-                "WS2012R2": "ami-1712d877"
+                "WS2012R2": "ami-24e64944"
             }
         }
     },
@@ -489,8 +492,8 @@
                                     ]
                                 }
                             },
-                            "c:\\cfn\\scripts\\DownloadSQLEE2.ps1": {
-                                "source": "https://s3.amazonaws.com/quickstart-reference/microsoft/sql/latest/scripts/DownloadSQLEE2.ps1"
+                            "c:\\cfn\\scripts\\DownloadSQLEE.ps1": {
+                                "source": "https://s3.amazonaws.com/quickstart-reference/microsoft/sql/latest/scripts/DownloadSQLEE-Legacy.ps1"
                             },
                             "c:\\cfn\\scripts\\OpenWSFCPorts.bat": {
                                 "source": "https://s3.amazonaws.com/quickstart-reference/microsoft/sql/latest/scripts/OpenWSFCPorts.bat"
@@ -685,7 +688,7 @@
                                             "powershell.exe ",
                                             "-ExecutionPolicy",
                                             " RemoteSigned",
-                                            " C:\\cfn\\scripts\\DownloadSQLEE2.ps1 -SQLServerVersion ",
+                                            " C:\\cfn\\scripts\\DownloadSQLEE.ps1 -SQLServerVersion ",
                                             {
                                                 "Ref": "SQLServerVersion"
                                             },

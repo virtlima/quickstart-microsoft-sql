@@ -12,12 +12,13 @@ global:
     - eu-west-1
     - sa-east-1
     - us-east-1
+    - us-east-2
     - us-west-1
     - us-west-2
   reporting: true
 tests:
   master-old:
-    template_file: SQL_AlwaysOn_Master.template
+    parameter_input: SQL_AlwaysOn_Master.json
     regions:
       - ap-northeast-1
       - ap-northeast-2
@@ -28,9 +29,39 @@ tests:
       - eu-west-1
       # - sa-east-1 Unsupported only in CI due to GetAZs on ref acct
       - us-east-1
+      - us-east-2
       - us-west-1
       - us-west-2
-    parameter_input: SQL_AlwaysOn_Master.json
-  master:
+    template_file: SQL_AlwaysOn_Master.template
+  nextgen-defaults:
+    parameter_input: sql-master-defaults.json
     template_file: sql-master.template
-    parameter_input: sql-master.json
+  nextgen-sql-2016:
+    parameter_input: sql-master-sql-2016.json
+    template_file: sql-master.template
+  nextgen-ebs-io1:
+    parameter_input: sql-master-ebs-io1.json
+    template_file: sql-master.template
+  nextgen-3rdaz-witness:
+    parameter_input: sql-master-3rdaz-witness.json
+    regions:
+      - ap-southeast-2
+      - eu-west-1
+      - us-east-1
+      - us-west-2
+    template_file: sql-master.template
+  nextgen-3rdaz-full:
+    parameter_input: sql-master-3rdaz-full.json
+    regions:
+      - ap-southeast-2
+      - eu-west-1
+      - us-east-1
+      - us-west-2
+    template_file: sql-master.template
+  nextgen-license-included:
+    parameter_input: sql-master-license-included.json
+    regions:
+      - eu-west-1
+      - us-east-1
+      - us-west-2
+    template_file: sql-master.template

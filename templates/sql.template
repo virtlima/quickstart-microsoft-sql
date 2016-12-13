@@ -1,6 +1,293 @@
 {
     "AWSTemplateFormatVersion": "2010-09-09",
     "Description": "This template deploys two Windows Server Failover Clustering (WSFC) and SQL Server AlwaysOn Availability Group nodes. This template is intended to be installed into an existing VPC that was built using the sample reference architecture titled: \"Implementing Active Directory Domain Services in the AWS Cloud\" **WARNING** This template creates Amazon EC2 Windows instance and related resources. You will be billed for the AWS resources used if you create a stack from this template. QS(0003)",
+    "Metadata": {
+        "AWS::CloudFormation::Interface": {
+            "ParameterGroups": [
+                {
+                    "Parameters": [
+                        "DomainDNSName",
+                        "DomainNetBIOSName",
+                        "DomainAdminUser",
+                        "DomainAdminPassword",
+                        "ADServer1NetBIOSName",
+                        "ADServer1PrivateIP",
+                        "ADServer2NetBIOSName",
+                        "ADServer2PrivateIP",
+                        "DomainMemberSGID"
+                    ],
+                    "Label": {
+                        "default": "Microsoft Active Directory Configuration"
+                    }
+                },
+                {
+                    "Parameters": [
+                        "SQLServerVersion",
+                        "SQLServiceAccount",
+                        "SQLServiceAccountPassword",
+                        "HostType",
+                        "SQLLicenseProvided",
+                        "DedicatedHostAMI"
+                    ],
+                    "Label": {
+                        "default": "Microsoft SQL Server Configuration"
+                    }
+                },
+                {
+                    "Parameters": [
+                        "QSS3BucketName",
+                        "QSS3KeyPrefix"
+                    ],
+                    "Label": {
+                        "default": "AWS Quick Start Configuration"
+                    }
+                },
+                {
+                    "Parameters": [
+                        "VPCID",
+                        "QSS3KeyPrefix",
+                        "PrivateSubnet1ID",
+                        "PrivateSubnet2ID",
+                        "PrivateSubnet3ID"
+                    ],
+                    "Label": {
+                        "default": "Network Configuration"
+                    }
+                },
+                {
+                    "Parameters": [
+                        "KeyPairName",
+                        "WSFCFileServerInstanceType",
+                        "WSFCFileServerNetBIOSName",
+                        "WSFCFileServerPrivateIP",
+
+                        "WSFCNode1InstanceType",
+                        "WSFCNode1NetBIOSName",
+                        "WSFCNode1PrivateIP1",
+                        "WSFCNode1PrivateIP2",
+                        "WSFCNode1PrivateIP3",
+                        "DedicatedHostIDNode1",
+                        "WSFCNode2InstanceType",
+                        "WSFCNode2NetBIOSName",
+                        "WSFCNode2PrivateIP1",
+                        "WSFCNode2PrivateIP2",
+                        "WSFCNode2PrivateIP3",
+                        "DedicatedHostIDNode2",
+                        "WSFCNode3InstanceType",
+                        "WSFCNode3NetBIOSName",
+                        "WSFCNode3PrivateIP1",
+                        "WSFCNode3PrivateIP2",
+                        "WSFCNode3PrivateIP3",
+                        "DedicatedHostIDNode3"
+                    ],
+                    "Label": {
+                        "default": "Failover Cluster Configuration"
+                    }
+                },
+                {
+                    "Parameters": [
+                        "PrivateSubnet2CIDR",
+                        "ThirdAz",
+                        "PrivateSubnet1CIDR",
+                        "PrivateSubnet3CIDR",
+                        "VPCCIDR"
+                    ],
+                    "Label": {
+                        "default": "Network Configuration"
+                    }
+                },
+                {
+                    "Parameters": [
+                        "Volume1Size",
+                        "Volume1Type",
+                        "Volume1Iops",
+                        "Volume2Size",
+                        "Volume2Type",
+                        "Volume2Iops",
+                        "Volume3Size",
+                        "Volume3Type",
+                        "Volume3Iops"
+                    ],
+                    "Label": {
+                        "default": "Storage Configuration"
+                    }
+                }
+            ],
+            "ParameterLabels": {
+                "DedicatedHostAMI": {
+                    "default": "BYOL AMI to use on dedicated host"
+                },
+                "Volume2Size": {
+                    "default": "Logs Volume Size (GiB)"
+                },
+                "VPCID": {
+                    "default": "VPC to place SQL cluster in"
+                },
+                "DomainDNSName": {
+                    "default": "Domain DNS Name"
+                },
+                "WSFCNode2NetBIOSName": {
+                    "default": "Cluster Node 2 NetBIOS Name"
+                },
+                "WSFCNode1NetBIOSName": {
+                    "default": "Cluster Node 1 NetBIOS Name"
+                },
+                "PrivateSubnet3ID": {
+                    "default": "Private Subnet 3 ID (Optional)"
+                },
+                "WSFCNode2PrivateIP2": {
+                    "default": "Cluster Node 2 Private IP Address 2"
+                },
+                "WSFCNode2PrivateIP3": {
+                    "default": "Cluster Node 2 Private IP Address 3"
+                },
+                "HostType": {
+                    "default": "Tenancy"
+                },
+                "PrivateSubnet2ID": {
+                    "default": "Private Subnet 2 ID"
+                },
+                "WSFCNode3InstanceType": {
+                    "default": "Instance Type for Cluster Node 3 (Optional)"
+                },
+                "WSFCFileServerInstanceType": {
+                    "default": "File Server Instance Type"
+                },
+                "PrivateSubnet1ID": {
+                    "default": "Private Subnet 1 ID"
+                },
+                "SQLLicenseProvided": {
+                    "default": "AWS Marketplace Provided SQL License"
+                },
+                "QSS3BucketName": {
+                    "default": "Quick Start S3 Bucket Name"
+                },
+                "WSFCFileServerNetBIOSName": {
+                    "default": "File Server NetBIOS Name"
+                },
+                "KeyPairName": {
+                    "default": "Key Pair Name"
+                },
+                "WSFCNode2InstanceType": {
+                    "default": "Instance Type for Cluster Node 2"
+                },
+                "SQLServiceAccountPassword": {
+                    "default": "Service Account Password"
+                },
+                "ThirdAz": {
+                    "default": "Third AZ"
+                },
+                "ADServer1PrivateIP": {
+                    "default": "Domain Controller 1 Private IP Address"
+                },
+                "ADServer1NetBIOSName": {
+                    "default": "Domain Controller 1 NetBIOS Name"
+                },
+                "ADServer2NetBIOSName": {
+                    "default": "Domain Controller 2 NetBIOS Name"
+                },
+                "Volume1Type": {
+                    "default": "Data Volume Type"
+                },
+                "ADServer2PrivateIP": {
+                    "default": "Domain Controller 2 Private IP Address"
+                },
+                "DedicatedHostIDNode3": {
+                    "default": "Dedicated HostID for Node 3 (requires Tenancy set to \"Dedicated Host\")"
+                },
+                "DedicatedHostIDNode1": {
+                    "default": "Dedicated HostID for Node 1 (requires Tenancy set to \"Dedicated Host\")"
+                },
+                "WSFCNode3PrivateIP3": {
+                    "default": "Cluster Node 3 Private IP Address 3"
+                },
+                "DedicatedHostIDNode2": {
+                    "default": "Dedicated HostID for Node 2 (requires Tenancy set to \"Dedicated Host\")"
+                },
+                "WSFCNode3PrivateIP1": {
+                    "default": "Cluster Node 3 Private IP Address 1"
+                },
+                "DomainAdminUser": {
+                    "default": "Domain Admin User Name"
+                },
+                "WSFCNode1InstanceType": {
+                    "default": "Instance Type for Cluster Node 1"
+                },
+                "Volume2Type": {
+                    "default": "Logs Volume Type"
+                },
+                "PrivateSubnet2CIDR": {
+                    "default": "Private Subnet 2 CIDR"
+                },
+                "Volume2Iops": {
+                    "default": "Logs Volume IOPS"
+                },
+                "Volume3Size": {
+                    "default": "TempDB Volume Size (GiB)"
+                },
+                "Volume3Type": {
+                    "default": "TempDB Volume Type"
+                },
+                "Volume1Size": {
+                    "default": "Data Volume Size (GiB)"
+                },
+                "DomainNetBIOSName": {
+                    "default": "Domain NetBIOS Name"
+                },
+                "WSFCNode3PrivateIP2": {
+                    "default": "Cluster Node 3 Private IP Address 2"
+                },
+                "WSFCNode2PrivateIP1": {
+                    "default": "Cluster Node 2 Private IP Address 1"
+                },
+                "PrivateSubnet3CIDR": {
+                    "default": "Private Subnet 3 CIDR (Optional)"
+                },
+                "Volume1Iops": {
+                    "default": "Data Volume IOPS"
+                },
+                "Volume3Iops": {
+                    "default": "TempDB Volume IOPS"
+                },
+                "DomainMemberSGID": {
+                    "default": "Security Group ID for AD domain members"
+                },
+                "DomainAdminPassword": {
+                    "default": "Domain Admin Password"
+                },
+                "WSFCFileServerPrivateIP": {
+                    "default": "File Server Private IP Address"
+                },
+                "SQLServerVersion": {
+                    "default": "Version"
+                },
+                "VPCCIDR": {
+                    "default": "VPC CIDR"
+                },
+                "QSS3KeyPrefix": {
+                    "default": "Quick Start S3 Key Prefix"
+                },
+                "PrivateSubnet1CIDR": {
+                    "default": "Private Subnet 1 CIDR"
+                },
+                "WSFCNode3NetBIOSName": {
+                    "default": "Cluster Node 3 NetBIOS Name"
+                },
+                "SQLServiceAccount": {
+                    "default": "Service Account Name"
+                },
+                "WSFCNode1PrivateIP1": {
+                    "default": "Cluster Node 1 Private IP Address 1"
+                },
+                "WSFCNode1PrivateIP3": {
+                    "default": "Cluster Node 1 Private IP Address 3"
+                },
+                "WSFCNode1PrivateIP2": {
+                    "default": "Cluster Node 1 Private IP Address 2"
+                }
+            }
+        }
+    },
     "Parameters": {
         "ADServer1NetBIOSName": {
             "AllowedPattern": "[a-zA-Z0-9]+",

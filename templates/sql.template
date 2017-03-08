@@ -849,6 +849,11 @@
                 "WS2012R2SQLENT2014": "ami-4b999c28",
                 "WS2012R2SQLENT2016": "ami-559e9b36"
             },
+            "ca-central-1": {
+                "WS2012R2": "ami-7805b71c",
+                "WS2012R2SQLENT2014": "ami-8105b7e5",
+                "WS2012R2SQLENT2016": "ami-b40ab8d0"
+            },
             "eu-central-1": {
                 "WS2012R2": "ami-6f559800",
                 "WS2012R2SQLENT2014": "ami-c75499a8",
@@ -858,6 +863,11 @@
                 "WS2012R2": "ami-dd9eb6ae",
                 "WS2012R2SQLENT2014": "ami-6f97bf1c",
                 "WS2012R2SQLENT2016": "ami-ad6843de"
+            },
+            "eu-west-2": {
+                "WS2012R2": "ami-738a8017",
+                "WS2012R2SQLENT2014": "ami-538b8137",
+                "WS2012R2SQLENT2016": "ami-6c888208"
             },
             "sa-east-1": {
                 "WS2012R2": "ami-f4d84298",
@@ -906,11 +916,19 @@
                 "Partition": "aws",
                 "QuickStartS3URL": "https://s3.amazonaws.com"
             },
+            "ca-central-1": {
+                "Partition": "aws",
+                "QuickStartS3URL": "https://s3.amazonaws.com"
+            },
             "eu-central-1": {
                 "Partition": "aws",
                 "QuickStartS3URL": "https://s3.amazonaws.com"
             },
             "eu-west-1": {
+                "Partition": "aws",
+                "QuickStartS3URL": "https://s3.amazonaws.com"
+            },
+            "eu-west-2": {
                 "Partition": "aws",
                 "QuickStartS3URL": "https://s3.amazonaws.com"
             },
@@ -925,10 +943,6 @@
             "us-east-2": {
                 "Partition": "aws",
                 "QuickStartS3URL": "https://s3.amazonaws.com"
-            },
-            "us-gov-west-1": {
-                "Partition": "aws-us-gov",
-                "QuickStartS3URL": "https://s3-us-gov-west-1.amazonaws.com"
             },
             "us-west-1": {
                 "Partition": "aws",

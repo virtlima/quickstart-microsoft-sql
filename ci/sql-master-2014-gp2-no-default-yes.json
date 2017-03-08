@@ -1,218 +1,218 @@
 [
     {
-        "ParameterValue": "example.com",
-        "ParameterKey": "DomainDNSName"
+        "ParameterKey": "DomainDNSName",
+        "ParameterValue": "example.com"
     },
     {
-        "ParameterValue": "WSFCNode2",
-        "ParameterKey": "WSFCNode2NetBIOSName"
+        "ParameterKey": "WSFCNode2NetBIOSName",
+        "ParameterValue": "WSFCNode2"
     },
     {
-        "ParameterValue": "10.0.32.0/19",
-        "ParameterKey": "PrivateSubnet2CIDR"
+        "ParameterKey": "PrivateSubnet2CIDR",
+        "ParameterValue": "10.0.32.0/19"
     },
     {
-        "ParameterValue": "yes",
-        "ParameterKey": "SQLLicenseProvided"
+        "ParameterKey": "SQLLicenseProvided",
+        "ParameterValue": "yes"
     },
     {
-        "ParameterValue": "$[alfred_genpass_32]",
-        "ParameterKey": "SQLServiceAccountPassword"
+        "ParameterKey": "SQLServiceAccountPassword",
+        "ParameterValue": "$[alfred_genpass_32]"
     },
     {
-        "ParameterValue": "10.0.128.0/20",
-        "ParameterKey": "PublicSubnet1CIDR"
+        "ParameterKey": "PublicSubnet1CIDR",
+        "ParameterValue": "10.0.128.0/20"
     },
     {
-        "ParameterValue": "DC1",
-        "ParameterKey": "ADServer1NetBIOSName"
+        "ParameterKey": "ADServer1NetBIOSName",
+        "ParameterValue": "DC1"
     },
     {
-        "ParameterValue": "10.0.32.10",
-        "ParameterKey": "ADServer2PrivateIP"
+        "ParameterKey": "ADServer2PrivateIP",
+        "ParameterValue": "10.0.32.10"
     },
     {
-        "ParameterValue": "",
-        "ParameterKey": "DedicatedHostIDNode3"
+        "ParameterKey": "DedicatedHostIDNode3",
+        "ParameterValue": ""
     },
     {
-        "ParameterValue": "",
-        "ParameterKey": "DedicatedHostIDNode1"
+        "ParameterKey": "DedicatedHostIDNode1",
+        "ParameterValue": ""
     },
     {
-        "ParameterValue": "",
-        "ParameterKey": "DedicatedHostIDNode2"
+        "ParameterKey": "DedicatedHostIDNode2",
+        "ParameterValue": ""
     },
     {
-        "ParameterValue": "r3.2xlarge",
-        "ParameterKey": "WSFCNodeInstanceType"
+        "ParameterKey": "WSFCNodeInstanceType",
+        "ParameterValue": "r3.2xlarge"
     },
     {
-        "ParameterValue": "10.0.0.0/19",
-        "ParameterKey": "PrivateSubnet1CIDR"
+        "ParameterKey": "PrivateSubnet1CIDR",
+        "ParameterValue": "10.0.0.0/19"
     },
     {
-        "ParameterValue": "gp2",
-        "ParameterKey": "VolumeType"
+        "ParameterKey": "VolumeType",
+        "ParameterValue": "gp2"
     },
     {
-        "ParameterValue": "10.0.128.11",
-        "ParameterKey": "RDGW1PrivateIP"
+        "ParameterKey": "RDGW1PrivateIP",
+        "ParameterValue": "10.0.128.11"
     },
     {
-        "ParameterValue": "WSFCNode3",
-        "ParameterKey": "WSFCNode3NetBIOSName"
+        "ParameterKey": "WSFCNode3NetBIOSName",
+        "ParameterValue": "WSFCNode3"
     },
     {
-        "ParameterValue": "1000",
-        "ParameterKey": "VolumeIops"
+        "ParameterKey": "VolumeIops",
+        "ParameterValue": "1000"
     },
     {
-        "ParameterValue": "10.0.64.0/19",
-        "ParameterKey": "PrivateSubnet3CIDR"
+        "ParameterKey": "PrivateSubnet3CIDR",
+        "ParameterValue": "10.0.64.0/19"
     },
     {
-        "ParameterValue": "t2.large",
-        "ParameterKey": "ADServer1InstanceType"
+        "ParameterKey": "ADServer1InstanceType",
+        "ParameterValue": "t2.large"
     },
     {
-        "ParameterValue": "2014",
-        "ParameterKey": "SQLServerVersion"
+        "ParameterKey": "SQLServerVersion",
+        "ParameterValue": "2014"
     },
     {
-        "ParameterValue": "10.0.0.0/16",
-        "ParameterKey": "VPCCIDR"
+        "ParameterKey": "VPCCIDR",
+        "ParameterValue": "10.0.0.0/16"
     },
     {
-        "ParameterValue": "t2.large",
-        "ParameterKey": "RDGW2InstanceType"
+        "ParameterKey": "RDGW2InstanceType",
+        "ParameterValue": "t2.large"
     },
     {
-        "ParameterValue": "10.0.0.101",
-        "ParameterKey": "WSFCNode1PrivateIP2"
+        "ParameterKey": "WSFCNode1PrivateIP2",
+        "ParameterValue": "10.0.0.101"
     },
     {
-        "ParameterValue": "10.0.0.100",
-        "ParameterKey": "WSFCNode1PrivateIP1"
+        "ParameterKey": "WSFCNode1PrivateIP1",
+        "ParameterValue": "10.0.0.100"
     },
     {
-        "ParameterValue": "10.0.0.102",
-        "ParameterKey": "WSFCNode1PrivateIP3"
+        "ParameterKey": "WSFCNode1PrivateIP3",
+        "ParameterValue": "10.0.0.102"
     },
     {
-        "ParameterValue": "sqlsa",
-        "ParameterKey": "SQLServiceAccount"
+        "ParameterKey": "SQLServiceAccount",
+        "ParameterValue": "sqlsa"
     },
     {
-        "ParameterValue": "t2.small",
-        "ParameterKey": "WSFCFileServerInstanceType"
+        "ParameterKey": "WSFCFileServerInstanceType",
+        "ParameterValue": "t2.small"
     },
     {
-        "ParameterValue": "t2.large",
-        "ParameterKey": "RDGW1InstanceType"
+        "ParameterKey": "RDGW1InstanceType",
+        "ParameterValue": "t2.large"
     },
     {
-        "ParameterValue": "WSFCNode1",
-        "ParameterKey": "WSFCNode1NetBIOSName"
+        "ParameterKey": "WSFCNode1NetBIOSName",
+        "ParameterValue": "WSFCNode1"
     },
     {
-        "ParameterValue": "10.0.32.101",
-        "ParameterKey": "WSFCNode2PrivateIP2"
+        "ParameterKey": "WSFCNode2PrivateIP2",
+        "ParameterValue": "10.0.32.101"
     },
     {
-        "ParameterValue": "10.0.32.102",
-        "ParameterKey": "WSFCNode2PrivateIP3"
+        "ParameterKey": "WSFCNode2PrivateIP3",
+        "ParameterValue": "10.0.32.102"
     },
     {
-        "ParameterValue": "default",
-        "ParameterKey": "HostType"
+        "ParameterKey": "HostType",
+        "ParameterValue": "default"
     },
     {
-        "ParameterValue": "10.0.32.100",
-        "ParameterKey": "WSFCNode2PrivateIP1"
+        "ParameterKey": "WSFCNode2PrivateIP1",
+        "ParameterValue": "10.0.32.100"
     },
     {
-        "ParameterValue": "10.0.144.0/20",
-        "ParameterKey": "PublicSubnet2CIDR"
+        "ParameterKey": "PublicSubnet2CIDR",
+        "ParameterValue": "10.0.144.0/20"
     },
     {
-        "ParameterValue": "10.0.144.11",
-        "ParameterKey": "RDGW2PrivateIP"
+        "ParameterKey": "RDGW2PrivateIP",
+        "ParameterValue": "10.0.144.11"
     },
     {
-        "ParameterValue": "$[alfred_getkeypair]",
-        "ParameterKey": "KeyPairName"
+        "ParameterKey": "KeyPairName",
+        "ParameterValue": "$[alfred_getkeypair]"
     },
     {
-        "ParameterValue": "no",
-        "ParameterKey": "ThirdAZ"
+        "ParameterKey": "ThirdAZ",
+        "ParameterValue": "no"
     },
     {
-        "ParameterValue": "DC2",
-        "ParameterKey": "ADServer2NetBIOSName"
+        "ParameterKey": "ADServer2NetBIOSName",
+        "ParameterValue": "DC2"
     },
     {
-        "ParameterValue": "10.0.64.102",
-        "ParameterKey": "WSFCNode3PrivateIP3"
+        "ParameterKey": "WSFCNode3PrivateIP3",
+        "ParameterValue": "10.0.64.102"
     },
     {
-        "ParameterValue": "10.0.64.101",
-        "ParameterKey": "WSFCNode3PrivateIP2"
+        "ParameterKey": "WSFCNode3PrivateIP2",
+        "ParameterValue": "10.0.64.101"
     },
     {
-        "ParameterValue": "10.0.64.100",
-        "ParameterKey": "WSFCNode3PrivateIP1"
+        "ParameterKey": "WSFCNode3PrivateIP1",
+        "ParameterValue": "10.0.64.100"
     },
     {
-        "ParameterValue": "10.0.0.0/16",
-        "ParameterKey": "RDGWCIDR"
+        "ParameterKey": "RDGWCIDR",
+        "ParameterValue": "10.0.0.0/16"
     },
     {
-        "ParameterValue": "t2.large",
-        "ParameterKey": "ADServer2InstanceType"
+        "ParameterKey": "ADServer2InstanceType",
+        "ParameterValue": "t2.large"
     },
     {
-        "ParameterValue": "10.0.0.10",
-        "ParameterKey": "ADServer1PrivateIP"
+        "ParameterKey": "ADServer1PrivateIP",
+        "ParameterValue": "10.0.0.10"
     },
     {
-        "ParameterValue": "10.0.160.0/20",
-        "ParameterKey": "PublicSubnet3CIDR"
+        "ParameterKey": "PublicSubnet3CIDR",
+        "ParameterValue": "10.0.160.0/20"
     },
     {
-        "ParameterValue": "$[alfred_genpass_32]",
-        "ParameterKey": "RestoreModePassword"
+        "ParameterKey": "RestoreModePassword",
+        "ParameterValue": "$[alfred_genpass_32]"
     },
     {
-        "ParameterValue": "500",
-        "ParameterKey": "VolumeSize"
+        "ParameterKey": "VolumeSize",
+        "ParameterValue": "500"
     },
     {
-        "ParameterValue": "EXAMPLE",
-        "ParameterKey": "DomainNetBIOSName"
+        "ParameterKey": "DomainNetBIOSName",
+        "ParameterValue": "EXAMPLE"
     },
     {
-        "ParameterValue": "RDGW2",
-        "ParameterKey": "RDGW2NetBIOSName"
+        "ParameterKey": "RDGW2NetBIOSName",
+        "ParameterValue": "RDGW2"
     },
     {
-        "ParameterValue": "StackAdmin",
-        "ParameterKey": "DomainAdminUser"
+        "ParameterKey": "DomainAdminUser",
+        "ParameterValue": "StackAdmin"
     },
     {
-        "ParameterValue": "$[alfred_genpass_32]",
-        "ParameterKey": "DomainAdminPassword"
+        "ParameterKey": "DomainAdminPassword",
+        "ParameterValue": "$[alfred_genpass_32]"
     },
     {
-        "ParameterValue": "10.0.0.200",
-        "ParameterKey": "WSFCFileServerPrivateIP"
+        "ParameterKey": "WSFCFileServerPrivateIP",
+        "ParameterValue": "10.0.0.200"
     },
     {
-        "ParameterValue": "RDGW1",
-        "ParameterKey": "RDGW1NetBIOSName"
+        "ParameterKey": "RDGW1NetBIOSName",
+        "ParameterValue": "RDGW1"
     },
     {
-        "ParameterValue": "$[alfred_getaz_2]",
-        "ParameterKey": "AvailabilityZones"
+        "ParameterKey": "AvailabilityZones",
+        "ParameterValue": "$[alfred_getaz_2]"
     }
 ]

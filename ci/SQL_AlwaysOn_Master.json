@@ -49,7 +49,7 @@
     },
     {
         "ParameterKey": "KeyPairName",
-        "ParameterValue": "cikey"
+        "ParameterValue": "$[alfred_getkeypair]"
     },
     {
         "ParameterKey": "NATInstanceType",

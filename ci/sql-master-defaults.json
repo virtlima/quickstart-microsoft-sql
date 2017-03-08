@@ -4,7 +4,7 @@
         "ParameterKey": "RDGWCIDR"
     },
     {
-        "ParameterValue": "cikey",
+        "ParameterValue": "$[alfred_getkeypair]",
         "ParameterKey": "KeyPairName"
     },
     {
@@ -20,7 +20,7 @@
         "ParameterKey": "RestoreModePassword"
     },
     {
-        "ParameterValue": "$[alfred_genaz_2]",
+        "ParameterValue": "$[alfred_getaz_2]",
         "ParameterKey": "AvailabilityZones"
     }
 ]

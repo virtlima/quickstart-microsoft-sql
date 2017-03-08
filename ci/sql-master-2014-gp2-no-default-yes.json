@@ -140,12 +140,12 @@
         "ParameterKey": "RDGW2PrivateIP"
     },
     {
-        "ParameterValue": "cikey",
+        "ParameterValue": "$[alfred_getkeypair]",
         "ParameterKey": "KeyPairName"
     },
     {
         "ParameterValue": "no",
-        "ParameterKey": "ThirdAz"
+        "ParameterKey": "ThirdAZ"
     },
     {
         "ParameterValue": "DC2",
@@ -166,10 +166,6 @@
     {
         "ParameterValue": "10.0.0.0/16",
         "ParameterKey": "RDGWCIDR"
-    },
-    {
-        "ParameterValue": "t2.small",
-        "ParameterKey": "NATInstanceType"
     },
     {
         "ParameterValue": "t2.large",
@@ -216,7 +212,7 @@
         "ParameterKey": "RDGW1NetBIOSName"
     },
     {
-        "ParameterValue": "$[alfred_genaz_2]",
+        "ParameterValue": "$[alfred_getaz_2]",
         "ParameterKey": "AvailabilityZones"
     }
 ]

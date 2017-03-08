@@ -4,7 +4,7 @@
         "ParameterKey": "RDGWCIDR"
     },
     {
-        "ParameterValue": "cikey",
+        "ParameterValue": "$[alfred_getkeypair]",
         "ParameterKey": "KeyPairName"
     },
     {
@@ -20,12 +20,12 @@
         "ParameterKey": "RestoreModePassword"
     },
     {
-        "ParameterValue": "$[alfred_genaz_3]",
+        "ParameterValue": "$[alfred_getaz_3]",
         "ParameterKey": "AvailabilityZones"
     },
     {
         "ParameterValue": "witness",
-        "ParameterKey": "ThirdAz"
+        "ParameterKey": "ThirdAZ"
     },
     {
         "ParameterValue": "10.0.64.200",

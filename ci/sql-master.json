@@ -4,7 +4,7 @@
         "ParameterValue": "t2.large"
     },
     {
-        "ParameterKey": "ThirdAz",
+        "ParameterKey": "ThirdAZ",
         "ParameterValue": "no"
     },
     {
@@ -29,7 +29,7 @@
     },
     {
         "ParameterKey": "AvailabilityZones",
-        "ParameterValue": "$[alfred_genaz_2]"
+        "ParameterValue": "$[alfred_getaz_2]"
     },
     {
         "ParameterKey": "DomainAdminPassword",
@@ -49,11 +49,7 @@
     },
     {
         "ParameterKey": "KeyPairName",
-        "ParameterValue": "cikey"
-    },
-    {
-        "ParameterKey": "NATInstanceType",
-        "ParameterValue": "t2.small"
+        "ParameterValue": "$[alfred_getkeypair]"
     },
     {
         "ParameterKey": "PrivateSubnet1CIDR",

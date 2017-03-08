@@ -10,15 +10,24 @@
                     },
                     "Parameters": [
                         "AvailabilityZones",
-                        "ThirdAz",
+                        "ThirdAZ",
                         "VPCCIDR",
                         "PublicSubnet1CIDR",
                         "PublicSubnet2CIDR",
                         "PublicSubnet3CIDR",
                         "PrivateSubnet1CIDR",
                         "PrivateSubnet2CIDR",
-                        "PrivateSubnet3CIDR",
-                        "NATInstanceType"
+                        "PrivateSubnet3CIDR"
+                    ]
+                },
+                {
+                    "Label": {
+                        "default": "Amazon EC2 Configuration"
+                    },
+                    "Parameters": [
+                        "KeyPairName",
+                        "HostType",
+                        "DedicatedHostAMI"
                     ]
                 },
                 {
@@ -41,10 +50,9 @@
                 },
                 {
                     "Label": {
-                        "default": "Remote Desktop Configuration"
+                        "default": "Remote Desktop Gateway Configuration"
                     },
                     "Parameters": [
-                        "KeyPairName",
                         "RDGWCIDR",
                         "RDGW1InstanceType",
                         "RDGW1NetBIOSName",
@@ -52,6 +60,20 @@
                         "RDGW2InstanceType",
                         "RDGW2NetBIOSName",
                         "RDGW2PrivateIP"
+                    ]
+                },
+                {
+                    "Label": {
+                        "default": "Microsoft SQL Server Configuration"
+                    },
+                    "Parameters": [
+                        "SQLServerVersion",
+                        "SQLServiceAccount",
+                        "SQLServiceAccountPassword",
+                        "SQLLicenseProvided",
+                        "VolumeIops",
+                        "VolumeSize",
+                        "VolumeType"
                     ]
                 },
                 {
@@ -74,22 +96,6 @@
                         "WSFCNode3PrivateIP3",
                         "WSFCFileServerInstanceType",
                         "WSFCFileServerPrivateIP"
-                    ]
-                },
-                {
-                    "Label": {
-                        "default": "Microsoft SQL Server Configuration"
-                    },
-                    "Parameters": [
-                        "SQLServerVersion",
-                        "SQLServiceAccount",
-                        "SQLServiceAccountPassword",
-                        "SQLLicenseProvided",
-                        "VolumeIops",
-                        "VolumeSize",
-                        "VolumeType",
-                        "HostType",
-                        "DedicatedHostAMI"
                     ]
                 },
                 {
@@ -145,23 +151,20 @@
                 "KeyPairName": {
                     "default": "Key Pair Name"
                 },
-                "NATInstanceType": {
-                    "default": "NAT Instance Type"
-                },
                 "PrivateSubnet1CIDR": {
                     "default": "Private Subnet 1 CIDR"
-                },
-                "PublicSubnet1CIDR": {
-                    "default": "Public Subnet 1 CIDR"
                 },
                 "PrivateSubnet2CIDR": {
                     "default": "Private Subnet 2 CIDR"
                 },
-                "PublicSubnet2CIDR": {
-                    "default": "Public Subnet 2 CIDR"
-                },
                 "PrivateSubnet3CIDR": {
                     "default": "Private Subnet 3 CIDR (Optional)"
+                },
+                "PublicSubnet1CIDR": {
+                    "default": "Public Subnet 1 CIDR"
+                },
+                "PublicSubnet2CIDR": {
+                    "default": "Public Subnet 2 CIDR"
                 },
                 "PublicSubnet3CIDR": {
                     "default": "Public Subnet 3 CIDR (Optional)"
@@ -208,35 +211,8 @@
                 "SQLServiceAccountPassword": {
                     "default": "Service Account Password"
                 },
-                "ThirdAz": {
+                "ThirdAZ": {
                     "default": "Third AZ"
-                },
-                "Volume1Iops": {
-                    "default": "Data Volume IOPS"
-                },
-                "Volume1Size": {
-                    "default": "Data Volume Size (GiB)"
-                },
-                "Volume1Type": {
-                    "default": "Data Volume Type"
-                },
-                "Volume2Iops": {
-                    "default": "Logs Volume IOPS"
-                },
-                "Volume2Size": {
-                    "default": "Logs Volume Size (GiB)"
-                },
-                "Volume2Type": {
-                    "default": "Logs Volume Type"
-                },
-                "Volume3Iops": {
-                    "default": "TempDB Volume IOPS"
-                },
-                "Volume3Size": {
-                    "default": "TempDB Volume Size (GiB)"
-                },
-                "Volume3Type": {
-                    "default": "TempDB Volume Type"
                 },
                 "VolumeIops": {
                     "default": "SQL Server Volume IOPS"
@@ -255,9 +231,6 @@
                 },
                 "WSFCFileServerPrivateIP": {
                     "default": "File Server Private IP Address"
-                },
-                "WSFCNodeInstanceType": {
-                    "default": "Instance Type for Cluster Nodes"
                 },
                 "WSFCNode1NetBIOSName": {
                     "default": "Cluster Node 1 NetBIOS Name"
@@ -294,6 +267,9 @@
                 },
                 "WSFCNode3PrivateIP3": {
                     "default": "Cluster Node 3 Private IP Address 3"
+                },
+                "WSFCNodeInstanceType": {
+                    "default": "Instance Type for Cluster Nodes"
                 }
             }
         }
@@ -399,12 +375,12 @@
             "Type": "String"
         },
         "HostType": {
-            "Default": "Shared",
             "AllowedValues": [
                 "Shared",
                 "Dedicated",
                 "Dedicated Host"
             ],
+            "Default": "Shared",
             "Description": "Host Type, If dedicated or Dedicated Host is selected hosts will be created in each AZ",
             "Type": "String"
         },
@@ -412,30 +388,10 @@
             "Description": "Public/private key pairs allow you to securely connect to your instance after it launches",
             "Type": "AWS::EC2::KeyPair::KeyName"
         },
-        "NATInstanceType": {
-            "AllowedValues": [
-                "t2.nano",
-                "t2.micro",
-                "t2.small",
-                "t2.medium",
-                "t2.large",
-                "m3.medium",
-                "m3.large",
-                "m4.large"
-            ],
-            "Default": "t2.small",
-            "Description": "Amazon EC2 instance type for the NAT Instances. This is only used if the region does not support NAT gateways.",
-            "Type": "String"
-        },
         "PrivateSubnet1CIDR": {
             "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/([0-9]|[1-2][0-9]|3[0-2]))$",
             "Default": "10.0.0.0/19",
             "Description": "CIDR Block for private subnet 1 located in Availability Zone 1.",
-            "Type": "String"
-        },
-        "PublicSubnet1CIDR": {
-            "Default": "10.0.128.0/20",
-            "Description": "CIDR Block for the public DMZ subnet 2 located in Availability Zone 2",
             "Type": "String"
         },
         "PrivateSubnet2CIDR": {
@@ -444,15 +400,20 @@
             "Description": "CIDR Block for private subnet 2 located in Availability Zone 2.",
             "Type": "String"
         },
-        "PublicSubnet2CIDR": {
-            "Default": "10.0.144.0/20",
-            "Description": "CIDR Block for the optional public DMZ subnet 3 located in Availability Zone 3",
-            "Type": "String"
-        },
         "PrivateSubnet3CIDR": {
             "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/([0-9]|[1-2][0-9]|3[0-2]))$",
             "Default": "10.0.64.0/19",
             "Description": "CIDR Block for optional private subnet 3 located in Availability Zone 3.",
+            "Type": "String"
+        },
+        "PublicSubnet1CIDR": {
+            "Default": "10.0.128.0/20",
+            "Description": "CIDR Block for the public DMZ subnet 2 located in Availability Zone 2",
+            "Type": "String"
+        },
+        "PublicSubnet2CIDR": {
+            "Default": "10.0.144.0/20",
+            "Description": "CIDR Block for the optional public DMZ subnet 3 located in Availability Zone 3",
             "Type": "String"
         },
         "PublicSubnet3CIDR": {
@@ -475,9 +436,6 @@
             "Type": "String"
         },
         "RDGW1InstanceType": {
-            "Description": "Amazon EC2 instance type for the first Remote Desktop Gateway instance",
-            "Type": "String",
-            "Default": "t2.large",
             "AllowedValues": [
                 "t2.large",
                 "m3.large",
@@ -487,25 +445,25 @@
                 "m4.xlarge",
                 "m4.2xlarge",
                 "m4.4xlarge"
-            ]
+            ],
+            "Default": "t2.large",
+            "Description": "Amazon EC2 instance type for the first Remote Desktop Gateway instance",
+            "Type": "String"
         },
         "RDGW1NetBIOSName": {
-            "Description": "NetBIOS name of the first Remote Desktop Gateway (up to 15 characters)",
-            "Type": "String",
+            "AllowedPattern": "[a-zA-Z0-9]+",
             "Default": "RDGW1",
-            "MinLength": "1",
+            "Description": "NetBIOS name of the first Remote Desktop Gateway (up to 15 characters)",
             "MaxLength": "15",
-            "AllowedPattern": "[a-zA-Z0-9]+"
+            "MinLength": "1",
+            "Type": "String"
         },
         "RDGW1PrivateIP": {
+            "Default": "10.0.128.11",
             "Description": "Fixed private IP for the first Remote Desktop Gateway located in Availability Zone 1",
-            "Type": "String",
-            "Default": "10.0.128.11"
+            "Type": "String"
         },
         "RDGW2InstanceType": {
-            "Description": "Amazon EC2 instance type for the second Remote Desktop Gateway instance",
-            "Type": "String",
-            "Default": "t2.large",
             "AllowedValues": [
                 "t2.large",
                 "m3.large",
@@ -515,20 +473,23 @@
                 "m4.xlarge",
                 "m4.2xlarge",
                 "m4.4xlarge"
-            ]
+            ],
+            "Default": "t2.large",
+            "Description": "Amazon EC2 instance type for the second Remote Desktop Gateway instance",
+            "Type": "String"
         },
         "RDGW2NetBIOSName": {
-            "Description": "NetBIOS name of the second Remote Desktop Gateway (up to 15 characters)",
-            "Type": "String",
+            "AllowedPattern": "[a-zA-Z0-9]+",
             "Default": "RDGW2",
-            "MinLength": "1",
+            "Description": "NetBIOS name of the second Remote Desktop Gateway (up to 15 characters)",
             "MaxLength": "15",
-            "AllowedPattern": "[a-zA-Z0-9]+"
+            "MinLength": "1",
+            "Type": "String"
         },
         "RDGW2PrivateIP": {
+            "Default": "10.0.144.11",
             "Description": "Fixed private IP for the second Remote Desktop Gateway located in Availability Zone 2",
-            "Type": "String",
-            "Default": "10.0.144.11"
+            "Type": "String"
         },
         "RDGWCIDR": {
             "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/([0-9]|[1-2][0-9]|3[0-2]))$",
@@ -579,36 +540,36 @@
             "NoEcho": "true",
             "Type": "String"
         },
-        "ThirdAz": {
-            "Default": "no",
+        "ThirdAZ": {
             "AllowedValues": [
                 "no",
                 "witness",
                 "full"
             ],
+            "Default": "no",
             "Description": "Enable a 3 AZ deployment, the 3rd AZ can either be used just for the witness, or can be a full SQL cluster node. Note that if witness is chosen, the WFC File Server Private IP Address parameter must be set to an IP in the 3rd subnet range.",
             "Type": "String"
         },
         "VolumeIops": {
             "Default": "1000",
-            "MinValue": "100",
-            "MaxValue": "20000",
             "Description": "Provisioned IOPS for the SQL Data, Logs and TempDb volumes. This parameter is only applicable when SQL Server Volume Type is set to \"io1\"",
+            "MaxValue": "20000",
+            "MinValue": "100",
             "Type": "Number"
         },
         "VolumeSize": {
             "Default": "500",
-            "MinValue": "100",
-            "MaxValue": "16000",
             "Description": "Volume size for the SQL Data, Logs and TempDb volumes",
+            "MaxValue": "16000",
+            "MinValue": "100",
             "Type": "Number"
         },
         "VolumeType": {
-            "Default": "gp2",
             "AllowedValues": [
                 "gp2",
                 "io1"
             ],
+            "Default": "gp2",
             "Description": "Volume type for the SQL Data, Logs and TempDb volumes",
             "Type": "String"
         },
@@ -638,34 +599,6 @@
             "MinLength": "1",
             "Type": "String"
         },
-        "WSFCNode2NetBIOSName": {
-            "AllowedPattern": "[a-zA-Z0-9]+",
-            "Default": "WSFCNode2",
-            "Description": "NetBIOS name of the second WSFC Node (up to 15 characters)",
-            "MaxLength": "15",
-            "MinLength": "1",
-            "Type": "String"
-        },
-        "WSFCNode3NetBIOSName": {
-            "AllowedPattern": "[a-zA-Z0-9]+",
-            "Default": "WSFCNode3",
-            "Description": "NetBIOS name of the optional third WSFC Node (up to 15 characters)",
-            "MaxLength": "15",
-            "MinLength": "1",
-            "Type": "String"
-        },
-        "WSFCNodeInstanceType": {
-            "AllowedValues": [
-                "r3.xlarge",
-                "r3.2xlarge",
-                "r3.4xlarge",
-                "r3.8xlarge"
-            ],
-            "ConstraintDescription": "Only EBS Optimized instance types r3.xlarge, r3.2xlarge, r3.4xlarge allowed",
-            "Default": "r3.2xlarge",
-            "Description": "Amazon EC2 instance type for the WSFC Nodes",
-            "Type": "String"
-        },
         "WSFCNode1PrivateIP1": {
             "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$",
             "Default": "10.0.0.100",
@@ -682,6 +615,14 @@
             "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$",
             "Default": "10.0.0.102",
             "Description": "Third private IP for WSFC Node 1",
+            "Type": "String"
+        },
+        "WSFCNode2NetBIOSName": {
+            "AllowedPattern": "[a-zA-Z0-9]+",
+            "Default": "WSFCNode2",
+            "Description": "NetBIOS name of the second WSFC Node (up to 15 characters)",
+            "MaxLength": "15",
+            "MinLength": "1",
             "Type": "String"
         },
         "WSFCNode2PrivateIP1": {
@@ -702,6 +643,14 @@
             "Description": "Third private IP for WSFC Node 2",
             "Type": "String"
         },
+        "WSFCNode3NetBIOSName": {
+            "AllowedPattern": "[a-zA-Z0-9]+",
+            "Default": "WSFCNode3",
+            "Description": "NetBIOS name of the optional third WSFC Node (up to 15 characters)",
+            "MaxLength": "15",
+            "MinLength": "1",
+            "Type": "String"
+        },
         "WSFCNode3PrivateIP1": {
             "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$",
             "Default": "10.0.64.100",
@@ -719,13 +668,25 @@
             "Default": "10.0.64.102",
             "Description": "Third private IP for optional WSFC Node 3",
             "Type": "String"
+        },
+        "WSFCNodeInstanceType": {
+            "AllowedValues": [
+                "r3.xlarge",
+                "r3.2xlarge",
+                "r3.4xlarge",
+                "r3.8xlarge"
+            ],
+            "ConstraintDescription": "Only EBS Optimized instance types r3.xlarge, r3.2xlarge, r3.4xlarge allowed",
+            "Default": "r3.2xlarge",
+            "Description": "Amazon EC2 instance type for the WSFC Nodes",
+            "Type": "String"
         }
     },
     "Conditions": {
         "IsTwoAz": {
             "Fn::Equals": [
                 {
-                    "Ref": "ThirdAz"
+                    "Ref": "ThirdAZ"
                 },
                 "no"
             ]
@@ -858,9 +819,6 @@
                     },
                     "KeyPairName": {
                         "Ref": "KeyPairName"
-                    },
-                    "NATInstanceType": {
-                        "Ref": "NATInstanceType"
                     },
                     "NumberOfAZs": {
                         "Fn::If": [
@@ -1307,33 +1265,16 @@
                     "KeyPairName": {
                         "Ref": "KeyPairName"
                     },
-                    "PrivateSubnet1CIDR": {
-                        "Ref": "PrivateSubnet1CIDR"
-                    },
                     "PrivateSubnet1ID": {
                         "Fn::GetAtt": [
                             "VPCStack",
                             "Outputs.PrivateSubnet1AID"
                         ]
                     },
-                    "PrivateSubnet2CIDR": {
-                        "Ref": "PrivateSubnet2CIDR"
-                    },
                     "PrivateSubnet2ID": {
                         "Fn::GetAtt": [
                             "VPCStack",
                             "Outputs.PrivateSubnet2AID"
-                        ]
-                    },
-                    "PrivateSubnet3CIDR": {
-                        "Fn::If": [
-                            "IsTwoAz",
-                            {
-                                "Ref": "AWS::NoValue"
-                            },
-                            {
-                                "Ref": "PrivateSubnet3CIDR"
-                            }
                         ]
                     },
                     "PrivateSubnet3ID": {
@@ -1362,11 +1303,8 @@
                     "SQLServiceAccountPassword": {
                         "Ref": "SQLServiceAccountPassword"
                     },
-                    "ThirdAz": {
-                        "Ref": "ThirdAz"
-                    },
-                    "VPCCIDR": {
-                        "Ref": "VPCCIDR"
+                    "ThirdAZ": {
+                        "Ref": "ThirdAZ"
                     },
                     "VPCID": {
                         "Fn::GetAtt": [

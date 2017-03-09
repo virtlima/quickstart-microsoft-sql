@@ -511,7 +511,7 @@
                 "no"
             ],
             "Default": "no",
-            "Description": "License SQL Server from AWS Marketplace. Note: this is only available for SQL 2014 and 2016, in us-east-1, us-west-2 and eu-west-1 regions and limits instance type to r3.2xlarge, r3.4xlarge and r3.8xlarge",
+            "Description": "License SQL Server from AWS Marketplace. Note: this is only available for SQL 2014 and SQL 2016 for Windows Server 2012 R2",
             "Type": "String"
         },
         "SQLServerVersion": {

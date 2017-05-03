@@ -429,10 +429,10 @@
             "Type": "String"
         },
         "QSS3KeyPrefix": {
-            "AllowedPattern": "^[0-9a-zA-Z-]+(/[0-9a-zA-Z-]+)*$",
-            "ConstraintDescription": "Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/). It cannot start or end with forward slash (/) because they are automatically appended.",
-            "Default": "microsoft/sql/latest",
-            "Description": "S3 key prefix for the Quick Start assets. Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/). It cannot start or end with forward slash (/) because they are automatically appended.",
+            "AllowedPattern": "^[0-9a-zA-Z-/]*$",
+            "ConstraintDescription": "Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/).",
+            "Default": "microsoft/sql/latest/",
+            "Description": "S3 key prefix for the Quick Start assets. Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/).",
             "Type": "String"
         },
         "RDGW1InstanceType": {
@@ -718,66 +718,14 @@
                 },
                 "Dedicated Host"
             ]
-        }
-    },
-    "Mappings": {
-        "AWSInfoRegionMap": {
-            "ap-northeast-1": {
-                "Partition": "aws",
-                "QuickStartS3URL": "https://s3.amazonaws.com"
-            },
-            "ap-northeast-2": {
-                "Partition": "aws",
-                "QuickStartS3URL": "https://s3.amazonaws.com"
-            },
-            "ap-south-1": {
-                "Partition": "aws",
-                "QuickStartS3URL": "https://s3.amazonaws.com"
-            },
-            "ap-southeast-1": {
-                "Partition": "aws",
-                "QuickStartS3URL": "https://s3.amazonaws.com"
-            },
-            "ap-southeast-2": {
-                "Partition": "aws",
-                "QuickStartS3URL": "https://s3.amazonaws.com"
-            },
-            "ca-central-1": {
-                "Partition": "aws",
-                "QuickStartS3URL": "https://s3.amazonaws.com"
-            },
-            "eu-central-1": {
-                "Partition": "aws",
-                "QuickStartS3URL": "https://s3.amazonaws.com"
-            },
-            "eu-west-1": {
-                "Partition": "aws",
-                "QuickStartS3URL": "https://s3.amazonaws.com"
-            },
-            "eu-west-2": {
-                "Partition": "aws",
-                "QuickStartS3URL": "https://s3.amazonaws.com"
-            },
-            "sa-east-1": {
-                "Partition": "aws",
-                "QuickStartS3URL": "https://s3.amazonaws.com"
-            },
-            "us-east-1": {
-                "Partition": "aws",
-                "QuickStartS3URL": "https://s3.amazonaws.com"
-            },
-            "us-east-2": {
-                "Partition": "aws",
-                "QuickStartS3URL": "https://s3.amazonaws.com"
-            },
-            "us-west-1": {
-                "Partition": "aws",
-                "QuickStartS3URL": "https://s3.amazonaws.com"
-            },
-            "us-west-2": {
-                "Partition": "aws",
-                "QuickStartS3URL": "https://s3.amazonaws.com"
-            }
+        },
+        "GovCloudCondition": {
+            "Fn::Equals": [
+                {
+                    "Ref": "AWS::Region"
+                },
+                "us-gov-west-1"
+            ]
         }
     },
     "Resources": {
@@ -785,27 +733,17 @@
             "Type": "AWS::CloudFormation::Stack",
             "Properties": {
                 "TemplateURL": {
-                    "Fn::Join": [
-                        "/",
-                        [
-                            {
-                                "Fn::FindInMap": [
-                                    "AWSInfoRegionMap",
-                                    {
-                                        "Ref": "AWS::Region"
-                                    },
-                                    "QuickStartS3URL"
+                    "Fn::Sub": [
+                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-aws-vpc/templates/aws-vpc.template",
+                        {
+                            "QSS3Region": {
+                                "Fn::If": [
+                                    "GovCloudCondition",
+                                    "s3-us-gov-west-1",
+                                    "s3"
                                 ]
-                            },
-                            {
-                                "Ref": "QSS3BucketName"
-                            },
-                            {
-                                "Ref": "QSS3KeyPrefix"
-                            },
-                            "submodules/quickstart-aws-vpc",
-                            "templates/aws-vpc.template"
-                        ]
+                            }
+                        }
                     ]
                 },
                 "Parameters": {
@@ -872,27 +810,17 @@
             "Type": "AWS::CloudFormation::Stack",
             "Properties": {
                 "TemplateURL": {
-                    "Fn::Join": [
-                        "/",
-                        [
-                            {
-                                "Fn::FindInMap": [
-                                    "AWSInfoRegionMap",
-                                    {
-                                        "Ref": "AWS::Region"
-                                    },
-                                    "QuickStartS3URL"
+                    "Fn::Sub": [
+                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-activedirectory/templates/ad-2012r2-1.template",
+                        {
+                            "QSS3Region": {
+                                "Fn::If": [
+                                    "GovCloudCondition",
+                                    "s3-us-gov-west-1",
+                                    "s3"
                                 ]
-                            },
-                            {
-                                "Ref": "QSS3BucketName"
-                            },
-                            {
-                                "Ref": "QSS3KeyPrefix"
-                            },
-                            "submodules/quickstart-microsoft-activedirectory",
-                            "templates/ad-2012r2-1.template"
-                        ]
+                            }
+                        }
                     ]
                 },
                 "Parameters": {
@@ -953,6 +881,12 @@
                     "PublicSubnet2CIDR": {
                         "Ref": "PublicSubnet2CIDR"
                     },
+                    "QSS3BucketName": {
+                        "Ref": "QSS3BucketName"
+                    },
+                    "QSS3KeyPrefix": {
+                        "Fn::Sub": "${QSS3KeyPrefix}submodules/quickstart-microsoft-activedirectory/"
+                    },
                     "RestoreModePassword": {
                         "Ref": "RestoreModePassword"
                     },
@@ -964,20 +898,6 @@
                             "VPCStack",
                             "Outputs.VPCID"
                         ]
-                    },
-                    "QSS3BucketName": {
-                        "Ref": "QSS3BucketName"
-                    },
-                    "QSS3KeyPrefix": {
-                        "Fn::Join": [
-                            "/",
-                            [
-                                {
-                                    "Ref": "QSS3KeyPrefix"
-                                },
-                                "submodules/quickstart-microsoft-activedirectory"
-                            ]
-                        ]
                     }
                 }
             }
@@ -987,27 +907,17 @@
             "Type": "AWS::CloudFormation::Stack",
             "Properties": {
                 "TemplateURL": {
-                    "Fn::Join": [
-                        "/",
-                        [
-                            {
-                                "Fn::FindInMap": [
-                                    "AWSInfoRegionMap",
-                                    {
-                                        "Ref": "AWS::Region"
-                                    },
-                                    "QuickStartS3URL"
+                    "Fn::Sub": [
+                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-rdgateway/templates/rdgw-domain.template",
+                        {
+                            "QSS3Region": {
+                                "Fn::If": [
+                                    "GovCloudCondition",
+                                    "s3-us-gov-west-1",
+                                    "s3"
                                 ]
-                            },
-                            {
-                                "Ref": "QSS3BucketName"
-                            },
-                            {
-                                "Ref": "QSS3KeyPrefix"
-                            },
-                            "submodules/quickstart-microsoft-rdgateway",
-                            "templates/rdgw-domain.template"
-                        ]
+                            }
+                        }
                     ]
                 },
                 "Parameters": {
@@ -1050,6 +960,12 @@
                             "Outputs.PublicSubnet2ID"
                         ]
                     },
+                    "QSS3BucketName": {
+                        "Ref": "QSS3BucketName"
+                    },
+                    "QSS3KeyPrefix": {
+                        "Fn::Sub": "${QSS3KeyPrefix}submodules/quickstart-microsoft-rdgateway/"
+                    },
                     "RDGW1InstanceType": {
                         "Ref": "RDGW1InstanceType"
                     },
@@ -1076,20 +992,6 @@
                             "VPCStack",
                             "Outputs.VPCID"
                         ]
-                    },
-                    "QSS3BucketName": {
-                        "Ref": "QSS3BucketName"
-                    },
-                    "QSS3KeyPrefix": {
-                        "Fn::Join": [
-                            "/",
-                            [
-                                {
-                                    "Ref": "QSS3KeyPrefix"
-                                },
-                                "submodules/quickstart-microsoft-rdgateway"
-                            ]
-                        ]
                     }
                 }
             }
@@ -1100,29 +1002,34 @@
             "Type": "AWS::CloudFormation::Stack",
             "Properties": {
                 "TemplateURL": {
-                    "Fn::Join": [
-                        "/",
-                        [
-                            {
-                                "Fn::FindInMap": [
-                                    "AWSInfoRegionMap",
-                                    {
-                                        "Ref": "AWS::Region"
-                                    },
-                                    "QuickStartS3URL"
+                    "Fn::Sub": [
+                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}templates/dedicated-hosts.template",
+                        {
+                            "QSS3Region": {
+                                "Fn::If": [
+                                    "GovCloudCondition",
+                                    "s3-us-gov-west-1",
+                                    "s3"
                                 ]
-                            },
-                            {
-                                "Ref": "QSS3BucketName"
-                            },
-                            {
-                                "Ref": "QSS3KeyPrefix"
-                            },
-                            "templates/dedicated-hosts.template"
-                        ]
+                            }
+                        }
                     ]
                 },
                 "Parameters": {
+                    "3rdAZ": {
+                        "Fn::If": [
+                            "IsTwoAz",
+                            "no",
+                            "yes"
+                        ]
+                    },
+                    "AutoPlacement": {
+                        "Fn::If": [
+                            "HostTypeIsDediHost",
+                            "off",
+                            "on"
+                        ]
+                    },
                     "AvailabilityZones": {
                         "Fn::Join": [
                             ",",
@@ -1133,20 +1040,6 @@
                     },
                     "WSFCNodeInstanceType": {
                         "Ref": "WSFCNodeInstanceType"
-                    },
-                    "AutoPlacement": {
-                        "Fn::If": [
-                            "HostTypeIsDediHost",
-                            "off",
-                            "on"
-                        ]
-                    },
-                    "3rdAZ": {
-                        "Fn::If": [
-                            "IsTwoAz",
-                            "no",
-                            "yes"
-                        ]
                     }
                 }
             }
@@ -1156,26 +1049,17 @@
             "Type": "AWS::CloudFormation::Stack",
             "Properties": {
                 "TemplateURL": {
-                    "Fn::Join": [
-                        "/",
-                        [
-                            {
-                                "Fn::FindInMap": [
-                                    "AWSInfoRegionMap",
-                                    {
-                                        "Ref": "AWS::Region"
-                                    },
-                                    "QuickStartS3URL"
+                    "Fn::Sub": [
+                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}templates/sql.template",
+                        {
+                            "QSS3Region": {
+                                "Fn::If": [
+                                    "GovCloudCondition",
+                                    "s3-us-gov-west-1",
+                                    "s3"
                                 ]
-                            },
-                            {
-                                "Ref": "QSS3BucketName"
-                            },
-                            {
-                                "Ref": "QSS3KeyPrefix"
-                            },
-                            "templates/sql.template"
-                        ]
+                            }
+                        }
                     ]
                 },
                 "Parameters": {
@@ -1262,6 +1146,9 @@
                     "DomainNetBIOSName": {
                         "Ref": "DomainNetBIOSName"
                     },
+                    "HostType": {
+                        "Ref": "HostType"
+                    },
                     "KeyPairName": {
                         "Ref": "KeyPairName"
                     },
@@ -1291,6 +1178,12 @@
                             }
                         ]
                     },
+                    "QSS3BucketName": {
+                        "Ref": "QSS3BucketName"
+                    },
+                    "QSS3KeyPrefix": {
+                        "Ref": "QSS3KeyPrefix"
+                    },
                     "SQLLicenseProvided": {
                         "Ref": "SQLLicenseProvided"
                     },
@@ -1311,6 +1204,33 @@
                             "VPCStack",
                             "Outputs.VPCID"
                         ]
+                    },
+                    "Volume1Iops": {
+                        "Ref": "VolumeIops"
+                    },
+                    "Volume1Size": {
+                        "Ref": "VolumeSize"
+                    },
+                    "Volume1Type": {
+                        "Ref": "VolumeType"
+                    },
+                    "Volume2Iops": {
+                        "Ref": "VolumeIops"
+                    },
+                    "Volume2Size": {
+                        "Ref": "VolumeSize"
+                    },
+                    "Volume2Type": {
+                        "Ref": "VolumeType"
+                    },
+                    "Volume3Iops": {
+                        "Ref": "VolumeIops"
+                    },
+                    "Volume3Size": {
+                        "Ref": "VolumeSize"
+                    },
+                    "Volume3Type": {
+                        "Ref": "VolumeType"
                     },
                     "WSFCFileServerPrivateIP": {
                         "Ref": "WSFCFileServerPrivateIP"
@@ -1380,42 +1300,6 @@
                                 "Ref": "WSFCNode3PrivateIP3"
                             }
                         ]
-                    },
-                    "QSS3BucketName": {
-                        "Ref": "QSS3BucketName"
-                    },
-                    "QSS3KeyPrefix": {
-                        "Ref": "QSS3KeyPrefix"
-                    },
-                    "Volume1Size": {
-                        "Ref": "VolumeSize"
-                    },
-                    "Volume2Size": {
-                        "Ref": "VolumeSize"
-                    },
-                    "Volume3Size": {
-                        "Ref": "VolumeSize"
-                    },
-                    "Volume1Type": {
-                        "Ref": "VolumeType"
-                    },
-                    "Volume2Type": {
-                        "Ref": "VolumeType"
-                    },
-                    "Volume3Type": {
-                        "Ref": "VolumeType"
-                    },
-                    "Volume1Iops": {
-                        "Ref": "VolumeIops"
-                    },
-                    "Volume2Iops": {
-                        "Ref": "VolumeIops"
-                    },
-                    "Volume3Iops": {
-                        "Ref": "VolumeIops"
-                    },
-                    "HostType": {
-                        "Ref": "HostType"
                     }
                 }
             }

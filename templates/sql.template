@@ -851,14 +851,6 @@
                 "WS2012R2SQLENT2016": "ami-60ce5100"
             }
         },
-        "GovCloudCondition": {
-            "Fn::Equals": [
-                {
-                    "Ref": "AWS::Region"
-                },
-                "us-gov-west-1"
-            ]
-        },
         "SQLAMINameMap": {
             "2012": {
                 "no": "WS2012R2"

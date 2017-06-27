@@ -28,10 +28,30 @@ Try{
 
     $SetPermissions={
         $ErrorActionPreference = "Stop"
-        $acl = Get-Acl C:\witness
-        $rule = New-Object System.Security.AccessControl.FileSystemAccessRule( $Using:obj,'FullControl', 'ContainerInherit, ObjectInherit', 'None', 'Allow')
-        $acl.AddAccessRule($rule)
-        Set-Acl C:\witness $acl
+        $timeoutMinutes=30
+        $intervalMinutes=1
+        $elapsedMinutes = 0.0
+        $startTime = Get-Date
+        $stabilized = $false
+
+        While (($elapsedMinutes -lt $timeoutMinutes)) {
+            try {
+                $acl = Get-Acl C:\witness
+                $rule = New-Object System.Security.AccessControl.FileSystemAccessRule( $Using:obj, 'FullControl', 'ContainerInherit, ObjectInherit', 'None', 'Allow')
+                $acl.AddAccessRule($rule)
+                Set-Acl C:\witness $acl
+                $stabilized = $true
+                break
+            } catch {
+                Start-Sleep -Seconds $($intervalMinutes * 60)
+                $elapsedMinutes = ($(Get-Date) - $startTime).TotalMinutes
+            }
+        }
+
+        if ($stabilized -eq $false) {
+            Throw "Item did not propgate within the timeout of $Timeout minutes"
+        }
+
     }
 
     $obj = $DomainNetBIOSName + '\WSFCluster1$'

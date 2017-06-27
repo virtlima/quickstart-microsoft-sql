@@ -999,18 +999,6 @@
                     ]
                 },
                 "Parameters": {
-                    "ADServer1NetBIOSName": {
-                        "Ref": "ADServer1NetBIOSName"
-                    },
-                    "ADServer1PrivateIP": {
-                        "Ref": "ADServer1PrivateIP"
-                    },
-                    "ADServer2NetBIOSName": {
-                        "Ref": "ADServer2NetBIOSName"
-                    },
-                    "ADServer2PrivateIP": {
-                        "Ref": "ADServer2PrivateIP"
-                    },
                     "DedicatedHostAMI": {
                         "Ref": "DedicatedHostAMI"
                     },

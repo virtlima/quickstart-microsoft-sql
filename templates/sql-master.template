@@ -32,14 +32,22 @@
                 },
                 {
                     "Label": {
-                        "default": "Microsoft Active Directory Configuration"
+                        "default": "Common Microsoft Active Directory Configuration"
                     },
                     "Parameters": [
+                        "ADScenarioType",
                         "DomainDNSName",
                         "DomainNetBIOSName",
                         "RestoreModePassword",
+                        "DomainAdminPassword"
+                    ]
+                },
+                {
+                    "Label": {
+                        "default": "Self-Managed Microsoft Active Directory Configuration (only applicable to non-AWS Directory Service architecture)"
+                    },
+                    "Parameters": [
                         "DomainAdminUser",
-                        "DomainAdminPassword",
                         "ADServer1InstanceType",
                         "ADServer1NetBIOSName",
                         "ADServer1PrivateIP",
@@ -259,6 +267,15 @@
         }
     },
     "Parameters": {
+        "ADScenarioType": {
+            "AllowedValues": [
+                "AWS Directory Service",
+                "Amazon EC2 Self-Managed"
+            ],
+            "Default": "AWS Directory Service",
+            "Description": "Select the type of AD DS deployment to use between AWS Directory Service Microsoft AD or managing your own Amazon EC2 AD instances.",
+            "Type": "String"
+        },
         "ADServer1InstanceType": {
             "AllowedValues": [
                 "t2.large",
@@ -337,7 +354,7 @@
         "DomainAdminUser": {
             "AllowedPattern": "[a-zA-Z0-9]*",
             "Default": "StackAdmin",
-            "Description": "User name for the account that will be added as Domain Administrator. This is separate from the default \"Administrator\" account",
+            "Description": "User name for the account that will be added as Domain Administrator. This is separate from the default \"Administrator\" account. Note: This user will always default to \"Admin\" when using AWS Directory Service regardless of the value provided.",
             "MaxLength": "25",
             "MinLength": "5",
             "Type": "String"
@@ -637,6 +654,14 @@
         }
     },
     "Conditions": {
+        "UseAWSDirectoryService": {
+            "Fn::Equals": [
+                {
+                    "Ref": "ADScenarioType"
+                },
+                "AWS Directory Service"
+            ]
+        },
         "IsTwoAz": {
             "Fn::Equals": [
                 {
@@ -765,7 +790,7 @@
             "Properties": {
                 "TemplateURL": {
                     "Fn::Sub": [
-                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-activedirectory/templates/ad-2012r2-1.template",
+                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-activedirectory/templates/${QSADTemplate}",
                         {
                             "QSS3Region": {
                                 "Fn::If": [
@@ -773,86 +798,148 @@
                                     "s3-us-gov-west-1",
                                     "s3"
                                 ]
+                            },
+                            "QSADTemplate": {
+                                "Fn::If": [
+                                    "UseAWSDirectoryService",
+                                    "ad-2012r2-3.template",
+                                    "ad-2012r2-1.template"
+                                ]
                             }
                         }
                     ]
                 },
                 "Parameters": {
-                    "ADServer1InstanceType": {
-                        "Ref": "ADServer1InstanceType"
-                    },
-                    "ADServer1NetBIOSName": {
-                        "Ref": "ADServer1NetBIOSName"
-                    },
-                    "ADServer1PrivateIP": {
-                        "Ref": "ADServer1PrivateIP"
-                    },
-                    "ADServer2InstanceType": {
-                        "Ref": "ADServer2InstanceType"
-                    },
-                    "ADServer2NetBIOSName": {
-                        "Ref": "ADServer2NetBIOSName"
-                    },
-                    "ADServer2PrivateIP": {
-                        "Ref": "ADServer2PrivateIP"
-                    },
-                    "DomainAdminPassword": {
-                        "Ref": "DomainAdminPassword"
-                    },
-                    "DomainAdminUser": {
-                        "Ref": "DomainAdminUser"
-                    },
-                    "DomainDNSName": {
-                        "Ref": "DomainDNSName"
-                    },
-                    "DomainNetBIOSName": {
-                        "Ref": "DomainNetBIOSName"
-                    },
-                    "KeyPairName": {
-                        "Ref": "KeyPairName"
-                    },
-                    "PrivateSubnet1CIDR": {
-                        "Ref": "PrivateSubnet1CIDR"
-                    },
-                    "PrivateSubnet1ID": {
-                        "Fn::GetAtt": [
-                            "VPCStack",
-                            "Outputs.PrivateSubnet1AID"
-                        ]
-                    },
-                    "PrivateSubnet2CIDR": {
-                        "Ref": "PrivateSubnet2CIDR"
-                    },
-                    "PrivateSubnet2ID": {
-                        "Fn::GetAtt": [
-                            "VPCStack",
-                            "Outputs.PrivateSubnet2AID"
-                        ]
-                    },
-                    "PublicSubnet1CIDR": {
-                        "Ref": "PublicSubnet1CIDR"
-                    },
-                    "PublicSubnet2CIDR": {
-                        "Ref": "PublicSubnet2CIDR"
-                    },
-                    "QSS3BucketName": {
-                        "Ref": "QSS3BucketName"
-                    },
-                    "QSS3KeyPrefix": {
-                        "Fn::Sub": "${QSS3KeyPrefix}submodules/quickstart-microsoft-activedirectory/"
-                    },
-                    "RestoreModePassword": {
-                        "Ref": "RestoreModePassword"
-                    },
-                    "VPCCIDR": {
-                        "Ref": "VPCCIDR"
-                    },
-                    "VPCID": {
-                        "Fn::GetAtt": [
-                            "VPCStack",
-                            "Outputs.VPCID"
-                        ]
-                    }
+                    "Fn::If": [
+                        "UseAWSDirectoryService",
+                        {
+                            "DomainAdminPassword": {
+                                "Ref": "DomainAdminPassword"
+                            },
+                            "DomainDNSName": {
+                                "Ref": "DomainDNSName"
+                            },
+                            "DomainNetBIOSName": {
+                                "Ref": "DomainNetBIOSName"
+                            },
+                            "PrivateSubnet1CIDR": {
+                                "Ref": "PrivateSubnet1CIDR"
+                            },
+                            "PrivateSubnet1ID": {
+                                "Fn::GetAtt": [
+                                    "VPCStack",
+                                    "Outputs.PrivateSubnet1AID"
+                                ]
+                            },
+                            "PrivateSubnet2CIDR": {
+                                "Ref": "PrivateSubnet2CIDR"
+                            },
+                            "PrivateSubnet2ID": {
+                                "Fn::GetAtt": [
+                                    "VPCStack",
+                                    "Outputs.PrivateSubnet2AID"
+                                ]
+                            },
+                            "PublicSubnet1CIDR": {
+                                "Ref": "PublicSubnet1CIDR"
+                            },
+                            "PublicSubnet2CIDR": {
+                                "Ref": "PublicSubnet2CIDR"
+                            },
+                            "QSS3BucketName": {
+                                "Ref": "QSS3BucketName"
+                            },
+                            "QSS3KeyPrefix": {
+                                "Fn::Sub": "${QSS3KeyPrefix}submodules/quickstart-microsoft-activedirectory/"
+                            },
+                            "VPCCIDR": {
+                                "Ref": "VPCCIDR"
+                            },
+                            "VPCID": {
+                                "Fn::GetAtt": [
+                                    "VPCStack",
+                                    "Outputs.VPCID"
+                                ]
+                            }
+                        },
+                        {
+                            "ADServer1InstanceType": {
+                                "Ref": "ADServer1InstanceType"
+                            },
+                            "ADServer1NetBIOSName": {
+                                "Ref": "ADServer1NetBIOSName"
+                            },
+                            "ADServer1PrivateIP": {
+                                "Ref": "ADServer1PrivateIP"
+                            },
+                            "ADServer2InstanceType": {
+                                "Ref": "ADServer2InstanceType"
+                            },
+                            "ADServer2NetBIOSName": {
+                                "Ref": "ADServer2NetBIOSName"
+                            },
+                            "ADServer2PrivateIP": {
+                                "Ref": "ADServer2PrivateIP"
+                            },
+                            "DomainAdminPassword": {
+                                "Ref": "DomainAdminPassword"
+                            },
+                            "DomainAdminUser": {
+                                "Ref": "DomainAdminUser"
+                            },
+                            "DomainDNSName": {
+                                "Ref": "DomainDNSName"
+                            },
+                            "DomainNetBIOSName": {
+                                "Ref": "DomainNetBIOSName"
+                            },
+                            "KeyPairName": {
+                                "Ref": "KeyPairName"
+                            },
+                            "PrivateSubnet1CIDR": {
+                                "Ref": "PrivateSubnet1CIDR"
+                            },
+                            "PrivateSubnet1ID": {
+                                "Fn::GetAtt": [
+                                    "VPCStack",
+                                    "Outputs.PrivateSubnet1AID"
+                                ]
+                            },
+                            "PrivateSubnet2CIDR": {
+                                "Ref": "PrivateSubnet2CIDR"
+                            },
+                            "PrivateSubnet2ID": {
+                                "Fn::GetAtt": [
+                                    "VPCStack",
+                                    "Outputs.PrivateSubnet2AID"
+                                ]
+                            },
+                            "PublicSubnet1CIDR": {
+                                "Ref": "PublicSubnet1CIDR"
+                            },
+                            "PublicSubnet2CIDR": {
+                                "Ref": "PublicSubnet2CIDR"
+                            },
+                            "QSS3BucketName": {
+                                "Ref": "QSS3BucketName"
+                            },
+                            "QSS3KeyPrefix": {
+                                "Fn::Sub": "${QSS3KeyPrefix}submodules/quickstart-microsoft-activedirectory/"
+                            },
+                            "RestoreModePassword": {
+                                "Ref": "RestoreModePassword"
+                            },
+                            "VPCCIDR": {
+                                "Ref": "VPCCIDR"
+                            },
+                            "VPCID": {
+                                "Fn::GetAtt": [
+                                    "VPCStack",
+                                    "Outputs.VPCID"
+                                ]
+                            }
+                        }
+                    ]
                 }
             }
         },
@@ -879,7 +966,13 @@
                         "Ref": "DomainAdminPassword"
                     },
                     "DomainAdminUser": {
-                        "Ref": "DomainAdminUser"
+                        "Fn::If": [
+                            "UseAWSDirectoryService",
+                            "admin",
+                            {
+                                "Ref": "DomainAdminUser"
+                            }
+                        ]
                     },
                     "DomainDNSName": {
                         "Ref": "DomainDNSName"
@@ -1056,7 +1149,13 @@
                         "Ref": "DomainAdminPassword"
                     },
                     "DomainAdminUser": {
-                        "Ref": "DomainAdminUser"
+                        "Fn::If": [
+                            "UseAWSDirectoryService",
+                            "admin",
+                            {
+                                "Ref": "DomainAdminUser"
+                            }
+                        ]
                     },
                     "DomainDNSName": {
                         "Ref": "DomainDNSName"

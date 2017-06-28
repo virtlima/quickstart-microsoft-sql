@@ -1033,10 +1033,10 @@
                                     ]
                                 }
                             },
-                            "C:\\cfn\\scripts\\EnableCredSsp.ps1": {
+                            "C:\\cfn\\scripts\\Enable-CredSSP.ps1": {
                                 "source": {
                                     "Fn::Sub": [
-                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/EnableCredSsp.ps1",
+                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/Enable-CredSSP.ps1",
                                         {
                                             "QSS3Region": {
                                                 "Fn::If": [
@@ -1081,10 +1081,10 @@
                                     ]
                                 }
                             },
-                            "C:\\cfn\\scripts\\Stabilize-ADUser.ps1": {
+                            "C:\\cfn\\scripts\\Test-ADUser.ps1": {
                                 "source": {
                                     "Fn::Sub": [
-                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/Stabilize-ADUser.ps1",
+                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/Test-ADUser.ps1",
                                         {
                                             "QSS3Region": {
                                                 "Fn::If": [
@@ -1113,10 +1113,10 @@
                                     ]
                                 }
                             },
-                            "C:\\cfn\\scripts\\DisableCredSsp.ps1": {
+                            "C:\\cfn\\scripts\\Disable-CredSSP.ps1": {
                                 "source": {
                                     "Fn::Sub": [
-                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/DisableCredSsp.ps1",
+                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/Disable-CredSSP.ps1",
                                         {
                                             "QSS3Region": {
                                                 "Fn::If": [
@@ -1204,7 +1204,7 @@
                                 "waitAfterCompletion": "forever"
                             },
                             "c-enable-credssp": {
-                                "command": "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\EnableCredSsp.ps1",
+                                "command": "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\Enable-CredSSP.ps1",
                                 "waitAfterCompletion": "0"
                             },
                             "d-create-sql-account": {
@@ -1276,13 +1276,11 @@
                                             "powershell.exe ",
                                             "-ExecutionPolicy RemoteSigned ",
                                             "-Command \"",
-                                            "C:\\cfn\\scripts\\Stabilize-ADUser.ps1 -UserName '",
+                                            "C:\\cfn\\scripts\\Test-ADUser.ps1 -UserName '",
                                             {
                                                 "Ref": "SQLServiceAccount"
                                             },
-                                            "' -TimeoutMinutes 30",
-                                            " -IntervalMinutes 1",
-                                            "\""
+                                            "' -Wait -TimeoutMinutes 30 -IntervalMinutes 1\""
                                         ]
                                     ]
                                 },
@@ -1319,7 +1317,7 @@
                     "Cleanup": {
                         "commands": {
                             "a-disable-credssp": {
-                                "command": "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\DisableCredSsp.ps1\"",
+                                "command": "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\Disable-CredSSP.ps1\"",
                                 "waitAfterCompletion": "0"
                             }
                         }
@@ -1576,10 +1574,10 @@
                                     ]
                                 }
                             },
-                            "C:\\cfn\\scripts\\EnableCredSsp.ps1": {
+                            "C:\\cfn\\scripts\\Enable-CredSSP.ps1": {
                                 "source": {
                                     "Fn::Sub": [
-                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/EnableCredSsp.ps1",
+                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/Enable-CredSSP.ps1",
                                         {
                                             "QSS3Region": {
                                                 "Fn::If": [
@@ -1624,10 +1622,10 @@
                                     ]
                                 }
                             },
-                            "C:\\cfn\\scripts\\Stabilize-ADUser.ps1": {
+                            "C:\\cfn\\scripts\\Test-ADUser.ps1": {
                                 "source": {
                                     "Fn::Sub": [
-                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/Stabilize-ADUser.ps1",
+                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/Test-ADUser.ps1",
                                         {
                                             "QSS3Region": {
                                                 "Fn::If": [
@@ -1704,10 +1702,10 @@
                                     ]
                                 }
                             },
-                            "C:\\cfn\\scripts\\DisableCredSsp.ps1": {
+                            "C:\\cfn\\scripts\\Disable-CredSSP.ps1": {
                                 "source": {
                                     "Fn::Sub": [
-                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/DisableCredSsp.ps1",
+                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/Disable-CredSSP.ps1",
                                         {
                                             "QSS3Region": {
                                                 "Fn::If": [
@@ -1803,7 +1801,7 @@
                                 "waitAfterCompletion": "0"
                             },
                             "e-enable-credssp": {
-                                "command": "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\EnableCredSsp.ps1",
+                                "command": "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\Enable-CredSSP.ps1",
                                 "waitAfterCompletion": "0"
                             },
                             "f-reboot": {
@@ -1883,13 +1881,11 @@
                                             "powershell.exe ",
                                             "-ExecutionPolicy RemoteSigned ",
                                             "-Command \"",
-                                            "C:\\cfn\\scripts\\Stabilize-ADUser.ps1 -UserName '",
+                                            "C:\\cfn\\scripts\\Test-ADUser.ps1 -UserName '",
                                             {
                                                 "Ref": "SQLServiceAccount"
                                             },
-                                            "' -TimeoutMinutes 30",
-                                            " -IntervalMinutes 1",
-                                            "\""
+                                            "' -Wait -TimeoutMinutes 30 -IntervalMinutes 1\""
                                         ]
                                     ]
                                 },
@@ -2053,7 +2049,7 @@
                     "Cleanup": {
                         "commands": {
                             "a-disable-credssp": {
-                                "command": "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\DisableCredSsp.ps1\"",
+                                "command": "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\Disable-CredSSP.ps1\"",
                                 "waitAfterCompletion": "0"
                             }
                         }
@@ -2382,10 +2378,10 @@
                                     ]
                                 }
                             },
-                            "C:\\cfn\\scripts\\EnableCredSsp.ps1": {
+                            "C:\\cfn\\scripts\\Enable-CredSSP.ps1": {
                                 "source": {
                                     "Fn::Sub": [
-                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/EnableCredSsp.ps1",
+                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/Enable-CredSSP.ps1",
                                         {
                                             "QSS3Region": {
                                                 "Fn::If": [
@@ -2462,10 +2458,10 @@
                                     ]
                                 }
                             },
-                            "C:\\cfn\\scripts\\DisableCredSsp.ps1": {
+                            "C:\\cfn\\scripts\\Disable-CredSSP.ps1": {
                                 "source": {
                                     "Fn::Sub": [
-                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/DisableCredSsp.ps1",
+                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/Disable-CredSSP.ps1",
                                         {
                                             "QSS3Region": {
                                                 "Fn::If": [
@@ -2561,7 +2557,7 @@
                                 "waitAfterCompletion": "0"
                             },
                             "f-enable-credssp": {
-                                "command": "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\EnableCredSsp.ps1",
+                                "command": "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\Enable-CredSSP.ps1",
                                 "waitAfterCompletion": "0"
                             },
                             "g-reboot": {
@@ -2704,7 +2700,7 @@
                     "Cleanup": {
                         "commands": {
                             "a-disable-credssp": {
-                                "command": "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\DisableCredSsp.ps1\"",
+                                "command": "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\Disable-CredSSP.ps1\"",
                                 "waitAfterCompletion": "0"
                             }
                         }
@@ -3052,10 +3048,10 @@
                                     ]
                                 }
                             },
-                            "C:\\cfn\\scripts\\EnableCredSsp.ps1": {
+                            "C:\\cfn\\scripts\\Enable-CredSSP.ps1": {
                                 "source": {
                                     "Fn::Sub": [
-                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/EnableCredSsp.ps1",
+                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/Enable-CredSSP.ps1",
                                         {
                                             "QSS3Region": {
                                                 "Fn::If": [
@@ -3100,10 +3096,10 @@
                                     ]
                                 }
                             },
-                            "C:\\cfn\\scripts\\Stabilize-ADUser.ps1": {
+                            "C:\\cfn\\scripts\\Test-ADUser.ps1": {
                                 "source": {
                                     "Fn::Sub": [
-                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/Stabilize-ADUser.ps1",
+                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/Test-ADUser.ps1",
                                         {
                                             "QSS3Region": {
                                                 "Fn::If": [
@@ -3260,10 +3256,10 @@
                                     ]
                                 }
                             },
-                            "C:\\cfn\\scripts\\DisableCredSsp.ps1": {
+                            "C:\\cfn\\scripts\\Disable-CredSSP.ps1": {
                                 "source": {
                                     "Fn::Sub": [
-                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/DisableCredSsp.ps1",
+                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/Disable-CredSSP.ps1",
                                         {
                                             "QSS3Region": {
                                                 "Fn::If": [
@@ -3359,7 +3355,7 @@
                                 "waitAfterCompletion": "0"
                             },
                             "e-enable-credssp": {
-                                "command": "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\EnableCredSsp.ps1",
+                                "command": "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\Enable-CredSSP.ps1",
                                 "waitAfterCompletion": "0"
                             },
                             "f-reboot": {
@@ -3815,7 +3811,7 @@
                     "Cleanup": {
                         "commands": {
                             "a-disable-credssp": {
-                                "command": "powershell.exe -ExecutionPolicy RemoteSigned \"C:\\cfn\\scripts\\DisableCredSsp.ps1\"",
+                                "command": "powershell.exe -ExecutionPolicy RemoteSigned \"C:\\cfn\\scripts\\Disable-CredSSP.ps1\"",
                                 "waitAfterCompletion": "0"
                             }
                         }

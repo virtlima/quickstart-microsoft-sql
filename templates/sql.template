@@ -1065,22 +1065,6 @@
                                     ]
                                 }
                             },
-                            "C:\\cfn\\scripts\\Create-ADServiceAccount.ps1": {
-                                "source": {
-                                    "Fn::Sub": [
-                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/Create-ADServiceAccount.ps1",
-                                        {
-                                            "QSS3Region": {
-                                                "Fn::If": [
-                                                    "GovCloudCondition",
-                                                    "s3-us-gov-west-1",
-                                                    "s3"
-                                                ]
-                                            }
-                                        }
-                                    ]
-                                }
-                            },
                             "C:\\cfn\\scripts\\Test-ADUser.ps1": {
                                 "source": {
                                     "Fn::Sub": [
@@ -1205,41 +1189,6 @@
                             },
                             "c-enable-credssp": {
                                 "command": "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\Enable-CredSSP.ps1",
-                                "waitAfterCompletion": "0"
-                            },
-                            "d-create-sql-account": {
-                                "command": {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "powershell.exe -Command \"C:\\cfn\\scripts\\Create-ADServiceAccount.ps1 -DomainDNSName '",
-                                            {
-                                                "Ref": "DomainDNSName"
-                                            },
-                                            "' -DomainNetBIOSName '",
-                                            {
-                                                "Ref": "DomainNetBIOSName"
-                                            },
-                                            "' -DomainAdminUser '",
-                                            {
-                                                "Ref": "DomainAdminUser"
-                                            },
-                                            "' -DomainAdminPassword '",
-                                            {
-                                                "Ref": "DomainAdminPassword"
-                                            },
-                                            "' -ServiceAccountUser '",
-                                            {
-                                                "Ref": "SQLServiceAccount"
-                                            },
-                                            "' -ServiceAccountPassword '",
-                                            {
-                                                "Ref": "SQLServiceAccountPassword"
-                                            },
-                                            "'\""
-                                        ]
-                                    ]
-                                },
                                 "waitAfterCompletion": "0"
                             },
                             "e-add-domadmin-user-to-group": {
@@ -3068,38 +3017,6 @@
                                 "source": {
                                     "Fn::Sub": [
                                         "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/DownloadSQLEE.ps1",
-                                        {
-                                            "QSS3Region": {
-                                                "Fn::If": [
-                                                    "GovCloudCondition",
-                                                    "s3-us-gov-west-1",
-                                                    "s3"
-                                                ]
-                                            }
-                                        }
-                                    ]
-                                }
-                            },
-                            "C:\\cfn\\scripts\\Create-ADServiceAccount.ps1": {
-                                "source": {
-                                    "Fn::Sub": [
-                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/Create-ADServiceAccount.ps1",
-                                        {
-                                            "QSS3Region": {
-                                                "Fn::If": [
-                                                    "GovCloudCondition",
-                                                    "s3-us-gov-west-1",
-                                                    "s3"
-                                                ]
-                                            }
-                                        }
-                                    ]
-                                }
-                            },
-                            "C:\\cfn\\scripts\\Test-ADUser.ps1": {
-                                "source": {
-                                    "Fn::Sub": [
-                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/Test-ADUser.ps1",
                                         {
                                             "QSS3Region": {
                                                 "Fn::If": [

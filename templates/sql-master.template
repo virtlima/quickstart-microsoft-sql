@@ -38,7 +38,6 @@
                         "ADScenarioType",
                         "DomainDNSName",
                         "DomainNetBIOSName",
-                        "RestoreModePassword",
                         "DomainAdminPassword"
                     ]
                 },
@@ -53,7 +52,8 @@
                         "ADServer1PrivateIP",
                         "ADServer2InstanceType",
                         "ADServer2NetBIOSName",
-                        "ADServer2PrivateIP"
+                        "ADServer2PrivateIP",
+                        "RestoreModePassword"
                     ]
                 },
                 {
@@ -113,6 +113,9 @@
                 }
             ],
             "ParameterLabels": {
+                "ADScenarioType": {
+                    "default": "AD Scenario Type"
+                },
                 "ADServer1InstanceType": {
                     "default": "Domain Controller 1 Instance Type"
                 },

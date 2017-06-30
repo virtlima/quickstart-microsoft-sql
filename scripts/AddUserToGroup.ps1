@@ -23,18 +23,28 @@ try {
 
     $ErrorActionPreference = "Stop"
 
-	$de = [ADSI]"WinNT://$ServerName/$GroupName,group"
+	$timeoutMinutes=30
+	$intervalMinutes=1
+	$elapsedMinutes = 0.0
+	$startTime = Get-Date
+	$stabilized = $false
 
-	$UserPath = ([ADSI]"WinNT://$DomainNetBIOSName/$UserName").path
-	$Retries = 0
-	while (($Retries -lt 8) -and (!$UserPath)) {
-		$Retries++
-		Start-Sleep -Seconds ($Retries * 60)
-		$UserPath = ([ADSI]"WinNT://$DomainNetBIOSName/$UserName").path
+	While (($elapsedMinutes -lt $timeoutMinutes)) {
+		try {
+			$de = [ADSI]"WinNT://$ServerName/$GroupName,group"
+			$UserPath = ([ADSI]"WinNT://$DomainNetBIOSName/$UserName").path
+			$de.psbase.Invoke("Add",$UserPath)
+			$stabilized = $true
+			break
+		} catch {
+			Start-Sleep -Seconds $($intervalMinutes * 60)
+			$elapsedMinutes = ($(Get-Date) - $startTime).TotalMinutes
+		}
 	}
 
-	$de.psbase.Invoke("Add",$UserPath)
-
+	if ($stabilized -eq $false) {
+		Throw "Item did not propgate within the timeout of $Timeout minutes"
+	}
 }
 catch {
     Write-Verbose "$($_.exception.message)@ $(Get-Date)"

@@ -35,10 +35,6 @@
                         "DomainNetBIOSName",
                         "DomainAdminUser",
                         "DomainAdminPassword",
-                        "ADServer1NetBIOSName",
-                        "ADServer1PrivateIP",
-                        "ADServer2NetBIOSName",
-                        "ADServer2PrivateIP",
                         "DomainMemberSGID"
                     ]
                 },
@@ -101,18 +97,6 @@
                 }
             ],
             "ParameterLabels": {
-                "ADServer1NetBIOSName": {
-                    "default": "Domain Controller 1 NetBIOS Name"
-                },
-                "ADServer1PrivateIP": {
-                    "default": "Domain Controller 1 Private IP Address"
-                },
-                "ADServer2NetBIOSName": {
-                    "default": "Domain Controller 2 NetBIOS Name"
-                },
-                "ADServer2PrivateIP": {
-                    "default": "Domain Controller 2 Private IP Address"
-                },
                 "DedicatedHostAMI": {
                     "default": "BYOL AMI to use on dedicated host"
                 },
@@ -264,34 +248,6 @@
         }
     },
     "Parameters": {
-        "ADServer1NetBIOSName": {
-            "AllowedPattern": "[a-zA-Z0-9]+",
-            "Default": "DC1",
-            "Description": "NetBIOS name of the first Active Directory server (up to 15 characters)",
-            "MaxLength": "15",
-            "MinLength": "1",
-            "Type": "String"
-        },
-        "ADServer1PrivateIP": {
-            "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$",
-            "Default": "10.0.0.10",
-            "Description": "Fixed private IP for the first Active Directory server located in Availability Zone 1",
-            "Type": "String"
-        },
-        "ADServer2NetBIOSName": {
-            "AllowedPattern": "[a-zA-Z0-9]+",
-            "Default": "DC2",
-            "Description": "NetBIOS name of the second Active Directory server (up to 15 characters)",
-            "MaxLength": "15",
-            "MinLength": "1",
-            "Type": "String"
-        },
-        "ADServer2PrivateIP": {
-            "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$",
-            "Default": "10.0.32.10",
-            "Description": "Fixed private IP for the second Active Directory server located in Availability Zone 2",
-            "Type": "String"
-        },
         "DedicatedHostAMI": {
             "Default": "",
             "Description": "If host type is set to \"Dedicated\" or \"Dedicated Host\", you need to specify your imported BYOL AMI id",
@@ -988,61 +944,31 @@
             "Type": "AWS::EC2::Instance",
             "Condition": "IsTwoNode",
             "Metadata": {
+                "AWS::CloudFormation::Authentication": {
+                    "S3AccessCreds": {
+                        "type": "S3",
+                        "roleName": {
+                            "Ref": "WSFCRole"
+                        },
+                        "buckets": [
+                            {
+                                "Ref": "QSS3BucketName"
+                            }
+                        ]
+                    }
+                },
                 "AWS::CloudFormation::Init": {
                     "configSets": {
                         "config": [
+                            "FetchResources",
                             "QuickStartSetup",
                             "Prep",
-                            "Install",
-                            "Configure",
                             "Cleanup",
                             "Finalize"
                         ]
                     },
-                    "QuickStartSetup": {
+                    "FetchResources": {
                         "files": {
-                            "c:\\cfn\\cfn-hup.conf": {
-                                "content": {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "[main]\n",
-                                            "stack=",
-                                            {
-                                                "Ref": "AWS::StackId"
-                                            },
-                                            "\n",
-                                            "region=",
-                                            {
-                                                "Ref": "AWS::Region"
-                                            },
-                                            "\n"
-                                        ]
-                                    ]
-                                }
-                            },
-                            "c:\\cfn\\hooks.d\\cfn-auto-reloader.conf": {
-                                "content": {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "[cfn-auto-reloader-hook]\n",
-                                            "triggers=post.update\n",
-                                            "path=Resources.WSFCFileServer.Metadata.AWS::CloudFormation::Init\n",
-                                            "action=cfn-init.exe -v -s ",
-                                            {
-                                                "Ref": "AWS::StackId"
-                                            },
-                                            " -r WSFCFileServer",
-                                            " --region ",
-                                            {
-                                                "Ref": "AWS::Region"
-                                            },
-                                            "\n"
-                                        ]
-                                    ]
-                                }
-                            },
                             "C:\\cfn\\scripts\\Unzip-Archive.ps1": {
                                 "source": {
                                     "Fn::Sub": [
@@ -1063,64 +989,6 @@
                                 "source": {
                                     "Fn::Sub": [
                                         "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/modules/AWSQuickStart.zip",
-                                        {
-                                            "QSS3Region": {
-                                                "Fn::If": [
-                                                    "GovCloudCondition",
-                                                    "s3-us-gov-west-1",
-                                                    "s3"
-                                                ]
-                                            }
-                                        }
-                                    ]
-                                }
-                            }
-                        },
-                        "commands": {
-                            "a-set-execution-policy": {
-                                "command": "powershell.exe -Command \"Set-ExecutionPolicy RemoteSigned -Force\"",
-                                "waitAfterCompletion": "0"
-                            },
-                            "b-unpack-quickstart-module": {
-                                "command": "powershell.exe -Command C:\\cfn\\scripts\\Unzip-Archive.ps1 -Source C:\\cfn\\modules\\AWSQuickStart.zip -Destination C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\Modules\\",
-                                "waitAfterCompletion": "0"
-                            },
-                            "c-init-quickstart-module": {
-                                "command": {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "powershell.exe -Command \"",
-                                            "New-AWSQuickStartWaitHandle -Handle '",
-                                            {
-                                                "Ref": "WSFCFileServerWaitHandle"
-                                            },
-                                            "'\""
-                                        ]
-                                    ]
-                                },
-                                "waitAfterCompletion": "0"
-                            }
-                        },
-                        "services": {
-                            "windows": {
-                                "cfn-hup": {
-                                    "enabled": "true",
-                                    "ensureRunning": "true",
-                                    "files": [
-                                        "C:\\cfn\\cfn-hup.conf",
-                                        "C:\\cfn\\hooks.d\\cfn-auto-reloader.conf"
-                                    ]
-                                }
-                            }
-                        }
-                    },
-                    "Prep": {
-                        "files": {
-                            "C:\\cfn\\scripts\\Set-Dns.ps1": {
-                                "source": {
-                                    "Fn::Sub": [
-                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/Set-Dns.ps1",
                                         {
                                             "QSS3Region": {
                                                 "Fn::If": [
@@ -1165,6 +1033,22 @@
                                     ]
                                 }
                             },
+                            "C:\\cfn\\scripts\\Enable-CredSSP.ps1": {
+                                "source": {
+                                    "Fn::Sub": [
+                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/Enable-CredSSP.ps1",
+                                        {
+                                            "QSS3Region": {
+                                                "Fn::If": [
+                                                    "GovCloudCondition",
+                                                    "s3-us-gov-west-1",
+                                                    "s3"
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
                             "C:\\cfn\\scripts\\Create-Share.ps1": {
                                 "source": {
                                     "Fn::Sub": [
@@ -1181,10 +1065,10 @@
                                     ]
                                 }
                             },
-                            "C:\\cfn\\scripts\\Create-ADServiceAccount.ps1": {
+                            "C:\\cfn\\scripts\\Test-ADUser.ps1": {
                                 "source": {
                                     "Fn::Sub": [
-                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/Create-ADServiceAccount.ps1",
+                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/Test-ADUser.ps1",
                                         {
                                             "QSS3Region": {
                                                 "Fn::If": [
@@ -1213,10 +1097,10 @@
                                     ]
                                 }
                             },
-                            "C:\\cfn\\scripts\\Invoke-ADReplication.ps1": {
+                            "C:\\cfn\\scripts\\Disable-CredSSP.ps1": {
                                 "source": {
                                     "Fn::Sub": [
-                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/Invoke-ADReplication.ps1",
+                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/Disable-CredSSP.ps1",
                                         {
                                             "QSS3Region": {
                                                 "Fn::If": [
@@ -1229,28 +1113,39 @@
                                     ]
                                 }
                             }
-                        },
+                        }
+                    },
+                    "QuickStartSetup": {
                         "commands": {
-                            "a-set-dns": {
+                            "a-set-execution-policy": {
+                                "command": "powershell.exe -Command \"Set-ExecutionPolicy RemoteSigned -Force\"",
+                                "waitAfterCompletion": "0"
+                            },
+                            "b-unpack-quickstart-module": {
+                                "command": "powershell.exe -Command C:\\cfn\\scripts\\Unzip-Archive.ps1 -Source C:\\cfn\\modules\\AWSQuickStart.zip -Destination C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\Modules\\",
+                                "waitAfterCompletion": "0"
+                            },
+                            "c-init-quickstart-module": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
                                         [
-                                            "powershell.exe -Command \"C:\\cfn\\scripts\\Set-Dns.ps1 -ns1 '",
+                                            "powershell.exe -Command \"",
+                                            "New-AWSQuickStartWaitHandle -Handle '",
                                             {
-                                                "Ref": "ADServer1PrivateIP"
-                                            },
-                                            "' -ns2 '",
-                                            {
-                                                "Ref": "ADServer2PrivateIP"
+                                                "Ref": "WSFCFileServerWaitHandle"
                                             },
                                             "'\""
                                         ]
                                     ]
                                 },
-                                "waitAfterCompletion": "30"
-                            },
-                            "b-rename-computer": {
+                                "waitAfterCompletion": "0"
+                            }
+                        }
+                    },
+                    "Prep": {
+                        "commands": {
+                            "a-rename-computer": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
@@ -1265,7 +1160,7 @@
                                 },
                                 "waitAfterCompletion": "forever"
                             },
-                            "c-join-domain": {
+                            "b-join-domain": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
@@ -1292,94 +1187,11 @@
                                 },
                                 "waitAfterCompletion": "forever"
                             },
-                            "d-create-sql-account": {
-                                "command": {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "powershell.exe -Command \"C:\\cfn\\scripts\\Create-ADServiceAccount.ps1 -DomainDNSName '",
-                                            {
-                                                "Ref": "DomainDNSName"
-                                            },
-                                            "' -DomainNetBIOSName '",
-                                            {
-                                                "Ref": "DomainNetBIOSName"
-                                            },
-                                            "' -DomainAdminUser '",
-                                            {
-                                                "Ref": "DomainAdminUser"
-                                            },
-                                            "' -DomainAdminPassword '",
-                                            {
-                                                "Ref": "DomainAdminPassword"
-                                            },
-                                            "' -ServiceAccountUser '",
-                                            {
-                                                "Ref": "SQLServiceAccount"
-                                            },
-                                            "' -ServiceAccountPassword '",
-                                            {
-                                                "Ref": "SQLServiceAccountPassword"
-                                            },
-                                            "' -ADServerNetBIOSName '",
-                                            {
-                                                "Ref": "ADServer1NetBIOSName"
-                                            },
-                                            "'\""
-                                        ]
-                                    ]
-                                },
+                            "c-enable-credssp": {
+                                "command": "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\Enable-CredSSP.ps1",
                                 "waitAfterCompletion": "0"
                             },
-                            "e-Invoke-ADReplication-DC1": {
-                                "command": {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "powershell.exe -Command \"C:\\cfn\\scripts\\Invoke-ADReplication.ps1",
-                                            " -UserName '",
-                                            {
-                                                "Ref": "DomainAdminUser"
-                                            },
-                                            "' -Password '",
-                                            {
-                                                "Ref": "DomainAdminPassword"
-                                            },
-                                            "' -DomainController '",
-                                            {
-                                                "Ref": "ADServer1NetBIOSName"
-                                            },
-                                            "'\""
-                                        ]
-                                    ]
-                                },
-                                "waitAfterCompletion": "0"
-                            },
-                            "f-Invoke-ADReplication-DC2": {
-                                "command": {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "powershell.exe -Command \"C:\\cfn\\scripts\\Invoke-ADReplication.ps1",
-                                            " -UserName '",
-                                            {
-                                                "Ref": "DomainAdminUser"
-                                            },
-                                            "' -Password '",
-                                            {
-                                                "Ref": "DomainAdminPassword"
-                                            },
-                                            "' -DomainController '",
-                                            {
-                                                "Ref": "ADServer2NetBIOSName"
-                                            },
-                                            "'\""
-                                        ]
-                                    ]
-                                },
-                                "waitAfterCompletion": "15"
-                            },
-                            "g-add-domadmin-user-to-group": {
+                            "d-add-domadmin-user-to-group": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
@@ -1405,7 +1217,25 @@
                                 },
                                 "waitAfterCompletion": "0"
                             },
-                            "h-add-sqlservice-user-to-group": {
+                            "e-wait-for-ad-replication": {
+                                "command": {
+                                    "Fn::Join": [
+                                        "",
+                                        [
+                                            "powershell.exe ",
+                                            "-ExecutionPolicy RemoteSigned ",
+                                            "-Command \"",
+                                            "C:\\cfn\\scripts\\Test-ADUser.ps1 -UserName '",
+                                            {
+                                                "Ref": "SQLServiceAccount"
+                                            },
+                                            "' -Wait -TimeoutMinutes 30 -IntervalMinutes 1\""
+                                        ]
+                                    ]
+                                },
+                                "waitAfterCompletion": "0"
+                            },
+                            "f-add-sqlservice-user-to-group": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
@@ -1433,9 +1263,14 @@
                             }
                         }
                     },
-                    "Install": {},
-                    "Configure": {},
-                    "Cleanup": {},
+                    "Cleanup": {
+                        "commands": {
+                            "a-disable-credssp": {
+                                "command": "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\Disable-CredSSP.ps1\"",
+                                "waitAfterCompletion": "0"
+                            }
+                        }
+                    },
                     "Finalize": {
                         "commands": {
                             "a-signal-success": {
@@ -1543,9 +1378,23 @@
         "WSFCNode1": {
             "Type": "AWS::EC2::Instance",
             "Metadata": {
+                "AWS::CloudFormation::Authentication": {
+                    "S3AccessCreds": {
+                        "type": "S3",
+                        "roleName": {
+                            "Ref": "WSFCRole"
+                        },
+                        "buckets": [
+                            {
+                                "Ref": "QSS3BucketName"
+                            }
+                        ]
+                    }
+                },
                 "AWS::CloudFormation::Init": {
                     "configSets": {
                         "config": [
+                            "FetchResources",
                             "QuickStartSetup",
                             "Prep",
                             {
@@ -1560,50 +1409,8 @@
                             "Finalize"
                         ]
                     },
-                    "QuickStartSetup": {
+                    "FetchResources": {
                         "files": {
-                            "c:\\cfn\\cfn-hup.conf": {
-                                "content": {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "[main]\n",
-                                            "stack=",
-                                            {
-                                                "Ref": "AWS::StackId"
-                                            },
-                                            "\n",
-                                            "region=",
-                                            {
-                                                "Ref": "AWS::Region"
-                                            },
-                                            "\n"
-                                        ]
-                                    ]
-                                }
-                            },
-                            "c:\\cfn\\hooks.d\\cfn-auto-reloader.conf": {
-                                "content": {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "[cfn-auto-reloader-hook]\n",
-                                            "triggers=post.update\n",
-                                            "path=Resources.WSFCNode1.Metadata.AWS::CloudFormation::Init\n",
-                                            "action=cfn-init.exe -v -s ",
-                                            {
-                                                "Ref": "AWS::StackId"
-                                            },
-                                            " -r WSFCNode1",
-                                            " --region ",
-                                            {
-                                                "Ref": "AWS::Region"
-                                            },
-                                            "\n"
-                                        ]
-                                    ]
-                                }
-                            },
                             "C:\\cfn\\scripts\\Unzip-Archive.ps1": {
                                 "source": {
                                     "Fn::Sub": [
@@ -1624,64 +1431,6 @@
                                 "source": {
                                     "Fn::Sub": [
                                         "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/modules/AWSQuickStart.zip",
-                                        {
-                                            "QSS3Region": {
-                                                "Fn::If": [
-                                                    "GovCloudCondition",
-                                                    "s3-us-gov-west-1",
-                                                    "s3"
-                                                ]
-                                            }
-                                        }
-                                    ]
-                                }
-                            }
-                        },
-                        "commands": {
-                            "a-set-execution-policy": {
-                                "command": "powershell.exe -Command \"Set-ExecutionPolicy RemoteSigned -Force\"",
-                                "waitAfterCompletion": "0"
-                            },
-                            "b-unpack-quickstart-module": {
-                                "command": "powershell.exe -Command C:\\cfn\\scripts\\Unzip-Archive.ps1 -Source C:\\cfn\\modules\\AWSQuickStart.zip -Destination C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\Modules\\",
-                                "waitAfterCompletion": "0"
-                            },
-                            "c-init-quickstart-module": {
-                                "command": {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "powershell.exe -Command \"",
-                                            "New-AWSQuickStartWaitHandle -Handle '",
-                                            {
-                                                "Ref": "WSFCNode1WaitHandle"
-                                            },
-                                            "'\""
-                                        ]
-                                    ]
-                                },
-                                "waitAfterCompletion": "0"
-                            }
-                        },
-                        "services": {
-                            "windows": {
-                                "cfn-hup": {
-                                    "enabled": "true",
-                                    "ensureRunning": "true",
-                                    "files": [
-                                        "C:\\cfn\\cfn-hup.conf",
-                                        "C:\\cfn\\hooks.d\\cfn-auto-reloader.conf"
-                                    ]
-                                }
-                            }
-                        }
-                    },
-                    "Prep": {
-                        "files": {
-                            "C:\\cfn\\scripts\\Set-Dns.ps1": {
-                                "source": {
-                                    "Fn::Sub": [
-                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/Set-Dns.ps1",
                                         {
                                             "QSS3Region": {
                                                 "Fn::If": [
@@ -1774,10 +1523,10 @@
                                     ]
                                 }
                             },
-                            "C:\\cfn\\scripts\\EnableCredSsp.ps1": {
+                            "C:\\cfn\\scripts\\Enable-CredSSP.ps1": {
                                 "source": {
                                     "Fn::Sub": [
-                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/EnableCredSsp.ps1",
+                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/Enable-CredSSP.ps1",
                                         {
                                             "QSS3Region": {
                                                 "Fn::If": [
@@ -1822,6 +1571,22 @@
                                     ]
                                 }
                             },
+                            "C:\\cfn\\scripts\\Test-ADUser.ps1": {
+                                "source": {
+                                    "Fn::Sub": [
+                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/Test-ADUser.ps1",
+                                        {
+                                            "QSS3Region": {
+                                                "Fn::If": [
+                                                    "GovCloudCondition",
+                                                    "s3-us-gov-west-1",
+                                                    "s3"
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
                             "C:\\cfn\\scripts\\AddUserToGroup.ps1": {
                                 "source": {
                                     "Fn::Sub": [
@@ -1838,10 +1603,58 @@
                                     ]
                                 }
                             },
-                            "C:\\cfn\\scripts\\Invoke-ADReplication.ps1": {
+                            "C:\\cfn\\scripts\\InstallSQLEE.ps1": {
                                 "source": {
                                     "Fn::Sub": [
-                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/Invoke-ADReplication.ps1",
+                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/InstallSQLEE.ps1",
+                                        {
+                                            "QSS3Region": {
+                                                "Fn::If": [
+                                                    "GovCloudCondition",
+                                                    "s3-us-gov-west-1",
+                                                    "s3"
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            "C:\\cfn\\scripts\\Reconfigure-SQL.ps1": {
+                                "source": {
+                                    "Fn::Sub": [
+                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/Reconfigure-SQL.ps1",
+                                        {
+                                            "QSS3Region": {
+                                                "Fn::If": [
+                                                    "GovCloudCondition",
+                                                    "s3-us-gov-west-1",
+                                                    "s3"
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            "C:\\cfn\\scripts\\SetMaxDOP.ps1": {
+                                "source": {
+                                    "Fn::Sub": [
+                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/SetMaxDOP.ps1",
+                                        {
+                                            "QSS3Region": {
+                                                "Fn::If": [
+                                                    "GovCloudCondition",
+                                                    "s3-us-gov-west-1",
+                                                    "s3"
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            "C:\\cfn\\scripts\\Disable-CredSSP.ps1": {
+                                "source": {
+                                    "Fn::Sub": [
+                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/Disable-CredSSP.ps1",
                                         {
                                             "QSS3Region": {
                                                 "Fn::If": [
@@ -1854,28 +1667,39 @@
                                     ]
                                 }
                             }
-                        },
+                        }
+                    },
+                    "QuickStartSetup": {
                         "commands": {
-                            "a-set-dns": {
+                            "a-set-execution-policy": {
+                                "command": "powershell.exe -Command \"Set-ExecutionPolicy RemoteSigned -Force\"",
+                                "waitAfterCompletion": "0"
+                            },
+                            "b-unpack-quickstart-module": {
+                                "command": "powershell.exe -Command C:\\cfn\\scripts\\Unzip-Archive.ps1 -Source C:\\cfn\\modules\\AWSQuickStart.zip -Destination C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\Modules\\",
+                                "waitAfterCompletion": "0"
+                            },
+                            "c-init-quickstart-module": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
                                         [
-                                            "powershell.exe -Command \"C:\\cfn\\scripts\\Set-Dns.ps1 -ns1 '",
+                                            "powershell.exe -Command \"",
+                                            "New-AWSQuickStartWaitHandle -Handle '",
                                             {
-                                                "Ref": "ADServer1PrivateIP"
-                                            },
-                                            "' -ns2 '",
-                                            {
-                                                "Ref": "ADServer2PrivateIP"
+                                                "Ref": "WSFCNode1WaitHandle"
                                             },
                                             "'\""
                                         ]
                                     ]
                                 },
-                                "waitAfterCompletion": "30"
-                            },
-                            "b-rename-computer": {
+                                "waitAfterCompletion": "0"
+                            }
+                        }
+                    },
+                    "Prep": {
+                        "commands": {
+                            "a-rename-computer": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
@@ -1890,7 +1714,7 @@
                                 },
                                 "waitAfterCompletion": "forever"
                             },
-                            "c-join-domain": {
+                            "b-join-domain": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
@@ -1917,27 +1741,27 @@
                                 },
                                 "waitAfterCompletion": "forever"
                             },
-                            "d-install-net-framework-core": {
+                            "c-install-net-framework-core": {
                                 "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Install-NETFrameworkCore.ps1\"",
                                 "waitAfterCompletion": "0"
                             },
-                            "e-install-windows-failover-clustering": {
+                            "d-install-windows-failover-clustering": {
                                 "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Install-WindowsFailoverClustering.ps1\"",
                                 "waitAfterCompletion": "0"
                             },
-                            "f-enable-credssp": {
-                                "command": "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\EnableCredSsp.ps1",
+                            "e-enable-credssp": {
+                                "command": "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\Enable-CredSSP.ps1",
                                 "waitAfterCompletion": "0"
                             },
-                            "g-reboot": {
+                            "f-reboot": {
                                 "command": "powershell.exe -Command \"Restart-Computer -Force\"",
                                 "waitAfterCompletion": "forever"
                             },
-                            "h-open-WSFC-ports": {
+                            "g-open-WSFC-ports": {
                                 "command": "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\OpenWSFCPorts.ps1\"",
                                 "waitAfterCompletion": "0"
                             },
-                            "i-create-sql-account": {
+                            "h-create-sql-account": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
@@ -1966,65 +1790,13 @@
                                             {
                                                 "Ref": "SQLServiceAccountPassword"
                                             },
-                                            "' -ADServerNetBIOSName '",
-                                            {
-                                                "Ref": "ADServer1NetBIOSName"
-                                            },
                                             "'\""
                                         ]
                                     ]
                                 },
                                 "waitAfterCompletion": "0"
                             },
-                            "j-Invoke-ADReplication-DC1": {
-                                "command": {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "powershell.exe -Command \"C:\\cfn\\scripts\\Invoke-ADReplication.ps1",
-                                            " -UserName '",
-                                            {
-                                                "Ref": "DomainAdminUser"
-                                            },
-                                            "' -Password '",
-                                            {
-                                                "Ref": "DomainAdminPassword"
-                                            },
-                                            "' -DomainController '",
-                                            {
-                                                "Ref": "ADServer1NetBIOSName"
-                                            },
-                                            "'\""
-                                        ]
-                                    ]
-                                },
-                                "waitAfterCompletion": "0"
-                            },
-                            "k-Invoke-ADReplication-DC2": {
-                                "command": {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "powershell.exe -Command \"C:\\cfn\\scripts\\Invoke-ADReplication.ps1",
-                                            " -UserName '",
-                                            {
-                                                "Ref": "DomainAdminUser"
-                                            },
-                                            "' -Password '",
-                                            {
-                                                "Ref": "DomainAdminPassword"
-                                            },
-                                            "' -DomainController '",
-                                            {
-                                                "Ref": "ADServer2NetBIOSName"
-                                            },
-                                            "'\""
-                                        ]
-                                    ]
-                                },
-                                "waitAfterCompletion": "15"
-                            },
-                            "l-add-domadmin-user-to-group": {
+                            "i-add-domadmin-user-to-group": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
@@ -2050,7 +1822,25 @@
                                 },
                                 "waitAfterCompletion": "0"
                             },
-                            "m-add-sqlservice-user-to-group": {
+                            "j-wait-for-ad-replication": {
+                                "command": {
+                                    "Fn::Join": [
+                                        "",
+                                        [
+                                            "powershell.exe ",
+                                            "-ExecutionPolicy RemoteSigned ",
+                                            "-Command \"",
+                                            "C:\\cfn\\scripts\\Test-ADUser.ps1 -UserName '",
+                                            {
+                                                "Ref": "SQLServiceAccount"
+                                            },
+                                            "' -Wait -TimeoutMinutes 30 -IntervalMinutes 1\""
+                                        ]
+                                    ]
+                                },
+                                "waitAfterCompletion": "0"
+                            },
+                            "k-add-sqlservice-user-to-group": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
@@ -2076,7 +1866,7 @@
                                 },
                                 "waitAfterCompletion": "0"
                             },
-                            "n-download-sql-installer": {
+                            "l-download-sql-installer": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
@@ -2097,24 +1887,6 @@
                         }
                     },
                     "Install": {
-                        "files": {
-                            "C:\\cfn\\scripts\\InstallSQLEE.ps1": {
-                                "source": {
-                                    "Fn::Sub": [
-                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/InstallSQLEE.ps1",
-                                        {
-                                            "QSS3Region": {
-                                                "Fn::If": [
-                                                    "GovCloudCondition",
-                                                    "s3-us-gov-west-1",
-                                                    "s3"
-                                                ]
-                                            }
-                                        }
-                                    ]
-                                }
-                            }
-                        },
                         "commands": {
                             "a-install-sql": {
                                 "command": {
@@ -2154,24 +1926,6 @@
                         }
                     },
                     "SQLIncludedConfigure": {
-                        "files": {
-                            "C:\\cfn\\scripts\\Reconfigure-SQL.ps1": {
-                                "source": {
-                                    "Fn::Sub": [
-                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/Reconfigure-SQL.ps1",
-                                        {
-                                            "QSS3Region": {
-                                                "Fn::If": [
-                                                    "GovCloudCondition",
-                                                    "s3-us-gov-west-1",
-                                                    "s3"
-                                                ]
-                                            }
-                                        }
-                                    ]
-                                }
-                            }
-                        },
                         "commands": {
                             "a-configure-sql": {
                                 "command": {
@@ -2211,24 +1965,6 @@
                         }
                     },
                     "Configure": {
-                        "files": {
-                            "C:\\cfn\\scripts\\SetMaxDOP.ps1": {
-                                "source": {
-                                    "Fn::Sub": [
-                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/SetMaxDOP.ps1",
-                                        {
-                                            "QSS3Region": {
-                                                "Fn::If": [
-                                                    "GovCloudCondition",
-                                                    "s3-us-gov-west-1",
-                                                    "s3"
-                                                ]
-                                            }
-                                        }
-                                    ]
-                                }
-                            }
-                        },
                         "commands": {
                             "a-set-maxdop": {
                                 "command": {
@@ -2260,27 +1996,9 @@
                         }
                     },
                     "Cleanup": {
-                        "files": {
-                            "C:\\cfn\\scripts\\DisableCredSsp.ps1": {
-                                "source": {
-                                    "Fn::Sub": [
-                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/DisableCredSsp.ps1",
-                                        {
-                                            "QSS3Region": {
-                                                "Fn::If": [
-                                                    "GovCloudCondition",
-                                                    "s3-us-gov-west-1",
-                                                    "s3"
-                                                ]
-                                            }
-                                        }
-                                    ]
-                                }
-                            }
-                        },
                         "commands": {
                             "a-disable-credssp": {
-                                "command": "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\DisableCredSsp.ps1\"",
+                                "command": "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\Disable-CredSSP.ps1\"",
                                 "waitAfterCompletion": "0"
                             }
                         }
@@ -2464,9 +2182,23 @@
             "Condition": "ThirdAzIsFullNode",
             "DependsOn": "WSFCNode1WaitCondition",
             "Metadata": {
+                "AWS::CloudFormation::Authentication": {
+                    "S3AccessCreds": {
+                        "type": "S3",
+                        "roleName": {
+                            "Ref": "WSFCRole"
+                        },
+                        "buckets": [
+                            {
+                                "Ref": "QSS3BucketName"
+                            }
+                        ]
+                    }
+                },
                 "AWS::CloudFormation::Init": {
                     "configSets": {
                         "config": [
+                            "FetchResources",
                             "QuickStartSetup",
                             "Prep",
                             {
@@ -2481,50 +2213,8 @@
                             "Finalize"
                         ]
                     },
-                    "QuickStartSetup": {
+                    "FetchResources": {
                         "files": {
-                            "c:\\cfn\\cfn-hup.conf": {
-                                "content": {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "[main]\n",
-                                            "stack=",
-                                            {
-                                                "Ref": "AWS::StackId"
-                                            },
-                                            "\n",
-                                            "region=",
-                                            {
-                                                "Ref": "AWS::Region"
-                                            },
-                                            "\n"
-                                        ]
-                                    ]
-                                }
-                            },
-                            "c:\\cfn\\hooks.d\\cfn-auto-reloader.conf": {
-                                "content": {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "[cfn-auto-reloader-hook]\n",
-                                            "triggers=post.update\n",
-                                            "path=Resources.WSFCNode3.Metadata.AWS::CloudFormation::Init\n",
-                                            "action=cfn-init.exe -v -s ",
-                                            {
-                                                "Ref": "AWS::StackId"
-                                            },
-                                            " -r WSFCNode1",
-                                            " --region ",
-                                            {
-                                                "Ref": "AWS::Region"
-                                            },
-                                            "\n"
-                                        ]
-                                    ]
-                                }
-                            },
                             "C:\\cfn\\scripts\\Unzip-Archive.ps1": {
                                 "source": {
                                     "Fn::Sub": [
@@ -2545,64 +2235,6 @@
                                 "source": {
                                     "Fn::Sub": [
                                         "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/modules/AWSQuickStart.zip",
-                                        {
-                                            "QSS3Region": {
-                                                "Fn::If": [
-                                                    "GovCloudCondition",
-                                                    "s3-us-gov-west-1",
-                                                    "s3"
-                                                ]
-                                            }
-                                        }
-                                    ]
-                                }
-                            }
-                        },
-                        "commands": {
-                            "a-set-execution-policy": {
-                                "command": "powershell.exe -Command \"Set-ExecutionPolicy RemoteSigned -Force\"",
-                                "waitAfterCompletion": "0"
-                            },
-                            "b-unpack-quickstart-module": {
-                                "command": "powershell.exe -Command C:\\cfn\\scripts\\Unzip-Archive.ps1 -Source C:\\cfn\\modules\\AWSQuickStart.zip -Destination C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\Modules\\",
-                                "waitAfterCompletion": "0"
-                            },
-                            "c-init-quickstart-module": {
-                                "command": {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "powershell.exe -Command \"",
-                                            "New-AWSQuickStartWaitHandle -Handle '",
-                                            {
-                                                "Ref": "WSFCNode3WaitHandle"
-                                            },
-                                            "'\""
-                                        ]
-                                    ]
-                                },
-                                "waitAfterCompletion": "0"
-                            }
-                        },
-                        "services": {
-                            "windows": {
-                                "cfn-hup": {
-                                    "enabled": "true",
-                                    "ensureRunning": "true",
-                                    "files": [
-                                        "C:\\cfn\\cfn-hup.conf",
-                                        "C:\\cfn\\hooks.d\\cfn-auto-reloader.conf"
-                                    ]
-                                }
-                            }
-                        }
-                    },
-                    "Prep": {
-                        "files": {
-                            "C:\\cfn\\scripts\\Set-Dns.ps1": {
-                                "source": {
-                                    "Fn::Sub": [
-                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/Set-Dns.ps1",
                                         {
                                             "QSS3Region": {
                                                 "Fn::If": [
@@ -2695,10 +2327,10 @@
                                     ]
                                 }
                             },
-                            "C:\\cfn\\scripts\\EnableCredSsp.ps1": {
+                            "C:\\cfn\\scripts\\Enable-CredSSP.ps1": {
                                 "source": {
                                     "Fn::Sub": [
-                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/EnableCredSsp.ps1",
+                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/Enable-CredSSP.ps1",
                                         {
                                             "QSS3Region": {
                                                 "Fn::If": [
@@ -2727,10 +2359,58 @@
                                     ]
                                 }
                             },
-                            "C:\\cfn\\scripts\\Invoke-ADReplication.ps1": {
+                            "C:\\cfn\\scripts\\InstallSQLEE.ps1": {
                                 "source": {
                                     "Fn::Sub": [
-                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/Invoke-ADReplication.ps1",
+                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/InstallSQLEE.ps1",
+                                        {
+                                            "QSS3Region": {
+                                                "Fn::If": [
+                                                    "GovCloudCondition",
+                                                    "s3-us-gov-west-1",
+                                                    "s3"
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            "C:\\cfn\\scripts\\Reconfigure-SQL.ps1": {
+                                "source": {
+                                    "Fn::Sub": [
+                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/Reconfigure-SQL.ps1",
+                                        {
+                                            "QSS3Region": {
+                                                "Fn::If": [
+                                                    "GovCloudCondition",
+                                                    "s3-us-gov-west-1",
+                                                    "s3"
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            "C:\\cfn\\scripts\\SetMaxDOP.ps1": {
+                                "source": {
+                                    "Fn::Sub": [
+                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/SetMaxDOP.ps1",
+                                        {
+                                            "QSS3Region": {
+                                                "Fn::If": [
+                                                    "GovCloudCondition",
+                                                    "s3-us-gov-west-1",
+                                                    "s3"
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            "C:\\cfn\\scripts\\Disable-CredSSP.ps1": {
+                                "source": {
+                                    "Fn::Sub": [
+                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/Disable-CredSSP.ps1",
                                         {
                                             "QSS3Region": {
                                                 "Fn::If": [
@@ -2743,28 +2423,39 @@
                                     ]
                                 }
                             }
-                        },
+                        }
+                    },
+                    "QuickStartSetup": {
                         "commands": {
-                            "a-set-dns": {
+                            "a-set-execution-policy": {
+                                "command": "powershell.exe -Command \"Set-ExecutionPolicy RemoteSigned -Force\"",
+                                "waitAfterCompletion": "0"
+                            },
+                            "b-unpack-quickstart-module": {
+                                "command": "powershell.exe -Command C:\\cfn\\scripts\\Unzip-Archive.ps1 -Source C:\\cfn\\modules\\AWSQuickStart.zip -Destination C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\Modules\\",
+                                "waitAfterCompletion": "0"
+                            },
+                            "c-init-quickstart-module": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
                                         [
-                                            "powershell.exe -Command \"C:\\cfn\\scripts\\Set-Dns.ps1 -ns1 '",
+                                            "powershell.exe -Command \"",
+                                            "New-AWSQuickStartWaitHandle -Handle '",
                                             {
-                                                "Ref": "ADServer1PrivateIP"
-                                            },
-                                            "' -ns2 '",
-                                            {
-                                                "Ref": "ADServer2PrivateIP"
+                                                "Ref": "WSFCNode3WaitHandle"
                                             },
                                             "'\""
                                         ]
                                     ]
                                 },
-                                "waitAfterCompletion": "30"
-                            },
-                            "b-rename-computer": {
+                                "waitAfterCompletion": "0"
+                            }
+                        }
+                    },
+                    "Prep": {
+                        "commands": {
+                            "a-rename-computer": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
@@ -2779,7 +2470,7 @@
                                 },
                                 "waitAfterCompletion": "forever"
                             },
-                            "c-join-domain": {
+                            "b-join-domain": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
@@ -2806,75 +2497,27 @@
                                 },
                                 "waitAfterCompletion": "forever"
                             },
-                            "d-install-net-framework-core": {
+                            "c-install-net-framework-core": {
                                 "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Install-NETFrameworkCore.ps1\"",
                                 "waitAfterCompletion": "0"
                             },
-                            "e-install-windows-failover-clustering": {
+                            "d-install-windows-failover-clustering": {
                                 "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Install-WindowsFailoverClustering.ps1\"",
                                 "waitAfterCompletion": "0"
                             },
-                            "f-enable-credssp": {
-                                "command": "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\EnableCredSsp.ps1",
+                            "e-enable-credssp": {
+                                "command": "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\Enable-CredSSP.ps1",
                                 "waitAfterCompletion": "0"
                             },
-                            "g-reboot": {
+                            "f-reboot": {
                                 "command": "powershell.exe -Command \"Restart-Computer -Force\"",
                                 "waitAfterCompletion": "forever"
                             },
-                            "h-open-WSFC-ports": {
+                            "g-open-WSFC-ports": {
                                 "command": "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\OpenWSFCPorts.ps1\"",
                                 "waitAfterCompletion": "0"
                             },
-                            "i-Invoke-ADReplication-DC1": {
-                                "command": {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "powershell.exe -Command \"C:\\cfn\\scripts\\Invoke-ADReplication.ps1",
-                                            " -UserName '",
-                                            {
-                                                "Ref": "DomainAdminUser"
-                                            },
-                                            "' -Password '",
-                                            {
-                                                "Ref": "DomainAdminPassword"
-                                            },
-                                            "' -DomainController '",
-                                            {
-                                                "Ref": "ADServer1NetBIOSName"
-                                            },
-                                            "'\""
-                                        ]
-                                    ]
-                                },
-                                "waitAfterCompletion": "0"
-                            },
-                            "j-Invoke-ADReplication-DC2": {
-                                "command": {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "powershell.exe -Command \"C:\\cfn\\scripts\\Invoke-ADReplication.ps1",
-                                            " -UserName '",
-                                            {
-                                                "Ref": "DomainAdminUser"
-                                            },
-                                            "' -Password '",
-                                            {
-                                                "Ref": "DomainAdminPassword"
-                                            },
-                                            "' -DomainController '",
-                                            {
-                                                "Ref": "ADServer2NetBIOSName"
-                                            },
-                                            "'\""
-                                        ]
-                                    ]
-                                },
-                                "waitAfterCompletion": "15"
-                            },
-                            "k-download-sql-installer": {
+                            "h-download-sql-installer": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
@@ -2895,24 +2538,6 @@
                         }
                     },
                     "Install": {
-                        "files": {
-                            "C:\\cfn\\scripts\\InstallSQLEE.ps1": {
-                                "source": {
-                                    "Fn::Sub": [
-                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/InstallSQLEE.ps1",
-                                        {
-                                            "QSS3Region": {
-                                                "Fn::If": [
-                                                    "GovCloudCondition",
-                                                    "s3-us-gov-west-1",
-                                                    "s3"
-                                                ]
-                                            }
-                                        }
-                                    ]
-                                }
-                            }
-                        },
                         "commands": {
                             "a-install-sql": {
                                 "command": {
@@ -2952,24 +2577,6 @@
                         }
                     },
                     "SQLIncludedConfigure": {
-                        "files": {
-                            "C:\\cfn\\scripts\\Reconfigure-SQL.ps1": {
-                                "source": {
-                                    "Fn::Sub": [
-                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/Reconfigure-SQL.ps1",
-                                        {
-                                            "QSS3Region": {
-                                                "Fn::If": [
-                                                    "GovCloudCondition",
-                                                    "s3-us-gov-west-1",
-                                                    "s3"
-                                                ]
-                                            }
-                                        }
-                                    ]
-                                }
-                            }
-                        },
                         "commands": {
                             "a-configure-sql": {
                                 "command": {
@@ -3009,24 +2616,6 @@
                         }
                     },
                     "Configure": {
-                        "files": {
-                            "C:\\cfn\\scripts\\SetMaxDOP.ps1": {
-                                "source": {
-                                    "Fn::Sub": [
-                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/SetMaxDOP.ps1",
-                                        {
-                                            "QSS3Region": {
-                                                "Fn::If": [
-                                                    "GovCloudCondition",
-                                                    "s3-us-gov-west-1",
-                                                    "s3"
-                                                ]
-                                            }
-                                        }
-                                    ]
-                                }
-                            }
-                        },
                         "commands": {
                             "a-set-maxdop": {
                                 "command": {
@@ -3058,27 +2647,9 @@
                         }
                     },
                     "Cleanup": {
-                        "files": {
-                            "C:\\cfn\\scripts\\DisableCredSsp.ps1": {
-                                "source": {
-                                    "Fn::Sub": [
-                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/DisableCredSsp.ps1",
-                                        {
-                                            "QSS3Region": {
-                                                "Fn::If": [
-                                                    "GovCloudCondition",
-                                                    "s3-us-gov-west-1",
-                                                    "s3"
-                                                ]
-                                            }
-                                        }
-                                    ]
-                                }
-                            }
-                        },
                         "commands": {
                             "a-disable-credssp": {
-                                "command": "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\DisableCredSsp.ps1\"",
+                                "command": "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\Disable-CredSSP.ps1\"",
                                 "waitAfterCompletion": "0"
                             }
                         }
@@ -3260,6 +2831,19 @@
         "WSFCNode2": {
             "Type": "AWS::EC2::Instance",
             "Metadata": {
+                "AWS::CloudFormation::Authentication": {
+                    "S3AccessCreds": {
+                        "type": "S3",
+                        "roleName": {
+                            "Ref": "WSFCRole"
+                        },
+                        "buckets": [
+                            {
+                                "Ref": "QSS3BucketName"
+                            }
+                        ]
+                    }
+                },
                 "PseudoDependsOn": {
                     "Fn::If": [
                         "IsTwoNode",
@@ -3284,6 +2868,7 @@
                 "AWS::CloudFormation::Init": {
                     "configSets": {
                         "config": [
+                            "FetchResources",
                             "QuickStartSetup",
                             "Prep",
                             {
@@ -3298,50 +2883,8 @@
                             "Finalize"
                         ]
                     },
-                    "QuickStartSetup": {
+                    "FetchResources": {
                         "files": {
-                            "c:\\cfn\\cfn-hup.conf": {
-                                "content": {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "[main]\n",
-                                            "stack=",
-                                            {
-                                                "Ref": "AWS::StackId"
-                                            },
-                                            "\n",
-                                            "region=",
-                                            {
-                                                "Ref": "AWS::Region"
-                                            },
-                                            "\n"
-                                        ]
-                                    ]
-                                }
-                            },
-                            "c:\\cfn\\hooks.d\\cfn-auto-reloader.conf": {
-                                "content": {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "[cfn-auto-reloader-hook]\n",
-                                            "triggers=post.update\n",
-                                            "path=Resources.WSFCNode2.Metadata.AWS::CloudFormation::Init\n",
-                                            "action=cfn-init.exe -v -s ",
-                                            {
-                                                "Ref": "AWS::StackId"
-                                            },
-                                            " -r WSFCNode2",
-                                            " --region ",
-                                            {
-                                                "Ref": "AWS::Region"
-                                            },
-                                            "\n"
-                                        ]
-                                    ]
-                                }
-                            },
                             "C:\\cfn\\scripts\\Unzip-Archive.ps1": {
                                 "source": {
                                     "Fn::Sub": [
@@ -3362,64 +2905,6 @@
                                 "source": {
                                     "Fn::Sub": [
                                         "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/modules/AWSQuickStart.zip",
-                                        {
-                                            "QSS3Region": {
-                                                "Fn::If": [
-                                                    "GovCloudCondition",
-                                                    "s3-us-gov-west-1",
-                                                    "s3"
-                                                ]
-                                            }
-                                        }
-                                    ]
-                                }
-                            }
-                        },
-                        "commands": {
-                            "a-set-execution-policy": {
-                                "command": "powershell.exe -Command \"Set-ExecutionPolicy RemoteSigned -Force\"",
-                                "waitAfterCompletion": "0"
-                            },
-                            "b-unpack-quickstart-module": {
-                                "command": "powershell.exe -Command C:\\cfn\\scripts\\Unzip-Archive.ps1 -Source C:\\cfn\\modules\\AWSQuickStart.zip -Destination C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\Modules\\",
-                                "waitAfterCompletion": "0"
-                            },
-                            "c-init-quickstart-module": {
-                                "command": {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "powershell.exe -Command \"",
-                                            "New-AWSQuickStartWaitHandle -Handle '",
-                                            {
-                                                "Ref": "WSFCNode2WaitHandle"
-                                            },
-                                            "'\""
-                                        ]
-                                    ]
-                                },
-                                "waitAfterCompletion": "0"
-                            }
-                        },
-                        "services": {
-                            "windows": {
-                                "cfn-hup": {
-                                    "enabled": "true",
-                                    "ensureRunning": "true",
-                                    "files": [
-                                        "C:\\cfn\\cfn-hup.conf",
-                                        "C:\\cfn\\hooks.d\\cfn-auto-reloader.conf"
-                                    ]
-                                }
-                            }
-                        }
-                    },
-                    "Prep": {
-                        "files": {
-                            "C:\\cfn\\scripts\\Set-Dns.ps1": {
-                                "source": {
-                                    "Fn::Sub": [
-                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/Set-Dns.ps1",
                                         {
                                             "QSS3Region": {
                                                 "Fn::If": [
@@ -3512,10 +2997,10 @@
                                     ]
                                 }
                             },
-                            "C:\\cfn\\scripts\\EnableCredSsp.ps1": {
+                            "C:\\cfn\\scripts\\Enable-CredSSP.ps1": {
                                 "source": {
                                     "Fn::Sub": [
-                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/EnableCredSsp.ps1",
+                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/Enable-CredSSP.ps1",
                                         {
                                             "QSS3Region": {
                                                 "Fn::If": [
@@ -3544,10 +3029,10 @@
                                     ]
                                 }
                             },
-                            "C:\\cfn\\scripts\\Invoke-ADReplication.ps1": {
+                            "C:\\cfn\\scripts\\AddUserToGroup.ps1": {
                                 "source": {
                                     "Fn::Sub": [
-                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/Invoke-ADReplication.ps1",
+                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/AddUserToGroup.ps1",
                                         {
                                             "QSS3Region": {
                                                 "Fn::If": [
@@ -3559,160 +3044,7 @@
                                         }
                                     ]
                                 }
-                            }
-                        },
-                        "commands": {
-                            "a-set-dns": {
-                                "command": {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "powershell.exe -Command \"C:\\cfn\\scripts\\Set-Dns.ps1 -ns1 '",
-                                            {
-                                                "Ref": "ADServer1PrivateIP"
-                                            },
-                                            "' -ns2 '",
-                                            {
-                                                "Ref": "ADServer2PrivateIP"
-                                            },
-                                            "'\""
-                                        ]
-                                    ]
-                                },
-                                "waitAfterCompletion": "30"
                             },
-                            "b-rename-computer": {
-                                "command": {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "powershell.exe -Command \"C:\\cfn\\scripts\\Rename-Computer.ps1 -Restart -NewName '",
-                                            {
-                                                "Ref": "WSFCNode2NetBIOSName"
-                                            },
-                                            "'\""
-                                        ]
-                                    ]
-                                },
-                                "waitAfterCompletion": "forever"
-                            },
-                            "c-join-domain": {
-                                "command": {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "powershell.exe -Command \"C:\\cfn\\scripts\\Join-Domain.ps1 -DomainName '",
-                                            {
-                                                "Ref": "DomainDNSName"
-                                            },
-                                            "' -UserName '",
-                                            {
-                                                "Ref": "DomainNetBIOSName"
-                                            },
-                                            "\\",
-                                            {
-                                                "Ref": "DomainAdminUser"
-                                            },
-                                            "' -Password '",
-                                            {
-                                                "Ref": "DomainAdminPassword"
-                                            },
-                                            "'\""
-                                        ]
-                                    ]
-                                },
-                                "waitAfterCompletion": "forever"
-                            },
-                            "d-install-net-framework-core": {
-                                "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Install-NETFrameworkCore.ps1\"",
-                                "waitAfterCompletion": "0"
-                            },
-                            "e-install-windows-failover-clustering": {
-                                "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Install-WindowsFailoverClustering.ps1\"",
-                                "waitAfterCompletion": "0"
-                            },
-                            "f-enable-credssp": {
-                                "command": "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\EnableCredSsp.ps1",
-                                "waitAfterCompletion": "0"
-                            },
-                            "g-reboot": {
-                                "command": "powershell.exe -Command \"Restart-Computer -Force\"",
-                                "waitAfterCompletion": "forever"
-                            },
-                            "h-open-WSFC-ports": {
-                                "command": "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\OpenWSFCPorts.ps1\"",
-                                "waitAfterCompletion": "0"
-                            },
-                            "i-Invoke-ADReplication-DC1": {
-                                "command": {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "powershell.exe -Command \"C:\\cfn\\scripts\\Invoke-ADReplication.ps1",
-                                            " -UserName '",
-                                            {
-                                                "Ref": "DomainAdminUser"
-                                            },
-                                            "' -Password '",
-                                            {
-                                                "Ref": "DomainAdminPassword"
-                                            },
-                                            "' -DomainController '",
-                                            {
-                                                "Ref": "ADServer1NetBIOSName"
-                                            },
-                                            "'\""
-                                        ]
-                                    ]
-                                },
-                                "waitAfterCompletion": "0"
-                            },
-                            "j-Invoke-ADReplication-DC2": {
-                                "command": {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "powershell.exe -Command \"C:\\cfn\\scripts\\Invoke-ADReplication.ps1",
-                                            " -UserName '",
-                                            {
-                                                "Ref": "DomainAdminUser"
-                                            },
-                                            "' -Password '",
-                                            {
-                                                "Ref": "DomainAdminPassword"
-                                            },
-                                            "' -DomainController '",
-                                            {
-                                                "Ref": "ADServer2NetBIOSName"
-                                            },
-                                            "'\""
-                                        ]
-                                    ]
-                                },
-                                "waitAfterCompletion": "15"
-                            },
-                            "k-download-sql-installer": {
-                                "command": {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "powershell.exe ",
-                                            "-ExecutionPolicy RemoteSigned ",
-                                            "-Command \"",
-                                            " C:\\cfn\\scripts\\DownloadSQLEE.ps1 -SQLServerVersion '",
-                                            {
-                                                "Ref": "SQLServerVersion"
-                                            },
-                                            "'\""
-                                        ]
-                                    ]
-                                },
-                                "waitAfterCompletion": "0"
-                            }
-                        }
-                    },
-                    "Install": {
-                        "files": {
                             "C:\\cfn\\scripts\\InstallSQLEE.ps1": {
                                 "source": {
                                     "Fn::Sub": [
@@ -3728,48 +3060,7 @@
                                         }
                                     ]
                                 }
-                            }
-                        },
-                        "commands": {
-                            "a-install-sql": {
-                                "command": {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "powershell.exe -Command \"C:\\cfn\\scripts\\InstallSQLEE.ps1 -DomainNetBIOSName '",
-                                            {
-                                                "Ref": "DomainNetBIOSName"
-                                            },
-                                            "' -DomainAdminUser '",
-                                            {
-                                                "Ref": "DomainAdminUser"
-                                            },
-                                            "' -DomainAdminPassword '",
-                                            {
-                                                "Ref": "DomainAdminPassword"
-                                            },
-                                            "' -SQLServiceAccount '",
-                                            {
-                                                "Ref": "SQLServiceAccount"
-                                            },
-                                            "' -SQLServiceAccountPassword '",
-                                            {
-                                                "Ref": "SQLServiceAccountPassword"
-                                            },
-                                            "' -NetBIOSName '",
-                                            {
-                                                "Ref": "WSFCNode2NetBIOSName"
-                                            },
-                                            "'\""
-                                        ]
-                                    ]
-                                },
-                                "waitAfterCompletion": "0"
-                            }
-                        }
-                    },
-                    "SQLIncludedConfigure": {
-                        "files": {
+                            },
                             "C:\\cfn\\scripts\\Reconfigure-SQL.ps1": {
                                 "source": {
                                     "Fn::Sub": [
@@ -3785,52 +3076,11 @@
                                         }
                                     ]
                                 }
-                            }
-                        },
-                        "commands": {
-                            "a-configure-sql": {
-                                "command": {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "powershell.exe -Command \"C:\\cfn\\scripts\\Reconfigure-SQL.ps1 -DomainNetBIOSName '",
-                                            {
-                                                "Ref": "DomainNetBIOSName"
-                                            },
-                                            "' -DomainAdminUser '",
-                                            {
-                                                "Ref": "DomainAdminUser"
-                                            },
-                                            "' -DomainAdminPassword '",
-                                            {
-                                                "Ref": "DomainAdminPassword"
-                                            },
-                                            "' -SQLServiceAccount '",
-                                            {
-                                                "Ref": "SQLServiceAccount"
-                                            },
-                                            "' -SQLServiceAccountPassword '",
-                                            {
-                                                "Ref": "SQLServiceAccountPassword"
-                                            },
-                                            "' -NetBIOSName '",
-                                            {
-                                                "Ref": "WSFCNode2NetBIOSName"
-                                            },
-                                            "'\""
-                                        ]
-                                    ]
-                                },
-                                "waitAfterCompletion": "0"
-                            }
-                        }
-                    },
-                    "Configure": {
-                        "files": {
-                            "C:\\cfn\\scripts\\Invoke-ADReplication.ps1": {
+                            },
+                            "C:\\cfn\\scripts\\Configure-WSFC.ps1": {
                                 "source": {
                                     "Fn::Sub": [
-                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/Invoke-ADReplication.ps1",
+                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/Configure-WSFC.ps1",
                                         {
                                             "QSS3Region": {
                                                 "Fn::If": [
@@ -3863,22 +3113,6 @@
                                 "source": {
                                     "Fn::Sub": [
                                         "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/Set-Folder-Permissions.ps1",
-                                        {
-                                            "QSS3Region": {
-                                                "Fn::If": [
-                                                    "GovCloudCondition",
-                                                    "s3-us-gov-west-1",
-                                                    "s3"
-                                                ]
-                                            }
-                                        }
-                                    ]
-                                }
-                            },
-                            "C:\\cfn\\scripts\\Configure-WSFC.ps1": {
-                                "source": {
-                                    "Fn::Sub": [
-                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/Configure-WSFC.ps1",
                                         {
                                             "QSS3Region": {
                                                 "Fn::If": [
@@ -3938,8 +3172,216 @@
                                         }
                                     ]
                                 }
+                            },
+                            "C:\\cfn\\scripts\\Disable-CredSSP.ps1": {
+                                "source": {
+                                    "Fn::Sub": [
+                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/Disable-CredSSP.ps1",
+                                        {
+                                            "QSS3Region": {
+                                                "Fn::If": [
+                                                    "GovCloudCondition",
+                                                    "s3-us-gov-west-1",
+                                                    "s3"
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
                             }
-                        },
+                        }
+                    },
+                    "QuickStartSetup": {
+                        "commands": {
+                            "a-set-execution-policy": {
+                                "command": "powershell.exe -Command \"Set-ExecutionPolicy RemoteSigned -Force\"",
+                                "waitAfterCompletion": "0"
+                            },
+                            "b-unpack-quickstart-module": {
+                                "command": "powershell.exe -Command C:\\cfn\\scripts\\Unzip-Archive.ps1 -Source C:\\cfn\\modules\\AWSQuickStart.zip -Destination C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\Modules\\",
+                                "waitAfterCompletion": "0"
+                            },
+                            "c-init-quickstart-module": {
+                                "command": {
+                                    "Fn::Join": [
+                                        "",
+                                        [
+                                            "powershell.exe -Command \"",
+                                            "New-AWSQuickStartWaitHandle -Handle '",
+                                            {
+                                                "Ref": "WSFCNode2WaitHandle"
+                                            },
+                                            "'\""
+                                        ]
+                                    ]
+                                },
+                                "waitAfterCompletion": "0"
+                            }
+                        }
+                    },
+                    "Prep": {
+                        "commands": {
+                            "a-rename-computer": {
+                                "command": {
+                                    "Fn::Join": [
+                                        "",
+                                        [
+                                            "powershell.exe -Command \"C:\\cfn\\scripts\\Rename-Computer.ps1 -Restart -NewName '",
+                                            {
+                                                "Ref": "WSFCNode2NetBIOSName"
+                                            },
+                                            "'\""
+                                        ]
+                                    ]
+                                },
+                                "waitAfterCompletion": "forever"
+                            },
+                            "b-join-domain": {
+                                "command": {
+                                    "Fn::Join": [
+                                        "",
+                                        [
+                                            "powershell.exe -Command \"C:\\cfn\\scripts\\Join-Domain.ps1 -DomainName '",
+                                            {
+                                                "Ref": "DomainDNSName"
+                                            },
+                                            "' -UserName '",
+                                            {
+                                                "Ref": "DomainNetBIOSName"
+                                            },
+                                            "\\",
+                                            {
+                                                "Ref": "DomainAdminUser"
+                                            },
+                                            "' -Password '",
+                                            {
+                                                "Ref": "DomainAdminPassword"
+                                            },
+                                            "'\""
+                                        ]
+                                    ]
+                                },
+                                "waitAfterCompletion": "forever"
+                            },
+                            "c-install-net-framework-core": {
+                                "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Install-NETFrameworkCore.ps1\"",
+                                "waitAfterCompletion": "0"
+                            },
+                            "d-install-windows-failover-clustering": {
+                                "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Install-WindowsFailoverClustering.ps1\"",
+                                "waitAfterCompletion": "0"
+                            },
+                            "e-enable-credssp": {
+                                "command": "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\Enable-CredSSP.ps1",
+                                "waitAfterCompletion": "0"
+                            },
+                            "f-reboot": {
+                                "command": "powershell.exe -Command \"Restart-Computer -Force\"",
+                                "waitAfterCompletion": "forever"
+                            },
+                            "g-open-WSFC-ports": {
+                                "command": "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\OpenWSFCPorts.ps1\"",
+                                "waitAfterCompletion": "0"
+                            },
+                            "h-download-sql-installer": {
+                                "command": {
+                                    "Fn::Join": [
+                                        "",
+                                        [
+                                            "powershell.exe ",
+                                            "-ExecutionPolicy RemoteSigned ",
+                                            "-Command \"",
+                                            " C:\\cfn\\scripts\\DownloadSQLEE.ps1 -SQLServerVersion '",
+                                            {
+                                                "Ref": "SQLServerVersion"
+                                            },
+                                            "'\""
+                                        ]
+                                    ]
+                                },
+                                "waitAfterCompletion": "0"
+                            }
+                        }
+                    },
+                    "Install": {
+                        "commands": {
+                            "a-install-sql": {
+                                "command": {
+                                    "Fn::Join": [
+                                        "",
+                                        [
+                                            "powershell.exe -Command \"C:\\cfn\\scripts\\InstallSQLEE.ps1 -DomainNetBIOSName '",
+                                            {
+                                                "Ref": "DomainNetBIOSName"
+                                            },
+                                            "' -DomainAdminUser '",
+                                            {
+                                                "Ref": "DomainAdminUser"
+                                            },
+                                            "' -DomainAdminPassword '",
+                                            {
+                                                "Ref": "DomainAdminPassword"
+                                            },
+                                            "' -SQLServiceAccount '",
+                                            {
+                                                "Ref": "SQLServiceAccount"
+                                            },
+                                            "' -SQLServiceAccountPassword '",
+                                            {
+                                                "Ref": "SQLServiceAccountPassword"
+                                            },
+                                            "' -NetBIOSName '",
+                                            {
+                                                "Ref": "WSFCNode2NetBIOSName"
+                                            },
+                                            "'\""
+                                        ]
+                                    ]
+                                },
+                                "waitAfterCompletion": "0"
+                            }
+                        }
+                    },
+                    "SQLIncludedConfigure": {
+                        "commands": {
+                            "a-configure-sql": {
+                                "command": {
+                                    "Fn::Join": [
+                                        "",
+                                        [
+                                            "powershell.exe -Command \"C:\\cfn\\scripts\\Reconfigure-SQL.ps1 -DomainNetBIOSName '",
+                                            {
+                                                "Ref": "DomainNetBIOSName"
+                                            },
+                                            "' -DomainAdminUser '",
+                                            {
+                                                "Ref": "DomainAdminUser"
+                                            },
+                                            "' -DomainAdminPassword '",
+                                            {
+                                                "Ref": "DomainAdminPassword"
+                                            },
+                                            "' -SQLServiceAccount '",
+                                            {
+                                                "Ref": "SQLServiceAccount"
+                                            },
+                                            "' -SQLServiceAccountPassword '",
+                                            {
+                                                "Ref": "SQLServiceAccountPassword"
+                                            },
+                                            "' -NetBIOSName '",
+                                            {
+                                                "Ref": "WSFCNode2NetBIOSName"
+                                            },
+                                            "'\""
+                                        ]
+                                    ]
+                                },
+                                "waitAfterCompletion": "0"
+                            }
+                        }
+                    },
+                    "Configure": {
                         "commands": {
                             "a-set-maxdop": {
                                 "command": {
@@ -4132,71 +3574,7 @@
                                 },
                                 "waitAfterCompletion": "0"
                             },
-                            "e-Invoke-ADReplication-DC1": {
-                                "Fn::If": [
-                                    "IsTwoNode",
-                                    {
-                                        "command": {
-                                            "Fn::Join": [
-                                                "",
-                                                [
-                                                    "powershell.exe -Command \"C:\\cfn\\scripts\\Invoke-ADReplication.ps1",
-                                                    " -UserName '",
-                                                    {
-                                                        "Ref": "DomainAdminUser"
-                                                    },
-                                                    "' -Password '",
-                                                    {
-                                                        "Ref": "DomainAdminPassword"
-                                                    },
-                                                    "' -DomainController '",
-                                                    {
-                                                        "Ref": "ADServer1NetBIOSName"
-                                                    },
-                                                    "'\""
-                                                ]
-                                            ]
-                                        },
-                                        "waitAfterCompletion": "0"
-                                    },
-                                    {
-                                        "Ref": "AWS::NoValue"
-                                    }
-                                ]
-                            },
-                            "f-Invoke-ADReplication-DC2": {
-                                "Fn::If": [
-                                    "IsTwoNode",
-                                    {
-                                        "command": {
-                                            "Fn::Join": [
-                                                "",
-                                                [
-                                                    "powershell.exe -Command \"C:\\cfn\\scripts\\Invoke-ADReplication.ps1",
-                                                    " -UserName '",
-                                                    {
-                                                        "Ref": "DomainAdminUser"
-                                                    },
-                                                    "' -Password '",
-                                                    {
-                                                        "Ref": "DomainAdminPassword"
-                                                    },
-                                                    "' -DomainController '",
-                                                    {
-                                                        "Ref": "ADServer2NetBIOSName"
-                                                    },
-                                                    "'\""
-                                                ]
-                                            ]
-                                        },
-                                        "waitAfterCompletion": "0"
-                                    },
-                                    {
-                                        "Ref": "AWS::NoValue"
-                                    }
-                                ]
-                            },
-                            "g-Set-Folder-Permissions": {
+                            "e-Set-Folder-Permissions": {
                                 "Fn::If": [
                                     "IsTwoNode",
                                     {
@@ -4236,7 +3614,7 @@
                                     }
                                 ]
                             },
-                            "h-Enable-AlwaysOn": {
+                            "f-Enable-AlwaysOn": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
@@ -4288,7 +3666,7 @@
                                 },
                                 "waitAfterCompletion": "0"
                             },
-                            "i-Set-ClusterQuorum": {
+                            "g-Set-ClusterQuorum": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
@@ -4348,27 +3726,9 @@
                         }
                     },
                     "Cleanup": {
-                        "files": {
-                            "C:\\cfn\\scripts\\DisableCredSsp.ps1": {
-                                "source": {
-                                    "Fn::Sub": [
-                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/DisableCredSsp.ps1",
-                                        {
-                                            "QSS3Region": {
-                                                "Fn::If": [
-                                                    "GovCloudCondition",
-                                                    "s3-us-gov-west-1",
-                                                    "s3"
-                                                ]
-                                            }
-                                        }
-                                    ]
-                                }
-                            }
-                        },
                         "commands": {
                             "a-disable-credssp": {
-                                "command": "powershell.exe -ExecutionPolicy RemoteSigned \"C:\\cfn\\scripts\\DisableCredSsp.ps1\"",
+                                "command": "powershell.exe -ExecutionPolicy RemoteSigned \"C:\\cfn\\scripts\\Disable-CredSSP.ps1\"",
                                 "waitAfterCompletion": "0"
                             }
                         }

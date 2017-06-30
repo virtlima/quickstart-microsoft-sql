@@ -19,6 +19,53 @@ global:
     - us-west-2
   reporting: true
 tests:
+  ds-defaults:
+    parameter_input: sql-master-ds-defaults.json
+    regions:
+      - eu-west-1
+    template_file: sql-master.template
+  ds-3rdaz-witness:
+    parameter_input: sql-master-ds-3rdaz-witness.json
+    regions:
+      - us-west-2
+    template_file: sql-master.template
+  ds-3rdaz-full:
+    parameter_input: sql-master-ds-3rdaz-full.json
+    regions:
+      - us-east-1
+    template_file: sql-master.template
+  ec2-defaults:
+    parameter_input: sql-master-ec2-defaults.json
+    template_file: sql-master.template
+  ec2-sql-2016:
+    parameter_input: sql-master-ec2-sql-2016.json
+    template_file: sql-master.template
+  ec2-ebs-io1:
+    parameter_input: sql-master-ec2-ebs-io1.json
+    template_file: sql-master.template
+  ec2-3rdaz-witness:
+    parameter_input: sql-master-ec2-3rdaz-witness.json
+    regions:
+      - ap-southeast-2
+      - eu-west-1
+      - us-east-1
+      - us-west-2
+    template_file: sql-master.template
+  ec2-3rdaz-full:
+    parameter_input: sql-master-ec2-3rdaz-full.json
+    regions:
+      - ap-southeast-2
+      - eu-west-1
+      - us-east-1
+      - us-west-2
+    template_file: sql-master.template
+  ec2-license-included:
+    parameter_input: sql-master-ec2-license-included.json
+    regions:
+      - eu-west-1
+      - us-east-1
+      - us-west-2
+    template_file: sql-master.template
 #  master-old:
 #    parameter_input: SQL_AlwaysOn_Master.json
 #    regions:
@@ -35,35 +82,3 @@ tests:
 #      - us-west-1
 #      - us-west-2
 #    template_file: SQL_AlwaysOn_Master.template
-  defaults:
-    parameter_input: sql-master-defaults.json
-    template_file: sql-master.template
-  sql-2016:
-    parameter_input: sql-master-sql-2016.json
-    template_file: sql-master.template
-  ebs-io1:
-    parameter_input: sql-master-ebs-io1.json
-    template_file: sql-master.template
-  3rdaz-witness:
-    parameter_input: sql-master-3rdaz-witness.json
-    regions:
-      - ap-southeast-2
-      - eu-west-1
-      - us-east-1
-      - us-west-2
-    template_file: sql-master.template
-  3rdaz-full:
-    parameter_input: sql-master-3rdaz-full.json
-    regions:
-      - ap-southeast-2
-      - eu-west-1
-      - us-east-1
-      - us-west-2
-    template_file: sql-master.template
-  license-included:
-    parameter_input: sql-master-license-included.json
-    regions:
-      - eu-west-1
-      - us-east-1
-      - us-west-2
-    template_file: sql-master.template

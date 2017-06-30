@@ -1,0 +1,34 @@
+[
+    {
+        "ParameterKey": "ADScenarioType",
+        "ParameterValue": "Microsoft AD on Amazon EC2"
+    },
+    {
+        "ParameterKey": "AvailabilityZones",
+        "ParameterValue": "$[alfred_getaz_2]"
+    },
+    {
+        "ParameterKey": "DomainAdminPassword",
+        "ParameterValue": "$[alfred_genpass_32]"
+    },
+    {
+        "ParameterKey": "KeyPairName",
+        "ParameterValue": "$[alfred_getkeypair]"
+    },
+    {
+        "ParameterKey": "RDGWCIDR",
+        "ParameterValue": "10.0.0.0/16"
+    },
+    {
+        "ParameterKey": "RestoreModePassword",
+        "ParameterValue": "$[alfred_genpass_32]"
+    },
+    {
+        "ParameterKey": "SQLLicenseProvided",
+        "ParameterValue": "yes"
+    },
+    {
+        "ParameterKey": "SQLServiceAccountPassword",
+        "ParameterValue": "$[alfred_genpass_32]"
+    },
+]

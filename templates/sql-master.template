@@ -32,7 +32,7 @@
                 },
                 {
                     "Label": {
-                        "default": "Common Microsoft Active Directory Configuration"
+                        "default": "Standard Active Directory Configuration"
                     },
                     "Parameters": [
                         "ADScenarioType",
@@ -43,7 +43,7 @@
                 },
                 {
                     "Label": {
-                        "default": "Self-Managed Microsoft Active Directory Configuration (only applicable to non-AWS Directory Service architecture)"
+                        "default": "Self-Managed Active Directory Configuration (for non-AWS Directory Service architecture)"
                     },
                     "Parameters": [
                         "DomainAdminUser",
@@ -272,11 +272,11 @@
     "Parameters": {
         "ADScenarioType": {
             "AllowedValues": [
-                "AWS Directory Service",
-                "Amazon EC2 Self-Managed"
+                "AWS Directory Service for Microsoft AD",
+                "Microsoft AD on Amazon EC2"
             ],
-            "Default": "AWS Directory Service",
-            "Description": "Select the type of AD DS deployment to use between AWS Directory Service Microsoft AD or managing your own Amazon EC2 AD instances.",
+            "Default": "AWS Directory Service for Microsoft AD",
+            "Description": "Select the type of AD DS deployment to use: AWS Directory Service for Microsoft AD or managing your own Amazon EC2 AD instances.",
             "Type": "String"
         },
         "ADServer1InstanceType": {
@@ -662,7 +662,7 @@
                 {
                     "Ref": "ADScenarioType"
                 },
-                "AWS Directory Service"
+                "AWS Directory Service for Microsoft AD"
             ]
         },
         "IsTwoAz": {

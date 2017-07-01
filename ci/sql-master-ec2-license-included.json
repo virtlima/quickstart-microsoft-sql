@@ -30,5 +30,5 @@
     {
         "ParameterKey": "SQLServiceAccountPassword",
         "ParameterValue": "$[alfred_genpass_32]"
-    },
+    }
 ]

@@ -138,7 +138,7 @@
                     "default": "Availability Zones"
                 },
                 "DedicatedHostAMI": {
-                    "default": "BYOL AMI to use on dedicated host"
+                    "default": "BYOL AMI to Use on Dedicated Host"
                 },
                 "DomainAdminPassword": {
                     "default": "Domain Admin Password"
@@ -195,7 +195,7 @@
                     "default": "Restore Mode Password"
                 },
                 "SQLLicenseProvided": {
-                    "default": "Amazon Provided SQL License"
+                    "default": "Amazon-Provided SQL Server License"
                 },
                 "SQLServerVersion": {
                     "default": "SQL Server Version"
@@ -213,7 +213,7 @@
                     "default": "SQL Server Volume IOPS"
                 },
                 "VolumeSize": {
-                    "default": "SQL Server Volume Size (GiB)"
+                    "default": "SQL Server Volume Size"
                 },
                 "VolumeType": {
                     "default": "SQL Server Volume Type"
@@ -533,7 +533,7 @@
         },
         "VolumeSize": {
             "Default": "500",
-            "Description": "Volume size for the SQL Data, Logs and TempDb volumes",
+            "Description": "Volume size for the SQL Data, Logs and TempDb volumes, in GiB",
             "MaxValue": "16000",
             "MinValue": "100",
             "Type": "Number"

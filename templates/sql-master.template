@@ -195,10 +195,10 @@
                     "default": "Restore Mode Password"
                 },
                 "SQLLicenseProvided": {
-                    "default": "AWS Marketplace Provided SQL License"
+                    "default": "Amazon Provided SQL License"
                 },
                 "SQLServerVersion": {
-                    "default": "Version"
+                    "default": "SQL Server Version"
                 },
                 "SQLServiceAccount": {
                     "default": "Service Account Name"

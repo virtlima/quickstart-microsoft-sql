@@ -4506,7 +4506,7 @@
             },
             "Description": "NetBIOS name of the 3rd WSFC Node"
         },
-        "SQLServerAccessSecurityGroup": {
+        "SQLServerAccessSecurityGroupID": {
             "Value": {
                 "Ref": "SQLServerAccessSecurityGroup"
             },

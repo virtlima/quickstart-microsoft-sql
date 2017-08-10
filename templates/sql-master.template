@@ -168,7 +168,7 @@
                     "default": "Private Subnet 2 CIDR"
                 },
                 "PrivateSubnet3CIDR": {
-                    "default": "Private Subnet 3 CIDR (Optional)"
+                    "default": "Private Subnet 3 CIDR"
                 },
                 "PublicSubnet1CIDR": {
                     "default": "Public Subnet 1 CIDR"
@@ -177,7 +177,7 @@
                     "default": "Public Subnet 2 CIDR"
                 },
                 "PublicSubnet3CIDR": {
-                    "default": "Public Subnet 3 CIDR (Optional)"
+                    "default": "Public Subnet 3 CIDR"
                 },
                 "QSS3BucketName": {
                     "default": "Quick Start S3 Bucket Name"
@@ -418,7 +418,7 @@
         "PrivateSubnet3CIDR": {
             "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/([0-9]|[1-2][0-9]|3[0-2]))$",
             "Default": "10.0.64.0/19",
-            "Description": "CIDR Block for optional private subnet 3 located in Availability Zone 3.",
+            "Description": "(Optional) CIDR Block for optional private subnet 3 located in Availability Zone 3.",
             "Type": "String"
         },
         "PublicSubnet1CIDR": {
@@ -433,7 +433,7 @@
         },
         "PublicSubnet3CIDR": {
             "Default": "10.0.160.0/20",
-            "Description": "CIDR Block for the optional public DMZ subnet 3 located in Availability Zone 3",
+            "Description": "(Optional) CIDR Block for the optional public DMZ subnet 3 located in Availability Zone 3",
             "Type": "String"
         },
         "QSS3BucketName": {

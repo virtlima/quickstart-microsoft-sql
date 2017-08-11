@@ -70,7 +70,7 @@ try {
             $Exception = $_
             $Retries++
             if ($Retries -lt 8) {
-                powershell.exe -ExecutionPolicy RemoteSigned -Command C:\cfn\scripts\EnableCredSsp.ps1
+                # powershell.exe -ExecutionPolicy RemoteSigned -Command C:\cfn\scripts\Enable-CredSSP.ps1
                 Start-Sleep (([math]::pow($Retries, 2)) * 60)
             }
         }

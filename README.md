@@ -1,6 +1,20 @@
-quickstart-microsoft-sql
-==============
+# quickstart-microsoft-sql
+## SQL Server on AWS with Windows Server Failover Clustering and Always On Availability Groups
 
-This reference implementation guide includes architectural considerations and configuration steps for running Microsoft Windows Server Failover Clustering (WSFC) clusters in the Amazon Web Services (AWS) cloud. We discuss how to launch the necessary AWS services, such as Amazon Elastic Compute Cloud (Amazon EC2) and Amazon Virtual Private Cloud (Amazon VPC), and how to run a WSFC cluster across different subnets and Availability Zones. Then we provide instructions for installing, configuring, and testing the WSFC cluster and a SQL Server 2012 or 2014 AlwaysOn Availability Group.
+AWS provides a comprehensive set of services and tools for deploying Microsoft Windows-based workloads on its highly reliable and secure cloud infrastructure. This Quick Start implements a high availability solution built with Windows Server and SQL Server running on Amazon EC2, using the Always On Availability Groups feature of SQL Server Enterprise edition.
 
-Deployment Guide: https://docs.aws.amazon.com/quickstart/latest/sql
+The deployment includes Windows Server Failover Clustering (WSFC) and clustered SQL Server 2012, 2014, or 2016 instances on the AWS Cloud. The Quick Start includes a rich set of configuration options for SQL Server, Active Directory, and the WSFC cluster, including SQL Server version and licensing, tenancy options, and a choice of two Active Directory implementations: You can use AWS Directory Service for managed Active Directory instances, or manage the EC2 instances for Active Directory yourself.
+
+The AWS CloudFormation templates included with the Quick Start automate the following:
+
+- Deploying SQL Server into a new VPC
+- Deploying SQL Server into an existing VPC that includes Remote Desktop Gateway, NAT gateways, and Active Directory Domain Services
+
+You can also use the AWS CloudFormation templates as a starting point for your own implementation.
+
+![Quick Start architecture for SQL Server on AWS](https://d0.awsstatic.com/partner-network/QuickStart/datasheets/sql-server-on-aws-architecture.png)
+
+For architectural details, best practices, step-by-step instructions, and customization options, see the [deployment guide](https://docs.aws.amazon.com/quickstart/latest/sql/welcome.html).
+
+To post feedback, submit feature ideas, or report bugs, use the **Issues** section of this GitHub repo.
+If you'd like to submit code for this Quick Start, please review the [AWS Quick Start Contributor's Kit](https://aws-quickstart.github.io/). 

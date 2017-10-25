@@ -32,7 +32,8 @@ try {
     $ErrorActionPreference = "Stop"
 
     [array]$paths = "D:\MSSQL\DATA","E:\MSSQL\LOG","F:\MSSQL\Backup","F:\MSSQL\TempDB"
-    $params = "-dD:\MSSQL\DATA\master.mdf;-eC:\Program Files\Microsoft SQL Server\MSSQL12.MSSQLSERVER\MSSQL\Log\ERRORLOG;-lE:\MSSQL\LOG\mastlog.ldf"
+    $sqlpath = (Resolve-Path 'C:\Program Files\Microsoft SQL Server\MSSQL*.MSSQLSERVER\').Path
+    $params = "-dD:\MSSQL\DATA\master.mdf;-e$sqlpath\MSSQL\Log\ERRORLOG;-lE:\MSSQL\LOG\mastlog.ldf"
 
     $DomainAdminFullUser = $DomainNetBIOSName + '\' + $DomainAdminUser
     $DomainAdminSecurePassword = ConvertTo-SecureString $DomainAdminPassword -AsPlainText -Force

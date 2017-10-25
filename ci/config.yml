@@ -43,7 +43,7 @@ tests:
       - us-east-1
     template_file: sql-master.template
   ec2-sql-2016:
-    parameter_input: sql-master-ec2-sql-2016.json
+    parameter_input: sql-master-ec2-sql-2017.json
     regions:
       - ap-northeast-2
       - ap-southeast-2

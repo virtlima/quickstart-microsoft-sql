@@ -25,7 +25,7 @@
     },
     {
         "ParameterKey": "SQLServerVersion",
-        "ParameterValue": "2016"
+        "ParameterValue": "2017"
     },
     {
         "ParameterKey": "SQLServiceAccountPassword",

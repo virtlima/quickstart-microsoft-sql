@@ -44,7 +44,7 @@ try {
             $driveLetter = Get-Volume | ?{$_.DriveType -eq 'CD-ROM'} | select -ExpandProperty DriveLetter
         }
         $installer = "$($driveLetter):\SETUP.EXE"
-        if ((Get-Volume -DriveLetter $($driveLetter)).FileSystemLabel -eq "SQL2016_x64_ENU") {
+        if ((Get-Volume -DriveLetter $($driveLetter)).FileSystemLabel -in @("SQL2016_x64_ENU", "SqlSetup_x64_ENU")) {
             $ssms = "C:\sqlinstall\SSMS-Setup-ENU.exe"
             $ssmsargs = "/quiet /norestart"
             Start-Process $ssms $ssmsargs -Wait -ErrorAction Stop -RedirectStandardOutput "C:\cfn\log\SSMSInstallerOutput.txt" -RedirectStandardError "C:\cfn\log\SSMSInstallerErrors.txt"

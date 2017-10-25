@@ -485,17 +485,17 @@
                 "no"
             ],
             "Default": "no",
-            "Description": "License SQL Server from AWS Marketplace. Note: this is only available for SQL 2014 and SQL 2016 for Windows Server 2012 R2",
+            "Description": "License SQL Server from AWS Marketplace",
             "Type": "String"
         },
         "SQLServerVersion": {
             "AllowedValues": [
+                "2017",
                 "2016",
-                "2014",
-                "2012"
+                "2014"
             ],
-            "Default": "2014",
-            "Description": "Version of SQL Server to install on Failover Cluster Nodes. Note: 2012 is not compatible with AWS Marketplace Provided SQL Licenses",
+            "Default": "2016",
+            "Description": "Version of SQL Server to install on Failover Cluster Nodes",
             "Type": "String"
         },
         "SQLServiceAccount": {

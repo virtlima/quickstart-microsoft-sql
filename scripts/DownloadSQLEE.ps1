@@ -27,7 +27,7 @@ try {
     }
     elseif ($SQLServerVersion -eq "2017") {
         $source = "https://download.microsoft.com/download/E/F/2/EF23C21D-7860-4F05-88CE-39AA114B014B/SQLServer2017-x64-ENU.iso"
-        $ssmssource = "https://go.microsoft.com/fwlink/?linkid=858904"
+        $ssmssource = "https://download.microsoft.com/download/3/C/7/3C77BAD3-4E0F-4C6B-84DD-42796815AFF6/SSMS-Setup-ENU.exe"
     }
 
     $tries = 5

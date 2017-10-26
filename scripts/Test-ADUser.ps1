@@ -14,7 +14,7 @@ param(
 )
 
 try {
-    Start-Transcript -Path C:\cfn\log\Stabilize-ADUser.ps1.txt -Append
+    Start-Transcript -Path C:\cfn\log\Test-ADUser.ps1.txt -Append
     $ErrorActionPreference = "Stop"
 
     $elapsedMinutes = 0.0

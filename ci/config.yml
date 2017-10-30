@@ -74,11 +74,19 @@ tests:
       - us-east-1
       - us-west-2
     template_file: sql-master.template
-  ec2-license-included:
-    parameter_input: sql-master-ec2-license-included.json
+  ec2-li-2014:
+    parameter_input: sql-master-ec2-license-included-2014.json
     regions:
       - eu-west-1
+    template_file: sql-master.template
+  ec2-li-2016:
+    parameter_input: sql-master-ec2-license-included-2016.json
+    regions:
       - us-east-1
+    template_file: sql-master.template
+  ec2-li-2017:
+    parameter_input: sql-master-ec2-license-included-2017.json
+    regions:
       - us-west-2
     template_file: sql-master.template
 #  master-old:

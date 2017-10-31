@@ -28,6 +28,10 @@
         "ParameterValue": "yes"
     },
     {
+        "ParameterKey": "SQLServerVersion",
+        "ParameterValue": "2014"
+    },
+    {
         "ParameterKey": "SQLServiceAccountPassword",
         "ParameterValue": "$[alfred_genpass_32]"
     }

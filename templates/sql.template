@@ -351,17 +351,17 @@
                 "no"
             ],
             "Default": "no",
-            "Description": "License SQL Server from AWS Marketplace. Note: this is only available for SQL 2014 and SQL 2016 for Windows Server 2012 R2",
+            "Description": "License SQL Server from AWS Marketplace",
             "Type": "String"
         },
         "SQLServerVersion": {
             "AllowedValues": [
+                "2017",
                 "2016",
-                "2014",
-                "2012"
+                "2014"
             ],
-            "Default": "2014",
-            "Description": "Version of SQL Server to install on WSFC Nodes. Options include either \"2014\" or \"2012\"",
+            "Default": "2016",
+            "Description": "Version of SQL Server to install on Failover Cluster Nodes",
             "Type": "String"
         },
         "SQLServiceAccount": {
@@ -698,6 +698,14 @@
                 "yes"
             ]
         },
+        "WindowsServer2016": {
+            "Fn::Equals": [
+                {
+                    "Ref": "SQLServerVersion"
+                },
+                "2017"
+            ]
+        },
         "GovCloudCondition": {
             "Fn::Equals": [
                 {
@@ -733,91 +741,122 @@
         "AWSAMIRegionMap": {
             "AMI": {
                 "WS2012R2": "Windows_Server-2012-R2_RTM-English-64Bit-Base-2017.10.13",
-                "WS2012R2SQLENT2014": "Windows_Server-2012-R2_RTM-English-64Bit-SQL_2014_SP1_Enterprise-2017.10.13",
-                "WS2012R2SQLENT2016": "Windows_Server-2012-R2_RTM-English-64Bit-SQL_2016_Enterprise-2017.10.13"
+                "WS2012R2SQL2014SP2ENT": "Windows_Server-2012-R2_RTM-English-64Bit-SQL_2014_SP2_Enterprise-2017.10.13",
+                "WS2012R2SQL2016SP1ENT": "Windows_Server-2012-R2_RTM-English-64Bit-SQL_2016_SP1_Enterprise-2017.10.13",
+                "WS2016FULLBASE": "Windows_Server-2016-English-Full-Base-2017.10.13",
+                "WS2016FULLSQL2017ENT": "Windows_Server-2016-English-Full-SQL_2017_Enterprise-2017.10.13"
             },
             "ap-northeast-1": {
                 "WS2012R2": "ami-4d34eb2b",
-                "WS2012R2SQLENT2014": "ami-c036e9a6",
-                "WS2012R2SQLENT2016": "ami-fc35ea9a"
+                "WS2012R2SQL2014SP2ENT": "ami-f439e692",
+                "WS2012R2SQL2016SP1ENT": "ami-e738e781",
+                "WS2016FULLBASE": "ami-4325fa25",
+                "WS2016FULLSQL2017ENT": "ami-d027f8b6"
             },
             "ap-northeast-2": {
                 "WS2012R2": "ami-82fe5bec",
-                "WS2012R2SQLENT2014": "ami-d9ff5ab7",
-                "WS2012R2SQLENT2016": "ami-47f85d29"
+                "WS2012R2SQL2014SP2ENT": "ami-9ffe5bf1",
+                "WS2012R2SQL2016SP1ENT": "ami-99fe5bf7",
+                "WS2016FULLBASE": "ami-4dfa5f23",
+                "WS2016FULLSQL2017ENT": "ami-10f85d7e"
             },
             "ap-south-1": {
                 "WS2012R2": "ami-27286b48",
-                "WS2012R2SQLENT2014": "ami-a9286bc6",
-                "WS2012R2SQLENT2016": "ami-882e6de7"
+                "WS2012R2SQL2014SP2ENT": "ami-2b2f6c44",
+                "WS2012R2SQL2016SP1ENT": "ami-152a697a",
+                "WS2016FULLBASE": "ami-ac3370c3",
+                "WS2016FULLSQL2017ENT": "ami-a63271c9"
             },
             "ap-southeast-1": {
                 "WS2012R2": "ami-0e13686d",
-                "WS2012R2SQLENT2014": "ami-8e1368ed",
-                "WS2012R2SQLENT2016": "ami-73106b10"
+                "WS2012R2SQL2014SP2ENT": "ami-92116af1",
+                "WS2012R2SQL2016SP1ENT": "ami-b7106bd4",
+                "WS2016FULLBASE": "ami-ed067d8e",
+                "WS2016FULLSQL2017ENT": "ami-10077c73"
             },
             "ap-southeast-2": {
                 "WS2012R2": "ami-2013f142",
-                "WS2012R2SQLENT2014": "ami-cd13f1af",
-                "WS2012R2SQLENT2016": "ami-8a12f0e8"
+                "WS2012R2SQL2014SP2ENT": "ami-8d10f2ef",
+                "WS2012R2SQL2016SP1ENT": "ami-4211f320",
+                "WS2016FULLBASE": "ami-42638120",
+                "WS2016FULLSQL2017ENT": "ami-5f1cfe3d"
             },
             "ca-central-1": {
                 "WS2012R2": "ami-8bff47ef",
-                "WS2012R2SQLENT2014": "ami-d1ff47b5",
-                "WS2012R2SQLENT2016": "ami-25e95141"
+                "WS2012R2SQL2014SP2ENT": "ami-17f24a73",
+                "WS2012R2SQL2016SP1ENT": "ami-24e95140",
+                "WS2016FULLBASE": "ami-87f44ce3",
+                "WS2016FULLSQL2017ENT": "ami-47f14923"
             },
             "eu-central-1": {
                 "WS2012R2": "ami-e8843b87",
-                "WS2012R2SQLENT2014": "ami-ce853aa1",
-                "WS2012R2SQLENT2016": "ami-6b823d04"
+                "WS2012R2SQL2014SP2ENT": "ami-0a833c65",
+                "WS2012R2SQL2016SP1ENT": "ami-04823d6b",
+                "WS2016FULLBASE": "ami-5b7ac534",
+                "WS2016FULLSQL2017ENT": "ami-4779c628"
             },
             "eu-west-1": {
                 "WS2012R2": "ami-1ecc1e67",
-                "WS2012R2SQLENT2014": "ami-d0cf1da9",
-                "WS2012R2SQLENT2016": "ami-bccc1ec5"
+                "WS2012R2SQL2014SP2ENT": "ami-98cd1fe1",
+                "WS2012R2SQL2016SP1ENT": "ami-3df32144",
+                "WS2016FULLBASE": "ami-b7e93bce",
+                "WS2016FULLSQL2017ENT": "ami-f0e83a89"
             },
             "eu-west-2": {
                 "WS2012R2": "ami-4cbba928",
-                "WS2012R2SQLENT2014": "ami-cdbaa8a9",
-                "WS2012R2SQLENT2016": "ami-56b9ab32"
+                "WS2012R2SQL2014SP2ENT": "ami-05b8aa61",
+                "WS2012R2SQL2016SP1ENT": "ami-afbba9cb",
+                "WS2016FULLBASE": "ami-06bcae62",
+                "WS2016FULLSQL2017ENT": "ami-feb8aa9a"
             },
             "sa-east-1": {
                 "WS2012R2": "ami-5d512f31",
-                "WS2012R2SQLENT2014": "ami-c2512fae",
-                "WS2012R2SQLENT2016": "ami-0e532d62"
+                "WS2012R2SQL2014SP2ENT": "ami-59512f35",
+                "WS2012R2SQL2016SP1ENT": "ami-2a502e46",
+                "WS2016FULLBASE": "ami-f14a349d",
+                "WS2016FULLSQL2017ENT": "ami-ff4a3493"
             },
             "us-east-1": {
                 "WS2012R2": "ami-f6529b8c",
-                "WS2012R2SQLENT2014": "ami-3e7ab344",
-                "WS2012R2SQLENT2016": "ami-2b7db451"
+                "WS2012R2SQL2014SP2ENT": "ami-e27db498",
+                "WS2012R2SQL2016SP1ENT": "ami-8773bafd",
+                "WS2016FULLBASE": "ami-e3bb7399",
+                "WS2016FULLSQL2017ENT": "ami-63cd0519"
             },
             "us-east-2": {
                 "WS2012R2": "ami-80765ae5",
-                "WS2012R2SQLENT2014": "ami-e8765a8d",
-                "WS2012R2SQLENT2016": "ami-9d765af8"
+                "WS2012R2SQL2014SP2ENT": "ami-2a75594f",
+                "WS2012R2SQL2016SP1ENT": "ami-08765a6d",
+                "WS2016FULLBASE": "ami-77765a12",
+                "WS2016FULLSQL2017ENT": "ami-0a775b6f"
             },
             "us-west-1": {
                 "WS2012R2": "ami-955c6ef5",
-                "WS2012R2SQLENT2014": "ami-b45d6fd4",
-                "WS2012R2SQLENT2016": "ami-f5427095"
+                "WS2012R2SQL2014SP2ENT": "ami-c9596ba9",
+                "WS2012R2SQL2016SP1ENT": "ami-405f6d20",
+                "WS2016FULLBASE": "ami-0a41736a",
+                "WS2016FULLSQL2017ENT": "ami-54417334"
             },
             "us-west-2": {
                 "WS2012R2": "ami-f318de8b",
-                "WS2012R2SQLENT2014": "ami-2426e05c",
-                "WS2012R2SQLENT2016": "ami-c727e1bf"
+                "WS2012R2SQL2014SP2ENT": "ami-df22e4a7",
+                "WS2012R2SQL2016SP1ENT": "ami-fb27e183",
+                "WS2016FULLBASE": "ami-343ef84c",
+                "WS2016FULLSQL2017ENT": "ami-a637f1de"
             }
         },
         "SQLAMINameMap": {
-            "2012": {
-                "no": "WS2012R2"
-            },
             "2014": {
                 "no": "WS2012R2",
-                "yes": "WS2012R2SQLENT2014"
+                "yes": "WS2012R2SQL2014SP2ENT"
             },
             "2016": {
                 "no": "WS2012R2",
-                "yes": "WS2012R2SQLENT2016"
+                "yes": "WS2012R2SQL2016SP1ENT"
+            },
+            "2017": {
+                "no": "WS2016FULLBASE",
+                "yes": "WS2016FULLSQL2017ENT"
             }
         }
     },
@@ -1274,7 +1313,8 @@
                     "Finalize": {
                         "commands": {
                             "a-signal-success": {
-                                "command": "powershell -Command \"Write-AWSQuickStartStatus\""
+                                "command": "powershell -Command \"Write-AWSQuickStartStatus\"",
+                                "waitAfterCompletion": "0"
                             }
                         }
                     }
@@ -1463,6 +1503,22 @@
                                 "source": {
                                     "Fn::Sub": [
                                         "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/Rename-Computer.ps1",
+                                        {
+                                            "QSS3Region": {
+                                                "Fn::If": [
+                                                    "GovCloudCondition",
+                                                    "s3-us-gov-west-1",
+                                                    "s3"
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            "C:\\cfn\\scripts\\Restart-Computer.ps1": {
+                                "source": {
+                                    "Fn::Sub": [
+                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/Restart-Computer.ps1",
                                         {
                                             "QSS3Region": {
                                                 "Fn::If": [
@@ -1699,7 +1755,17 @@
                     },
                     "Prep": {
                         "commands": {
-                            "a-rename-computer": {
+                            "a-initialize-disks": {
+                                "command": {
+                                    "Fn::If": [
+                                        "WindowsServer2016",
+                                        "powershell.exe -Command \"C:\\ProgramData\\Amazon\\EC2-Windows\\Launch\\Scripts\\InitializeDisks.ps1\"",
+                                        "powershell.exe -Command exit"
+                                    ]
+                                },
+                                "waitAfterCompletion": "0"
+                            },
+                            "b-rename-computer": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
@@ -1714,7 +1780,7 @@
                                 },
                                 "waitAfterCompletion": "forever"
                             },
-                            "b-join-domain": {
+                            "c-join-domain": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
@@ -1741,27 +1807,27 @@
                                 },
                                 "waitAfterCompletion": "forever"
                             },
-                            "c-install-net-framework-core": {
+                            "d-install-net-framework-core": {
                                 "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Install-NETFrameworkCore.ps1\"",
                                 "waitAfterCompletion": "0"
                             },
-                            "d-install-windows-failover-clustering": {
+                            "e-install-windows-failover-clustering": {
                                 "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Install-WindowsFailoverClustering.ps1\"",
                                 "waitAfterCompletion": "0"
                             },
-                            "e-enable-credssp": {
+                            "f-enable-credssp": {
                                 "command": "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\Enable-CredSSP.ps1",
                                 "waitAfterCompletion": "0"
                             },
-                            "f-reboot": {
-                                "command": "powershell.exe -Command \"Restart-Computer -Force\"",
+                            "g-reboot": {
+                                "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Restart-Computer.ps1\"",
                                 "waitAfterCompletion": "forever"
                             },
-                            "g-open-WSFC-ports": {
+                            "h-open-WSFC-ports": {
                                 "command": "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\OpenWSFCPorts.ps1\"",
                                 "waitAfterCompletion": "0"
                             },
-                            "h-create-sql-account": {
+                            "i-create-sql-account": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
@@ -1796,7 +1862,7 @@
                                 },
                                 "waitAfterCompletion": "0"
                             },
-                            "i-add-domadmin-user-to-group": {
+                            "j-add-domadmin-user-to-group": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
@@ -1822,7 +1888,7 @@
                                 },
                                 "waitAfterCompletion": "0"
                             },
-                            "j-wait-for-ad-replication": {
+                            "k-wait-for-ad-replication": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
@@ -1840,7 +1906,7 @@
                                 },
                                 "waitAfterCompletion": "0"
                             },
-                            "k-add-sqlservice-user-to-group": {
+                            "l-add-sqlservice-user-to-group": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
@@ -1866,7 +1932,7 @@
                                 },
                                 "waitAfterCompletion": "0"
                             },
-                            "l-download-sql-installer": {
+                            "m-download-sql-installer": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
@@ -2006,11 +2072,12 @@
                     "Finalize": {
                         "commands": {
                             "a-reboot": {
-                                "command": "powershell.exe -Command \"Restart-Computer -Force\"",
+                                "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Restart-Computer.ps1\"",
                                 "waitAfterCompletion": "forever"
                             },
                             "b-signal-success": {
-                                "command": "powershell -Command \"Write-AWSQuickStartStatus\""
+                                "command": "powershell -Command \"Write-AWSQuickStartStatus\"",
+                                "waitAfterCompletion": "0"
                             }
                         }
                     }
@@ -2279,6 +2346,22 @@
                                     ]
                                 }
                             },
+                            "C:\\cfn\\scripts\\Restart-Computer.ps1": {
+                                "source": {
+                                    "Fn::Sub": [
+                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/Restart-Computer.ps1",
+                                        {
+                                            "QSS3Region": {
+                                                "Fn::If": [
+                                                    "GovCloudCondition",
+                                                    "s3-us-gov-west-1",
+                                                    "s3"
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
                             "C:\\cfn\\scripts\\Install-WindowsFailoverClustering.ps1": {
                                 "source": {
                                     "Fn::Sub": [
@@ -2455,7 +2538,17 @@
                     },
                     "Prep": {
                         "commands": {
-                            "a-rename-computer": {
+                            "a-initialize-disks": {
+                                "command": {
+                                    "Fn::If": [
+                                        "WindowsServer2016",
+                                        "powershell.exe -Command \"C:\\ProgramData\\Amazon\\EC2-Windows\\Launch\\Scripts\\InitializeDisks.ps1\"",
+                                        "powershell.exe -Command exit"
+                                    ]
+                                },
+                                "waitAfterCompletion": "0"
+                            },
+                            "b-rename-computer": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
@@ -2470,7 +2563,7 @@
                                 },
                                 "waitAfterCompletion": "forever"
                             },
-                            "b-join-domain": {
+                            "c-join-domain": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
@@ -2497,27 +2590,27 @@
                                 },
                                 "waitAfterCompletion": "forever"
                             },
-                            "c-install-net-framework-core": {
+                            "d-install-net-framework-core": {
                                 "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Install-NETFrameworkCore.ps1\"",
                                 "waitAfterCompletion": "0"
                             },
-                            "d-install-windows-failover-clustering": {
+                            "e-install-windows-failover-clustering": {
                                 "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Install-WindowsFailoverClustering.ps1\"",
                                 "waitAfterCompletion": "0"
                             },
-                            "e-enable-credssp": {
+                            "f-enable-credssp": {
                                 "command": "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\Enable-CredSSP.ps1",
                                 "waitAfterCompletion": "0"
                             },
-                            "f-reboot": {
-                                "command": "powershell.exe -Command \"Restart-Computer -Force\"",
+                            "g-reboot": {
+                                "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Restart-Computer.ps1\"",
                                 "waitAfterCompletion": "forever"
                             },
-                            "g-open-WSFC-ports": {
+                            "h-open-WSFC-ports": {
                                 "command": "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\OpenWSFCPorts.ps1\"",
                                 "waitAfterCompletion": "0"
                             },
-                            "h-download-sql-installer": {
+                            "i-download-sql-installer": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
@@ -2657,11 +2750,12 @@
                     "Finalize": {
                         "commands": {
                             "a-reboot": {
-                                "command": "powershell.exe -Command \"Restart-Computer -Force\"",
+                                "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Restart-Computer.ps1\"",
                                 "waitAfterCompletion": "forever"
                             },
                             "b-signal-success": {
-                                "command": "powershell -Command \"Write-AWSQuickStartStatus\""
+                                "command": "powershell -Command \"Write-AWSQuickStartStatus\"",
+                                "waitAfterCompletion": "0"
                             }
                         }
                     }
@@ -2949,6 +3043,22 @@
                                     ]
                                 }
                             },
+                            "C:\\cfn\\scripts\\Restart-Computer.ps1": {
+                                "source": {
+                                    "Fn::Sub": [
+                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/Restart-Computer.ps1",
+                                        {
+                                            "QSS3Region": {
+                                                "Fn::If": [
+                                                    "GovCloudCondition",
+                                                    "s3-us-gov-west-1",
+                                                    "s3"
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
                             "C:\\cfn\\scripts\\Install-WindowsFailoverClustering.ps1": {
                                 "source": {
                                     "Fn::Sub": [
@@ -3221,7 +3331,17 @@
                     },
                     "Prep": {
                         "commands": {
-                            "a-rename-computer": {
+                            "a-initialize-disks": {
+                                "command": {
+                                    "Fn::If": [
+                                        "WindowsServer2016",
+                                        "powershell.exe -Command \"C:\\ProgramData\\Amazon\\EC2-Windows\\Launch\\Scripts\\InitializeDisks.ps1\"",
+                                        "powershell.exe -Command exit"
+                                    ]
+                                },
+                                "waitAfterCompletion": "0"
+                            },
+                            "b-rename-computer": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
@@ -3236,7 +3356,7 @@
                                 },
                                 "waitAfterCompletion": "forever"
                             },
-                            "b-join-domain": {
+                            "c-join-domain": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
@@ -3263,27 +3383,27 @@
                                 },
                                 "waitAfterCompletion": "forever"
                             },
-                            "c-install-net-framework-core": {
+                            "d-install-net-framework-core": {
                                 "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Install-NETFrameworkCore.ps1\"",
                                 "waitAfterCompletion": "0"
                             },
-                            "d-install-windows-failover-clustering": {
+                            "e-install-windows-failover-clustering": {
                                 "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Install-WindowsFailoverClustering.ps1\"",
                                 "waitAfterCompletion": "0"
                             },
-                            "e-enable-credssp": {
+                            "f-enable-credssp": {
                                 "command": "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\Enable-CredSSP.ps1",
                                 "waitAfterCompletion": "0"
                             },
-                            "f-reboot": {
-                                "command": "powershell.exe -Command \"Restart-Computer -Force\"",
+                            "g-reboot": {
+                                "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Restart-Computer.ps1\"",
                                 "waitAfterCompletion": "forever"
                             },
-                            "g-open-WSFC-ports": {
+                            "h-open-WSFC-ports": {
                                 "command": "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\OpenWSFCPorts.ps1\"",
                                 "waitAfterCompletion": "0"
                             },
-                            "h-download-sql-installer": {
+                            "i-download-sql-installer": {
                                 "command": {
                                     "Fn::Join": [
                                         "",
@@ -3736,11 +3856,12 @@
                     "Finalize": {
                         "commands": {
                             "a-reboot": {
-                                "command": "powershell.exe -Command \"Restart-Computer -Force\"",
+                                "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Restart-Computer.ps1\"",
                                 "waitAfterCompletion": "forever"
                             },
                             "b-signal-success": {
-                                "command": "powershell -Command \"Write-AWSQuickStartStatus\""
+                                "command": "powershell -Command \"Write-AWSQuickStartStatus\"",
+                                "waitAfterCompletion": "0"
                             }
                         }
                     }

@@ -1,7 +1,7 @@
 [
     {
         "ParameterKey": "ADScenarioType",
-        "ParameterValue": "AWS Directory Service for Microsoft AD (Enterprise Edition)"
+        "ParameterValue": "Microsoft AD on Amazon EC2"
     },
     {
         "ParameterKey": "AvailabilityZones",
@@ -22,6 +22,14 @@
     {
         "ParameterKey": "RestoreModePassword",
         "ParameterValue": "$[alfred_genpass_32]"
+    },
+    {
+        "ParameterKey": "SQLLicenseProvided",
+        "ParameterValue": "yes"
+    },
+    {
+        "ParameterKey": "SQLServerVersion",
+        "ParameterValue": "2016"
     },
     {
         "ParameterKey": "SQLServiceAccountPassword",

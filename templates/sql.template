@@ -1313,7 +1313,8 @@
                     "Finalize": {
                         "commands": {
                             "a-signal-success": {
-                                "command": "powershell -Command \"Write-AWSQuickStartStatus\""
+                                "command": "powershell -Command \"Write-AWSQuickStartStatus\"",
+                                "waitAfterCompletion": "0"
                             }
                         }
                     }
@@ -1502,6 +1503,22 @@
                                 "source": {
                                     "Fn::Sub": [
                                         "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/Rename-Computer.ps1",
+                                        {
+                                            "QSS3Region": {
+                                                "Fn::If": [
+                                                    "GovCloudCondition",
+                                                    "s3-us-gov-west-1",
+                                                    "s3"
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            "C:\\cfn\\scripts\\Restart-Computer.ps1": {
+                                "source": {
+                                    "Fn::Sub": [
+                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/Restart-Computer.ps1",
                                         {
                                             "QSS3Region": {
                                                 "Fn::If": [
@@ -1803,7 +1820,7 @@
                                 "waitAfterCompletion": "0"
                             },
                             "g-reboot": {
-                                "command": "powershell.exe -Command \"Restart-Computer -Force\"",
+                                "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Restart-Computer.ps1\"",
                                 "waitAfterCompletion": "forever"
                             },
                             "h-open-WSFC-ports": {
@@ -2055,11 +2072,12 @@
                     "Finalize": {
                         "commands": {
                             "a-reboot": {
-                                "command": "powershell.exe -Command \"Restart-Computer -Force\"",
+                                "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Restart-Computer.ps1\"",
                                 "waitAfterCompletion": "forever"
                             },
                             "b-signal-success": {
-                                "command": "powershell -Command \"Write-AWSQuickStartStatus\""
+                                "command": "powershell -Command \"Write-AWSQuickStartStatus\"",
+                                "waitAfterCompletion": "0"
                             }
                         }
                     }
@@ -2328,6 +2346,22 @@
                                     ]
                                 }
                             },
+                            "C:\\cfn\\scripts\\Restart-Computer.ps1": {
+                                "source": {
+                                    "Fn::Sub": [
+                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/Restart-Computer.ps1",
+                                        {
+                                            "QSS3Region": {
+                                                "Fn::If": [
+                                                    "GovCloudCondition",
+                                                    "s3-us-gov-west-1",
+                                                    "s3"
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
                             "C:\\cfn\\scripts\\Install-WindowsFailoverClustering.ps1": {
                                 "source": {
                                     "Fn::Sub": [
@@ -2569,7 +2603,7 @@
                                 "waitAfterCompletion": "0"
                             },
                             "g-reboot": {
-                                "command": "powershell.exe -Command \"Restart-Computer -Force\"",
+                                "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Restart-Computer.ps1\"",
                                 "waitAfterCompletion": "forever"
                             },
                             "h-open-WSFC-ports": {
@@ -2716,11 +2750,12 @@
                     "Finalize": {
                         "commands": {
                             "a-reboot": {
-                                "command": "powershell.exe -Command \"Restart-Computer -Force\"",
+                                "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Restart-Computer.ps1\"",
                                 "waitAfterCompletion": "forever"
                             },
                             "b-signal-success": {
-                                "command": "powershell -Command \"Write-AWSQuickStartStatus\""
+                                "command": "powershell -Command \"Write-AWSQuickStartStatus\"",
+                                "waitAfterCompletion": "0"
                             }
                         }
                     }
@@ -2996,6 +3031,22 @@
                                 "source": {
                                     "Fn::Sub": [
                                         "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/Rename-Computer.ps1",
+                                        {
+                                            "QSS3Region": {
+                                                "Fn::If": [
+                                                    "GovCloudCondition",
+                                                    "s3-us-gov-west-1",
+                                                    "s3"
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            "C:\\cfn\\scripts\\Restart-Computer.ps1": {
+                                "source": {
+                                    "Fn::Sub": [
+                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/scripts/Restart-Computer.ps1",
                                         {
                                             "QSS3Region": {
                                                 "Fn::If": [
@@ -3345,7 +3396,7 @@
                                 "waitAfterCompletion": "0"
                             },
                             "g-reboot": {
-                                "command": "powershell.exe -Command \"Restart-Computer -Force\"",
+                                "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Restart-Computer.ps1\"",
                                 "waitAfterCompletion": "forever"
                             },
                             "h-open-WSFC-ports": {
@@ -3805,11 +3856,12 @@
                     "Finalize": {
                         "commands": {
                             "a-reboot": {
-                                "command": "powershell.exe -Command \"Restart-Computer -Force\"",
+                                "command": "powershell.exe -Command \"C:\\cfn\\scripts\\Restart-Computer.ps1\"",
                                 "waitAfterCompletion": "forever"
                             },
                             "b-signal-success": {
-                                "command": "powershell -Command \"Write-AWSQuickStartStatus\""
+                                "command": "powershell -Command \"Write-AWSQuickStartStatus\"",
+                                "waitAfterCompletion": "0"
                             }
                         }
                     }

@@ -698,7 +698,7 @@
                 "yes"
             ]
         },
-        "Windows2016": {
+        "WindowsServer2016": {
             "Fn::Equals": [
                 {
                     "Ref": "SQLServerVersion"
@@ -1758,7 +1758,7 @@
                             "a-initialize-disks": {
                                 "command": {
                                     "Fn::If": [
-                                        "Windows2016",
+                                        "WindowsServer2016",
                                         "powershell.exe -Command \"C:\\ProgramData\\Amazon\\EC2-Windows\\Launch\\Scripts\\InitializeDisks.ps1\"",
                                         "powershell.exe -Command exit"
                                     ]
@@ -2541,7 +2541,7 @@
                             "a-initialize-disks": {
                                 "command": {
                                     "Fn::If": [
-                                        "Windows2016",
+                                        "WindowsServer2016",
                                         "powershell.exe -Command \"C:\\ProgramData\\Amazon\\EC2-Windows\\Launch\\Scripts\\InitializeDisks.ps1\"",
                                         "powershell.exe -Command exit"
                                     ]
@@ -3334,7 +3334,7 @@
                             "a-initialize-disks": {
                                 "command": {
                                     "Fn::If": [
-                                        "Windows2016",
+                                        "WindowsServer2016",
                                         "powershell.exe -Command \"C:\\ProgramData\\Amazon\\EC2-Windows\\Launch\\Scripts\\InitializeDisks.ps1\"",
                                         "powershell.exe -Command exit"
                                     ]

@@ -272,10 +272,10 @@
     "Parameters": {
         "ADScenarioType": {
             "AllowedValues": [
-                "AWS Directory Service for Microsoft AD",
+                "AWS Directory Service for Microsoft AD (Enterprise Edition)",
                 "Microsoft AD on Amazon EC2"
             ],
-            "Default": "AWS Directory Service for Microsoft AD",
+            "Default": "AWS Directory Service for Microsoft AD (Enterprise Edition)",
             "Description": "Select the type of AD DS deployment to use: AWS Directory Service for Microsoft AD or managing your own Amazon EC2 AD instances.",
             "Type": "String"
         },
@@ -657,12 +657,12 @@
         }
     },
     "Conditions": {
-        "UseAWSDirectoryService": {
+        "UseAWSDirectoryServiceEE": {
             "Fn::Equals": [
                 {
                     "Ref": "ADScenarioType"
                 },
-                "AWS Directory Service for Microsoft AD"
+                "AWS Directory Service for Microsoft AD (Enterprise Edition)"
             ]
         },
         "IsTwoAz": {
@@ -804,7 +804,7 @@
                             },
                             "QSADTemplate": {
                                 "Fn::If": [
-                                    "UseAWSDirectoryService",
+                                    "UseAWSDirectoryServiceEE",
                                     "ad-2012r2-3.template",
                                     "ad-2012r2-1.template"
                                 ]
@@ -814,7 +814,7 @@
                 },
                 "Parameters": {
                     "Fn::If": [
-                        "UseAWSDirectoryService",
+                        "UseAWSDirectoryServiceEE",
                         {
                             "DomainAdminPassword": {
                                 "Ref": "DomainAdminPassword"
@@ -970,7 +970,7 @@
                     },
                     "DomainAdminUser": {
                         "Fn::If": [
-                            "UseAWSDirectoryService",
+                            "UseAWSDirectoryServiceEE",
                             "admin",
                             {
                                 "Ref": "DomainAdminUser"
@@ -1153,7 +1153,7 @@
                     },
                     "DomainAdminUser": {
                         "Fn::If": [
-                            "UseAWSDirectoryService",
+                            "UseAWSDirectoryServiceEE",
                             "admin",
                             {
                                 "Ref": "DomainAdminUser"

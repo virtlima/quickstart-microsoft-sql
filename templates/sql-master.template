@@ -805,8 +805,8 @@
                             "QSADTemplate": {
                                 "Fn::If": [
                                     "UseAWSDirectoryServiceEE",
-                                    "ad-2012r2-3.template",
-                                    "ad-2012r2-1.template"
+                                    "ad-3.template",
+                                    "ad-1.template"
                                 ]
                             }
                         }

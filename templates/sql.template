@@ -21,9 +21,9 @@
                         "default": "Amazon EC2 Configuration"
                     },
                     "Parameters": [
-                        "KeyPairName",
+                        "DedicatedHostAMI",
                         "HostType",
-                        "DedicatedHostAMI"
+                        "KeyPairName"
                     ]
                 },
                 {
@@ -63,6 +63,7 @@
                         "default": "Failover Cluster Configuration"
                     },
                     "Parameters": [
+                        "DedicatedHostIDNode3",
                         "WSFCFileServerInstanceType",
                         "WSFCFileServerNetBIOSName",
                         "WSFCFileServerPrivateIP",
@@ -82,8 +83,7 @@
                         "WSFCNode3NetBIOSName",
                         "WSFCNode3PrivateIP1",
                         "WSFCNode3PrivateIP2",
-                        "WSFCNode3PrivateIP3",
-                        "DedicatedHostIDNode3"
+                        "WSFCNode3PrivateIP3"
                     ]
                 },
                 {
@@ -288,8 +288,8 @@
             "AllowedPattern": "[a-zA-Z0-9\\-]+\\..+",
             "Default": "example.com",
             "Description": "Fully qualified domain name (FQDN) e.g. example.com",
-            "MaxLength": "25",
-            "MinLength": "3",
+            "MaxLength": "255",
+            "MinLength": "2",
             "Type": "String"
         },
         "DomainMemberSGID": {

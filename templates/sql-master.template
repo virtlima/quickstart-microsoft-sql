@@ -366,8 +366,8 @@
             "AllowedPattern": "[a-zA-Z0-9\\-]+\\..+",
             "Default": "example.com",
             "Description": "Fully qualified domain name (FQDN) of the forest root domain e.g. example.com",
-            "MaxLength": "25",
-            "MinLength": "3",
+            "MaxLength": "255",
+            "MinLength": "2",
             "Type": "String"
         },
         "DomainNetBIOSName": {

@@ -1,213 +1,64 @@
 {
     "AWSTemplateFormatVersion": "2010-09-09",
     "Description": "(0003) - This template deploys two Windows Server Failover Clustering (WSFC) and SQL Server 2012 AlwaysOn Availability Group nodes. This template is intended to be installed into an existing VPC that was built using the sample reference architecture titled: \"Implementing Active Directory Domain Services in the AWS Cloud\" **WARNING** This template creates Amazon EC2 Windows instance and related resources. You will be billed for the AWS resources used if you create a stack from this template.",
-    "Metadata": {
-        "AWS::CloudFormation::Interface": {
-            "ParameterGroups": [
-                {
-                    "Label": {
-                        "default": "Network Configuration"
-                    },
-                    "Parameters": [
-                        "KeyPairName",
-                        "PrivateSubnet1Id",
-                        "PrivateSubnet2Id",
-                        "PrivateSubnet3Id",
-                        "PrivSub1CIDR",
-                        "PrivSub2CIDR",
-                        "VPC",
-                        "VPCCIDR"
-                    ]
-                },
-                {
-                    "Label": {
-                        "default": "Microsoft Active Directory Configuration"
-                    },
-                    "Parameters": [
-                        "ADServer1PrivateIp",
-                        "ADServer2PrivateIp",
-                        "ADServerNetBIOSName1",
-                        "ADServerNetBIOSName2",
-                        "DomainDNSName",
-                        "DomainNetBIOSName",
-                        "DomainAdminUser",
-                        "DomainAdminPassword",
-                        "DomainMemberSGID"
-                    ]
-                },
-                {
-                    "Label": {
-                        "default": "Microsoft SQL Configuration"
-                    },
-                    "Parameters": [
-                        "SQLServiceAccount",
-                        "SQLServiceAccountPassword",
-                        "SQLServerVersion"
-                    ]
-                },
-                {
-                    "Label": {
-                        "default": "WSFC Failover Cluster Configuration"
-                    },
-                    "Parameters": [
-                        "DedicatedHostIDNode1",
-                        "DedicatedHostIDNode2",
-                        "DedicatedHostIDNode3",
-                        "WSFCFileServerInstanceType",
-                        "WSFCFileServerNetBIOSName",
-                        "WSFCFileServerPrivateIP",
-                        "WSFCNode1InstanceType",
-                        "WSFCNode1NetBIOSName",
-                        "WSFCNode1PrivateIp",
-                        "WSFCNode1PrivateIp2",
-                        "WSFCNode1PrivateIp3",
-                        "WSFCNode2InstanceType",
-                        "WSFCNode2NetBIOSName",
-                        "WSFCNode2PrivateIp",
-                        "WSFCNode2PrivateIp2",
-                        "WSFCNode2PrivateIp3",
-                        "WSFCNode3InstanceType",
-                        "WSFCNode3NetBIOSName",
-                        "WSFCNode3PrivateIP1",
-                        "WSFCNode3PrivateIP2",
-                        "WSFCNode3PrivateIP3"
-                    ]
-                },
-                {
-                    "Label": {
-                        "default": "AWS Quick Start Configuration"
-                    },
-                    "Parameters": [
-                        "QSS3BucketName",
-                        "QSS3KeyPrefix"
-                    ]
-                }
-            ],
-            "ParameterLabels": {
-                "ADServer1PrivateIp": {
-                    "default": "AD Server 1 Private IP"
-                },
-                "ADServer2PrivateIp": {
-                    "default": "AD Server 2 Private IP"
-                },
-                "ADServerNetBIOSName1": {
-                    "default": "AD Server 1 NetBIOS Name"
-                },
-                "ADServerNetBIOSName2": {
-                    "default": "AD Server 1 NetBIOS Name"
-                },
-                "DomainAdminPassword": {
-                    "default": "Domain Admin Password"
-                },
-                "DomainAdminUser": {
-                    "default": "Domain Admin User Name"
-                },
-                "DomainDNSName": {
-                    "default": "Domain DNS Name"
-                },
-                "DomainMemberSGID": {
-                    "default": "Security Group ID for AD Domain Members"
-                },
-                "DomainNetBIOSName": {
-                    "default": "Domain NetBIOS Name"
-                },
-                "KeyPairName": {
-                    "default": "Key Pair Name"
-                },
-                "PrivSub1CIDR": {
-                    "default": "Private Subnet 1 CIDR"
-                },
-                "PrivSub2CIDR": {
-                    "default": "Private Subnet 2 CIDR"
-                },
-                "PrivateSubnet1Id": {
-                    "default": "Private Subnet 1 ID"
-                },
-                "PrivateSubnet2Id": {
-                    "default": "Private Subnet 2 ID"
-                },
-                "QSS3BucketName": {
-                    "default": "Quick Start S3 Bucket Name"
-                },
-                "QSS3KeyPrefix": {
-                    "default": "Quick Start S3 Key Prefix"
-                },
-                "SQLServiceAccount": {
-                    "default": "SQL Service Account"
-                },
-                "SQLServiceAccountPassword": {
-                    "default": "SQL Service Account Password"
-                },
-                "SQLServerVersion": {
-                    "default": "SQL Server Version"
-                },
-                "WSFCFileServerInstanceType": {
-                    "default": "File Server Instance Type"
-                },
-                "WSFCFileServerNetBIOSName": {
-                    "default": "File Server NetBIOS Name"
-                },
-                "WSFCFileServerPrivateIP": {
-                    "default": "File Server Private IP Address"
-                },
-                "WSFCNode1InstanceType": {
-                    "default": "Instance Type for Cluster Node 1"
-                },
-                "WSFCNode1NetBIOSName": {
-                    "default": "Cluster Node 1 NetBIOS Name"
-                },
-                "WSFCNode1PrivateIp": {
-                    "default": "Cluster Node 1 Private IP Address 1"
-                },
-                "WSFCNode1PrivateIp2": {
-                    "default": "Cluster Node 1 Private IP Address 2"
-                },
-                "WSFCNode1PrivateIp3": {
-                    "default": "Cluster Node 1 Private IP Address 3"
-                },
-                "WSFCNode2InstanceType": {
-                    "default": "Instance Type for Cluster Node 2"
-                },
-                "WSFCNode2NetBIOSName": {
-                    "default": "Cluster Node 2 NetBIOS Name"
-                },
-                "WSFCNode2PrivateIp": {
-                    "default": "Cluster Node 2 Private IP Address 1"
-                },
-                "WSFCNode2PrivateIp2": {
-                    "default": "Cluster Node 2 Private IP Address 2"
-                },
-                "WSFCNode2PrivateIp3": {
-                    "default": "Cluster Node 2 Private IP Address 3"
-                },
-                "WSFCNode3InstanceType": {
-                    "default": "Instance Type for Cluster Node 3"
-                },
-                "WSFCNode3NetBIOSName": {
-                    "default": "Cluster Node 3 NetBIOS Name"
-                },
-                "WSFCNode3PrivateIP1": {
-                    "default": "Cluster Node 3 Private IP Address 1"
-                },
-                "WSFCNode3PrivateIP2": {
-                    "default": "Cluster Node 3 Private IP Address 2"
-                },
-                "WSFCNode3PrivateIP3": {
-                    "default": "Cluster Node 3 Private IP Address 3"
-                }
-            }
-        }
-    },
     "Parameters": {
-        "ADServer1PrivateIp": {
-            "Description": "Fixed private IP for the first existing Active Directory server located in AZ1",
-            "Type": "String",
-            "Default": "10.0.0.10"
+        "KeyPairName": {
+            "Description": "Public/private key pairs allow you to securely connect to your instance after it launches",
+            "Type": "AWS::EC2::KeyPair::KeyName"
         },
-        "ADServer2PrivateIp": {
-            "Description": "Fixed private IP for the second existing Active Directory serverr located in AZ2",
+        "WSFCNode1InstanceType": {
+            "Description": "Amazon EC2 instance type for the 1st WSFC Node",
             "Type": "String",
-            "Default": "10.0.64.10"
+            "Default": "r3.2xlarge",
+            "AllowedValues": [
+                "r3.xlarge",
+                "r3.2xlarge",
+                "r3.4xlarge"
+            ],
+            "ConstraintDescription": "Only EBS Optimized instance types r3.xlarge, r3.2xlarge, r3.4xlarge allowed"
+        },
+        "WSFCNode2InstanceType": {
+            "Description": "Amazon EC2 instance type for the 1st WSFC Node",
+            "Type": "String",
+            "Default": "r3.2xlarge",
+            "AllowedValues": [
+                "r3.xlarge",
+                "r3.2xlarge",
+                "r3.4xlarge"
+            ],
+            "ConstraintDescription": "Only EBS Optimized instance types r3.xlarge, r3.2xlarge, r3.4xlarge allowed"
+        },
+        "DomainDNSName": {
+            "Description": "Fully qualified domain name (FQDN) of the forest root domain e.g. corp.example.com",
+            "Type": "String",
+            "Default": "example.com",
+            "MinLength": "3",
+            "MaxLength": "25",
+            "AllowedPattern": "[a-zA-Z0-9\\-]+\\..+"
+        },
+        "DomainNetBIOSName": {
+            "Description": "NetBIOS name of the domain (upto 15 characters) for users of earlier versions of Windows e.g. CORP",
+            "Type": "String",
+            "Default": "example",
+            "MinLength": "1",
+            "MaxLength": "15",
+            "AllowedPattern": "[a-zA-Z0-9\\-]+"
+        },
+        "WSFCNode1NetBIOSName": {
+            "Description": "NetBIOS name of the 1st WSFC Node (up to 15 characters)",
+            "Type": "String",
+            "Default": "WSFCNode1",
+            "MinLength": "1",
+            "MaxLength": "15",
+            "AllowedPattern": "[a-zA-Z0-9\\-]+"
+        },
+        "WSFCNode2NetBIOSName": {
+            "Description": "NetBIOS name of the 2nd WSFC Node (up to 15 characters)",
+            "Type": "String",
+            "Default": "WSFCNode2",
+            "MinLength": "1",
+            "MaxLength": "15",
+            "AllowedPattern": "[a-zA-Z0-9\\-]+"
         },
         "ADServerNetBIOSName1": {
             "Description": "NetBIOS name of the existing Domain Controller in AZ1",
@@ -241,64 +92,6 @@
             "AllowedPattern": "(?=^.{6,255}$)((?=.*\\d)(?=.*[A-Z])(?=.*[a-z])|(?=.*\\d)(?=.*[^A-Za-z0-9])(?=.*[a-z])|(?=.*[^A-Za-z0-9])(?=.*[A-Z])(?=.*[a-z])|(?=.*\\d)(?=.*[A-Z])(?=.*[^A-Za-z0-9]))^.*",
             "NoEcho": "true"
         },
-        "DomainDNSName": {
-            "Description": "Fully qualified domain name (FQDN) of the forest root domain e.g. corp.example.com",
-            "Type": "String",
-            "Default": "example.com",
-            "MinLength": "2",
-            "MaxLength": "255",
-            "AllowedPattern": "[a-zA-Z0-9\\-]+\\..+"
-        },
-        "DomainMemberSGID": {
-            "Description": "ID of the Domain Member Security Group (e.g., sg-7f16e910)",
-            "Type": "AWS::EC2::SecurityGroup::Id"
-        },
-        "DomainNetBIOSName": {
-            "Description": "NetBIOS name of the domain (upto 15 characters) for users of earlier versions of Windows e.g. CORP",
-            "Type": "String",
-            "Default": "example",
-            "MinLength": "1",
-            "MaxLength": "15",
-            "AllowedPattern": "[a-zA-Z0-9\\-]+"
-        },
-        "KeyPairName": {
-            "Description": "Public/private key pairs allows you to securely connect to your instance after it launches",
-            "Type": "AWS::EC2::KeyPair::KeyName"
-        },
-        "PrivateSubnet1Id": {
-            "Description": "ID of the subnet you want to provision the first WSFC node into (e.g., subnet-a0246dcd)",
-            "Type": "AWS::EC2::Subnet::Id"
-        },
-        "PrivateSubnet2Id": {
-            "Description": "ID of the subnet you want to provision the second WSFC node into (e.g., subnet-e3246d8e)",
-            "Type": "AWS::EC2::Subnet::Id"
-        },
-        "PrivSub1CIDR": {
-            "Description": "CIDR Block for Private Subnet located in AZ1",
-            "Type": "String",
-            "Default": "10.0.0.0/19",
-            "AllowedPattern": "[a-zA-Z0-9]+\\..+"
-        },
-        "PrivSub2CIDR": {
-            "Description": "CIDR Block for for Private Subnet located in AZ2",
-            "Type": "String",
-            "Default": "10.0.64.0/19",
-            "AllowedPattern": "[a-zA-Z0-9]+\\..+"
-        },
-        "QSS3BucketName": {
-            "AllowedPattern": "^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$",
-            "ConstraintDescription": "Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).",
-            "Default": "quickstart-reference",
-            "Description": "S3 bucket name for the Quick Start assets. Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).",
-            "Type": "String"
-        },
-        "QSS3KeyPrefix": {
-            "AllowedPattern": "^[0-9a-zA-Z-/]*$",
-            "ConstraintDescription": "Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/).",
-            "Default": "microsoft/sql/latest/",
-            "Description": "S3 key prefix for the Quick Start assets. Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/).",
-            "Type": "String"
-        },
         "SQLServiceAccount": {
             "Description": "User name for the SQL Server Service Account. This Account is a Domain User.",
             "Type": "String",
@@ -315,52 +108,15 @@
             "AllowedPattern": "(?=^.{6,255}$)((?=.*\\d)(?=.*[A-Z])(?=.*[a-z])|(?=.*\\d)(?=.*[^A-Za-z0-9])(?=.*[a-z])|(?=.*[^A-Za-z0-9])(?=.*[A-Z])(?=.*[a-z])|(?=.*\\d)(?=.*[A-Z])(?=.*[^A-Za-z0-9]))^.*",
             "NoEcho": "true"
         },
-        "SQLServerVersion": {
-            "Description": "Version of SQL Server to install on WSFC Nodes. Options include either \"2014\" or \"2012\"",
+        "ADServer1PrivateIp": {
+            "Description": "Fixed private IP for the first existing Active Directory server located in AZ1",
             "Type": "String",
-            "AllowedValues": [
-                "2014",
-                "2012"
-            ],
-            "Default": "2014"
+            "Default": "10.0.0.10"
         },
-        "WSFCNode1InstanceType": {
-            "Description": "Amazon EC2 instance type for the 1st WSFC Node",
+        "ADServer2PrivateIp": {
+            "Description": "Fixed private IP for the second existing Active Directory serverr located in AZ2",
             "Type": "String",
-            "Default": "r3.2xlarge",
-            "AllowedValues": [
-                "r3.xlarge",
-                "r3.2xlarge",
-                "r3.4xlarge"
-            ],
-            "ConstraintDescription": "Only EBS Optimized instance types r3.xlarge, r3.2xlarge, r3.4xlarge allowed"
-        },
-        "WSFCNode2InstanceType": {
-            "Description": "Amazon EC2 instance type for the 1st WSFC Node",
-            "Type": "String",
-            "Default": "r3.2xlarge",
-            "AllowedValues": [
-                "r3.xlarge",
-                "r3.2xlarge",
-                "r3.4xlarge"
-            ],
-            "ConstraintDescription": "Only EBS Optimized instance types r3.xlarge, r3.2xlarge, r3.4xlarge allowed"
-        },
-        "WSFCNode1NetBIOSName": {
-            "Description": "NetBIOS name of the 1st WSFC Node (up to 15 characters)",
-            "Type": "String",
-            "Default": "WSFCNode1",
-            "MinLength": "1",
-            "MaxLength": "15",
-            "AllowedPattern": "[a-zA-Z0-9\\-]+"
-        },
-        "WSFCNode2NetBIOSName": {
-            "Description": "NetBIOS name of the 2nd WSFC Node (up to 15 characters)",
-            "Type": "String",
-            "Default": "WSFCNode2",
-            "MinLength": "1",
-            "MaxLength": "15",
-            "AllowedPattern": "[a-zA-Z0-9\\-]+"
+            "Default": "10.0.64.10"
         },
         "WSFCNode1PrivateIp": {
             "Description": "Primary private IP for the 1st WSFC Node located in AZ1",
@@ -392,9 +148,42 @@
             "Type": "String",
             "Default": "10.0.64.102"
         },
+        "DomainMemberSGID": {
+            "Description": "ID of the Domain Member Security Group (e.g., sg-7f16e910)",
+            "Type": "AWS::EC2::SecurityGroup::Id"
+        },
         "VPC": {
             "Description": "ID of the VPC (e.g., vpc-0343606e)",
             "Type": "AWS::EC2::VPC::Id"
+        },
+        "PrivateSubnet1Id": {
+            "Description": "ID of the subnet you want to provision the first WSFC node into (e.g., subnet-a0246dcd)",
+            "Type": "AWS::EC2::Subnet::Id"
+        },
+        "PrivateSubnet2Id": {
+            "Description": "ID of the subnet you want to provision the second WSFC node into (e.g., subnet-e3246d8e)",
+            "Type": "AWS::EC2::Subnet::Id"
+        },
+        "PrivSub1CIDR": {
+            "Description": "CIDR Block for Private Subnet located in AZ1",
+            "Type": "String",
+            "Default": "10.0.0.0/19",
+            "AllowedPattern": "[a-zA-Z0-9]+\\..+"
+        },
+        "PrivSub2CIDR": {
+            "Description": "CIDR Block for for Private Subnet located in AZ2",
+            "Type": "String",
+            "Default": "10.0.64.0/19",
+            "AllowedPattern": "[a-zA-Z0-9]+\\..+"
+        },
+        "SQLServerVersion": {
+            "Description": "Version of SQL Server to install on WSFC Nodes. Options include either \"2014\" or \"2012\"",
+            "Type": "String",
+            "AllowedValues": [
+                "2014",
+                "2012"
+            ],
+            "Default": "2014"
         },
         "VPCCIDR": {
             "Description": "CIDR Block used by the VPC",
@@ -447,69 +236,6 @@
         }
     },
     "Resources": {
-        "WSFCNodeRole": {
-            "Type": "AWS::IAM::Role",
-            "Properties": {
-                "Policies": [
-                    {
-                        "PolicyDocument": {
-                            "Version": "2012-10-17",
-                            "Statement": [
-                                {
-                                    "Action": [
-                                        "s3:GetObject"
-                                    ],
-                                    "Resource": {
-                                        "Fn::Sub": [
-                                            "arn:${Partition}:s3:::${QSS3BucketName}/${QSS3KeyPrefix}*",
-                                            {
-                                                "Partition": {
-                                                    "Fn::If": [
-                                                        "GovCloudCondition",
-                                                        "aws-us-gov",
-                                                        "aws"
-                                                    ]
-                                                }
-                                            }
-                                        ]
-                                    },
-                                    "Effect": "Allow"
-                                }
-                            ]
-                        },
-                        "PolicyName": "aws-quick-start-s3-policy"
-                    }
-                ],
-                "Path": "/",
-                "AssumeRolePolicyDocument": {
-                    "Statement": [
-                        {
-                            "Action": [
-                                "sts:AssumeRole"
-                            ],
-                            "Principal": {
-                                "Service": [
-                                    "ec2.amazonaws.com"
-                                ]
-                            },
-                            "Effect": "Allow"
-                        }
-                    ],
-                    "Version": "2012-10-17"
-                }
-            }
-        },
-        "WSFCNodeProfile": {
-            "Type": "AWS::IAM::InstanceProfile",
-            "Properties": {
-                "Roles": [
-                    {
-                        "Ref": "WSFCNodeRole"
-                    }
-                ],
-                "Path": "/"
-            }
-        },
         "WSFCNode1WaitCondition": {
             "Type": "AWS::CloudFormation::WaitCondition",
             "DependsOn": "WSFCNode1",
@@ -539,19 +265,6 @@
         "WSFCNode1": {
             "Type": "AWS::EC2::Instance",
             "Metadata": {
-                "AWS::CloudFormation::Authentication": {
-                    "S3AccessCreds": {
-                        "type": "S3",
-                        "roleName": {
-                            "Ref": "WSFCNodeRole"
-                        },
-                        "buckets": [
-                            {
-                                "Ref": "QSS3BucketName"
-                            }
-                        ]
-                    }
-                },
                 "AWS::CloudFormation::Init": {
                     "configSets": {
                         "config": [
@@ -779,37 +492,11 @@
                                     ]
                                 }
                             },
-                            "C:\\cfn\\scripts\\DownloadSQLEE-Legacy.ps1": {
-                                "source": {
-                                    "Fn::Sub": [
-                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/DownloadSQLEE-Legacy.ps1",
-                                        {
-                                            "QSS3Region": {
-                                                "Fn::If": [
-                                                    "GovCloudCondition",
-                                                    "s3-us-gov-west-1",
-                                                    "s3"
-                                                ]
-                                            }
-                                        }
-                                    ]
-                                }
+                            "c:\\cfn\\scripts\\DownloadSQLEE.ps1": {
+                                "source": "https://s3.amazonaws.com/quickstart-reference/microsoft/sql/latest/scripts/DownloadSQLEE-Legacy.ps1"
                             },
-                            "C:\\cfn\\scripts\\OpenWSFCPorts.bat": {
-                                "source": {
-                                    "Fn::Sub": [
-                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/OpenWSFCPorts.bat",
-                                        {
-                                            "QSS3Region": {
-                                                "Fn::If": [
-                                                    "GovCloudCondition",
-                                                    "s3-us-gov-west-1",
-                                                    "s3"
-                                                ]
-                                            }
-                                        }
-                                    ]
-                                }
+                            "c:\\cfn\\scripts\\OpenWSFCPorts.bat": {
+                                "source": "https://s3.amazonaws.com/quickstart-reference/microsoft/sql/latest/scripts/OpenWSFCPorts.bat"
                             },
                             "C:\\cfn\\scripts\\AddUserToGroup.ps1": {
                                 "content": {
@@ -914,21 +601,8 @@
                                     ]
                                 }
                             },
-                            "C:\\cfn\\scripts\\MaxDOP.sql": {
-                                "source": {
-                                    "Fn::Sub": [
-                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/MaxDOP.sql",
-                                        {
-                                            "QSS3Region": {
-                                                "Fn::If": [
-                                                    "GovCloudCondition",
-                                                    "s3-us-gov-west-1",
-                                                    "s3"
-                                                ]
-                                            }
-                                        }
-                                    ]
-                                }
+                            "c:\\cfn\\scripts\\MaxDOP.sql": {
+                                "source": "https://s3.amazonaws.com/quickstart-reference/microsoft/sql/latest/scripts/MaxDOP.sql"
                             }
                         },
                         "commands": {
@@ -1221,9 +895,6 @@
                         "WS2012R2"
                     ]
                 },
-                "IamInstanceProfile": {
-                    "Ref": "WSFCNodeProfile"
-                },
                 "InstanceType": {
                     "Ref": "WSFCNode1InstanceType"
                 },
@@ -1339,19 +1010,6 @@
             "Type": "AWS::EC2::Instance",
             "DependsOn": "WSFCNode1WaitCondition",
             "Metadata": {
-                "AWS::CloudFormation::Authentication": {
-                    "S3AccessCreds": {
-                        "type": "S3",
-                        "roleName": {
-                            "Ref": "WSFCNodeRole"
-                        },
-                        "buckets": [
-                            {
-                                "Ref": "QSS3BucketName"
-                            }
-                        ]
-                    }
-                },
                 "AWS::CloudFormation::Init": {
                     "configSets": {
                         "config": [
@@ -1407,21 +1065,8 @@
                                     ]
                                 }
                             },
-                            "C:\\cfn\\scripts\\MaxDOP.sql": {
-                                "source": {
-                                    "Fn::Sub": [
-                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/MaxDOP.sql",
-                                        {
-                                            "QSS3Region": {
-                                                "Fn::If": [
-                                                    "GovCloudCondition",
-                                                    "s3-us-gov-west-1",
-                                                    "s3"
-                                                ]
-                                            }
-                                        }
-                                    ]
-                                }
+                            "c:\\cfn\\scripts\\MaxDOP.sql": {
+                                "source": "https://s3.amazonaws.com/quickstart-reference/microsoft/sql/latest/scripts/MaxDOP.sql"
                             }
                         },
                         "services": {
@@ -1539,21 +1184,8 @@
                                     ]
                                 }
                             },
-                            "C:\\cfn\\scripts\\OpenWSFCPorts.bat": {
-                                "source": {
-                                    "Fn::Sub": [
-                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/OpenWSFCPorts.bat",
-                                        {
-                                            "QSS3Region": {
-                                                "Fn::If": [
-                                                    "GovCloudCondition",
-                                                    "s3-us-gov-west-1",
-                                                    "s3"
-                                                ]
-                                            }
-                                        }
-                                    ]
-                                }
+                            "c:\\cfn\\scripts\\OpenWSFCPorts.bat": {
+                                "source": "https://s3.amazonaws.com/quickstart-reference/microsoft/sql/latest/scripts/OpenWSFCPorts.bat"
                             },
                             "C:\\cfn\\scripts\\AddUserToGroup.ps1": {
                                 "content": {
@@ -2214,9 +1846,6 @@
                         },
                         "WS2012R2"
                     ]
-                },
-                "IamInstanceProfile": {
-                    "Ref": "WSFCNodeProfile"
                 },
                 "InstanceType": {
                     "Ref": "WSFCNode2InstanceType"

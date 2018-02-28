@@ -1,113 +1,10 @@
 {
     "AWSTemplateFormatVersion": "2010-09-09",
     "Description": "(0004) - This template creates and installs a Windows Server 2012 based application server for testing purposes into a subnet inside a VPC. **WARNING** This template creates Amazon EC2 Windows instance and related resources. You will be billed for the AWS resources used if you create a stack from this template.",
-    "Metadata": {
-        "AWS::CloudFormation::Interface": {
-            "ParameterGroups": [
-                {
-                    "Label": {
-                        "default": "Network Configuration"
-                    },
-                    "Parameters": [
-                        "KeyPairName",
-                        "PrivateSubnet",
-                        "VPC"
-                    ]
-                },
-                {
-                    "Label": {
-                        "default": "Windows Server 2012 based Application Server configuration"
-                    },
-                    "Parameters": [
-                        "AppServerInstanceType",
-                        "AppServerNetBIOSName",
-                        "ADServer1NetBIOSName"
-                    ]
-                },
-                {
-                    "Label": {
-                        "default": "Microsoft Active Directory Configuration"
-                    },
-                    "Parameters": [
-                        "ADServer1PrivateIp",
-                        "ADServer2PrivateIp",
-                        "DomainDNSName",
-                        "DomainMemberSGID",
-                        "DomainNetBIOSName",
-                        "RestoreModePassword",
-                        "DomainAdminUser",
-                        "DomainAdminPassword"
-                    ]
-                },
-                {
-                    "Label": {
-                        "default": "AWS Quick Start Configuration"
-                    },
-                    "Parameters": [
-                        "QSS3BucketName",
-                        "QSS3KeyPrefix"
-                    ]
-                }
-            ],
-            "ParameterLabels": {
-                "KeyPairName": {
-                    "default": "Key Pair Name"
-                },
-                "ADServer1PrivateIp": {
-                    "default": "Domain Controller 1 Private IP Address"
-                },
-                "ADServer2PrivateIp": {
-                    "default": "Domain Controller 2 Private IP Address"
-                },
-                "ADServer2NetBIOSName": {
-                    "default": "Domain Controller 2 NetBIOS Name"
-                },
-                "AppServerInstanceType": {
-                    "default": "Application Server Instance Type"
-                },
-                "AppServerNetBIOSName": {
-                    "default": "Application Server NetBIOS Name"
-                },
-                "DomainAdminPassword": {
-                    "default": "Domain Admin Password"
-                },
-                "DomainAdminUser": {
-                    "default": "Domain Admin User Name"
-                },
-                "DomainDNSName": {
-                    "default": "Domain DNS Name"
-                },
-                "DomainMemberSGID": {
-                    "default": "Domain Member SGID"
-                },
-                "DomainNetBIOSName": {
-                    "default": "Domain NetBIOS Name"
-                },
-                "QSS3BucketName": {
-                    "default": "Quick Start S3 Bucket Name"
-                },
-                "QSS3KeyPrefix": {
-                    "default": "Quick Start S3 Key Prefix"
-                },
-                "PrivateSubnet": {
-                    "default": "Private Subnet ID"
-                },
-                "VPC": {
-                    "default": "ID of the VPC (e.g., vpc-0343606e)"
-                }
-            }
-        }
-    },
     "Parameters": {
-        "ADServer1PrivateIp": {
-            "Description": "Fixed private IP for the first Active Directory server located in AZ1",
-            "Type": "String",
-            "Default": "10.0.0.10"
-        },
-        "ADServer2PrivateIp": {
-            "Description": "Fixed private IP for the second Active Directory serverr located in AZ2",
-            "Type": "String",
-            "Default": "10.0.64.10"
+        "KeyPairName": {
+            "Description": "Public/private key pairs allow you to securely connect to your instance after it launches",
+            "Type": "AWS::EC2::KeyPair::KeyName"
         },
         "AppServerInstanceType": {
             "Description": "Amazon EC2 instance type for the 1st WSFC Node",
@@ -119,6 +16,22 @@
                 "m2.4xlarge"
             ],
             "ConstraintDescription": "Only EBS Optimized instance types m1.large, m3.xlarge, m2.4xlarge allowed"
+        },
+        "DomainDNSName": {
+            "Description": "Fully qualified domain name (FQDN) of the forest root domain e.g. example.com",
+            "Type": "String",
+            "Default": "example.com",
+            "MinLength": "3",
+            "MaxLength": "25",
+            "AllowedPattern": "[a-zA-Z0-9\\-]+\\..+"
+        },
+        "DomainNetBIOSName": {
+            "Description": "NetBIOS name of the domain (upto 15 characters) for users of earlier versions of Windows e.g. CORP",
+            "Type": "String",
+            "Default": "example",
+            "MinLength": "1",
+            "MaxLength": "15",
+            "AllowedPattern": "[a-zA-Z0-9\\-]+"
         },
         "AppServerNetBIOSName": {
             "Description": "NetBIOS name of the 1st WSFC Node (up to 15 characters)",
@@ -143,51 +56,27 @@
             "MaxLength": "32",
             "NoEcho": "true"
         },
-        "DomainDNSName": {
-            "Description": "Fully qualified domain name (FQDN) of the forest root domain e.g. example.com",
+        "ADServer1PrivateIp": {
+            "Description": "Fixed private IP for the first Active Directory server located in AZ1",
             "Type": "String",
-            "Default": "example.com",
-            "MinLength": "2",
-            "MaxLength": "255",
-            "AllowedPattern": "[a-zA-Z0-9\\-]+\\..+"
+            "Default": "10.0.0.10"
         },
-        "DomainNetBIOSName": {
-            "Description": "NetBIOS name of the domain (upto 15 characters) for users of earlier versions of Windows e.g. CORP",
+        "ADServer2PrivateIp": {
+            "Description": "Fixed private IP for the second Active Directory serverr located in AZ2",
             "Type": "String",
-            "Default": "example",
-            "MinLength": "1",
-            "MaxLength": "15",
-            "AllowedPattern": "[a-zA-Z0-9\\-]+"
+            "Default": "10.0.64.10"
         },
         "DomainMemberSGID": {
             "Description": "ID of the Domain Member Security Group (e.g., sg-7f16e910)",
-            "Type": "List<AWS::EC2::SecurityGroup::Id>"
-        },
-        "KeyPairName": {
-            "Description": "Public/private key pairs allow you to securely connect to your instance after it launches",
-            "Type": "AWS::EC2::KeyPair::KeyName"
-        },
-        "QSS3BucketName": {
-            "AllowedPattern": "^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$",
-            "ConstraintDescription": "Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).",
-            "Default": "quickstart-reference",
-            "Description": "S3 bucket name for the Quick Start assets. Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).",
             "Type": "String"
-        },
-        "QSS3KeyPrefix": {
-            "AllowedPattern": "^[0-9a-zA-Z-/]*$",
-            "ConstraintDescription": "Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/).",
-            "Default": "microsoft/sql/latest/",
-            "Description": "S3 key prefix for the Quick Start assets. Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/).",
-            "Type": "String"
-        },
-        "PrivateSubnet": {
-            "Description": "ID of the Subnet you want to provision the App Server into (e.g., subnet-a0246dcd)",
-            "Type": "AWS::EC2::Subnet::Id"
         },
         "VPC": {
             "Description": "ID of the VPC (e.g., vpc-0343606e)",
             "Type": "AWS::EC2::VPC::Id"
+        },
+        "PrivateSubnet": {
+            "Description": "ID of the Subnet you want to provision the App Server into (e.g., subnet-a0246dcd)",
+            "Type": "AWS::EC2::Subnet::Id"
         }
     },
     "Mappings": {
@@ -247,85 +136,9 @@
         "AppServerWaitHandle": {
             "Type": "AWS::CloudFormation::WaitConditionHandle"
         },
-        "AppServerRole": {
-            "Type": "AWS::IAM::Role",
-            "Properties": {
-                "Policies": [
-                    {
-                        "PolicyDocument": {
-                            "Version": "2012-10-17",
-                            "Statement": [
-                                {
-                                    "Action": [
-                                        "s3:GetObject"
-                                    ],
-                                    "Resource": {
-                                        "Fn::Sub": [
-                                            "arn:${Partition}:s3:::${QSS3BucketName}/${QSS3KeyPrefix}*",
-                                            {
-                                                "Partition": {
-                                                    "Fn::If": [
-                                                        "GovCloudCondition",
-                                                        "aws-us-gov",
-                                                        "aws"
-                                                    ]
-                                                }
-                                            }
-                                        ]
-                                    },
-                                    "Effect": "Allow"
-                                }
-                            ]
-                        },
-                        "PolicyName": "aws-quick-start-s3-policy"
-                    }
-                ],
-                "Path": "/",
-                "AssumeRolePolicyDocument": {
-                    "Statement": [
-                        {
-                            "Action": [
-                                "sts:AssumeRole"
-                            ],
-                            "Principal": {
-                                "Service": [
-                                    "ec2.amazonaws.com"
-                                ]
-                            },
-                            "Effect": "Allow"
-                        }
-                    ],
-                    "Version": "2012-10-17"
-                }
-            }
-        },
-        "AppServerProfile": {
-            "Type": "AWS::IAM::InstanceProfile",
-            "Properties": {
-                "Roles": [
-                    {
-                        "Ref": "AppServerRole"
-                    }
-                ],
-                "Path": "/"
-            }
-        },
         "AppServer": {
             "Type": "AWS::EC2::Instance",
             "Metadata": {
-                "AWS::CloudFormation::Authentication": {
-                    "S3AccessCreds": {
-                        "type": "S3",
-                        "roleName": {
-                            "Ref": "AppServerRole"
-                        },
-                        "buckets": [
-                            {
-                                "Ref": "QSS3BucketName"
-                            }
-                        ]
-                    }
-                },
                 "AWS::CloudFormation::Init": {
                     "configSets": {
                         "config": [
@@ -500,7 +313,7 @@
                                             "import-module BitsTransfer ",
                                             "\n",
                                             "Start-BitsTransfer ",
-                                            "-Source https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/SQLBlaster_Demo.zip -Destination \"$zipfilename\"",
+                                            "-Source https://s3.amazonaws.com/quickstart-reference/microsoft/sql/latest/scripts/SQLBlaster_Demo.zip -Destination \"$zipfilename\"",
                                             "\n",
                                             "if(test-path($zipfilename))",
                                             "\n",
@@ -618,9 +431,6 @@
                         },
                         "WS2012R2"
                     ]
-                },
-                "IamInstanceProfile": {
-                    "Ref": "AppServerProfile"
                 },
                 "InstanceType": {
                     "Ref": "AppServerInstanceType"

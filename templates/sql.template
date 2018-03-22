@@ -740,109 +740,123 @@
     "Mappings": {
         "AWSAMIRegionMap": {
             "AMI": {
-                "WS2012R2": "Windows_Server-2012-R2_RTM-English-64Bit-Base-2018.03.06",
-                "WS2012R2SQL2014SP2ENT": "Windows_Server-2012-R2_RTM-English-64Bit-SQL_2014_SP2_Enterprise-2018.03.06",
-                "WS2012R2SQL2016SP1ENT": "Windows_Server-2012-R2_RTM-English-64Bit-SQL_2016_SP1_Enterprise-2018.03.06",
-                "WS2016FULLBASE": "Windows_Server-2016-English-Full-Base-2018.03.06",
-                "WS2016FULLSQL2017ENT": "Windows_Server-2016-English-Full-SQL_2017_Enterprise-2018.03.06"
+                "WS2012R2": "Windows_Server-2012-R2_RTM-English-64Bit-Base-2018.03.16",
+                "WS2012R2SQL2014SP2ENT": "Windows_Server-2012-R2_RTM-English-64Bit-SQL_2014_SP2_Enterprise-2018.03.16",
+                "WS2012R2SQL2016SP1ENT": "Windows_Server-2012-R2_RTM-English-64Bit-SQL_2016_SP1_Enterprise-2018.03.16",
+                "WS2016FULLBASE": "Windows_Server-2016-English-Full-Base-2018.03.16",
+                "WS2016FULLSQL2017ENT": "Windows_Server-2016-English-Full-SQL_2017_Enterprise-2018.03.16"
             },
             "ap-northeast-1": {
-                "WS2012R2": "ami-08ffb26e",
-                "WS2012R2SQL2014SP2ENT": "ami-bcffb2da",
-                "WS2012R2SQL2016SP1ENT": "ami-baf4b9dc",
-                "WS2016FULLBASE": "ami-9b2e62fd",
-                "WS2016FULLSQL2017ENT": "ami-e63f7380"
+                "WS2012R2": "ami-69c6920f",
+                "WS2012R2SQL2014SP2ENT": "ami-0584d363",
+                "WS2012R2SQL2016SP1ENT": "ami-0583d463",
+                "WS2016FULLBASE": "ami-0ec79368",
+                "WS2016FULLSQL2017ENT": "ami-d581d6b3"
             },
             "ap-northeast-2": {
-                "WS2012R2": "ami-8e03aee0",
-                "WS2012R2SQL2014SP2ENT": "ami-8f03aee1",
-                "WS2012R2SQL2016SP1ENT": "ami-1900ad77",
-                "WS2016FULLBASE": "ami-1d1db073",
-                "WS2016FULLSQL2017ENT": "ami-a01cb1ce"
+                "WS2012R2": "ami-9e75d9f0",
+                "WS2012R2SQL2014SP2ENT": "ami-bc44e8d2",
+                "WS2012R2SQL2016SP1ENT": "ami-d749e5b9",
+                "WS2016FULLBASE": "ami-af77dbc1",
+                "WS2016FULLSQL2017ENT": "ami-b94ae6d7"
+            },
+            "ap-northeast-3": {
+                "WS2012R2": "ami-0819869e3c542499d",
+                "WS2012R2SQL2014SP2ENT": "ami-0f99d1a8e7448e627",
+                "WS2012R2SQL2016SP1ENT": "ami-0c716e38058638a17",
+                "WS2016FULLBASE": "ami-0897eb947ec0b5a2a",
+                "WS2016FULLSQL2017ENT": "ami-0adb7f4ff9a0ae68e"
             },
             "ap-south-1": {
-                "WS2012R2": "ami-e9633d86",
-                "WS2012R2SQL2014SP2ENT": "ami-3b623c54",
-                "WS2012R2SQL2016SP1ENT": "ami-61613f0e",
-                "WS2016FULLBASE": "ami-bb9cc2d4",
-                "WS2016FULLSQL2017ENT": "ami-2d9ac442"
+                "WS2012R2": "ami-a04e16cf",
+                "WS2012R2SQL2014SP2ENT": "ami-b8663ed7",
+                "WS2012R2SQL2016SP1ENT": "ami-e3673f8c",
+                "WS2016FULLBASE": "ami-944f17fb",
+                "WS2016FULLSQL2017ENT": "ami-8699c1e9"
             },
             "ap-southeast-1": {
-                "WS2012R2": "ami-5265312e",
-                "WS2012R2SQL2014SP2ENT": "ami-b16430cd",
-                "WS2012R2SQL2016SP1ENT": "ami-b66632ca",
-                "WS2016FULLBASE": "ami-e36a3e9f",
-                "WS2016FULLSQL2017ENT": "ami-ec91c590"
+                "WS2012R2": "ami-32a9fa4e",
+                "WS2012R2SQL2014SP2ENT": "ami-6d227011",
+                "WS2012R2SQL2016SP1ENT": "ami-0c3d6f70",
+                "WS2016FULLBASE": "ami-9da8fbe1",
+                "WS2016FULLSQL2017ENT": "ami-c62270ba"
             },
             "ap-southeast-2": {
-                "WS2012R2": "ami-6169a803",
-                "WS2012R2SQL2014SP2ENT": "ami-f467a696",
-                "WS2012R2SQL2016SP1ENT": "ami-dd66a7bf",
-                "WS2016FULLBASE": "ami-406fae22",
-                "WS2016FULLSQL2017ENT": "ami-e16aab83"
+                "WS2012R2": "ami-2bc90b49",
+                "WS2012R2SQL2014SP2ENT": "ami-05f83a67",
+                "WS2012R2SQL2016SP1ENT": "ami-4af83a28",
+                "WS2016FULLBASE": "ami-efc80a8d",
+                "WS2016FULLSQL2017ENT": "ami-10fb3972"
             },
             "ca-central-1": {
-                "WS2012R2": "ami-284acd4c",
-                "WS2012R2SQL2014SP2ENT": "ami-bd56d1d9",
-                "WS2012R2SQL2016SP1ENT": "ami-214ec945",
-                "WS2016FULLBASE": "ami-4748cf23",
-                "WS2016FULLSQL2017ENT": "ami-5c54d338"
+                "WS2012R2": "ami-13c64077",
+                "WS2012R2SQL2014SP2ENT": "ami-0338bf67",
+                "WS2012R2SQL2016SP1ENT": "ami-6b3abd0f",
+                "WS2016FULLBASE": "ami-8a39beee",
+                "WS2016FULLSQL2017ENT": "ami-3238bf56"
             },
             "eu-central-1": {
-                "WS2012R2": "ami-c10967ae",
-                "WS2012R2SQL2014SP2ENT": "ami-b00866df",
-                "WS2012R2SQL2016SP1ENT": "ami-4007692f",
-                "WS2016FULLBASE": "ami-f91a7496",
-                "WS2016FULLSQL2017ENT": "ami-a31678cc"
+                "WS2012R2": "ami-267928cd",
+                "WS2012R2SQL2014SP2ENT": "ami-d37b2a38",
+                "WS2012R2SQL2016SP1ENT": "ami-277928cc",
+                "WS2016FULLBASE": "ami-377829dc",
+                "WS2016FULLSQL2017ENT": "ami-f3792818"
             },
             "eu-west-1": {
-                "WS2012R2": "ami-31743748",
-                "WS2012R2SQL2014SP2ENT": "ami-8b7a39f2",
-                "WS2012R2SQL2016SP1ENT": "ami-4a7c3f33",
-                "WS2016FULLBASE": "ami-0284c77b",
-                "WS2016FULLSQL2017ENT": "ami-148dce6d"
+                "WS2012R2": "ami-9f561ce6",
+                "WS2012R2SQL2014SP2ENT": "ami-da551fa3",
+                "WS2012R2SQL2016SP1ENT": "ami-af501ad6",
+                "WS2016FULLBASE": "ami-fb571d82",
+                "WS2016FULLSQL2017ENT": "ami-58561c21"
             },
             "eu-west-2": {
-                "WS2012R2": "ami-a7ee09c0",
-                "WS2012R2SQL2014SP2ENT": "ami-b5e007d2",
-                "WS2012R2SQL2016SP1ENT": "ami-81e205e6",
-                "WS2016FULLBASE": "ami-8bee09ec",
-                "WS2016FULLSQL2017ENT": "ami-3aeb0c5d"
+                "WS2012R2": "ami-8e987ee9",
+                "WS2012R2SQL2014SP2ENT": "ami-6ee70109",
+                "WS2012R2SQL2016SP1ENT": "ami-da997fbd",
+                "WS2016FULLBASE": "ami-77e60010",
+                "WS2016FULLSQL2017ENT": "ami-d5997fb2"
+            },
+            "eu-west-3": {
+                "WS2012R2": "ami-7d368000",
+                "WS2012R2SQL2014SP2ENT": "ami-7c368001",
+                "WS2012R2SQL2016SP1ENT": "ami-8548fef8",
+                "WS2016FULLBASE": "ami-d64afcab",
+                "WS2016FULLSQL2017ENT": "ami-d74bfdaa"
             },
             "sa-east-1": {
-                "WS2012R2": "ami-b61258da",
-                "WS2012R2SQL2014SP2ENT": "ami-f5105a99",
-                "WS2012R2SQL2016SP1ENT": "ami-69105a05",
-                "WS2016FULLBASE": "ami-0a175d66",
-                "WS2016FULLSQL2017ENT": "ami-27175d4b"
+                "WS2012R2": "ami-14c59078",
+                "WS2012R2SQL2014SP2ENT": "ami-a5da8fc9",
+                "WS2012R2SQL2016SP1ENT": "ami-b2da8fde",
+                "WS2016FULLBASE": "ami-51c5903d",
+                "WS2016FULLSQL2017ENT": "ami-69d88d05"
             },
             "us-east-1": {
-                "WS2012R2": "ami-c951acb4",
-                "WS2012R2SQL2014SP2ENT": "ami-0a4eb377",
-                "WS2012R2SQL2016SP1ENT": "ami-5d4fb220",
-                "WS2016FULLBASE": "ami-cab14db7",
-                "WS2016FULLSQL2017ENT": "ami-0b906c76"
+                "WS2012R2": "ami-f435fc89",
+                "WS2012R2SQL2014SP2ENT": "ami-0b37fe76",
+                "WS2012R2SQL2016SP1ENT": "ami-2149805c",
+                "WS2016FULLBASE": "ami-a630f9db",
+                "WS2016FULLSQL2017ENT": "ami-4048813d"
             },
             "us-east-2": {
-                "WS2012R2": "ami-387d4b5d",
-                "WS2012R2SQL2014SP2ENT": "ami-6b7d4b0e",
-                "WS2012R2SQL2016SP1ENT": "ami-567c4a33",
-                "WS2016FULLBASE": "ami-bc784ed9",
-                "WS2016FULLSQL2017ENT": "ami-9c7b4df9"
+                "WS2012R2": "ami-dd80b6b8",
+                "WS2012R2SQL2014SP2ENT": "ami-86f1ee6a",
+                "WS2012R2SQL2016SP1ENT": "ami-03f1eeef",
+                "WS2016FULLBASE": "ami-4df1eea1",
+                "WS2016FULLSQL2017ENT": "ami-7d80b618"
             },
             "us-west-1": {
-                "WS2012R2": "ami-04aea464",
-                "WS2012R2SQL2014SP2ENT": "ami-adaea4cd",
-                "WS2012R2SQL2016SP1ENT": "ami-bda9a3dd",
-                "WS2016FULLBASE": "ami-aaa2a8ca",
-                "WS2016FULLSQL2017ENT": "ami-d6ada7b6"
+                "WS2012R2": "ami-614a5d01",
+                "WS2012R2SQL2014SP2ENT": "ami-064a5d66",
+                "WS2012R2SQL2016SP1ENT": "ami-f1495e91",
+                "WS2016FULLBASE": "ami-07495e67",
+                "WS2016FULLSQL2017ENT": "ami-5f485f3f"
             },
             "us-west-2": {
-                "WS2012R2": "ami-ea950192",
-                "WS2012R2SQL2014SP2ENT": "ami-1d920665",
-                "WS2012R2SQL2016SP1ENT": "ami-839105fb",
-                "WS2016FULLBASE": "ami-ef9a0e97",
-                "WS2016FULLSQL2017ENT": "ami-1f831767"
+                "WS2012R2": "ami-fc3cae84",
+                "WS2012R2SQL2014SP2ENT": "ami-a821b3d0",
+                "WS2012R2SQL2016SP1ENT": "ami-f23daf8a",
+                "WS2016FULLBASE": "ami-4722b03f",
+                "WS2016FULLSQL2017ENT": "ami-fa3daf82"
             }
         },
         "SQLAMINameMap": {
@@ -1483,6 +1497,22 @@
                                     ]
                                 }
                             },
+                            "C:\\cfn\\scripts\\Create-SQLLogin.ps1": {
+                                "source": {
+                                    "Fn::Sub": [
+                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/Create-SQLLogin.ps1",
+                                        {
+                                            "QSS3Region": {
+                                                "Fn::If": [
+                                                    "GovCloudCondition",
+                                                    "s3-us-gov-west-1",
+                                                    "s3"
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
                             "C:\\cfn\\scripts\\Join-Domain.ps1": {
                                 "source": {
                                     "Fn::Sub": [
@@ -1988,6 +2018,37 @@
                                     ]
                                 },
                                 "waitAfterCompletion": "0"
+                            },
+                            "b-add-sa-to-sysadmin-role": {
+                                "command": {
+                                    "Fn::Join": [
+                                        "",
+                                        [
+                                            "powershell.exe -Command \"C:\\cfn\\scripts\\Create-SQLLogin.ps1 -DomainNetBIOSName '",
+                                            {
+                                                "Ref": "DomainNetBIOSName"
+                                            },
+                                            "' -DomainAdminUser '",
+                                            {
+                                                "Ref": "DomainAdminUser"
+                                            },
+                                            "' -DomainAdminPassword '",
+                                            {
+                                                "Ref": "DomainAdminPassword"
+                                            },
+                                            "' -SQLServiceAccount '",
+                                            {
+                                                "Ref": "SQLServiceAccount"
+                                            },
+                                            "' -NetBIOSName '",
+                                            {
+                                                "Ref": "WSFCNode1NetBIOSName"
+                                            },
+                                            "'\""
+                                        ]
+                                    ]
+                                },
+                                "waitAfterCompletion": "0"
                             }
                         }
                     },
@@ -2302,6 +2363,22 @@
                                 "source": {
                                     "Fn::Sub": [
                                         "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/modules/AWSQuickStart.zip",
+                                        {
+                                            "QSS3Region": {
+                                                "Fn::If": [
+                                                    "GovCloudCondition",
+                                                    "s3-us-gov-west-1",
+                                                    "s3"
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            "C:\\cfn\\scripts\\Create-SQLLogin.ps1": {
+                                "source": {
+                                    "Fn::Sub": [
+                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/Create-SQLLogin.ps1",
                                         {
                                             "QSS3Region": {
                                                 "Fn::If": [
@@ -2666,6 +2743,37 @@
                                     ]
                                 },
                                 "waitAfterCompletion": "0"
+                            },
+                            "b-add-sa-to-sysadmin-role": {
+                                "command": {
+                                    "Fn::Join": [
+                                        "",
+                                        [
+                                            "powershell.exe -Command \"C:\\cfn\\scripts\\Create-SQLLogin.ps1 -DomainNetBIOSName '",
+                                            {
+                                                "Ref": "DomainNetBIOSName"
+                                            },
+                                            "' -DomainAdminUser '",
+                                            {
+                                                "Ref": "DomainAdminUser"
+                                            },
+                                            "' -DomainAdminPassword '",
+                                            {
+                                                "Ref": "DomainAdminPassword"
+                                            },
+                                            "' -SQLServiceAccount '",
+                                            {
+                                                "Ref": "SQLServiceAccount"
+                                            },
+                                            "' -NetBIOSName '",
+                                            {
+                                                "Ref": "WSFCNode3NetBIOSName"
+                                            },
+                                            "'\""
+                                        ]
+                                    ]
+                                },
+                                "waitAfterCompletion": "0"
                             }
                         }
                     },
@@ -2999,6 +3107,22 @@
                                 "source": {
                                     "Fn::Sub": [
                                         "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/modules/AWSQuickStart.zip",
+                                        {
+                                            "QSS3Region": {
+                                                "Fn::If": [
+                                                    "GovCloudCondition",
+                                                    "s3-us-gov-west-1",
+                                                    "s3"
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            "C:\\cfn\\scripts\\Create-SQLLogin.ps1": {
+                                "source": {
+                                    "Fn::Sub": [
+                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/Create-SQLLogin.ps1",
                                         {
                                             "QSS3Region": {
                                                 "Fn::If": [
@@ -3449,6 +3573,37 @@
                                             "' -SQLServiceAccountPassword '",
                                             {
                                                 "Ref": "SQLServiceAccountPassword"
+                                            },
+                                            "' -NetBIOSName '",
+                                            {
+                                                "Ref": "WSFCNode2NetBIOSName"
+                                            },
+                                            "'\""
+                                        ]
+                                    ]
+                                },
+                                "waitAfterCompletion": "0"
+                            },
+                            "b-add-sa-to-sysadmin-role": {
+                                "command": {
+                                    "Fn::Join": [
+                                        "",
+                                        [
+                                            "powershell.exe -Command \"C:\\cfn\\scripts\\Create-SQLLogin.ps1 -DomainNetBIOSName '",
+                                            {
+                                                "Ref": "DomainNetBIOSName"
+                                            },
+                                            "' -DomainAdminUser '",
+                                            {
+                                                "Ref": "DomainAdminUser"
+                                            },
+                                            "' -DomainAdminPassword '",
+                                            {
+                                                "Ref": "DomainAdminPassword"
+                                            },
+                                            "' -SQLServiceAccount '",
+                                            {
+                                                "Ref": "SQLServiceAccount"
                                             },
                                             "' -NetBIOSName '",
                                             {

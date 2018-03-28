@@ -505,10 +505,10 @@
                                 }
                             },
                             "c:\\cfn\\scripts\\DownloadSQLEE.ps1": {
-                                "source": "https://s3.amazonaws.com/quickstart-reference/microsoft/sql/latest/scripts/DownloadSQLEE-Legacy.ps1"
+                                "source": "https://s3.amazonaws.com/aws-quickstart/quickstart-microsoft-sql/scripts/DownloadSQLEE-Legacy.ps1"
                             },
                             "c:\\cfn\\scripts\\OpenWSFCPorts.bat": {
-                                "source": "https://s3.amazonaws.com/quickstart-reference/microsoft/sql/latest/scripts/OpenWSFCPorts.bat"
+                                "source": "https://s3.amazonaws.com/aws-quickstart/quickstart-microsoft-sql/scripts/OpenWSFCPorts.bat"
                             },
                             "C:\\cfn\\scripts\\AddUserToGroup.ps1": {
                                 "content": {
@@ -614,7 +614,7 @@
                                 }
                             },
                             "c:\\cfn\\scripts\\MaxDOP.sql": {
-                                "source": "https://s3.amazonaws.com/quickstart-reference/microsoft/sql/latest/scripts/MaxDOP.sql"
+                                "source": "https://s3.amazonaws.com/aws-quickstart/quickstart-microsoft-sql/scripts/MaxDOP.sql"
                             }
                         },
                         "commands": {
@@ -1078,7 +1078,7 @@
                                 }
                             },
                             "c:\\cfn\\scripts\\MaxDOP.sql": {
-                                "source": "https://s3.amazonaws.com/quickstart-reference/microsoft/sql/latest/scripts/MaxDOP.sql"
+                                "source": "https://s3.amazonaws.com/aws-quickstart/quickstart-microsoft-sql/scripts/MaxDOP.sql"
                             }
                         },
                         "services": {
@@ -1197,7 +1197,7 @@
                                 }
                             },
                             "c:\\cfn\\scripts\\OpenWSFCPorts.bat": {
-                                "source": "https://s3.amazonaws.com/quickstart-reference/microsoft/sql/latest/scripts/OpenWSFCPorts.bat"
+                                "source": "https://s3.amazonaws.com/aws-quickstart/quickstart-microsoft-sql/scripts/OpenWSFCPorts.bat"
                             },
                             "C:\\cfn\\scripts\\AddUserToGroup.ps1": {
                                 "content": {

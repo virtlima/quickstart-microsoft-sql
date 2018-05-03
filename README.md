@@ -14,7 +14,7 @@ You can also use the AWS CloudFormation templates as a starting point for your o
 
 ![Quick Start architecture for SQL Server on AWS](https://d0.awsstatic.com/partner-network/QuickStart/datasheets/sql-server-on-aws-architecture.png)
 
-For architectural details, best practices, step-by-step instructions, and customization options, see the [deployment guide](https://docs.aws.amazon.com/quickstart/latest/sql/welcome.html).
+For architectural details, best practices, step-by-step instructions, and customization options, see the [deployment guide](https://fwd.aws/GRNKR).
 
 To post feedback, submit feature ideas, or report bugs, use the **Issues** section of this GitHub repo.
 If you'd like to submit code for this Quick Start, please review the [AWS Quick Start Contributor's Kit](https://aws-quickstart.github.io/).

@@ -2712,7 +2712,7 @@
                                             },
                                             "' -NetBIOSName '",
                                             {
-                                                "Ref": "WSFCNode1NetBIOSName"
+                                                "Ref": "WSFCNode3NetBIOSName"
                                             },
                                             "'\""
                                         ]

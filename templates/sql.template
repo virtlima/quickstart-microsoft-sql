@@ -959,7 +959,7 @@
                 "Handle": {
                     "Ref": "WSFCNode1WaitHandle"
                 },
-                "Timeout": "9000"
+                "Timeout": "14400"
             }
         },
         "WSFCNode1WaitHandle": {
@@ -972,7 +972,7 @@
                 "Handle": {
                     "Ref": "WSFCNode2WaitHandle"
                 },
-                "Timeout": "9000"
+                "Timeout": "14400"
             }
         },
         "WSFCNode2WaitHandle": {
@@ -986,7 +986,7 @@
                 "Handle": {
                     "Ref": "WSFCNode3WaitHandle"
                 },
-                "Timeout": "9000"
+                "Timeout": "14400"
             }
         },
         "WSFCNode3WaitHandle": {

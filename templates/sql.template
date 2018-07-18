@@ -740,123 +740,123 @@
     "Mappings": {
         "AWSAMIRegionMap": {
             "AMI": {
-                "WS2012R2": "Windows_Server-2012-R2_RTM-English-64Bit-Base-2018.06.13",
-                "WS2012R2SQL2014SP2ENT": "Windows_Server-2012-R2_RTM-English-64Bit-SQL_2014_SP2_Enterprise-2018.06.13",
-                "WS2012R2SQL2016SP1ENT": "Windows_Server-2012-R2_RTM-English-64Bit-SQL_2016_SP1_Enterprise-2018.06.13",
-                "WS2016FULLBASE": "Windows_Server-2016-English-Full-Base-2018.06.13",
-                "WS2016FULLSQL2017ENT": "Windows_Server-2016-English-Full-SQL_2017_Enterprise-2018.06.13"
+                "WS2012R2": "Windows_Server-2012-R2_RTM-English-64Bit-Base-2018.07.11",
+                "WS2012R2SQL2014SP2ENT": "Windows_Server-2012-R2_RTM-English-64Bit-SQL_2014_SP2_Enterprise-2018.07.11",
+                "WS2012R2SQL2016SP1ENT": "Windows_Server-2012-R2_RTM-English-64Bit-SQL_2016_SP1_Enterprise-2018.07.11",
+                "WS2016FULLBASE": "Windows_Server-2016-English-Full-Base-2018.07.11",
+                "WS2016FULLSQL2017ENT": "Windows_Server-2016-English-Full-SQL_2017_Enterprise-2018.07.11"
             },
             "ap-northeast-1": {
-                "WS2012R2": "ami-4e0cc331",
-                "WS2012R2SQL2014SP2ENT": "ami-ce1ad5b1",
-                "WS2012R2SQL2016SP1ENT": "ami-2cc30c53",
-                "WS2016FULLBASE": "ami-120cc36d",
-                "WS2016FULLSQL2017ENT": "ami-e313dc9c"
+                "WS2012R2": "ami-a73c5e4a",
+                "WS2012R2SQL2014SP2ENT": "ami-020664ef",
+                "WS2012R2SQL2016SP1ENT": "ami-060664eb",
+                "WS2016FULLBASE": "ami-49096ba4",
+                "WS2016FULLSQL2017ENT": "ami-a5197b48"
             },
             "ap-northeast-2": {
-                "WS2012R2": "ami-2968c247",
-                "WS2012R2SQL2014SP2ENT": "ami-2a68c244",
-                "WS2012R2SQL2016SP1ENT": "ami-0668c268",
-                "WS2016FULLBASE": "ami-7969c317",
-                "WS2016FULLSQL2017ENT": "ami-2d6ec443"
+                "WS2012R2": "ami-28398d46",
+                "WS2012R2SQL2014SP2ENT": "ami-d5398dbb",
+                "WS2012R2SQL2016SP1ENT": "ami-d12094bf",
+                "WS2016FULLBASE": "ami-07219569",
+                "WS2016FULLSQL2017ENT": "ami-ad2397c3"
             },
             "ap-northeast-3": {
-                "WS2012R2": "ami-48aca235",
-                "WS2012R2SQL2014SP2ENT": "ami-eeaea093",
-                "WS2012R2SQL2016SP1ENT": "ami-8baea0f6",
-                "WS2016FULLBASE": "ami-b4aaa4c9",
-                "WS2016FULLSQL2017ENT": "ami-baaea0c7"
+                "WS2012R2": "ami-04474e79",
+                "WS2012R2SQL2014SP2ENT": "ami-1c424b61",
+                "WS2012R2SQL2016SP1ENT": "ami-1e424b63",
+                "WS2016FULLBASE": "ami-88424bf5",
+                "WS2016FULLSQL2017ENT": "ami-fb585186"
             },
             "ap-south-1": {
-                "WS2012R2": "ami-e795bd88",
-                "WS2012R2SQL2014SP2ENT": "ami-4d94bc22",
-                "WS2012R2SQL2016SP1ENT": "ami-eb95bd84",
-                "WS2016FULLBASE": "ami-5f95bd30",
-                "WS2016FULLSQL2017ENT": "ami-6c6b4003"
+                "WS2012R2": "ami-e013228f",
+                "WS2012R2SQL2014SP2ENT": "ami-1d2b1a72",
+                "WS2012R2SQL2016SP1ENT": "ami-1355647c",
+                "WS2016FULLBASE": "ami-ae1627c1",
+                "WS2016FULLSQL2017ENT": "ami-ce1627a1"
             },
             "ap-southeast-1": {
-                "WS2012R2": "ami-de2a2da2",
-                "WS2012R2SQL2014SP2ENT": "ami-08313674",
-                "WS2012R2SQL2016SP1ENT": "ami-0731367b",
-                "WS2016FULLBASE": "ami-053d3a79",
-                "WS2016FULLSQL2017ENT": "ami-8cc6c1f0"
+                "WS2012R2": "ami-43e49da9",
+                "WS2012R2SQL2014SP2ENT": "ami-37e39add",
+                "WS2012R2SQL2016SP1ENT": "ami-b6e29b5c",
+                "WS2016FULLBASE": "ami-84e79e6e",
+                "WS2016FULLSQL2017ENT": "ami-21dca5cb"
             },
             "ap-southeast-2": {
-                "WS2012R2": "ami-75f32c17",
-                "WS2012R2SQL2014SP2ENT": "ami-66ee3104",
-                "WS2012R2SQL2016SP1ENT": "ami-d3ed32b1",
-                "WS2016FULLBASE": "ami-42f02f20",
-                "WS2016FULLSQL2017ENT": "ami-b7ef30d5"
+                "WS2012R2": "ami-e3862381",
+                "WS2012R2SQL2014SP2ENT": "ami-ea852088",
+                "WS2012R2SQL2016SP1ENT": "ami-b68124d4",
+                "WS2016FULLBASE": "ami-d48623b6",
+                "WS2016FULLSQL2017ENT": "ami-5ebf1a3c"
             },
             "ca-central-1": {
-                "WS2012R2": "ami-800685e4",
-                "WS2012R2SQL2014SP2ENT": "ami-52068536",
-                "WS2012R2SQL2016SP1ENT": "ami-fe07849a",
-                "WS2016FULLBASE": "ami-140b8870",
-                "WS2016FULLSQL2017ENT": "ami-3905865d"
+                "WS2012R2": "ami-f334b697",
+                "WS2012R2SQL2014SP2ENT": "ami-a43fbdc0",
+                "WS2012R2SQL2016SP1ENT": "ami-4d3ebc29",
+                "WS2016FULLBASE": "ami-303ebc54",
+                "WS2016FULLSQL2017ENT": "ami-6e3fbd0a"
             },
             "eu-central-1": {
-                "WS2012R2": "ami-e8093a03",
-                "WS2012R2SQL2014SP2ENT": "ami-a80f3c43",
-                "WS2012R2SQL2016SP1ENT": "ami-8c0f3c67",
-                "WS2016FULLBASE": "ami-63f5c688",
-                "WS2016FULLSQL2017ENT": "ami-1cf9caf7"
+                "WS2012R2": "ami-f7ece81c",
+                "WS2012R2SQL2014SP2ENT": "ami-38cfcbd3",
+                "WS2012R2SQL2016SP1ENT": "ami-9be0e470",
+                "WS2016FULLBASE": "ami-6af7f381",
+                "WS2016FULLSQL2017ENT": "ami-c0f3f72b"
             },
             "eu-west-1": {
-                "WS2012R2": "ami-3e7a7647",
-                "WS2012R2SQL2014SP2ENT": "ami-8f666af6",
-                "WS2012R2SQL2016SP1ENT": "ami-867478ff",
-                "WS2016FULLBASE": "ami-987a76e1",
-                "WS2016FULLSQL2017ENT": "ami-bd7a76c4"
+                "WS2012R2": "ami-5ef8ebb4",
+                "WS2012R2SQL2014SP2ENT": "ami-51f5e6bb",
+                "WS2012R2SQL2016SP1ENT": "ami-52f8ebb8",
+                "WS2016FULLBASE": "ami-96e1f27c",
+                "WS2016FULLSQL2017ENT": "ami-6af5e680"
             },
             "eu-west-2": {
-                "WS2012R2": "ami-629a7405",
-                "WS2012R2SQL2014SP2ENT": "ami-6d98760a",
-                "WS2012R2SQL2016SP1ENT": "ami-5b9d733c",
-                "WS2016FULLBASE": "ami-479b7520",
-                "WS2016FULLSQL2017ENT": "ami-099a746e"
+                "WS2012R2": "ami-a3b259c4",
+                "WS2012R2SQL2014SP2ENT": "ami-aeb358c9",
+                "WS2012R2SQL2016SP1ENT": "ami-44b75c23",
+                "WS2016FULLBASE": "ami-9bb358fc",
+                "WS2016FULLSQL2017ENT": "ami-08b55e6f"
             },
             "eu-west-3": {
-                "WS2012R2": "ami-c911a0b4",
-                "WS2012R2SQL2014SP2ENT": "ami-ab13a2d6",
-                "WS2012R2SQL2016SP1ENT": "ami-d42f9ea9",
-                "WS2016FULLBASE": "ami-1511a068",
-                "WS2016FULLSQL2017ENT": "ami-fd10a180"
+                "WS2012R2": "ami-e0b1019d",
+                "WS2012R2SQL2014SP2ENT": "ami-e1b1019c",
+                "WS2012R2SQL2016SP1ENT": "ami-85b505f8",
+                "WS2016FULLBASE": "ami-23b6065e",
+                "WS2016FULLSQL2017ENT": "ami-1ab50567"
             },
             "sa-east-1": {
-                "WS2012R2": "ami-5c6e3530",
-                "WS2012R2SQL2014SP2ENT": "ami-446e3528",
-                "WS2012R2SQL2016SP1ENT": "ami-176e357b",
-                "WS2016FULLBASE": "ami-ff6e3593",
-                "WS2016FULLSQL2017ENT": "ami-c4752ea8"
+                "WS2012R2": "ami-fac4e396",
+                "WS2012R2SQL2014SP2ENT": "ami-f5c8ef99",
+                "WS2012R2SQL2016SP1ENT": "ami-6ed3f402",
+                "WS2016FULLBASE": "ami-36caed5a",
+                "WS2016FULLSQL2017ENT": "ami-ccc4e3a0"
             },
             "us-east-1": {
-                "WS2012R2": "ami-b8f3b5c7",
-                "WS2012R2SQL2014SP2ENT": "ami-1f501160",
-                "WS2012R2SQL2016SP1ENT": "ami-f75d1c88",
-                "WS2016FULLBASE": "ami-0327667c",
-                "WS2016FULLSQL2017ENT": "ami-6f410010"
+                "WS2012R2": "ami-60093e1f",
+                "WS2012R2SQL2014SP2ENT": "ami-0a6b5c75",
+                "WS2012R2SQL2016SP1ENT": "ami-70f9ce0f",
+                "WS2016FULLBASE": "ami-2d360152",
+                "WS2016FULLSQL2017ENT": "ami-b85b6cc7"
             },
             "us-east-2": {
-                "WS2012R2": "ami-da003ebf",
-                "WS2012R2SQL2014SP2ENT": "ami-60003e05",
-                "WS2012R2SQL2016SP1ENT": "ami-cefec0ab",
-                "WS2016FULLBASE": "ami-3bfac45e",
-                "WS2016FULLSQL2017ENT": "ami-3df9c758"
+                "WS2012R2": "ami-ca2318af",
+                "WS2012R2SQL2014SP2ENT": "ami-c32c17a6",
+                "WS2012R2SQL2016SP1ENT": "ami-e4231881",
+                "WS2016FULLBASE": "ami-36241f53",
+                "WS2016FULLSQL2017ENT": "ami-a5201bc0"
             },
             "us-west-1": {
-                "WS2012R2": "ami-832acee0",
-                "WS2012R2SQL2014SP2ENT": "ami-c235d1a1",
-                "WS2012R2SQL2016SP1ENT": "ami-1134d072",
-                "WS2016FULLBASE": "ami-b236d2d1",
-                "WS2016FULLSQL2017ENT": "ami-0431d567"
+                "WS2012R2": "ami-132ac970",
+                "WS2012R2SQL2014SP2ENT": "ami-1b2bc878",
+                "WS2012R2SQL2016SP1ENT": "ami-b52bc8d6",
+                "WS2016FULLBASE": "ami-d12ecdb2",
+                "WS2016FULLSQL2017ENT": "ami-5732d134"
             },
             "us-west-2": {
-                "WS2012R2": "ami-aeffbcd6",
-                "WS2012R2SQL2014SP2ENT": "ami-1c024064",
-                "WS2012R2SQL2016SP1ENT": "ami-f0e6a588",
-                "WS2016FULLBASE": "ami-3703414f",
-                "WS2016FULLSQL2017ENT": "ami-bb0745c3"
+                "WS2012R2": "ami-490b5831",
+                "WS2012R2SQL2014SP2ENT": "ami-651f4c1d",
+                "WS2012R2SQL2016SP1ENT": "ami-be184bc6",
+                "WS2016FULLBASE": "ami-6d336015",
+                "WS2016FULLSQL2017ENT": "ami-f60f5c8e"
             }
         },
         "SQLAMINameMap": {

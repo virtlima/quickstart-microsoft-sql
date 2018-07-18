@@ -2938,6 +2938,7 @@
         },
         "WSFCNode2": {
             "Type": "AWS::EC2::Instance",
+            "DependsOn": "WSFCNode1WaitCondition",
             "Metadata": {
                 "AWS::CloudFormation::Authentication": {
                     "S3AccessCreds": {

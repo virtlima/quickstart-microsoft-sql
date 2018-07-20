@@ -22,7 +22,7 @@ param(
 )
 $success = $false
 For ($i=0; $i -le 4; $i++) {
-    if ($success = $true) {
+    if ($success -eq $true) {
         Break
     }
 

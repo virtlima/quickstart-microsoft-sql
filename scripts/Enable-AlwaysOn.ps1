@@ -20,30 +20,48 @@ param(
     [string]$WSFCNode3NetBIOSName=$null
 
 )
-try {
-    Start-Transcript -Path C:\cfn\log\Enable-SqlAlwaysOn.ps1.txt -Append
-    $ErrorActionPreference = "Stop"
+$success = $false
+For ($i=0; $i -le 4; $i++) {
+    if ($success = $true) {
+        Break
+    }
 
-    $DomainAdminFullUser = $DomainNetBIOSName + '\' + $DomainAdminUser
-    $DomainAdminSecurePassword = ConvertTo-SecureString $DomainAdminPassword -AsPlainText -Force
-    $DomainAdminCreds = New-Object System.Management.Automation.PSCredential($DomainAdminFullUser, $DomainAdminSecurePassword)
-
-    $EnableAlwaysOnPs={
+    try {
+        Start-Transcript -Path C:\cfn\log\Enable-SqlAlwaysOn.ps1.txt -Append
         $ErrorActionPreference = "Stop"
-        Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned
-        Enable-SqlAlwaysOn -ServerInstance $Using:serverInstance -Force
+
+        $DomainAdminFullUser = $DomainNetBIOSName + '\' + $DomainAdminUser
+        $DomainAdminSecurePassword = ConvertTo-SecureString $DomainAdminPassword -AsPlainText -Force
+        $DomainAdminCreds = New-Object System.Management.Automation.PSCredential($DomainAdminFullUser, $DomainAdminSecurePassword)
+
+        $EnableAlwaysOnPs={
+            $ErrorActionPreference = "Stop"
+            Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned
+            Enable-SqlAlwaysOn -ServerInstance $Using:serverInstance -Force
+        }
+
+        $serverInstance = $WSFCNode1NetBIOSName
+        Invoke-Command -Scriptblock $EnableAlwaysOnPs -ComputerName $WSFCNode1NetBIOSName -Credential $DomainAdminCreds
+        $serverInstance = $WSFCNode2NetBIOSName
+        Invoke-Command -Scriptblock $EnableAlwaysOnPs -ComputerName $WSFCNode2NetBIOSName -Credential $DomainAdminCreds
+        if ($WSFCNode3NetBIOSName) {
+            $serverInstance = $WSFCNode3NetBIOSName
+            Invoke-Command -Scriptblock $EnableAlwaysOnPs -ComputerName $WSFCNode3NetBIOSName -Credential $DomainAdminCreds
+        }
+
+        $success = $true
+
+    }
+    catch {
+        if ($i -eq 3) {
+            $_ | Write-AWSQuickStartException
+        }
+        else {
+            $success = $false
+        }
     }
 
-    $serverInstance = $WSFCNode1NetBIOSName
-    Invoke-Command -Scriptblock $EnableAlwaysOnPs -ComputerName $WSFCNode1NetBIOSName -Credential $DomainAdminCreds
-    $serverInstance = $WSFCNode2NetBIOSName
-    Invoke-Command -Scriptblock $EnableAlwaysOnPs -ComputerName $WSFCNode2NetBIOSName -Credential $DomainAdminCreds
-    if ($WSFCNode3NetBIOSName) {
-        $serverInstance = $WSFCNode3NetBIOSName
-        Invoke-Command -Scriptblock $EnableAlwaysOnPs -ComputerName $WSFCNode3NetBIOSName -Credential $DomainAdminCreds
-    }
+    Start-Sleep -s 300
+}
 
-}
-catch {
-    $_ | Write-AWSQuickStartException
-}
+

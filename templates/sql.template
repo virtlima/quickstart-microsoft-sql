@@ -2107,7 +2107,8 @@
                                 "HostTypeIsDefault",
                                 {
                                     "Ref": "AWS::NoValue"
-                                }
+                                },
+                                "default"
                             ]
                         }
                     ]
@@ -2784,7 +2785,8 @@
                                 "HostTypeIsDefault",
                                 {
                                     "Ref": "AWS::NoValue"
-                                }
+                                },
+                                "default"
                             ]
                         }
                     ]
@@ -3890,7 +3892,8 @@
                                 "HostTypeIsDefault",
                                 {
                                     "Ref": "AWS::NoValue"
-                                }
+                                },
+                                "default"
                             ]
                         }
                     ]

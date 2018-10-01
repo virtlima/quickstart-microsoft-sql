@@ -5,15 +5,15 @@
     },
     {
         "ParameterKey": "AvailabilityZones",
-        "ParameterValue": "$[alfred_getaz_2]"
+        "ParameterValue": "$[taskcat_getaz_2]"
     },
     {
         "ParameterKey": "DomainAdminPassword",
-        "ParameterValue": "$[alfred_genpass_32]"
+        "ParameterValue": "$[taskcat_genpass_16]"
     },
     {
         "ParameterKey": "KeyPairName",
-        "ParameterValue": "$[alfred_getkeypair]"
+        "ParameterValue": "$[taskcat_getkeypair]"
     },
     {
         "ParameterKey": "RDGWCIDR",
@@ -21,7 +21,7 @@
     },
     {
         "ParameterKey": "RestoreModePassword",
-        "ParameterValue": "$[alfred_genpass_32]"
+        "ParameterValue": "$[taskcat_genpass_16]"
     },
     {
         "ParameterKey": "SQLLicenseProvided",
@@ -33,6 +33,6 @@
     },
     {
         "ParameterKey": "SQLServiceAccountPassword",
-        "ParameterValue": "$[alfred_genpass_32]"
+        "ParameterValue": "$[taskcat_genpass_16]"
     }
 ]

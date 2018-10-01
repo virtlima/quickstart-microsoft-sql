@@ -33,7 +33,7 @@
     },
     {
         "ParameterKey": "DomainAdminPassword",
-        "ParameterValue": "$[alfred_genpass_32]"
+        "ParameterValue": "$[taskcat_genpass_16]"
     },
     {
         "ParameterKey": "DomainAdminUser",
@@ -49,7 +49,7 @@
     },
     {
         "ParameterKey": "KeyPairName",
-        "ParameterValue": "$[alfred_getkeypair]"
+        "ParameterValue": "$[taskcat_getkeypair]"
     },
     {
         "ParameterKey": "NATInstanceType",
@@ -69,7 +69,7 @@
     },
     {
         "ParameterKey": "RestoreModePassword",
-        "ParameterValue": "$[alfred_genpass_32]"
+        "ParameterValue": "$[taskcat_genpass_16]"
     },
     {
         "ParameterKey": "SQLServerVersion",
@@ -81,7 +81,7 @@
     },
     {
         "ParameterKey": "SQLServiceAccountPassword",
-        "ParameterValue": "$[alfred_genpass_32]"
+        "ParameterValue": "$[taskcat_genpass_16]"
     },
     {
         "ParameterKey": "UserCount",

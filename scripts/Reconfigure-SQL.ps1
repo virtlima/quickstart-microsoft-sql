@@ -73,6 +73,12 @@ try {
         Invoke-Sqlcmd -Query "CREATE LOGIN $SQLUser FROM WINDOWS ;"
         Invoke-Sqlcmd -Query "ALTER SERVER ROLE [sysadmin] ADD MEMBER $SQLUser ;"
 
+        # Add Domain Admins as SQL SysAdmin
+        $DomainAdmins = "[" + $Using:DomainNetBIOSName + "\Domain Admins]"
+        Invoke-Sqlcmd -Query "CREATE LOGIN $DomainAdmins FROM WINDOWS ;"
+        Invoke-Sqlcmd -Query "ALTER SERVER ROLE [sysadmin] ADD MEMBER $DomainAdmins ;"
+        
+
         # Update paths for tempdb,model and MSDB
         Invoke-Sqlcmd -Query "USE master; ALTER DATABASE tempdb MODIFY FILE (NAME = tempdev, FILENAME = 'F:\MSSQL\TempDB\tempdb.mdf'); ALTER DATABASE tempdb MODIFY FILE (NAME = templog, FILENAME = 'F:\MSSQL\TempDB\templog.ldf');"
         Invoke-Sqlcmd -Query "USE master; ALTER DATABASE model MODIFY FILE (NAME = modeldev, FILENAME = 'D:\MSSQL\DATA\model.mdf'); ALTER DATABASE model MODIFY FILE (NAME = modellog, FILENAME = 'E:\MSSQL\LOG\modellog.ldf');"

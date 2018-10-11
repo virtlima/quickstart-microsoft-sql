@@ -55,7 +55,7 @@ tests:
     regions:
       - ap-south-1
       - ca-central-1
-      - sa-east-1
+      - eu-west-3
       - us-west-1
     template_file: sql-master.template
   ec2-3rdaz-witness:
@@ -79,11 +79,6 @@ tests:
     regions:
       - us-west-2
     template_file: sql-master.template
-#  ec2-li-2014:
-#    parameter_input: sql-master-ec2-license-included-2014.json
-#    regions:
-#      - eu-west-1
-#    template_file: sql-master.template
 #  ec2-li-2016:
 #    parameter_input: sql-master-ec2-license-included-2016.json
 #    regions:

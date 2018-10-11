@@ -350,17 +350,16 @@
                 "yes",
                 "no"
             ],
-            "Default": "no",
+            "Default": "yes",
             "Description": "License SQL Server from AWS Marketplace",
             "Type": "String"
         },
         "SQLServerVersion": {
             "AllowedValues": [
                 "2017",
-                "2016",
-                "2014"
+                "2016"
             ],
-            "Default": "2016",
+            "Default": "2017",
             "Description": "Version of SQL Server to install on Failover Cluster Nodes",
             "Type": "String"
         },
@@ -698,14 +697,6 @@
                 "yes"
             ]
         },
-        "WindowsServer2016": {
-            "Fn::Equals": [
-                {
-                    "Ref": "SQLServerVersion"
-                },
-                "2017"
-            ]
-        },
         "GovCloudCondition": {
             "Fn::Equals": [
                 {
@@ -740,133 +731,95 @@
     "Mappings": {
         "AWSAMIRegionMap": {
             "AMI": {
-                "WS2012R2": "Windows_Server-2012-R2_RTM-English-64Bit-Base-2018.09.15",
-                "WS2012R2SQL2014SP2ENT": "Windows_Server-2012-R2_RTM-English-64Bit-SQL_2014_SP2_Enterprise-2018.09.15",
-                "WS2012R2SQL2016SP1ENT": "Windows_Server-2012-R2_RTM-English-64Bit-SQL_2016_SP1_Enterprise-2018.09.15",
                 "WS2016FULLBASE": "Windows_Server-2016-English-Full-Base-2018.09.15",
+                "WS2016FULLSQL2016SP1ENT": "Windows_Server-2016-English-Full-SQL_2016_SP1_Enterprise-2018.09.15",
                 "WS2016FULLSQL2017ENT": "Windows_Server-2016-English-Full-SQL_2017_Enterprise-2018.09.15"
             },
             "ap-northeast-1": {
-                "WS2012R2": "ami-0f94c740726599c3a",
-                "WS2012R2SQL2014SP2ENT": "ami-07b6a6493dbb5a363",
-                "WS2012R2SQL2016SP1ENT": "ami-0e868e1795a6e6237",
                 "WS2016FULLBASE": "ami-0ecf3c199663ebcde",
+                "WS2016FULLSQL2016SP1ENT":"ami-09d5972115f6e72e1",
                 "WS2016FULLSQL2017ENT": "ami-0d7b0b3a1fceb6c0a"
             },
             "ap-northeast-2": {
-                "WS2012R2": "ami-0f033ac3427fcdad0",
-                "WS2012R2SQL2014SP2ENT": "ami-05a0150dc3aac4458",
-                "WS2012R2SQL2016SP1ENT": "ami-0d46bfc2efbd90651",
                 "WS2016FULLBASE": "ami-06435dc96d51c1b50",
+                "WS2016FULLSQL2016SP1ENT":"ami-02ddc93905d955316",
                 "WS2016FULLSQL2017ENT": "ami-0941833ae996b3ce0"
             },
             "ap-northeast-3": {
-                "WS2012R2": "ami-01f202ad494a95d9f",
-                "WS2012R2SQL2014SP2ENT": "ami-07c4819edc4b83e8e",
-                "WS2012R2SQL2016SP1ENT": "ami-08b1f2e5800833c10",
                 "WS2016FULLBASE": "ami-0c21e2825ddcab9a3",
+                "WS2016FULLSQL2016SP1ENT":"ami-079156746cad5463c",
                 "WS2016FULLSQL2017ENT": "ami-0a14f910930f317fb"
             },
             "ap-south-1": {
-                "WS2012R2": "ami-0d5f824867e8aeaf6",
-                "WS2012R2SQL2014SP2ENT": "ami-07b1e565a3e9ad415",
-                "WS2012R2SQL2016SP1ENT": "ami-0534e863fd8cea5ec",
                 "WS2016FULLBASE": "ami-038ba93548f26cb9c",
+                "WS2016FULLSQL2016SP1ENT":"ami-01494147544615e46",
                 "WS2016FULLSQL2017ENT": "ami-027b96f2ee5756845"
             },
             "ap-southeast-1": {
-                "WS2012R2": "ami-0f42104b50a572747",
-                "WS2012R2SQL2014SP2ENT": "ami-0b32453f89106ad36",
-                "WS2012R2SQL2016SP1ENT": "ami-0301d21c652adcd96",
                 "WS2016FULLBASE": "ami-031244b26d2e3079b",
+                "WS2016FULLSQL2016SP1ENT":"ami-0578291b155984746",
                 "WS2016FULLSQL2017ENT": "ami-0c9d80edea1bf2cfd"
             },
             "ap-southeast-2": {
-                "WS2012R2": "ami-06f2dbd8cdf99fd40",
-                "WS2012R2SQL2014SP2ENT": "ami-04a6812c41bd35fa3",
-                "WS2012R2SQL2016SP1ENT": "ami-05a242be23b896b3e",
                 "WS2016FULLBASE": "ami-0d1c25021d0863177",
+                "WS2016FULLSQL2016SP1ENT":"ami-006b547cd276f8e1c",
                 "WS2016FULLSQL2017ENT": "ami-0ff2266d701b601b9"
             },
             "ca-central-1": {
-                "WS2012R2": "ami-0bc1f82c15f6cb011",
-                "WS2012R2SQL2014SP2ENT": "ami-006ebcab8d8c1e2aa",
-                "WS2012R2SQL2016SP1ENT": "ami-03deaacaf894a7e78",
                 "WS2016FULLBASE": "ami-02b53f7a9c60e0b9f",
+                "WS2016FULLSQL2016SP1ENT":"ami-045031cfdd56cab82",
                 "WS2016FULLSQL2017ENT": "ami-0bd6a74e590930939"
             },
             "eu-central-1": {
-                "WS2012R2": "ami-09f85c4c3e4a1ca3b",
-                "WS2012R2SQL2014SP2ENT": "ami-044ae07f59f01370a",
-                "WS2012R2SQL2016SP1ENT": "ami-07e6f7b641a2c9307",
                 "WS2016FULLBASE": "ami-077fbac22ac466c00",
+                "WS2016FULLSQL2016SP1ENT":"ami-0ccdeab12e7f89888",
                 "WS2016FULLSQL2017ENT": "ami-0aabaa6eae4392c82"
             },
             "eu-west-1": {
-                "WS2012R2": "ami-019526e560b1c9df4",
-                "WS2012R2SQL2014SP2ENT": "ami-0b0967a32ce2ac9ad",
-                "WS2012R2SQL2016SP1ENT": "ami-0d1ec45142a586625",
                 "WS2016FULLBASE": "ami-0b2744e066ace793d",
+                "WS2016FULLSQL2016SP1ENT":"ami-010c7bd73b7bd9d5b",
                 "WS2016FULLSQL2017ENT": "ami-025d3fc0cb04439d8"
             },
             "eu-west-2": {
-                "WS2012R2": "ami-068ee8cde1f60ca7f",
-                "WS2012R2SQL2014SP2ENT": "ami-01cdc781aea859688",
-                "WS2012R2SQL2016SP1ENT": "ami-0a9c7c0523c62d874",
                 "WS2016FULLBASE": "ami-0c09927662c939f41",
+                "WS2016FULLSQL2016SP1ENT":"ami-09ff6e81bc9b5ffd8",
                 "WS2016FULLSQL2017ENT": "ami-0b2330da3c0538f3f"
             },
             "eu-west-3": {
-                "WS2012R2": "ami-014aa0eab0ec618d6",
-                "WS2012R2SQL2014SP2ENT": "ami-00396ffa84f4c3cb4",
-                "WS2012R2SQL2016SP1ENT": "ami-0983dc7d6c3730d68",
                 "WS2016FULLBASE": "ami-063c5c314e33b92b1",
+                "WS2016FULLSQL2016SP1ENT":"ami-09705ce001623eec9",
                 "WS2016FULLSQL2017ENT": "ami-0be605ac90a2a8a19"
             },
             "sa-east-1": {
-                "WS2012R2": "ami-04fddd42220f1829a",
-                "WS2012R2SQL2014SP2ENT": "ami-0b2e4e25f24788356",
-                "WS2012R2SQL2016SP1ENT": "ami-019c9c935d065fedd",
                 "WS2016FULLBASE": "ami-070149537a6f5aa86",
+                "WS2016FULLSQL2016SP1ENT":"ami-0196279547b41f900",
                 "WS2016FULLSQL2017ENT": "ami-0b77dd3d09003e10b"
             },
             "us-east-1": {
-                "WS2012R2": "ami-04b06bdb58cae787d",
-                "WS2012R2SQL2014SP2ENT": "ami-06367c56f2a18a4ae",
-                "WS2012R2SQL2016SP1ENT": "ami-0d5c0635b366d4a64",
                 "WS2016FULLBASE": "ami-01945499792201081",
+                "WS2016FULLSQL2016SP1ENT":"ami-0823728a0915b5cb4",
                 "WS2016FULLSQL2017ENT": "ami-0e2ea0112cf79b4ea"
             },
             "us-east-2": {
-                "WS2012R2": "ami-08c59800a21429561",
-                "WS2012R2SQL2014SP2ENT": "ami-0268486c4e1bc7920",
-                "WS2012R2SQL2016SP1ENT": "ami-03e58075c00a7b574",
                 "WS2016FULLBASE": "ami-0ca3e3965ada31684",
+                "WS2016FULLSQL2016SP1ENT":"ami-0eb4cc716418ba1b2",
                 "WS2016FULLSQL2017ENT": "ami-0a418ff683d5ef36b"
             },
             "us-west-1": {
-                "WS2012R2": "ami-08f6003bf4d50fe60",
-                "WS2012R2SQL2014SP2ENT": "ami-0a4b928fb0d735b32",
-                "WS2012R2SQL2016SP1ENT": "ami-0cff3b70855ce0fce",
                 "WS2016FULLBASE": "ami-0df605282263fb1c9",
+                "WS2016FULLSQL2016SP1ENT":"ami-07f68587062f3cf16",
                 "WS2016FULLSQL2017ENT": "ami-0921bde4d348e4f7a"
             },
             "us-west-2": {
-                "WS2012R2": "ami-0d1a1bbc1331e97f7",
-                "WS2012R2SQL2014SP2ENT": "ami-0644e2bd4dc73da0d",
-                "WS2012R2SQL2016SP1ENT": "ami-01cd4655af903e1ac",
                 "WS2016FULLBASE": "ami-0a98eba42e9bf85c9",
+                "WS2016FULLSQL2016SP1ENT":"ami-068d9bbb6a684f86e",
                 "WS2016FULLSQL2017ENT": "ami-0b52cab680181e35b"
             }
         },
         "SQLAMINameMap": {
-            "2014": {
-                "no": "WS2012R2",
-                "yes": "WS2012R2SQL2014SP2ENT"
-            },
             "2016": {
-                "no": "WS2012R2",
-                "yes": "WS2012R2SQL2016SP1ENT"
+                "no": "WS2016FULLBASE",
+                "yes": "WS2016FULLSQL2016SP1ENT"
             },
             "2017": {
                 "no": "WS2016FULLBASE",
@@ -1341,7 +1294,7 @@
                         {
                             "Ref": "AWS::Region"
                         },
-                        "WS2012R2"
+                        "WS2016FULLBASE"
                     ]
                 },
                 "IamInstanceProfile": {
@@ -1770,13 +1723,7 @@
                     "Prep": {
                         "commands": {
                             "a-initialize-disks": {
-                                "command": {
-                                    "Fn::If": [
-                                        "WindowsServer2016",
-                                        "powershell.exe -Command \"C:\\ProgramData\\Amazon\\EC2-Windows\\Launch\\Scripts\\InitializeDisks.ps1\"",
-                                        "powershell.exe -Command exit"
-                                    ]
-                                },
+                                "command": "powershell.exe -Command \"C:\\ProgramData\\Amazon\\EC2-Windows\\Launch\\Scripts\\InitializeDisks.ps1\"",
                                 "waitAfterCompletion": "0"
                             },
                             "b-rename-computer": {
@@ -2553,13 +2500,7 @@
                     "Prep": {
                         "commands": {
                             "a-initialize-disks": {
-                                "command": {
-                                    "Fn::If": [
-                                        "WindowsServer2016",
-                                        "powershell.exe -Command \"C:\\ProgramData\\Amazon\\EC2-Windows\\Launch\\Scripts\\InitializeDisks.ps1\"",
-                                        "powershell.exe -Command exit"
-                                    ]
-                                },
+                                "command": "powershell.exe -Command \"C:\\ProgramData\\Amazon\\EC2-Windows\\Launch\\Scripts\\InitializeDisks.ps1\"",
                                 "waitAfterCompletion": "0"
                             },
                             "b-rename-computer": {
@@ -3347,13 +3288,7 @@
                     "Prep": {
                         "commands": {
                             "a-initialize-disks": {
-                                "command": {
-                                    "Fn::If": [
-                                        "WindowsServer2016",
-                                        "powershell.exe -Command \"C:\\ProgramData\\Amazon\\EC2-Windows\\Launch\\Scripts\\InitializeDisks.ps1\"",
-                                        "powershell.exe -Command exit"
-                                    ]
-                                },
+                                "command": "powershell.exe -Command \"C:\\ProgramData\\Amazon\\EC2-Windows\\Launch\\Scripts\\InitializeDisks.ps1\"",
                                 "waitAfterCompletion": "0"
                             },
                             "b-rename-computer": {

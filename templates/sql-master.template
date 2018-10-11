@@ -282,13 +282,14 @@
         "ADServer1InstanceType": {
             "AllowedValues": [
                 "t2.large",
-                "m3.large",
-                "m3.xlarge",
-                "m3.2xlarge",
                 "m4.large",
                 "m4.xlarge",
                 "m4.2xlarge",
-                "m4.4xlarge"
+                "m4.4xlarge",
+                "m5.large",
+                "m5.xlarge",
+                "m5.2xlarge",
+                "m5.4xlarge"
             ],
             "Default": "m4.xlarge",
             "Description": "Amazon EC2 instance type for the first Active Directory instance",
@@ -311,13 +312,14 @@
         "ADServer2InstanceType": {
             "AllowedValues": [
                 "t2.large",
-                "m3.large",
-                "m3.xlarge",
-                "m3.2xlarge",
                 "m4.large",
                 "m4.xlarge",
                 "m4.2xlarge",
-                "m4.4xlarge"
+                "m4.4xlarge",
+                "m5.large",
+                "m5.xlarge",
+                "m5.2xlarge",
+                "m5.4xlarge"
             ],
             "Default": "m4.xlarge",
             "Description": "Amazon EC2 instance type for the second Active Directory instance",
@@ -484,17 +486,16 @@
                 "yes",
                 "no"
             ],
-            "Default": "no",
+            "Default": "yes",
             "Description": "License SQL Server from AWS Marketplace",
             "Type": "String"
         },
         "SQLServerVersion": {
             "AllowedValues": [
                 "2017",
-                "2016",
-                "2014"
+                "2016"
             ],
-            "Default": "2016",
+            "Default": "2017",
             "Description": "Version of SQL Server to install on Failover Cluster Nodes",
             "Type": "String"
         },

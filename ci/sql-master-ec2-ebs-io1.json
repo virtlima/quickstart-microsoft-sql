@@ -32,6 +32,10 @@
         "ParameterValue": "io1"
     },
     {
+        "ParameterKey": "SQLLicenseProvided",
+        "ParameterValue": "no"
+    },
+    {
         "ParameterKey": "VolumeIops",
         "ParameterValue": "1000"
     },

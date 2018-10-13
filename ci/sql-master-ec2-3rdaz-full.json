@@ -28,6 +28,10 @@
         "ParameterValue": "$[taskcat_genpass_16]"
     },
     {
+        "ParameterKey": "SQLLicenseProvided",
+        "ParameterValue": "no"
+    },
+    {
         "ParameterKey": "ThirdAZ",
         "ParameterValue": "full"
     }

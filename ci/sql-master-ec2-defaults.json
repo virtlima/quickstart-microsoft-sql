@@ -24,6 +24,10 @@
         "ParameterValue": "$[taskcat_genpass_16]"
     },
     {
+        "ParameterKey": "SQLLicenseProvided",
+        "ParameterValue": "no"
+    },
+    {
         "ParameterKey": "SQLServiceAccountPassword",
         "ParameterValue": "$[taskcat_genpass_16]"
     }

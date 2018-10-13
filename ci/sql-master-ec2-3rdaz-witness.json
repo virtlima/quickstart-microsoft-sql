@@ -32,6 +32,10 @@
         "ParameterValue": "witness"
     },
     {
+        "ParameterKey": "SQLLicenseProvided",
+        "ParameterValue": "no"
+    },
+    {
         "ParameterKey": "WSFCFileServerPrivateIP",
         "ParameterValue": "10.0.64.200"
     }

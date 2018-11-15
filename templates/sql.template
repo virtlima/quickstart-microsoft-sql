@@ -31,6 +31,7 @@
                         "default": "Microsoft Active Directory Configuration"
                     },
                     "Parameters": [
+                        "ADScenarioType",
                         "DomainDNSName",
                         "DomainNetBIOSName",
                         "DomainAdminUser",
@@ -97,6 +98,9 @@
                 }
             ],
             "ParameterLabels": {
+                "ADScenarioType": {
+                    "default": "AD Scenario Type"
+                },
                 "DedicatedHostAMI": {
                     "default": "BYOL AMI to Use on Dedicated Host"
                 },
@@ -248,6 +252,15 @@
         }
     },
     "Parameters": {
+        "ADScenarioType": {
+            "AllowedValues": [
+                "AWS Directory Service for Microsoft AD (Enterprise Edition)",
+                "Microsoft AD on Amazon EC2"
+            ],
+            "Default": "AWS Directory Service for Microsoft AD (Enterprise Edition)",
+            "Description": "Select the type of AD DS deployment to use: AWS Directory Service for Microsoft AD or managing your own Amazon EC2 AD instances.",
+            "Type": "String"
+        },
         "DedicatedHostAMI": {
             "Default": "",
             "Description": "If host type is set to \"Dedicated\" or \"Dedicated Host\", you need to specify your imported BYOL AMI id",
@@ -597,6 +610,14 @@
         }
     },
     "Conditions": {
+        "UseAWSDirectoryServiceEE": {
+            "Fn::Equals": [
+                {
+                    "Ref": "ADScenarioType"
+                },
+                "AWS Directory Service for Microsoft AD (Enterprise Edition)"
+            ]
+        },
         "IsThreeAz": {
             "Fn::Not": [
                 {
@@ -1450,6 +1471,38 @@
                                     ]
                                 }
                             },
+                            "C:\\cfn\\scripts\\install-sql-modules.ps1": {
+                                "source": {
+                                    "Fn::Sub": [
+                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/install-sql-modules.ps1",
+                                        {
+                                            "QSS3Region": {
+                                                "Fn::If": [
+                                                    "GovCloudCondition",
+                                                    "s3-us-gov-west-1",
+                                                    "s3"
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            "C:\\cfn\\scripts\\LCM-Config.ps1": {
+                                "source": {
+                                    "Fn::Sub": [
+                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/LCM-Config.ps1",
+                                        {
+                                            "QSS3Region": {
+                                                "Fn::If": [
+                                                    "GovCloudCondition",
+                                                    "s3-us-gov-west-1",
+                                                    "s3"
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
                             "C:\\cfn\\scripts\\Join-Domain.ps1": {
                                 "source": {
                                     "Fn::Sub": [
@@ -2019,6 +2072,14 @@
                                     ]
                                 },
                                 "waitAfterCompletion": "0"
+                            },
+                            "b-install-sql-modules": {
+                                "command": "powershell.exe -Command \"C:\\cfn\\scripts\\install-sql-modules.ps1\"",
+                                "waitAfterCompletion": "0"
+                            },
+                            "c-LCM-Config": {
+                                "command": "powershell.exe -Command \"C:\\cfn\\scripts\\LCM-Config.ps1\"",
+                                "waitAfterCompletion": "0"
                             }
                         }
                     },
@@ -2263,6 +2324,38 @@
                                 "source": {
                                     "Fn::Sub": [
                                         "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/modules/AWSQuickStart.zip",
+                                        {
+                                            "QSS3Region": {
+                                                "Fn::If": [
+                                                    "GovCloudCondition",
+                                                    "s3-us-gov-west-1",
+                                                    "s3"
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            "C:\\cfn\\scripts\\install-sql-modules.ps1": {
+                                "source": {
+                                    "Fn::Sub": [
+                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/install-sql-modules.ps1",
+                                        {
+                                            "QSS3Region": {
+                                                "Fn::If": [
+                                                    "GovCloudCondition",
+                                                    "s3-us-gov-west-1",
+                                                    "s3"
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            "C:\\cfn\\scripts\\LCM-Config.ps1": {
+                                "source": {
+                                    "Fn::Sub": [
+                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/LCM-Config.ps1",
                                         {
                                             "QSS3Region": {
                                                 "Fn::If": [
@@ -2691,6 +2784,14 @@
                                     ]
                                 },
                                 "waitAfterCompletion": "0"
+                            },
+                            "b-install-sql-modules": {
+                                "command": "powershell.exe -Command \"C:\\cfn\\scripts\\install-sql-modules.ps1\"",
+                                "waitAfterCompletion": "0"
+                            },
+                            "c-LCM-Config": {
+                                "command": "powershell.exe -Command \"C:\\cfn\\scripts\\LCM-Config.ps1\"",
+                                "waitAfterCompletion": "0"
                             }
                         }
                     },
@@ -2929,6 +3030,7 @@
                                 ]
                             },
                             "Configure",
+                            "CreateAG",
                             "Cleanup",
                             "Finalize"
                         ]
@@ -2955,6 +3057,54 @@
                                 "source": {
                                     "Fn::Sub": [
                                         "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-microsoft-utilities/modules/AWSQuickStart.zip",
+                                        {
+                                            "QSS3Region": {
+                                                "Fn::If": [
+                                                    "GovCloudCondition",
+                                                    "s3-us-gov-west-1",
+                                                    "s3"
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            "C:\\cfn\\scripts\\install-sql-modules.ps1": {
+                                "source": {
+                                    "Fn::Sub": [
+                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/install-sql-modules.ps1",
+                                        {
+                                            "QSS3Region": {
+                                                "Fn::If": [
+                                                    "GovCloudCondition",
+                                                    "s3-us-gov-west-1",
+                                                    "s3"
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            "C:\\cfn\\scripts\\LCM-Config.ps1": {
+                                "source": {
+                                    "Fn::Sub": [
+                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/LCM-Config.ps1",
+                                        {
+                                            "QSS3Region": {
+                                                "Fn::If": [
+                                                    "GovCloudCondition",
+                                                    "s3-us-gov-west-1",
+                                                    "s3"
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            "C:\\cfn\\scripts\\Create-AG.ps1": {
+                                "source": {
+                                    "Fn::Sub": [
+                                        "https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}scripts/Create-AG.ps1",
                                         {
                                             "QSS3Region": {
                                                 "Fn::If": [
@@ -3788,6 +3938,128 @@
                                                 ]
                                             },
                                             "'\""
+                                        ]
+                                    ]
+                                },
+                                "waitAfterCompletion": "0"
+                            },
+                            "h-install-sql-modules": {
+                                "command": "powershell.exe -Command \"C:\\cfn\\scripts\\install-sql-modules.ps1\"",
+                                "waitAfterCompletion": "0"
+                            },
+                            "i-LCM-Config": {
+                                "command": "powershell.exe -Command \"C:\\cfn\\scripts\\LCM-Config.ps1\"",
+                                "waitAfterCompletion": "0"
+                            }
+                        }
+                    },
+                    "CreateAG":{
+                        "commands": {
+                            "a-create-ag": {
+                                "command":{
+                                    "Fn::Join": [
+                                        "",
+                                        [
+                                            "powershell.exe -ExecutionPolicy RemoteSigned \"C:\\cfn\\scripts\\Create-AG.ps1",
+                                            " -DomainNetBIOSName '",
+                                            {
+                                                "Ref": "DomainNetBIOSName"
+                                            },
+                                            "' -DomainDNSName '",
+                                            {
+                                                "Ref": "DomainDNSName"
+                                            },
+                                            "' -DomainAdminUser '",
+                                            {
+                                                "Ref": "DomainAdminUser"
+                                            },
+                                            "' -DomainAdminPassword '",
+                                            {
+                                                "Ref": "DomainAdminPassword"
+                                            },
+                                            "' -WSFCNode1NetBIOSName '",
+                                            {
+                                                "Ref": "WSFCNode1NetBIOSName"
+                                            },
+                                            "' -WSFCNode2NetBIOSName '",
+                                            {
+                                                "Ref": "WSFCNode2NetBIOSName"
+                                            },
+                                            {
+                                                "Fn::If": [
+                                                    "ThirdAzIsFullNode",
+                                                    "' -WSFCNode3NetBIOSName '",
+                                                    {
+                                                        "Ref": "AWS::NoValue"
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "Fn::If": [
+                                                    "ThirdAzIsFullNode",
+                                                    {
+                                                        "Ref": "WSFCNode3NetBIOSName"
+                                                    },
+                                                    {
+                                                        "Ref": "AWS::NoValue"
+                                                    }
+                                                ]
+                                            },
+                                            "' -SQLServiceAccount '",
+                                            {
+                                                "Ref": "SQLServiceAccount"
+                                            },
+                                            "' -SQLServiceAccountPassword '",
+                                            {
+                                                "Ref": "SQLServiceAccountPassword"
+                                            },
+                                            "' -AGListener1PrivateIP1 '",
+                                            {
+                                                "Ref": "WSFCNode1PrivateIP3"
+                                            },
+                                            "' -AGListener1PrivateIP2 '",
+                                            {
+                                                "Ref": "WSFCNode2PrivateIP3"
+                                            },
+                                            {
+                                                "Fn::If": [
+                                                    "ThirdAzIsFullNode",
+                                                    "' -AGListener1PrivateIP3 '",
+                                                    {
+                                                        "Ref": "AWS::NoValue"
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "Fn::If": [
+                                                    "ThirdAzIsFullNode",
+                                                    {
+                                                        "Ref": "WSFCNode3PrivateIP3"
+                                                    },
+                                                    {
+                                                        "Ref": "AWS::NoValue"
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "Fn::If": [
+                                                    "UseAWSDirectoryServiceEE",
+                                                    "' -ManagedAD ",
+                                                    {
+                                                        "Ref": "AWS::NoValue"
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "Fn::If": [
+                                                    "UseAWSDirectoryServiceEE",
+                                                    "'Yes'",
+                                                    {
+                                                        "Ref": "AWS::NoValue"
+                                                    }
+                                                ]
+                                            },
+                                            "\""
                                         ]
                                     ]
                                 },

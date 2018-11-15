@@ -1096,6 +1096,9 @@
                     ]
                 },
                 "Parameters": {
+                    "ADScenarioType": {
+                        "Ref": "ADScenarioType"
+                    },
                     "DedicatedHostAMI": {
                         "Ref": "DedicatedHostAMI"
                     },

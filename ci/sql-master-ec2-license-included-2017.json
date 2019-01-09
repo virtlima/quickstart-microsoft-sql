@@ -20,8 +20,12 @@
         "ParameterValue": "10.0.0.0/16"
     },
     {
-        "ParameterKey": "RestoreModePassword",
-        "ParameterValue": "$[taskcat_genpass_16]"
+        "ParameterKey": "ADServerNetBIOSName1",
+        "ParameterValue": "DC-SQLLI17-1"
+    },
+    {
+        "ParameterKey": "ADServerNetBIOSName2",
+        "ParameterValue": "DC-SQLLI17-2"
     },
     {
         "ParameterKey": "SQLLicenseProvided",

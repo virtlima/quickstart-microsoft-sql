@@ -68,10 +68,6 @@
         "ParameterValue": "m4.xlarge"
     },
     {
-        "ParameterKey": "RestoreModePassword",
-        "ParameterValue": "$[taskcat_genpass_16]"
-    },
-    {
         "ParameterKey": "SQLServerVersion",
         "ParameterValue": "2014"
     },

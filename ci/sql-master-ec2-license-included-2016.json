@@ -20,11 +20,11 @@
         "ParameterValue": "10.0.0.0/16"
     },
     {
-        "ParameterKey": "ADServerNetBIOSName1",
+        "ParameterKey": "ADServer1NetBIOSName",
         "ParameterValue": "DC-SQLLI16-1"
     },
     {
-        "ParameterKey": "ADServerNetBIOSName2",
+        "ParameterKey": "ADServer2NetBIOSName",
         "ParameterValue": "DC-SQLLI16-2"
     },
     {

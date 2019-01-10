@@ -16,11 +16,11 @@
         "ParameterValue": "m4.xlarge"
     },
     {
-        "ParameterKey": "ADServerNetBIOSName1",
+        "ParameterKey": "ADServer1NetBIOSName",
         "ParameterValue": "DC-SQL-1"
     },
     {
-        "ParameterKey": "ADServerNetBIOSName2",
+        "ParameterKey": "ADServer2NetBIOSName",
         "ParameterValue": "DC-SQL-2"
     },
     {

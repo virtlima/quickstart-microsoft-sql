@@ -42,5 +42,9 @@
     {
         "ParameterKey": "WSFCFileServerPrivateIP",
         "ParameterValue": "10.0.64.200"
+    },
+    {
+        "ParameterKey": "QSS3BucketName",
+        "ParameterValue": "$[taskcat_autobucket]"
     }
 ]

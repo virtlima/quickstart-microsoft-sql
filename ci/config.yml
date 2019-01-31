@@ -19,11 +19,11 @@ global:
   #  - us-west-2
   reporting: true
 tests:
-  ds-defaults:
-    parameter_input: sql-master-ds-defaults.json
-    regions:
-      - us-east-1
-    template_file: sql-master.template
+#  ds-defaults:
+#    parameter_input: sql-master-ds-defaults.json
+#    regions:
+#      - us-east-1
+#    template_file: sql-master.template
 #  ds-3rdaz-witness:
 #    parameter_input: sql-master-ds-3rdaz-witness.json
 #    regions:

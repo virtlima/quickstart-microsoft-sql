@@ -38,5 +38,9 @@
     {
         "ParameterKey": "ThirdAZ",
         "ParameterValue": "full"
+    },
+    {
+        "ParameterKey": "QSS3BucketName",
+        "ParameterValue": "$[taskcat_autobucket]"
     }
 ]

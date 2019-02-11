@@ -731,89 +731,89 @@
     "Mappings": {
         "AWSAMIRegionMap": {
             "AMI": {
-                "WS2016FULLBASE": "Windows_Server-2016-English-Full-Base-2019.01.10",
-                "WS2016FULLSQL2016SP1ENT": "Windows_Server-2016-English-Full-SQL_2016_SP1_Enterprise-2019.01.10",
-                "WS2016FULLSQL2017ENT": "Windows_Server-2016-English-Full-SQL_2017_Enterprise-2019.01.10"
+                "WS2016FULLBASE": "Windows_Server-2016-English-Full-Base-2019.02.09",
+                "WS2016FULLSQL2016SP1ENT": "Windows_Server-2016-English-Full-SQL_2016_SP1_Enterprise-2019.02.09",
+                "WS2016FULLSQL2017ENT": "Windows_Server-2016-English-Full-SQL_2017_Enterprise-2019.02.09"
             },
             "ap-northeast-1": {
-                "WS2016FULLBASE": "ami-09a8b61c4ca71d799",
-                "WS2016FULLSQL2016SP1ENT": "ami-00cdc10b45c72f43e",
-                "WS2016FULLSQL2017ENT": "ami-002ab01c79e75a2bd"
+                "WS2016FULLBASE": "ami-0b6f27663776c2930",
+                "WS2016FULLSQL2016SP1ENT": "ami-07dc06684adad9644",
+                "WS2016FULLSQL2017ENT": "ami-09cb57ac0d8c2c4d0"
             },
             "ap-northeast-2": {
-                "WS2016FULLBASE": "ami-032e0e450148b3f25",
-                "WS2016FULLSQL2016SP1ENT": "ami-088283e063c1599d7",
-                "WS2016FULLSQL2017ENT": "ami-031743d913899ad7b"
+                "WS2016FULLBASE": "ami-014e94d6fc4825c16",
+                "WS2016FULLSQL2016SP1ENT": "ami-0d0ecb85701fca26d",
+                "WS2016FULLSQL2017ENT": "ami-0aa6248ee17dc1461"
             },
             "ap-northeast-3": {
-                "WS2016FULLBASE": "ami-0f022983480425ca5",
-                "WS2016FULLSQL2016SP1ENT": "ami-0e7d2428616705391",
-                "WS2016FULLSQL2017ENT": "ami-001531ed782b30745"
+                "WS2016FULLBASE": "ami-03a273e767a8e5ef8",
+                "WS2016FULLSQL2016SP1ENT": "ami-035548fc97f7acc65",
+                "WS2016FULLSQL2017ENT": "ami-0bc2b184bc46001d4"
             },
             "ap-south-1": {
-                "WS2016FULLBASE": "ami-0d6b59a9e1af5c3de",
-                "WS2016FULLSQL2016SP1ENT": "ami-0cf8ad4e3843c2d4d",
-                "WS2016FULLSQL2017ENT": "ami-09c1f898aa5089da8"
+                "WS2016FULLBASE": "ami-0070c350a7033e56c",
+                "WS2016FULLSQL2016SP1ENT": "ami-092c3fe52cdde78e9",
+                "WS2016FULLSQL2017ENT": "ami-02f739067dfaed58e"
             },
             "ap-southeast-1": {
-                "WS2016FULLBASE": "ami-0466364b7c95e4a7d",
-                "WS2016FULLSQL2016SP1ENT": "ami-0718f3ca045a0a3e5",
-                "WS2016FULLSQL2017ENT": "ami-00aaf2f2cbe93df5e"
+                "WS2016FULLBASE": "ami-04fd6884b6327fa63",
+                "WS2016FULLSQL2016SP1ENT": "ami-070b7fac2fd316913",
+                "WS2016FULLSQL2017ENT": "ami-0218016002f00adcf"
             },
             "ap-southeast-2": {
-                "WS2016FULLBASE": "ami-027db56cee714db93",
-                "WS2016FULLSQL2016SP1ENT": "ami-0cf0f34a46db2eaa7",
-                "WS2016FULLSQL2017ENT": "ami-0fcce51a789ce47f2"
+                "WS2016FULLBASE": "ami-09815e4f302a70a3d",
+                "WS2016FULLSQL2016SP1ENT": "ami-047855628cca76f45",
+                "WS2016FULLSQL2017ENT": "ami-0734295ae1d6f651f"
             },
             "ca-central-1": {
-                "WS2016FULLBASE": "ami-0d789bff8415e0254",
-                "WS2016FULLSQL2016SP1ENT": "ami-0b2ed40a6b3e9a8da",
-                "WS2016FULLSQL2017ENT": "ami-0922334e502d53f89"
+                "WS2016FULLBASE": "ami-0c70a9e00e092fd1a",
+                "WS2016FULLSQL2016SP1ENT": "ami-0506d90fc523b4344",
+                "WS2016FULLSQL2017ENT": "ami-00a582c3cff2be4e9"
             },
             "eu-central-1": {
-                "WS2016FULLBASE": "ami-0bd3cc88ca8ae88f5",
-                "WS2016FULLSQL2016SP1ENT": "ami-05932a7a43983a84d",
-                "WS2016FULLSQL2017ENT": "ami-07e6e918927aabfa4"
+                "WS2016FULLBASE": "ami-023361bb7fb02858c",
+                "WS2016FULLSQL2016SP1ENT": "ami-00648699856c52291",
+                "WS2016FULLSQL2017ENT": "ami-0370030afc80e06b8"
             },
             "eu-west-1": {
-                "WS2016FULLBASE": "ami-0a5cbbecdba7dfe83",
-                "WS2016FULLSQL2016SP1ENT": "ami-06923685e4a5e6d80",
-                "WS2016FULLSQL2017ENT": "ami-06789b545606cc0af"
+                "WS2016FULLBASE": "ami-0cce0d06b155cb3d3",
+                "WS2016FULLSQL2016SP1ENT": "ami-0c2fd0ed07218c7f8",
+                "WS2016FULLSQL2017ENT": "ami-097db52e1d2270e4f"
             },
             "eu-west-2": {
-                "WS2016FULLBASE": "ami-05d179634cef555b6",
-                "WS2016FULLSQL2016SP1ENT": "ami-051336ab73a6f0066",
-                "WS2016FULLSQL2017ENT": "ami-00cb72f764c0f801f"
+                "WS2016FULLBASE": "ami-06e848d37265bd18c",
+                "WS2016FULLSQL2016SP1ENT": "ami-09f39de380aa7e824",
+                "WS2016FULLSQL2017ENT": "ami-0664584fdbe2bf771"
             },
             "eu-west-3": {
-                "WS2016FULLBASE": "ami-01142e623b44d2678",
-                "WS2016FULLSQL2016SP1ENT": "ami-04b57eb0a06d0796d",
-                "WS2016FULLSQL2017ENT": "ami-0d2aba8e7d47d3a42"
+                "WS2016FULLBASE": "ami-09a75829fc2accef7",
+                "WS2016FULLSQL2016SP1ENT": "ami-07f5545fbb41fa6b3",
+                "WS2016FULLSQL2017ENT": "ami-07e8266e42544ef18"
             },
             "sa-east-1": {
-                "WS2016FULLBASE": "ami-0c602413fde84cb2c",
-                "WS2016FULLSQL2016SP1ENT": "ami-0529e3ed373c0279a",
-                "WS2016FULLSQL2017ENT": "ami-05a707363948991fa"
+                "WS2016FULLBASE": "ami-06d1febba922cc9ce",
+                "WS2016FULLSQL2016SP1ENT": "ami-092808a85b4538e93",
+                "WS2016FULLSQL2017ENT": "ami-010914c2dcc36121d"
             },
             "us-east-1": {
-                "WS2016FULLBASE": "ami-0f4c7e570f044b46f",
-                "WS2016FULLSQL2016SP1ENT": "ami-03108b55d066037b2",
-                "WS2016FULLSQL2017ENT": "ami-0d7be9ca30f337999"
+                "WS2016FULLBASE": "ami-07a29e78aeb420471",
+                "WS2016FULLSQL2016SP1ENT": "ami-0a7aa8154beb2b187",
+                "WS2016FULLSQL2017ENT": "ami-05a8aac83f9d23369"
             },
             "us-east-2": {
-                "WS2016FULLBASE": "ami-0aebcb5a7953a8fae",
-                "WS2016FULLSQL2016SP1ENT": "ami-062f799864e0b6474",
-                "WS2016FULLSQL2017ENT": "ami-012df380b025b5a88"
+                "WS2016FULLBASE": "ami-0006739ea5a2d5819",
+                "WS2016FULLSQL2016SP1ENT": "ami-0810a606d9d7ae715",
+                "WS2016FULLSQL2017ENT": "ami-058d5285a0e91b5eb"
             },
             "us-west-1": {
-                "WS2016FULLBASE": "ami-0caf8ef855671a2c0",
-                "WS2016FULLSQL2016SP1ENT": "ami-0f8f4b6033147dd69",
-                "WS2016FULLSQL2017ENT": "ami-07698c2568b59bd61"
+                "WS2016FULLBASE": "ami-02732d21b567a21b4",
+                "WS2016FULLSQL2016SP1ENT": "ami-02fadb8bb602e4992",
+                "WS2016FULLSQL2017ENT": "ami-0de0d3bb88c38310d"
             },
             "us-west-2": {
-                "WS2016FULLBASE": "ami-02bc325deb3063e61",
-                "WS2016FULLSQL2016SP1ENT": "ami-07ef3a0fe79304e78",
-                "WS2016FULLSQL2017ENT": "ami-011ebd3692f040dfc"
+                "WS2016FULLBASE": "ami-0120697141ba7b40d",
+                "WS2016FULLSQL2016SP1ENT": "ami-06d431155f0d7d495",
+                "WS2016FULLSQL2017ENT": "ami-0c1f617782ca285e2"
             }
         },
         "SQLAMINameMap": {

@@ -53,7 +53,7 @@ tests:
   mssql-ec2-ebs-io1:
     parameter_input: sql-master-ec2-ebs-io1.json
     regions:
-      - ap-south-1
+    #  - ap-south-1
       - ca-central-1
       - us-west-1
     template_file: sql-master.template

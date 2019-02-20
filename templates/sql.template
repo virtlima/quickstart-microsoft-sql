@@ -463,6 +463,10 @@
             "Type": "AWS::EC2::VPC::Id"
         },
         "WSFCFileServerInstanceType": {
+            "AllowedValues": [
+                "t2.small",
+                "t3.small"
+            ],
             "Default": "t2.small",
             "Description": "Amazon EC2 instance type for a fileserver used to share install media, witness and replication folders",
             "Type": "String"
@@ -486,7 +490,12 @@
                 "r4.xlarge",
                 "r4.2xlarge",
                 "r4.4xlarge",
-                "r4.8xlarge"
+                "r4.8xlarge",
+                "r5.large",
+                "r5.xlarge",
+                "r5.2xlarge",
+                "r5.4xlarge",
+                "r5.12xlarge"
             ],
             "ConstraintDescription": "Only EBS Optimized instance types r4.xlarge, r4.2xlarge, r4.4xlarge, r4.8xlarge allowed",
             "Default": "r4.2xlarge",
@@ -524,7 +533,12 @@
                 "r4.xlarge",
                 "r4.2xlarge",
                 "r4.4xlarge",
-                "r4.8xlarge"
+                "r4.8xlarge",
+                "r5.large",
+                "r5.xlarge",
+                "r5.2xlarge",
+                "r5.4xlarge",
+                "r5.12xlarge"
             ],
             "ConstraintDescription": "Only EBS Optimized instance types r4.xlarge, r4.2xlarge, r4.4xlarge, r4.8xlarge allowed",
             "Default": "r4.2xlarge",
@@ -562,7 +576,12 @@
                 "r4.xlarge",
                 "r4.2xlarge",
                 "r4.4xlarge",
-                "r4.8xlarge"
+                "r4.8xlarge",
+                "r5.large",
+                "r5.xlarge",
+                "r5.2xlarge",
+                "r5.4xlarge",
+                "r5.12xlarge"
             ],
             "ConstraintDescription": "Only EBS Optimized instance types r4.xlarge, r4.2xlarge, r4.4xlarge, r4.8xlarge allowed",
             "Default": "r4.2xlarge",
@@ -789,6 +808,11 @@
                 "WS2016FULLBASE": "ami-04f6c3a108e0d348b",
                 "WS2016FULLSQL2016SP1ENT": "ami-05f018f7dd68aeee5",
                 "WS2016FULLSQL2017ENT": "ami-0631fc82e292fc3b7"
+            },
+            "eu-north-1": {
+                "WS2016FULLBASE": "ami-02d20b0acc39cb823",
+                "WS2016FULLSQL2016SP1ENT": "ami-088c38a0c89476f30",
+                "WS2016FULLSQL2017ENT": "ami-094c84caac81b5545"
             },
             "sa-east-1": {
                 "WS2016FULLBASE": "ami-05c6c992668058be2",

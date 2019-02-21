@@ -1,24 +1,21 @@
+# This block sets the LCM configuration to what we need for QS
 [DSCLocalConfigurationManager()]
 configuration LCMConfig
 {
     Node 'localhost' {
         Settings {
             RefreshMode = 'Push'
-            ActionAfterReboot = 'StopConfiguration'            
-            ConfigurationMode = 'ApplyOnly'            
-            RebootNodeIfNeeded = $false  
+            ActionAfterReboot = 'StopConfiguration'                      
+            RebootNodeIfNeeded = $false
+            CertificateId = $DscCertThumbprint  
         }
     }
 }
 
-try {
+$DscCertThumbprint = (get-childitem -path cert:\LocalMachine\My | where { $_.subject -eq "CN=AWSQSDscEncryptCert" }).Thumbprint
     
-    Start-Transcript -Path C:\cfn\log\$($MyInvocation.MyCommand.Name).log -Append
+#Generates MOF File for LCM
+LCMConfig -OutputPath 'C:\AWSQuickstart\LCMConfig'
     
-    LCMConfig -OutputPath 'C:\cfn\scripts\LCMConfig'
-    
-    Set-DscLocalConfigurationManager -Path 'C:\cfn\scripts\LCMConfig'
-}
-catch {
-    $_ | Write-AWSQuickStartException
-}
+# Sets LCM Configuration to MOF generated in previous command
+Set-DscLocalConfigurationManager -Path 'C:\AWSQuickstart\LCMConfig' 

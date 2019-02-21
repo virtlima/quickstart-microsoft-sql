@@ -52,8 +52,7 @@
                         "ADServer1PrivateIP",
                         "ADServer2InstanceType",
                         "ADServer2NetBIOSName",
-                        "ADServer2PrivateIP",
-                        "RestoreModePassword"
+                        "ADServer2PrivateIP"
                     ]
                 },
                 {
@@ -190,9 +189,6 @@
                 },
                 "RDGWCIDR": {
                     "default": "Allowed Remote Desktop Gateway External Access CIDR"
-                },
-                "RestoreModePassword": {
-                    "default": "Restore Mode Password"
                 },
                 "SQLLicenseProvided": {
                     "default": "Amazon-Provided SQL Server License"
@@ -473,14 +469,6 @@
             "Description": "Allowed CIDR Block for external access to the Remote Desktop Gateways",
             "Type": "String"
         },
-        "RestoreModePassword": {
-            "AllowedPattern": "(?=^.{6,255}$)((?=.*\\d)(?=.*[A-Z])(?=.*[a-z])|(?=.*\\d)(?=.*[^A-Za-z0-9])(?=.*[a-z])|(?=.*[^A-Za-z0-9])(?=.*[A-Z])(?=.*[a-z])|(?=.*\\d)(?=.*[A-Z])(?=.*[^A-Za-z0-9]))^.*",
-            "Description": "Password for a separate Administrator account when the domain controller is in Restore Mode. Must be at least 8 characters containing letters, numbers and symbols",
-            "MaxLength": "32",
-            "MinLength": "8",
-            "NoEcho": "True",
-            "Type": "String"
-        },
         "SQLLicenseProvided": {
             "AllowedValues": [
                 "yes",
@@ -556,6 +544,10 @@
             "Type": "String"
         },
         "WSFCFileServerInstanceType": {
+            "AllowedValues": [
+                "t2.small",
+                "t3.small"
+            ],
             "Default": "t2.small",
             "Description": "Amazon EC2 instance type for a fileserver used to share install media, witness and replication folders",
             "Type": "String"
@@ -649,7 +641,12 @@
                 "r4.xlarge",
                 "r4.2xlarge",
                 "r4.4xlarge",
-                "r4.8xlarge"
+                "r4.8xlarge",
+                "r5.large",
+                "r5.xlarge",
+                "r5.2xlarge",
+                "r5.4xlarge",
+                "r5.12xlarge"
             ],
             "ConstraintDescription": "Only EBS Optimized instance types r4.xlarge, r4.2xlarge, r4.4xlarge, r4.8xlarge allowed",
             "Default": "r4.2xlarge",
@@ -900,17 +897,11 @@
                             "KeyPairName": {
                                 "Ref": "KeyPairName"
                             },
-                            "PrivateSubnet1CIDR": {
-                                "Ref": "PrivateSubnet1CIDR"
-                            },
                             "PrivateSubnet1ID": {
                                 "Fn::GetAtt": [
                                     "VPCStack",
                                     "Outputs.PrivateSubnet1AID"
                                 ]
-                            },
-                            "PrivateSubnet2CIDR": {
-                                "Ref": "PrivateSubnet2CIDR"
                             },
                             "PrivateSubnet2ID": {
                                 "Fn::GetAtt": [
@@ -918,20 +909,11 @@
                                     "Outputs.PrivateSubnet2AID"
                                 ]
                             },
-                            "PublicSubnet1CIDR": {
-                                "Ref": "PublicSubnet1CIDR"
-                            },
-                            "PublicSubnet2CIDR": {
-                                "Ref": "PublicSubnet2CIDR"
-                            },
                             "QSS3BucketName": {
                                 "Ref": "QSS3BucketName"
                             },
                             "QSS3KeyPrefix": {
                                 "Fn::Sub": "${QSS3KeyPrefix}submodules/quickstart-microsoft-activedirectory/"
-                            },
-                            "RestoreModePassword": {
-                                "Ref": "RestoreModePassword"
                             },
                             "VPCCIDR": {
                                 "Ref": "VPCCIDR"

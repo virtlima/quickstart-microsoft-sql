@@ -35,6 +35,10 @@ $SQLAdminUser = $DomainNetBIOSName + '\' + $SQLUser.UserName
 $Credentials = (New-Object PSCredential($ClusterAdminUser,(ConvertTo-SecureString $AdminUser.Password -AsPlainText -Force)))
 $SQLCredentials = (New-Object PSCredential($SQLAdminUser,(ConvertTo-SecureString $SQLUser.Password -AsPlainText -Force)))
 
+if ($FileServerNetBIOSName) {
+    $ShareName = "\\" + $FileServerNetBIOSName + "." + $DomainDnsName + "\witness"
+}
+
 $ConfigurationData = @{
     AllNodes = @(
         @{
@@ -119,7 +123,6 @@ Configuration WSFCNode1Config {
         }
 
         if ($FileServerNetBIOSName) {
-            $ShareName = "\\" + $FileServerNetBIOSName + "\witness"
             xClusterQuorum 'SetQuorumToNodeAndFileShareMajority' {
                 IsSingleInstance = 'Yes'
                 Type             = 'NodeAndFileShareMajority'

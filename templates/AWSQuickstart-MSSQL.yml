@@ -5,6 +5,14 @@ description: Deploy MSSQL with SSM Automation"
 assumeRole: "{{AutomationAssumeRole}}"
 # Gathering parameters needed to configure DCs in the Quick Start
 parameters:
+  SQLServerVersion:
+    default: "2017"
+    description: "Version of SQL Server to install on Failover Cluster Nodes"
+    type: "String"
+  SQLLicenseProvided:
+    default: "yes"
+    description: "License SQL Server from AWS Marketplace"
+    type: "String"
   WSFCNode1NetBIOSName:
     default: "WSFCNode1"
     description: "NetBIOS name of the first WSFC Node (up to 15 characters)"
@@ -50,7 +58,7 @@ parameters:
     description: "NetBIOS name of the Cluster (up to 15 characters)"
     type: "String"
   ThirdAZ: 
-    default: ""
+    default: "no"
     description: "Enable a 3 AZ deployment, the 3rd AZ can either be used just for the witness, or can be a full SQL cluster node."
     type: "String"
   DomainDNSName: 
@@ -60,6 +68,10 @@ parameters:
   DomainNetBIOSName: 
     default: "example"
     description: "NetBIOS name of the domain (up to 15 characters) for users of earlier versions of Windows e.g. EXAMPLE"
+    type: "String"
+  ManagedAD:
+    default: "No"
+    description: "Active Directory being Managed by AWS"
     type: "String"
   AdminSecrets:
     description: "AWS Secrets Parameter Name that has Password and User name for a domain administrator."
@@ -84,7 +96,6 @@ parameters:
     description: "(Optional) The ARN of the role that allows Automation to perform the actions on your behalf."
     type: "String"
 mainSteps:
-# This step grabs the Instance IDs for both nodes that will be configured as DCs in the Quick Start and Instance IDs for the for next steps.
 - name: "wsfcNode1InstanceId"
   action: aws:executeAwsApi
   onFailure: "step:signalfailure"
@@ -158,6 +169,19 @@ mainSteps:
   - Name: InstanceIds
     Selector: "$.Reservations..Instances..InstanceId"
     Type: "StringList"
+- name: "wsfcnInitializeDisk"
+  action: "aws:runCommand"
+  onFailure: "step:signalfailure" 
+  inputs:
+    DocumentName: AWS-RunPowerShellScript
+    InstanceIds: 
+      - "{{wsfcnInstanceIds.InstanceIds}}"
+    CloudWatchOutputConfig:
+      CloudWatchOutputEnabled: "true"
+    Parameters:
+      commands: 
+        - |
+           C:\ProgramData\Amazon\EC2-Windows\Launch\Scripts\InitializeDisks.ps1
 - name: "wsfcnInstallDscModules"
   action: "aws:runCommand"
   onFailure: "step:signalfailure"
@@ -172,7 +196,6 @@ mainSteps:
       sourceType: "S3"
       sourceInfo: '{"path": "https://s3.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/install-sql-modules.ps1"}'
       commandLine: "./install-sql-modules.ps1"
-# Configures Local Configuration Manager on each of the nodes.
 - name: "wsfcnLCMConfig"
   action: "aws:runCommand"
   onFailure: "step:signalfailure"
@@ -203,7 +226,6 @@ mainSteps:
 - name: "wsfcnDomainConfig"
   action: aws:runCommand
   onFailure: "step:signalfailure"
-  nextStep: "Node1Mof" 
   inputs:
     DocumentName: AWS-RunPowerShellScript
     InstanceIds: 
@@ -225,6 +247,47 @@ mainSteps:
            }
            
            Start-DscConfiguration 'C:\AWSQuickstart\DomainJoin' -Wait -Verbose -Force
+
+           DscStatusCheck
+- name: "Node1nMof"
+  action: "aws:runCommand"
+  onFailure: "step:signalfailure"
+  #nextStep: 
+  inputs:
+    DocumentName: "AWS-RunRemoteScript"
+    InstanceIds:
+      - "{{wsfcNode1InstanceId.InstanceId}}"
+    CloudWatchOutputConfig:
+      CloudWatchOutputEnabled: "true"
+    Parameters:
+      sourceType: "S3"
+      sourceInfo: '{"path": "https://s3.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/Node1Config.ps1"}'
+      commandLine: "./Node1Config.ps1 -DomainNetBIOSName {{DomainNetBIOSName}} -DomainDNSName {{DomainDNSName}} -WSFCNode1PrivateIP2 {{WSFCNode1PrivateIP2}} -ClusterName {{ClusterName}} -AdminSecret {{AdminSecrets}} -SQLSecret {{SQLSecrets}}"
+- name: "Node1nConfig"
+  action: aws:runCommand
+  onFailure: "step:signalfailure"
+  nextStep: "Node2Mof"
+  inputs:
+    DocumentName: AWS-RunPowerShellScript
+    InstanceIds: 
+      - "{{wsfcNode1InstanceId.InstanceId}}"
+    CloudWatchOutputConfig:
+      CloudWatchOutputEnabled: "true"
+      #CloudWatchLogGroupName:
+    Parameters:
+      commands: 
+        - |     
+           function DscStatusCheck () {
+               $LCMState = (Get-DscLocalConfigurationManager).LCMState
+               if ($LCMState -eq 'PendingConfiguration' -Or $LCMState -eq 'PendingReboot') {
+                   'returning 3010, should continue after reboot'
+                   exit 3010
+               } else {
+                 'Completed'
+               }
+           }
+           
+           Start-DscConfiguration 'C:\AWSQuickstart\WSFCNode1Config' -Wait -Verbose -Force
 
            DscStatusCheck
 - name: "wsfcFileServerInstanceId"
@@ -257,7 +320,19 @@ mainSteps:
   - Name: InstanceIds
     Selector: "$.Reservations..Instances..InstanceId"
     Type: "StringList"
-# Installs needed Powershell DSC Modules and components on both nodes and shows how to Run a Script for an S3 Bucket.
+- name: "wsfcnodewInitializeDisk"
+  action: "aws:runCommand"
+  onFailure: "step:signalfailure"
+  inputs:
+    DocumentName: AWS-RunPowerShellScript
+    InstanceIds: 
+      - "{{wsfcwInstanceIds.InstanceIds}}"
+    CloudWatchOutputConfig:
+      CloudWatchOutputEnabled: "true"
+    Parameters:
+      commands: 
+        - |
+           C:\ProgramData\Amazon\EC2-Windows\Launch\Scripts\InitializeDisks.ps1
 - name: "wsfcwInstallDscModules"
   action: "aws:runCommand"
   onFailure: "step:signalfailure"
@@ -272,7 +347,6 @@ mainSteps:
       sourceType: "S3"
       sourceInfo: '{"path": "https://s3.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/install-sql-modules.ps1"}'
       commandLine: "./install-sql-modules.ps1"
-# Configures Local Configuration Manager on each of the nodes.
 - name: "wsfcwLCMConfig"
   action: "aws:runCommand"
   onFailure: "step:signalfailure"
@@ -329,7 +403,6 @@ mainSteps:
 - name: "wsfcFileServerConfig"
   action: "aws:runCommand"
   onFailure: "step:signalfailure"
-  nextStep: "Node1Mof"
   inputs:
     DocumentName: "AWS-RunRemoteScript"
     InstanceIds:
@@ -340,7 +413,7 @@ mainSteps:
       sourceType: "S3"
       sourceInfo: '{"path": "https://s3.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/WSFCFileShare.ps1"}'
       commandLine: "./WSFCFileShare.ps1"
-- name: "Node1Mof"
+- name: "Node1wMof"
   action: "aws:runCommand"
   onFailure: "step:signalfailure"
   #nextStep: 
@@ -354,7 +427,7 @@ mainSteps:
       sourceType: "S3"
       sourceInfo: '{"path": "https://s3.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/Node1Config.ps1"}'
       commandLine: "./Node1Config.ps1 -DomainNetBIOSName {{DomainNetBIOSName}} -DomainDNSName {{DomainDNSName}} -WSFCNode1PrivateIP2 {{WSFCNode1PrivateIP2}} -ClusterName {{ClusterName}} -AdminSecret {{AdminSecrets}} -SQLSecret {{SQLSecrets}} -FileServerNetBIOSName {{WSFCFileServerNetBIOSName}}"
-- name: "Node1Config"
+- name: "Node1wConfig"
   action: aws:runCommand
   onFailure: "step:signalfailure"
   inputs:
@@ -428,7 +501,7 @@ mainSteps:
         StringEquals: "no"
       - Variable: "{{ThirdAZ}}"
         StringEquals: "witness"
-      NextStep: sleepend
+      NextStep: SqlInstallBranch
     - Variable: "{{ThirdAZ}}"
       StringEquals: "full"
       NextStep: Node3Mof
@@ -448,7 +521,6 @@ mainSteps:
 - name: "Node3Config"
   action: aws:runCommand
   onFailure: "step:signalfailure"
-  nextStep: "sleepend"
   inputs:
     DocumentName: AWS-RunPowerShellScript
     InstanceIds: 
@@ -470,6 +542,498 @@ mainSteps:
            }
            
            Start-DscConfiguration 'C:\AWSQuickstart\AdditionalWSFCNode' -Wait -Verbose -Force
+
+           DscStatusCheck
+- name: SqlInstallBranch
+  action: aws:branch
+  inputs:
+    Choices:
+    - Variable: "{{SQLLicenseProvided}}"
+      StringEquals: "no"
+      NextStep: NodesSqlInstallBranch
+    - Variable: "{{SQLLicenseProvided}}"
+      StringEquals: "yes"
+      NextStep: NodesReconfigureSQLBranch
+- name: NodesSqlInstallBranch
+  action: aws:branch
+  inputs:
+    Choices:
+    - Or:
+      - Variable: "{{ThirdAZ}}"
+        StringEquals: "no"
+      - Variable: "{{ThirdAZ}}"
+        StringEquals: "witness"
+      NextStep: 2NodeDownloadSQL
+    - Variable: "{{ThirdAZ}}"
+      StringEquals: "full"
+      NextStep: 3NodeDownloadSQL
+- name: "2NodeDownloadSQL"
+  action: "aws:runCommand"
+  onFailure: "step:signalfailure" 
+  inputs:
+    DocumentName: "AWS-RunRemoteScript"
+    InstanceIds:
+      - "{{wsfcNode1InstanceId.InstanceId}}"
+      - "{{wsfcNode2InstanceId.InstanceId}}"
+    CloudWatchOutputConfig:
+      CloudWatchOutputEnabled: "true"
+    Parameters:
+      sourceType: "S3"
+      sourceInfo: '{"path": "https://s3.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/DownloadSQLEE.ps1"}'
+      commandLine: "./DownloadSQLEE.ps1 -SQLServerVersion {{SQLServerVersion}}"
+- name: "2NodeSQLInstallMOF"
+  action: "aws:runCommand"
+  onFailure: "step:signalfailure" 
+  inputs:
+    DocumentName: "AWS-RunRemoteScript"
+    InstanceIds:
+      - "{{wsfcNode1InstanceId.InstanceId}}"
+      - "{{wsfcNode2InstanceId.InstanceId}}"
+    CloudWatchOutputConfig:
+      CloudWatchOutputEnabled: "true"
+    Parameters:
+      sourceType: "S3"
+      sourceInfo: '{"path": "https://s3.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/Install-SQLEE.ps1"}'
+      commandLine: "./Install-SQLEE.ps1 -DomainNetBIOSName {{DomainNetBIOSName}} -DomainDNSName {{DomainDNSName}} -AdminSecret {{AdminSecrets}} -SQLServerVersion {{SQLServerVersion}} -SQLSecret {{SQLSecrets}}"
+- name: "2NodeSQLInstall"
+  action: aws:runCommand
+  onFailure: "step:signalfailure"
+  inputs:
+    DocumentName: AWS-RunPowerShellScript
+    InstanceIds: 
+      - "{{wsfcNode1InstanceId.InstanceId}}"
+      - "{{wsfcNode2InstanceId.InstanceId}}"
+    CloudWatchOutputConfig:
+      CloudWatchOutputEnabled: "true"
+      #CloudWatchLogGroupName:
+    Parameters:
+      commands: 
+        - |     
+           function DscStatusCheck () {
+               $LCMState = (Get-DscLocalConfigurationManager).LCMState
+               if ($LCMState -eq 'PendingConfiguration' -Or $LCMState -eq 'PendingReboot') {
+                   'returning 3010, should continue after reboot'
+                   exit 3010
+               } else {
+                 'Completed'
+               }
+           }
+           
+           Start-DscConfiguration 'C:\AWSQuickstart\SQLInstall' -Wait -Verbose -Force
+
+           DscStatusCheck
+- name: "2NodeInstallSSMS"
+  action: aws:runCommand
+  onFailure: "step:signalfailure"
+  nextStep: "CreateAGBranch"
+  inputs:
+    DocumentName: AWS-RunPowerShellScript
+    InstanceIds: 
+      - "{{wsfcNode1InstanceId.InstanceId}}"
+      - "{{wsfcNode2InstanceId.InstanceId}}"
+    CloudWatchOutputConfig:
+      CloudWatchOutputEnabled: "true"
+      #CloudWatchLogGroupName:
+    Parameters:
+      commands: 
+        - |
+           $ssms = "C:\SQLMedia\SSMS-Setup-ENU.exe"
+           $ssmsargs = "/quiet /norestart"
+           Start-Process $ssms $ssmsargs -Wait -ErrorAction Stop
+- name: "3NodeDownloadSQL"
+  action: "aws:runCommand"
+  onFailure: "step:signalfailure" 
+  inputs:
+    DocumentName: "AWS-RunRemoteScript"
+    InstanceIds:
+      - "{{wsfcnInstanceIds.InstanceIds}}"
+    CloudWatchOutputConfig:
+      CloudWatchOutputEnabled: "true"
+    Parameters:
+      sourceType: "S3"
+      sourceInfo: '{"path": "https://s3.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/DownloadSQLEE.ps1"}'
+      commandLine: "./DownloadSQLEE.ps1 -SQLServerVersion {{SQLServerVersion}}"
+- name: "3NodeSQLInstallMOF"
+  action: "aws:runCommand"
+  onFailure: "step:signalfailure" 
+  inputs:
+    DocumentName: "AWS-RunRemoteScript"
+    InstanceIds:
+      - "{{wsfcnInstanceIds.InstanceIds}}"
+    CloudWatchOutputConfig:
+      CloudWatchOutputEnabled: "true"
+    Parameters:
+      sourceType: "S3"
+      sourceInfo: '{"path": "https://s3.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/Install-SQLEE.ps1"}'
+      commandLine: "./Install-SQLEE.ps1 -DomainNetBIOSName {{DomainNetBIOSName}} -DomainDNSName {{DomainDNSName}} -AdminSecret {{AdminSecrets}} -SQLServerVersion {{SQLServerVersion}} -SQLSecret {{SQLSecrets}}"
+- name: "3NodeSQLInstall"
+  action: aws:runCommand
+  onFailure: "step:signalfailure"
+  inputs:
+    DocumentName: AWS-RunPowerShellScript
+    InstanceIds: 
+      - "{{wsfcnInstanceIds.InstanceIds}}"
+    CloudWatchOutputConfig:
+      CloudWatchOutputEnabled: "true"
+      #CloudWatchLogGroupName:
+    Parameters:
+      commands: 
+        - |     
+           function DscStatusCheck () {
+               $LCMState = (Get-DscLocalConfigurationManager).LCMState
+               if ($LCMState -eq 'PendingConfiguration' -Or $LCMState -eq 'PendingReboot') {
+                   'returning 3010, should continue after reboot'
+                   exit 3010
+               } else {
+                 'Completed'
+               }
+           }
+           
+           Start-DscConfiguration 'C:\AWSQuickstart\SQLInstall' -Wait -Verbose -Force
+
+           DscStatusCheck
+- name: "3NodeInstallSSMS"
+  action: aws:runCommand
+  onFailure: "step:signalfailure"
+  nextStep: "CreateAGBranch"
+  inputs:
+    DocumentName: AWS-RunPowerShellScript
+    InstanceIds: 
+      - "{{wsfcnInstanceIds.InstanceIds}}"
+    CloudWatchOutputConfig:
+      CloudWatchOutputEnabled: "true"
+      #CloudWatchLogGroupName:
+    Parameters:
+      commands: 
+        - |
+           $ssms = "C:\sqlinstall\SSMS-Setup-ENU.exe"
+           $ssmsargs = "/quiet /norestart"
+           Start-Process $ssms $ssmsargs -Wait -ErrorAction Stop
+- name: NodesReconfigureSQLBranch
+  action: aws:branch
+  inputs:
+    Choices:
+    - Or:
+      - Variable: "{{ThirdAZ}}"
+        StringEquals: "no"
+      - Variable: "{{ThirdAZ}}"
+        StringEquals: "witness"
+      NextStep: 2NodeReconfigureSQL
+    - Variable: "{{ThirdAZ}}"
+      StringEquals: "full"
+      NextStep: 3NodeReconfigureSQL
+- name: "2NodeReconfigureSQL"
+  action: "aws:runCommand"
+  onFailure: "step:signalfailure"
+  nextStep: "CreateAGBranch" 
+  inputs:
+    DocumentName: "AWS-RunRemoteScript"
+    InstanceIds:
+      - "{{wsfcNode1InstanceId.InstanceId}}"
+      - "{{wsfcNode2InstanceId.InstanceId}}"
+    CloudWatchOutputConfig:
+      CloudWatchOutputEnabled: "true"
+    Parameters:
+      sourceType: "S3"
+      sourceInfo: '{"path": "https://s3.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/Reconfigure-SQL.ps1"}'
+      commandLine: "./Reconfigure-SQL.ps1 -DomainNetBIOSName {{DomainNetBIOSName}} -AdminSecret {{AdminSecrets}} -SQLSecret {{SQLSecrets}}"
+- name: "3NodeReconfigureSQL"
+  action: "aws:runCommand"
+  onFailure: "step:signalfailure"
+  nextStep: "CreateAGBranch" 
+  inputs:
+    DocumentName: "AWS-RunRemoteScript"
+    InstanceIds:
+      - "{{wsfcnInstanceIds.InstanceIds}}"
+    CloudWatchOutputConfig:
+      CloudWatchOutputEnabled: "true"
+    Parameters:
+      sourceType: "S3"
+      sourceInfo: '{"path": "https://s3.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/Reconfigure-SQL.ps1"}'
+      commandLine: "./Reconfigure-SQL.ps1 -DomainNetBIOSName {{DomainNetBIOSName}} -AdminSecret {{AdminSecrets}} -SQLSecret {{SQLSecrets}}"
+- name: CreateAGBranch
+  action: aws:branch
+  inputs:
+    Choices:
+    - And:
+      - Not:
+          Variable: "{{ManagedAD}}"
+          StringEquals: "yes"
+      - Not:
+          Variable: "{{ThirdAZ}}"
+          StringEquals: "full"
+      NextStep: 2NodeNoMadPrimaryCreateAG
+    - And:
+      - Variable: "{{ManagedAD}}"
+        StringEquals: "yes"
+      - Not:
+          Variable: "{{ThirdAZ}}"
+          StringEquals: "full"
+      NextStep: 2NodeMadPrimaryCreateAG
+    - And:
+      - Not:
+          Variable: "{{ManagedAD}}"
+          StringEquals: "yes"
+      - Variable: "{{ThirdAZ}}"
+        StringEquals: "full"
+      NextStep: 3NodeNoMadPrimaryCreateAG
+    - And:
+      - Variable: "{{ManagedAD}}"
+        StringEquals: "yes"
+      - Variable: "{{ThirdAZ}}"
+        StringEquals: "full"
+      NextStep: 3NodeMadPrimaryCreateAG
+- name: "2NodeNoMadPrimaryCreateAG"
+  action: "aws:runCommand"
+  onFailure: "step:signalfailure"
+  inputs:
+    DocumentName: "AWS-RunRemoteScript"
+    InstanceIds:
+      - "{{wsfcNode1InstanceId.InstanceId}}"
+    CloudWatchOutputConfig:
+      CloudWatchOutputEnabled: "true"
+    Parameters:
+      sourceType: "S3"
+      sourceInfo: '{"path": "https://s3.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/CreateAGNode1.ps1"}'
+      commandLine: "./CreateAGNode1.ps1 -DomainNetBIOSName {{DomainNetBIOSName}} -DomainDNSName {{DomainDNSName}} -AdminSecret {{AdminSecrets}} -SQLSecret {{SQLSecrets}} -ClusterName {{ClusterName}} -WSFCNode1NetBIOSName {{WSFCNode1NetBIOSName}} -WSFCNode2NetBIOSName {{WSFCNode2NetBIOSName}} -AGListener1PrivateIP1 {{WSFCNode1PrivateIP3}} -AGListener1PrivateIP2 {{WSFCNode2PrivateIP3}}"
+- name: "2NodeNoMadPrimaryCreateAGConfig"
+  action: aws:runCommand
+  onFailure: "step:signalfailure"
+  nextStep: "AdditionalCreateAGBranch"
+  inputs:
+    DocumentName: AWS-RunPowerShellScript
+    InstanceIds: 
+      - "{{wsfcNode1InstanceId.InstanceId}}"
+    CloudWatchOutputConfig:
+      CloudWatchOutputEnabled: "true"
+      #CloudWatchLogGroupName:
+    Parameters:
+      commands: 
+        - |     
+           function DscStatusCheck () {
+               $LCMState = (Get-DscLocalConfigurationManager).LCMState
+               if ($LCMState -eq 'PendingConfiguration' -Or $LCMState -eq 'PendingReboot') {
+                   'returning 3010, should continue after reboot'
+                   exit 3010
+               } else {
+                 'Completed'
+               }
+           }
+           
+           Start-DscConfiguration 'C:\cfn\scripts\AddAG' -Wait -Verbose -Force
+
+           DscStatusCheck
+- name: "2NodeMadPrimaryCreateAG"
+  action: "aws:runCommand"
+  onFailure: "step:signalfailure"
+  inputs:
+    DocumentName: "AWS-RunRemoteScript"
+    InstanceIds:
+      - "{{wsfcNode1InstanceId.InstanceId}}"
+    CloudWatchOutputConfig:
+      CloudWatchOutputEnabled: "true"
+    Parameters:
+      sourceType: "S3"
+      sourceInfo: '{"path": "https://s3.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/CreateAGNode1.ps1"}'
+      commandLine: "./CreateAGNode1.ps1 -DomainNetBIOSName {{DomainNetBIOSName}} -DomainDNSName {{DomainDNSName}} -AdminSecret {{AdminSecrets}} -SQLSecret {{SQLSecrets}} -ClusterName {{ClusterName}} -WSFCNode1NetBIOSName {{WSFCNode1NetBIOSName}} -WSFCNode2NetBIOSName {{WSFCNode2NetBIOSName}} -AGListener1PrivateIP1 {{WSFCNode1PrivateIP3}} -AGListener1PrivateIP2 {{WSFCNode2PrivateIP3}} -ManagedAD 'Yes'"
+- name: "2NodeMadPrimaryCreateAGConfig"
+  action: aws:runCommand
+  onFailure: "step:signalfailure"
+  nextStep: "AdditionalCreateAGBranch"
+  inputs:
+    DocumentName: AWS-RunPowerShellScript
+    InstanceIds: 
+      - "{{wsfcNode1InstanceId.InstanceId}}"
+    CloudWatchOutputConfig:
+      CloudWatchOutputEnabled: "true"
+      #CloudWatchLogGroupName:
+    Parameters:
+      commands: 
+        - |     
+           function DscStatusCheck () {
+               $LCMState = (Get-DscLocalConfigurationManager).LCMState
+               if ($LCMState -eq 'PendingConfiguration' -Or $LCMState -eq 'PendingReboot') {
+                   'returning 3010, should continue after reboot'
+                   exit 3010
+               } else {
+                 'Completed'
+               }
+           }
+           
+           Start-DscConfiguration 'C:\cfn\scripts\AddAG' -Wait -Verbose -Force
+
+           DscStatusCheck
+- name: "3NodeNoMadPrimaryCreateAG"
+  action: "aws:runCommand"
+  onFailure: "step:signalfailure"
+  inputs:
+    DocumentName: "AWS-RunRemoteScript"
+    InstanceIds:
+      - "{{wsfcNode1InstanceId.InstanceId}}"
+    CloudWatchOutputConfig:
+      CloudWatchOutputEnabled: "true"
+    Parameters:
+      sourceType: "S3"
+      sourceInfo: '{"path": "https://s3.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/CreateAGNode1.ps1"}'
+      commandLine: "./CreateAGNode1.ps1 -DomainNetBIOSName {{DomainNetBIOSName}} -DomainDNSName {{DomainDNSName}} -AdminSecret {{AdminSecrets}} -SQLSecret {{SQLSecrets}} -ClusterName {{ClusterName}} -WSFCNode1NetBIOSName {{WSFCNode1NetBIOSName}} -WSFCNode2NetBIOSName {{WSFCNode2NetBIOSName}} -AGListener1PrivateIP1 {{WSFCNode1PrivateIP3}} -AGListener1PrivateIP2 {{WSFCNode2PrivateIP3}} -WSFCNode3NetBIOSName {{WSFCNode3NetBIOSName}} -AGListener1PrivateIP3 {{WSFCNode3PrivateIP3}}"
+- name: "3NodeNoMadPrimaryCreateAGConfig"
+  action: aws:runCommand
+  onFailure: "step:signalfailure"
+  nextStep: "AdditionalCreateAGBranch"
+  inputs:
+    DocumentName: AWS-RunPowerShellScript
+    InstanceIds: 
+      - "{{wsfcNode1InstanceId.InstanceId}}"
+    CloudWatchOutputConfig:
+      CloudWatchOutputEnabled: "true"
+      #CloudWatchLogGroupName:
+    Parameters:
+      commands: 
+        - |     
+           function DscStatusCheck () {
+               $LCMState = (Get-DscLocalConfigurationManager).LCMState
+               if ($LCMState -eq 'PendingConfiguration' -Or $LCMState -eq 'PendingReboot') {
+                   'returning 3010, should continue after reboot'
+                   exit 3010
+               } else {
+                 'Completed'
+               }
+           }
+           
+           Start-DscConfiguration 'C:\cfn\scripts\AddAG' -Wait -Verbose -Force
+
+           DscStatusCheck
+- name: "3NodeMadPrimaryCreateAG"
+  action: "aws:runCommand"
+  onFailure: "step:signalfailure"
+  inputs:
+    DocumentName: "AWS-RunRemoteScript"
+    InstanceIds:
+      - "{{wsfcNode1InstanceId.InstanceId}}"
+    CloudWatchOutputConfig:
+      CloudWatchOutputEnabled: "true"
+    Parameters:
+      sourceType: "S3"
+      sourceInfo: '{"path": "https://s3.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/CreateAGNode1.ps1"}'
+      commandLine: "./CreateAGNode1.ps1 -DomainNetBIOSName {{DomainNetBIOSName}} -DomainDNSName {{DomainDNSName}} -AdminSecret {{AdminSecrets}} -SQLSecret {{SQLSecrets}} -ClusterName {{ClusterName}} -WSFCNode1NetBIOSName {{WSFCNode1NetBIOSName}} -WSFCNode2NetBIOSName {{WSFCNode2NetBIOSName}} -AGListener1PrivateIP1 {{WSFCNode1PrivateIP3}} -AGListener1PrivateIP2 {{WSFCNode2PrivateIP3}} -WSFCNode3NetBIOSName {{WSFCNode3NetBIOSName}} -AGListener1PrivateIP3 {{WSFCNode3PrivateIP3}} -ManagedAD 'Yes'"
+- name: "3NodeMadPrimaryCreateAGConfig"
+  action: aws:runCommand
+  onFailure: "step:signalfailure"
+  inputs:
+    DocumentName: AWS-RunPowerShellScript
+    InstanceIds: 
+      - "{{wsfcNode1InstanceId.InstanceId}}"
+    CloudWatchOutputConfig:
+      CloudWatchOutputEnabled: "true"
+      #CloudWatchLogGroupName:
+    Parameters:
+      commands: 
+        - |     
+           function DscStatusCheck () {
+               $LCMState = (Get-DscLocalConfigurationManager).LCMState
+               if ($LCMState -eq 'PendingConfiguration' -Or $LCMState -eq 'PendingReboot') {
+                   'returning 3010, should continue after reboot'
+                   exit 3010
+               } else {
+                 'Completed'
+               }
+           }
+           
+           Start-DscConfiguration 'C:\cfn\scripts\AddAG' -Wait -Verbose -Force
+
+           DscStatusCheck
+- name: AdditionalCreateAGBranch
+  action: aws:branch
+  inputs:
+    Choices:
+    - Or:
+      - Variable: "{{ThirdAZ}}"
+        StringEquals: "no"
+      - Variable: "{{ThirdAZ}}"
+        StringEquals: "witness"
+      NextStep: 2NodeAdditionalCreateAG
+    - Variable: "{{ThirdAZ}}"
+      StringEquals: "full"
+      NextStep: 3NodeAdditionalCreateAG
+- name: "2NodeAdditionalCreateAG"
+  action: "aws:runCommand"
+  onFailure: "step:signalfailure"
+  inputs:
+    DocumentName: "AWS-RunRemoteScript"
+    InstanceIds:
+      - "{{wsfcNode2InstanceId.InstanceId}}"
+    CloudWatchOutputConfig:
+      CloudWatchOutputEnabled: "true"
+    Parameters:
+      sourceType: "S3"
+      sourceInfo: '{"path": "https://s3.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/AdditionalNodeCreateAG.ps1"}'
+      commandLine: "./AdditionalNodeCreateAG.ps1 -DomainNetBIOSName {{DomainNetBIOSName}} -AdminSecret {{AdminSecrets}} -SQLSecret {{SQLSecrets}} -ClusterName {{ClusterName}} -PrimaryNetBIOSName {{WSFCNode1NetBIOSName}}"
+- name: "2NodeAdditionalCreateAGConfig"
+  action: aws:runCommand
+  onFailure: "step:signalfailure"
+  nextStep: "CFNSignalEnd"
+  inputs:
+    DocumentName: AWS-RunPowerShellScript
+    InstanceIds: 
+      - "{{wsfcNode2InstanceId.InstanceId}}"
+    CloudWatchOutputConfig:
+      CloudWatchOutputEnabled: "true"
+      #CloudWatchLogGroupName:
+    Parameters:
+      commands: 
+        - |     
+           function DscStatusCheck () {
+               $LCMState = (Get-DscLocalConfigurationManager).LCMState
+               if ($LCMState -eq 'PendingConfiguration' -Or $LCMState -eq 'PendingReboot') {
+                   'returning 3010, should continue after reboot'
+                   exit 3010
+               } else {
+                 'Completed'
+               }
+           }
+           
+           Start-DscConfiguration 'C:\cfn\scripts\AddAG' -Wait -Verbose -Force
+
+           DscStatusCheck
+- name: "3NodeAdditionalCreateAG"
+  action: "aws:runCommand"
+  onFailure: "step:signalfailure"
+  inputs:
+    DocumentName: "AWS-RunRemoteScript"
+    InstanceIds:
+      - "{{wsfcNode2InstanceId.InstanceId}}"
+      - "{{wsfcNode3InstanceId.InstanceId}}"
+    CloudWatchOutputConfig:
+      CloudWatchOutputEnabled: "true"
+    Parameters:
+      sourceType: "S3"
+      sourceInfo: '{"path": "https://s3.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/AdditionalNodeCreateAG.ps1"}'
+      commandLine: "./AdditionalNodeCreateAG.ps1 -DomainNetBIOSName {{DomainNetBIOSName}} -AdminSecret {{AdminSecrets}} -SQLSecret {{SQLSecrets}} -ClusterName {{ClusterName}} -PrimaryNetBIOSName {{WSFCNode1NetBIOSName}}"
+- name: "3NodeAdditionalCreateAGConfig"
+  action: aws:runCommand
+  onFailure: "step:signalfailure"
+  inputs:
+    DocumentName: AWS-RunPowerShellScript
+    InstanceIds: 
+      - "{{wsfcNode2InstanceId.InstanceId}}"
+      - "{{wsfcNode3InstanceId.InstanceId}}"
+    CloudWatchOutputConfig:
+      CloudWatchOutputEnabled: "true"
+      #CloudWatchLogGroupName:
+    Parameters:
+      commands: 
+        - |     
+           function DscStatusCheck () {
+               $LCMState = (Get-DscLocalConfigurationManager).LCMState
+               if ($LCMState -eq 'PendingConfiguration' -Or $LCMState -eq 'PendingReboot') {
+                   'returning 3010, should continue after reboot'
+                   exit 3010
+               } else {
+                 'Completed'
+               }
+           }
+           
+           Start-DscConfiguration 'C:\cfn\scripts\AddAG' -Wait -Verbose -Force
 
            DscStatusCheck
 # Determines if CFN Needs to be Signaled or if Work flow should just end

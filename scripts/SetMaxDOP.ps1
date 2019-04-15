@@ -19,7 +19,9 @@ param(
 
     [Parameter(Mandatory=$false)]
     [string]
-    $dop="50"
+    $dop="30",
+
+
 
 )
 
@@ -32,7 +34,7 @@ try {
     $DomainAdminCreds = New-Object System.Management.Automation.PSCredential($DomainAdminFullUser, $DomainAdminSecurePassword)
 
     $SetupMaxDOPPs={
-        $sql = "EXEC sp_configure 'show advanced options', 1; RECONFIGURE WITH OVERRIDE; EXEC sp_configure 'max degree of parallelism', " + $Using:dop + "; RECONFIGURE WITH OVERRIDE; "
+        $sql = "EXEC sp_configure 'show advanced options', 1; RECONFIGURE WITH OVERRIDE; EXEC sp_configure 'cost threshold for parallelism', " + $Using:dop + "; RECONFIGURE WITH OVERRIDE; "
         Invoke-Sqlcmd -AbortOnError -ErrorAction Stop -Query $sql
     }
 

@@ -14,6 +14,9 @@ param(
     [string]$ClusterName,
 
     [Parameter(Mandatory=$true)]
+    [string]$AvailabiltyGroupName,
+
+    [Parameter(Mandatory=$true)]
     [string]$PrimaryNetBIOSName
 )
 
@@ -117,11 +120,13 @@ Configuration AddAG {
         SqlAGReplica AddReplica {
             Ensure                     = 'Present'
             Name                       = $NetBIOSName
-            AvailabilityGroupName      = 'SQLAG1'
+            AvailabilityGroupName      = $AvailabiltyGroupName
             ServerName                 = $NetBIOSName
             InstanceName               = 'MSSQLSERVER'
             PrimaryReplicaServerName   = $PrimaryNetBIOSName
             PrimaryReplicaInstanceName = 'MSSQLSERVER'
+            AvailabilityMode           = 'SynchronousCommit'
+            FailoverMode               = 'Automatic'
             DependsOn                  = '[SqlAlwaysOnService]EnableAlwaysOn' 
             ProcessOnlyOnActiveNode    = $true
             PsDscRunAsCredential       = $SQLCredentials
@@ -129,4 +134,4 @@ Configuration AddAG {
     }
 }
 
-AddAG -OutputPath 'C:\cfn\scripts\AddAG' -Credentials $Credentials -SQLCredentials $SQLCredentials -ConfigurationData $ConfigurationData
+AddAG -OutputPath 'C:\AWSQuickstart\AddAG' -Credentials $Credentials -SQLCredentials $SQLCredentials -ConfigurationData $ConfigurationData

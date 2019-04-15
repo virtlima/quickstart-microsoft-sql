@@ -17,6 +17,9 @@ param(
     [string]$ClusterName,
 
     [Parameter(Mandatory=$true)]
+    [string]$AvailabiltyGroupName,
+
+    [Parameter(Mandatory=$true)]
     [string]$WSFCNode1NetBIOSName,
 
     [Parameter(Mandatory=$true)]
@@ -175,7 +178,7 @@ Configuration AddAG {
             ServerName     = $NetBIOSName
             InstanceName   = 'MSSQLSERVER'
             OptionName     = 'cost threshold for parallelism'
-            OptionValue    = 30
+            OptionValue    = 20
         }
 
         SqlAlwaysOnService 'EnableAlwaysOn' {
@@ -234,9 +237,11 @@ Configuration AddAG {
 
         SqlAG AddSQLAG1 {
             Ensure               = 'Present'
-            Name                 = 'SQLAG1'
+            Name                 = $AvailabiltyGroupName
             InstanceName         = 'MSSQLSERVER'
             ServerName           = $NetBIOSName
+            AvailabilityMode     = 'SynchronousCommit'
+            FailoverMode         = 'Automatic'
             DependsOn = '[SqlAlwaysOnService]EnableAlwaysOn', '[SqlServerEndpoint]HADREndpoint', '[SqlServerPermission]AddNTServiceClusSvcPermissions'
             PsDscRunAsCredential = $SQLCredentials
         }
@@ -246,8 +251,8 @@ Configuration AddAG {
                 Ensure               = 'Present'
                 ServerName           = $NetBIOSName
                 InstanceName         = 'MSSQLSERVER'
-                AvailabilityGroup    = 'SQLAG1'
-                Name                 = 'SQLAG1'
+                AvailabilityGroup    = $AvailabiltyGroupName
+                Name                 = $AvailabiltyGroupName
                 IpAddress            = $IPADDR,$IPADDR2,$IPADDR3
                 Port                 = 5301
                 DependsOn            = '[SqlAG]AddSQLAG1'
@@ -258,8 +263,8 @@ Configuration AddAG {
                 Ensure               = 'Present'
                 ServerName           = $NetBIOSName
                 InstanceName         = 'MSSQLSERVER'
-                AvailabilityGroup    = 'SQLAG1'
-                Name                 = 'SQLAG1'
+                AvailabilityGroup    = $AvailabiltyGroupName
+                Name                 = $AvailabiltyGroupName
                 IpAddress            = $IPADDR,$IPADDR2
                 Port                 = 5301
                 DependsOn            = '[SqlAG]AddSQLAG1'
@@ -269,4 +274,4 @@ Configuration AddAG {
     }
 }
 
-AddAG -OutputPath 'C:\cfn\scripts\AddAG' -Credentials $Credentials -SQLCredentials $SQLCredentials -ConfigurationData $ConfigurationData
+AddAG -OutputPath 'C:\AWSQuickstart\AddAG' -Credentials $Credentials -SQLCredentials $SQLCredentials -ConfigurationData $ConfigurationData

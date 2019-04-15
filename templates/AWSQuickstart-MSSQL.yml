@@ -1,6 +1,6 @@
 ---
 schemaVersion: "0.3"
-description: Deploy MSSQL with SSM Automation"
+description: Deploy MSSQL with SSM Automation
 # Role that is utilized to perform the steps within the Automation Document.
 assumeRole: "{{AutomationAssumeRole}}"
 # Gathering parameters needed to configure DCs in the Quick Start
@@ -56,6 +56,10 @@ parameters:
   ClusterName:
     default: "WSFCCluster1"
     description: "NetBIOS name of the Cluster (up to 15 characters)"
+    type: "String"
+  AvailabiltyGroupName:
+    default: "SQLAG1"
+    description: "NetBIOS name of the Availablity Group (up to 15 characters)"
     type: "String"
   ThirdAZ: 
     default: "no"
@@ -191,7 +195,7 @@ mainSteps:
     - "{{wsfcnInstanceIds.InstanceIds}}"
     CloudWatchOutputConfig:
       CloudWatchOutputEnabled: "true"
-      CloudWatchLogGroupName: "/aws/Quick_Start/ActiveDirectoryDS"
+      CloudWatchLogGroupName: !Ref 'QuickStartLogs'
     Parameters:
       sourceType: "S3"
       sourceInfo: '{"path": "https://s3.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/install-sql-modules.ps1"}'
@@ -205,7 +209,7 @@ mainSteps:
     - "{{wsfcnInstanceIds.InstanceIds}}"
     CloudWatchOutputConfig:
       CloudWatchOutputEnabled: "true"
-      CloudWatchLogGroupName: "/aws/Quick_Start/ActiveDirectoryDS"
+      CloudWatchLogGroupName: !Ref 'QuickStartLogs'
     Parameters:
       sourceType: "S3"
       sourceInfo: '{"path": "https://s3.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/LCM-Config.ps1"}'
@@ -219,6 +223,7 @@ mainSteps:
       - "{{wsfcnInstanceIds.InstanceIds}}"
     CloudWatchOutputConfig:
       CloudWatchOutputEnabled: "true"
+      CloudWatchLogGroupName: !Ref 'QuickStartLogs'
     Parameters:
       sourceType: "S3"
       sourceInfo: '{"path": "https://s3.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/DomainJoin.ps1"}'
@@ -232,7 +237,7 @@ mainSteps:
       - "{{wsfcnInstanceIds.InstanceIds}}"
     CloudWatchOutputConfig:
       CloudWatchOutputEnabled: "true"
-      #CloudWatchLogGroupName:
+      CloudWatchLogGroupName: !Ref 'QuickStartLogs'
     Parameters:
       commands: 
         - |     
@@ -259,6 +264,7 @@ mainSteps:
       - "{{wsfcNode1InstanceId.InstanceId}}"
     CloudWatchOutputConfig:
       CloudWatchOutputEnabled: "true"
+      CloudWatchLogGroupName: !Ref 'QuickStartLogs'
     Parameters:
       sourceType: "S3"
       sourceInfo: '{"path": "https://s3.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/Node1Config.ps1"}'
@@ -273,7 +279,7 @@ mainSteps:
       - "{{wsfcNode1InstanceId.InstanceId}}"
     CloudWatchOutputConfig:
       CloudWatchOutputEnabled: "true"
-      #CloudWatchLogGroupName:
+      CloudWatchLogGroupName: !Ref 'QuickStartLogs'
     Parameters:
       commands: 
         - |     
@@ -329,6 +335,7 @@ mainSteps:
       - "{{wsfcwInstanceIds.InstanceIds}}"
     CloudWatchOutputConfig:
       CloudWatchOutputEnabled: "true"
+      CloudWatchLogGroupName: !Ref 'QuickStartLogs'
     Parameters:
       commands: 
         - |
@@ -342,7 +349,7 @@ mainSteps:
     - "{{wsfcwInstanceIds.InstanceIds}}"
     CloudWatchOutputConfig:
       CloudWatchOutputEnabled: "true"
-      CloudWatchLogGroupName: "/aws/Quick_Start/ActiveDirectoryDS"
+      CloudWatchLogGroupName: !Ref 'QuickStartLogs'
     Parameters:
       sourceType: "S3"
       sourceInfo: '{"path": "https://s3.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/install-sql-modules.ps1"}'
@@ -356,7 +363,7 @@ mainSteps:
     - "{{wsfcwInstanceIds.InstanceIds}}"
     CloudWatchOutputConfig:
       CloudWatchOutputEnabled: "true"
-      CloudWatchLogGroupName: "/aws/Quick_Start/ActiveDirectoryDS"
+      CloudWatchLogGroupName: !Ref 'QuickStartLogs'
     Parameters:
       sourceType: "S3"
       sourceInfo: '{"path": "https://s3.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/LCM-Config.ps1"}'
@@ -370,6 +377,7 @@ mainSteps:
       - "{{wsfcwInstanceIds.InstanceIds}}"
     CloudWatchOutputConfig:
       CloudWatchOutputEnabled: "true"
+      CloudWatchLogGroupName: !Ref 'QuickStartLogs'
     Parameters:
       sourceType: "S3"
       sourceInfo: '{"path": "https://s3.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/DomainJoin.ps1"}'
@@ -383,7 +391,7 @@ mainSteps:
       - "{{wsfcwInstanceIds.InstanceIds}}"
     CloudWatchOutputConfig:
       CloudWatchOutputEnabled: "true"
-      #CloudWatchLogGroupName:
+      CloudWatchLogGroupName: !Ref 'QuickStartLogs'
     Parameters:
       commands: 
         - |     
@@ -409,6 +417,7 @@ mainSteps:
       - "{{wsfcFileServerInstanceId.InstanceId}}"
     CloudWatchOutputConfig:
       CloudWatchOutputEnabled: "true"
+      CloudWatchLogGroupName: !Ref 'QuickStartLogs'
     Parameters:
       sourceType: "S3"
       sourceInfo: '{"path": "https://s3.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/WSFCFileShare.ps1"}'
@@ -423,6 +432,7 @@ mainSteps:
       - "{{wsfcNode1InstanceId.InstanceId}}"
     CloudWatchOutputConfig:
       CloudWatchOutputEnabled: "true"
+      CloudWatchLogGroupName: !Ref 'QuickStartLogs'
     Parameters:
       sourceType: "S3"
       sourceInfo: '{"path": "https://s3.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/Node1Config.ps1"}'
@@ -436,7 +446,7 @@ mainSteps:
       - "{{wsfcNode1InstanceId.InstanceId}}"
     CloudWatchOutputConfig:
       CloudWatchOutputEnabled: "true"
-      #CloudWatchLogGroupName:
+      CloudWatchLogGroupName: !Ref 'QuickStartLogs'
     Parameters:
       commands: 
         - |     
@@ -462,6 +472,7 @@ mainSteps:
       - "{{wsfcNode2InstanceId.InstanceId}}"
     CloudWatchOutputConfig:
       CloudWatchOutputEnabled: "true"
+      CloudWatchLogGroupName: !Ref 'QuickStartLogs'
     Parameters:
       sourceType: "S3"
       sourceInfo: '{"path": "https://s3.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/AdditionalNodeConfig.ps1"}'
@@ -475,7 +486,7 @@ mainSteps:
       - "{{wsfcNode2InstanceId.InstanceId}}"
     CloudWatchOutputConfig:
       CloudWatchOutputEnabled: "true"
-      #CloudWatchLogGroupName:
+      CloudWatchLogGroupName: !Ref 'QuickStartLogs'
     Parameters:
       commands: 
         - |     
@@ -514,6 +525,7 @@ mainSteps:
       - "{{wsfcNode3InstanceId.InstanceId}}"
     CloudWatchOutputConfig:
       CloudWatchOutputEnabled: "true"
+      CloudWatchLogGroupName: !Ref 'QuickStartLogs'
     Parameters:
       sourceType: "S3"
       sourceInfo: '{"path": "https://s3.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/AdditionalNodeConfig.ps1"}'
@@ -527,7 +539,7 @@ mainSteps:
       - "{{wsfcNode3InstanceId.InstanceId}}"
     CloudWatchOutputConfig:
       CloudWatchOutputEnabled: "true"
-      #CloudWatchLogGroupName:
+      CloudWatchLogGroupName: !Ref 'QuickStartLogs'
     Parameters:
       commands: 
         - |     
@@ -577,6 +589,7 @@ mainSteps:
       - "{{wsfcNode2InstanceId.InstanceId}}"
     CloudWatchOutputConfig:
       CloudWatchOutputEnabled: "true"
+      CloudWatchLogGroupName: !Ref 'QuickStartLogs'
     Parameters:
       sourceType: "S3"
       sourceInfo: '{"path": "https://s3.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/DownloadSQLEE.ps1"}'
@@ -591,6 +604,7 @@ mainSteps:
       - "{{wsfcNode2InstanceId.InstanceId}}"
     CloudWatchOutputConfig:
       CloudWatchOutputEnabled: "true"
+      CloudWatchLogGroupName: !Ref 'QuickStartLogs'
     Parameters:
       sourceType: "S3"
       sourceInfo: '{"path": "https://s3.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/Install-SQLEE.ps1"}'
@@ -605,7 +619,7 @@ mainSteps:
       - "{{wsfcNode2InstanceId.InstanceId}}"
     CloudWatchOutputConfig:
       CloudWatchOutputEnabled: "true"
-      #CloudWatchLogGroupName:
+      CloudWatchLogGroupName: !Ref 'QuickStartLogs'
     Parameters:
       commands: 
         - |     
@@ -633,7 +647,7 @@ mainSteps:
       - "{{wsfcNode2InstanceId.InstanceId}}"
     CloudWatchOutputConfig:
       CloudWatchOutputEnabled: "true"
-      #CloudWatchLogGroupName:
+      CloudWatchLogGroupName: !Ref 'QuickStartLogs'
     Parameters:
       commands: 
         - |
@@ -649,6 +663,7 @@ mainSteps:
       - "{{wsfcnInstanceIds.InstanceIds}}"
     CloudWatchOutputConfig:
       CloudWatchOutputEnabled: "true"
+      CloudWatchLogGroupName: !Ref 'QuickStartLogs'
     Parameters:
       sourceType: "S3"
       sourceInfo: '{"path": "https://s3.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/DownloadSQLEE.ps1"}'
@@ -662,6 +677,7 @@ mainSteps:
       - "{{wsfcnInstanceIds.InstanceIds}}"
     CloudWatchOutputConfig:
       CloudWatchOutputEnabled: "true"
+      CloudWatchLogGroupName: !Ref 'QuickStartLogs'
     Parameters:
       sourceType: "S3"
       sourceInfo: '{"path": "https://s3.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/Install-SQLEE.ps1"}'
@@ -675,7 +691,7 @@ mainSteps:
       - "{{wsfcnInstanceIds.InstanceIds}}"
     CloudWatchOutputConfig:
       CloudWatchOutputEnabled: "true"
-      #CloudWatchLogGroupName:
+      CloudWatchLogGroupName: !Ref 'QuickStartLogs'
     Parameters:
       commands: 
         - |     
@@ -702,7 +718,7 @@ mainSteps:
       - "{{wsfcnInstanceIds.InstanceIds}}"
     CloudWatchOutputConfig:
       CloudWatchOutputEnabled: "true"
-      #CloudWatchLogGroupName:
+      CloudWatchLogGroupName: !Ref 'QuickStartLogs'
     Parameters:
       commands: 
         - |
@@ -718,10 +734,47 @@ mainSteps:
         StringEquals: "no"
       - Variable: "{{ThirdAZ}}"
         StringEquals: "witness"
-      NextStep: 2NodeReconfigureSQL
+      NextStep: 2NodeEnableCredSSP
     - Variable: "{{ThirdAZ}}"
       StringEquals: "full"
-      NextStep: 3NodeReconfigureSQL
+      NextStep: 3NodeEnableCredSSP
+- name: "2NodeEnableCredSSP"
+  action: "aws:runCommand"
+  onFailure: "step:signalfailure"
+  #nextStep: 
+  inputs:
+    DocumentName: AWS-RunPowerShellScript
+    InstanceIds: 
+      - "{{wsfcNode1InstanceId.InstanceId}}"
+      - "{{wsfcNode2InstanceId.InstanceId}}"
+    CloudWatchOutputConfig:
+      CloudWatchOutputEnabled: "true"
+      CloudWatchLogGroupName: !Ref 'QuickStartLogs'
+    Parameters:
+      commands: 
+        - |
+           Copy-S3Object -Bucket {{QSS3BucketName}} -key {{QSS3KeyPrefix}}submodules/quickstart-microsoft-utilities/scripts/EnableCredSsp.ps1 -LocalFile C:\cfn\scripts\EnableCredSsp.ps1
+- name: "2NodeEnableCredSSPReboot"
+  action: "aws:runCommand"
+  onFailure: "step:signalfailure"
+  #nextStep: 
+  inputs:
+    DocumentName: AWS-RunPowerShellScript
+    InstanceIds: 
+      - "{{wsfcNode1InstanceId.InstanceId}}"
+      - "{{wsfcNode2InstanceId.InstanceId}}"
+    CloudWatchOutputConfig:
+      CloudWatchOutputEnabled: "true"
+      CloudWatchLogGroupName: !Ref 'QuickStartLogs'
+    Parameters:
+      commands: 
+        - |
+           $CredSSPEnabled = Test-Path 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\CredentialsDelegation'
+           if ($CredSSPEnabled -eq $false) {
+             C:\cfn\scripts\EnableCredSsp.ps1
+             'returning 3010, should continue after reboot'
+              exit 3010
+           } else {'Next Step'}
 - name: "2NodeReconfigureSQL"
   action: "aws:runCommand"
   onFailure: "step:signalfailure"
@@ -733,10 +786,46 @@ mainSteps:
       - "{{wsfcNode2InstanceId.InstanceId}}"
     CloudWatchOutputConfig:
       CloudWatchOutputEnabled: "true"
+      CloudWatchLogGroupName: !Ref 'QuickStartLogs'
     Parameters:
       sourceType: "S3"
       sourceInfo: '{"path": "https://s3.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/Reconfigure-SQL.ps1"}'
       commandLine: "./Reconfigure-SQL.ps1 -DomainNetBIOSName {{DomainNetBIOSName}} -AdminSecret {{AdminSecrets}} -SQLSecret {{SQLSecrets}}"
+- name: "3NodeEnableCredSSP"
+  action: "aws:runCommand"
+  onFailure: "step:signalfailure"
+  #nextStep: 
+  inputs:
+    DocumentName: AWS-RunPowerShellScript
+    InstanceIds: 
+      - "{{wsfcnInstanceIds.InstanceIds}}"
+    CloudWatchOutputConfig:
+      CloudWatchOutputEnabled: "true"
+      CloudWatchLogGroupName: !Ref 'QuickStartLogs'
+    Parameters:
+      commands: 
+        - |
+           Copy-S3Object -Bucket {{QSS3BucketName}} -key {{QSS3KeyPrefix}}submodules/quickstart-microsoft-utilities/scripts/EnableCredSsp.ps1 -LocalFile C:\cfn\scripts\EnableCredSsp.ps1
+- name: "3NodeEnableCredSSPReboot"
+  action: "aws:runCommand"
+  onFailure: "step:signalfailure"
+  #nextStep: 
+  inputs:
+    DocumentName: AWS-RunPowerShellScript
+    InstanceIds: 
+      - "{{wsfcnInstanceIds.InstanceIds}}"
+    CloudWatchOutputConfig:
+      CloudWatchOutputEnabled: "true"
+      CloudWatchLogGroupName: !Ref 'QuickStartLogs'
+    Parameters:
+      commands: 
+        - |
+           $CredSSPEnabled = Test-Path 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\CredentialsDelegation'
+           if ($CredSSPEnabled -eq $false) {
+             C:\cfn\scripts\EnableCredSsp.ps1
+             'returning 3010, should continue after reboot'
+              exit 3010
+           } else {'Next Step'}
 - name: "3NodeReconfigureSQL"
   action: "aws:runCommand"
   onFailure: "step:signalfailure"
@@ -747,6 +836,7 @@ mainSteps:
       - "{{wsfcnInstanceIds.InstanceIds}}"
     CloudWatchOutputConfig:
       CloudWatchOutputEnabled: "true"
+      CloudWatchLogGroupName: !Ref 'QuickStartLogs'
     Parameters:
       sourceType: "S3"
       sourceInfo: '{"path": "https://s3.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/Reconfigure-SQL.ps1"}'
@@ -792,10 +882,11 @@ mainSteps:
       - "{{wsfcNode1InstanceId.InstanceId}}"
     CloudWatchOutputConfig:
       CloudWatchOutputEnabled: "true"
+      CloudWatchLogGroupName: !Ref 'QuickStartLogs'
     Parameters:
       sourceType: "S3"
       sourceInfo: '{"path": "https://s3.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/CreateAGNode1.ps1"}'
-      commandLine: "./CreateAGNode1.ps1 -DomainNetBIOSName {{DomainNetBIOSName}} -DomainDNSName {{DomainDNSName}} -AdminSecret {{AdminSecrets}} -SQLSecret {{SQLSecrets}} -ClusterName {{ClusterName}} -WSFCNode1NetBIOSName {{WSFCNode1NetBIOSName}} -WSFCNode2NetBIOSName {{WSFCNode2NetBIOSName}} -AGListener1PrivateIP1 {{WSFCNode1PrivateIP3}} -AGListener1PrivateIP2 {{WSFCNode2PrivateIP3}}"
+      commandLine: "./CreateAGNode1.ps1 -DomainNetBIOSName {{DomainNetBIOSName}} -DomainDNSName {{DomainDNSName}} -AdminSecret {{AdminSecrets}} -SQLSecret {{SQLSecrets}} -ClusterName {{ClusterName}} -AvailabiltyGroupName {{AvailabiltyGroupName}} -WSFCNode1NetBIOSName {{WSFCNode1NetBIOSName}} -WSFCNode2NetBIOSName {{WSFCNode2NetBIOSName}} -AGListener1PrivateIP1 {{WSFCNode1PrivateIP3}} -AGListener1PrivateIP2 {{WSFCNode2PrivateIP3}}"
 - name: "2NodeNoMadPrimaryCreateAGConfig"
   action: aws:runCommand
   onFailure: "step:signalfailure"
@@ -806,7 +897,7 @@ mainSteps:
       - "{{wsfcNode1InstanceId.InstanceId}}"
     CloudWatchOutputConfig:
       CloudWatchOutputEnabled: "true"
-      #CloudWatchLogGroupName:
+      CloudWatchLogGroupName: !Ref 'QuickStartLogs'
     Parameters:
       commands: 
         - |     
@@ -820,7 +911,7 @@ mainSteps:
                }
            }
            
-           Start-DscConfiguration 'C:\cfn\scripts\AddAG' -Wait -Verbose -Force
+           Start-DscConfiguration 'C:\AWSQuickstart\AddAG' -Wait -Verbose -Force
 
            DscStatusCheck
 - name: "2NodeMadPrimaryCreateAG"
@@ -832,10 +923,11 @@ mainSteps:
       - "{{wsfcNode1InstanceId.InstanceId}}"
     CloudWatchOutputConfig:
       CloudWatchOutputEnabled: "true"
+      CloudWatchLogGroupName: !Ref 'QuickStartLogs'
     Parameters:
       sourceType: "S3"
       sourceInfo: '{"path": "https://s3.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/CreateAGNode1.ps1"}'
-      commandLine: "./CreateAGNode1.ps1 -DomainNetBIOSName {{DomainNetBIOSName}} -DomainDNSName {{DomainDNSName}} -AdminSecret {{AdminSecrets}} -SQLSecret {{SQLSecrets}} -ClusterName {{ClusterName}} -WSFCNode1NetBIOSName {{WSFCNode1NetBIOSName}} -WSFCNode2NetBIOSName {{WSFCNode2NetBIOSName}} -AGListener1PrivateIP1 {{WSFCNode1PrivateIP3}} -AGListener1PrivateIP2 {{WSFCNode2PrivateIP3}} -ManagedAD 'Yes'"
+      commandLine: "./CreateAGNode1.ps1 -DomainNetBIOSName {{DomainNetBIOSName}} -DomainDNSName {{DomainDNSName}} -AdminSecret {{AdminSecrets}} -SQLSecret {{SQLSecrets}} -ClusterName {{ClusterName}} -AvailabiltyGroupName {{AvailabiltyGroupName}} -WSFCNode1NetBIOSName {{WSFCNode1NetBIOSName}} -WSFCNode2NetBIOSName {{WSFCNode2NetBIOSName}} -AGListener1PrivateIP1 {{WSFCNode1PrivateIP3}} -AGListener1PrivateIP2 {{WSFCNode2PrivateIP3}} -ManagedAD 'Yes'"
 - name: "2NodeMadPrimaryCreateAGConfig"
   action: aws:runCommand
   onFailure: "step:signalfailure"
@@ -846,7 +938,7 @@ mainSteps:
       - "{{wsfcNode1InstanceId.InstanceId}}"
     CloudWatchOutputConfig:
       CloudWatchOutputEnabled: "true"
-      #CloudWatchLogGroupName:
+      CloudWatchLogGroupName: !Ref 'QuickStartLogs'
     Parameters:
       commands: 
         - |     
@@ -860,7 +952,7 @@ mainSteps:
                }
            }
            
-           Start-DscConfiguration 'C:\cfn\scripts\AddAG' -Wait -Verbose -Force
+           Start-DscConfiguration 'C:\AWSQuickstart\AddAG' -Wait -Verbose -Force
 
            DscStatusCheck
 - name: "3NodeNoMadPrimaryCreateAG"
@@ -872,10 +964,11 @@ mainSteps:
       - "{{wsfcNode1InstanceId.InstanceId}}"
     CloudWatchOutputConfig:
       CloudWatchOutputEnabled: "true"
+      CloudWatchLogGroupName: !Ref 'QuickStartLogs'
     Parameters:
       sourceType: "S3"
       sourceInfo: '{"path": "https://s3.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/CreateAGNode1.ps1"}'
-      commandLine: "./CreateAGNode1.ps1 -DomainNetBIOSName {{DomainNetBIOSName}} -DomainDNSName {{DomainDNSName}} -AdminSecret {{AdminSecrets}} -SQLSecret {{SQLSecrets}} -ClusterName {{ClusterName}} -WSFCNode1NetBIOSName {{WSFCNode1NetBIOSName}} -WSFCNode2NetBIOSName {{WSFCNode2NetBIOSName}} -AGListener1PrivateIP1 {{WSFCNode1PrivateIP3}} -AGListener1PrivateIP2 {{WSFCNode2PrivateIP3}} -WSFCNode3NetBIOSName {{WSFCNode3NetBIOSName}} -AGListener1PrivateIP3 {{WSFCNode3PrivateIP3}}"
+      commandLine: "./CreateAGNode1.ps1 -DomainNetBIOSName {{DomainNetBIOSName}} -DomainDNSName {{DomainDNSName}} -AdminSecret {{AdminSecrets}} -SQLSecret {{SQLSecrets}} -ClusterName {{ClusterName}} -AvailabiltyGroupName {{AvailabiltyGroupName}} -WSFCNode1NetBIOSName {{WSFCNode1NetBIOSName}} -WSFCNode2NetBIOSName {{WSFCNode2NetBIOSName}} -AGListener1PrivateIP1 {{WSFCNode1PrivateIP3}} -AGListener1PrivateIP2 {{WSFCNode2PrivateIP3}} -WSFCNode3NetBIOSName {{WSFCNode3NetBIOSName}} -AGListener1PrivateIP3 {{WSFCNode3PrivateIP3}}"
 - name: "3NodeNoMadPrimaryCreateAGConfig"
   action: aws:runCommand
   onFailure: "step:signalfailure"
@@ -886,7 +979,7 @@ mainSteps:
       - "{{wsfcNode1InstanceId.InstanceId}}"
     CloudWatchOutputConfig:
       CloudWatchOutputEnabled: "true"
-      #CloudWatchLogGroupName:
+      CloudWatchLogGroupName: !Ref 'QuickStartLogs'
     Parameters:
       commands: 
         - |     
@@ -900,7 +993,7 @@ mainSteps:
                }
            }
            
-           Start-DscConfiguration 'C:\cfn\scripts\AddAG' -Wait -Verbose -Force
+           Start-DscConfiguration 'C:\AWSQuickstart\AddAG' -Wait -Verbose -Force
 
            DscStatusCheck
 - name: "3NodeMadPrimaryCreateAG"
@@ -912,10 +1005,11 @@ mainSteps:
       - "{{wsfcNode1InstanceId.InstanceId}}"
     CloudWatchOutputConfig:
       CloudWatchOutputEnabled: "true"
+      CloudWatchLogGroupName: !Ref 'QuickStartLogs'
     Parameters:
       sourceType: "S3"
       sourceInfo: '{"path": "https://s3.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/CreateAGNode1.ps1"}'
-      commandLine: "./CreateAGNode1.ps1 -DomainNetBIOSName {{DomainNetBIOSName}} -DomainDNSName {{DomainDNSName}} -AdminSecret {{AdminSecrets}} -SQLSecret {{SQLSecrets}} -ClusterName {{ClusterName}} -WSFCNode1NetBIOSName {{WSFCNode1NetBIOSName}} -WSFCNode2NetBIOSName {{WSFCNode2NetBIOSName}} -AGListener1PrivateIP1 {{WSFCNode1PrivateIP3}} -AGListener1PrivateIP2 {{WSFCNode2PrivateIP3}} -WSFCNode3NetBIOSName {{WSFCNode3NetBIOSName}} -AGListener1PrivateIP3 {{WSFCNode3PrivateIP3}} -ManagedAD 'Yes'"
+      commandLine: "./CreateAGNode1.ps1 -DomainNetBIOSName {{DomainNetBIOSName}} -DomainDNSName {{DomainDNSName}} -AdminSecret {{AdminSecrets}} -SQLSecret {{SQLSecrets}} -ClusterName {{ClusterName}} -AvailabiltyGroupName {{AvailabiltyGroupName}} -WSFCNode1NetBIOSName {{WSFCNode1NetBIOSName}} -WSFCNode2NetBIOSName {{WSFCNode2NetBIOSName}} -AGListener1PrivateIP1 {{WSFCNode1PrivateIP3}} -AGListener1PrivateIP2 {{WSFCNode2PrivateIP3}} -WSFCNode3NetBIOSName {{WSFCNode3NetBIOSName}} -AGListener1PrivateIP3 {{WSFCNode3PrivateIP3}} -ManagedAD 'Yes'"
 - name: "3NodeMadPrimaryCreateAGConfig"
   action: aws:runCommand
   onFailure: "step:signalfailure"
@@ -925,7 +1019,7 @@ mainSteps:
       - "{{wsfcNode1InstanceId.InstanceId}}"
     CloudWatchOutputConfig:
       CloudWatchOutputEnabled: "true"
-      #CloudWatchLogGroupName:
+      CloudWatchLogGroupName: !Ref 'QuickStartLogs'
     Parameters:
       commands: 
         - |     
@@ -939,7 +1033,7 @@ mainSteps:
                }
            }
            
-           Start-DscConfiguration 'C:\cfn\scripts\AddAG' -Wait -Verbose -Force
+           Start-DscConfiguration 'C:\AWSQuickstart\AddAG' -Wait -Verbose -Force
 
            DscStatusCheck
 - name: AdditionalCreateAGBranch
@@ -964,10 +1058,11 @@ mainSteps:
       - "{{wsfcNode2InstanceId.InstanceId}}"
     CloudWatchOutputConfig:
       CloudWatchOutputEnabled: "true"
+      CloudWatchLogGroupName: !Ref 'QuickStartLogs'
     Parameters:
       sourceType: "S3"
       sourceInfo: '{"path": "https://s3.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/AdditionalNodeCreateAG.ps1"}'
-      commandLine: "./AdditionalNodeCreateAG.ps1 -DomainNetBIOSName {{DomainNetBIOSName}} -AdminSecret {{AdminSecrets}} -SQLSecret {{SQLSecrets}} -ClusterName {{ClusterName}} -PrimaryNetBIOSName {{WSFCNode1NetBIOSName}}"
+      commandLine: "./AdditionalNodeCreateAG.ps1 -DomainNetBIOSName {{DomainNetBIOSName}} -AdminSecret {{AdminSecrets}} -SQLSecret {{SQLSecrets}} -ClusterName {{ClusterName}} -AvailabiltyGroupName {{AvailabiltyGroupName}} -PrimaryNetBIOSName {{WSFCNode1NetBIOSName}}"
 - name: "2NodeAdditionalCreateAGConfig"
   action: aws:runCommand
   onFailure: "step:signalfailure"
@@ -978,7 +1073,7 @@ mainSteps:
       - "{{wsfcNode2InstanceId.InstanceId}}"
     CloudWatchOutputConfig:
       CloudWatchOutputEnabled: "true"
-      #CloudWatchLogGroupName:
+      CloudWatchLogGroupName: !Ref 'QuickStartLogs'
     Parameters:
       commands: 
         - |     
@@ -992,7 +1087,7 @@ mainSteps:
                }
            }
            
-           Start-DscConfiguration 'C:\cfn\scripts\AddAG' -Wait -Verbose -Force
+           Start-DscConfiguration 'C:\AWSQuickstart\AddAG' -Wait -Verbose -Force
 
            DscStatusCheck
 - name: "3NodeAdditionalCreateAG"
@@ -1005,10 +1100,11 @@ mainSteps:
       - "{{wsfcNode3InstanceId.InstanceId}}"
     CloudWatchOutputConfig:
       CloudWatchOutputEnabled: "true"
+      CloudWatchLogGroupName: !Ref 'QuickStartLogs'
     Parameters:
       sourceType: "S3"
       sourceInfo: '{"path": "https://s3.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/AdditionalNodeCreateAG.ps1"}'
-      commandLine: "./AdditionalNodeCreateAG.ps1 -DomainNetBIOSName {{DomainNetBIOSName}} -AdminSecret {{AdminSecrets}} -SQLSecret {{SQLSecrets}} -ClusterName {{ClusterName}} -PrimaryNetBIOSName {{WSFCNode1NetBIOSName}}"
+      commandLine: "./AdditionalNodeCreateAG.ps1 -DomainNetBIOSName {{DomainNetBIOSName}} -AdminSecret {{AdminSecrets}} -SQLSecret {{SQLSecrets}} -ClusterName {{ClusterName}} -AvailabiltyGroupName {{AvailabiltyGroupName}} -PrimaryNetBIOSName {{WSFCNode1NetBIOSName}}"
 - name: "3NodeAdditionalCreateAGConfig"
   action: aws:runCommand
   onFailure: "step:signalfailure"
@@ -1019,7 +1115,7 @@ mainSteps:
       - "{{wsfcNode3InstanceId.InstanceId}}"
     CloudWatchOutputConfig:
       CloudWatchOutputEnabled: "true"
-      #CloudWatchLogGroupName:
+      CloudWatchLogGroupName: !Ref 'QuickStartLogs'
     Parameters:
       commands: 
         - |     
@@ -1033,7 +1129,7 @@ mainSteps:
                }
            }
            
-           Start-DscConfiguration 'C:\cfn\scripts\AddAG' -Wait -Verbose -Force
+           Start-DscConfiguration 'C:\AWSQuickstart\AddAG' -Wait -Verbose -Force
 
            DscStatusCheck
 # Determines if CFN Needs to be Signaled or if Work flow should just end
@@ -1055,7 +1151,7 @@ mainSteps:
   inputs:
     Service: cloudformation
     Api: SignalResource
-    LogicalResourceId: "WSFCNode2"
+    LogicalResourceId: "SSMWaitCondition"
     StackName: "{{StackName}}"
     Status: SUCCESS
     UniqueId: "{{wsfcNode2InstanceId.InstanceId}}"
@@ -1071,7 +1167,7 @@ mainSteps:
   inputs:
     Service: cloudformation
     Api: SignalResource
-    LogicalResourceId: "WSFCNode2"
+    LogicalResourceId: "SSMWaitCondition"
     StackName: "{{StackName}}"
     Status: FAILURE
     UniqueId: "{{wsfcNode2InstanceId.InstanceId}}"

@@ -688,7 +688,7 @@
         "Vol2IsIo1": {
             "Fn::Equals": [
                 {
-                    "Ref": "Volume1Type"
+                    "Ref": "Volume2Type"
                 },
                 "io1"
             ]
@@ -696,7 +696,7 @@
         "Vol3IsIo1": {
             "Fn::Equals": [
                 {
-                    "Ref": "Volume1Type"
+                    "Ref": "Volume3Type"
                 },
                 "io1"
             ]

@@ -40,7 +40,7 @@ $ConfigurationData = @{
     )
 }
 
-Configuration AddAG {
+Configuration ReconfigureSQL {
     
     param(
         [Parameter(Mandatory = $true)]
@@ -269,4 +269,6 @@ Configuration AddAG {
             RestartService = $true
         }
     }
-}    
+}
+
+ReconfigureSQL -OutputPath 'C:\AWSQuickstart\ReconfigureSQL' -Credentials $Credentials -SQLCredentials $SQLCredentials -ConfigurationData $ConfigurationData

@@ -66,7 +66,7 @@ Configuration AddAG {
     Import-DscResource -Module SqlServerDsc
 
     Node $AllNodes.NodeName {
-        SqlServerMaxDop Set_SQLServerMaxDop_ToAuto {
+        SqlServerMaxDop 'SQLServerMaxDopAuto' {
             Ensure                  = 'Present'
             DynamicAlloc            = $true
             ServerName              = $NetBIOSName
@@ -89,7 +89,7 @@ Configuration AddAG {
             PsDscRunAsCredential = $SQLCredentials
         }
 
-        SqlServerLogin AddNTServiceClusSvc {
+        SqlServerLogin 'AddNTServiceClusSvc' {
             Ensure               = 'Present'
             Name                 = 'NT SERVICE\ClusSvc'
             LoginType            = 'WindowsUser'
@@ -98,7 +98,7 @@ Configuration AddAG {
             PsDscRunAsCredential = $SQLCredentials
         }
 
-        SqlServerPermission AddNTServiceClusSvcPermissions {
+        SqlServerPermission 'AddNTServiceClusSvcPermissions' {
             DependsOn            = '[SqlServerLogin]AddNTServiceClusSvc'
             Ensure               = 'Present'
             ServerName           = $NetBIOSName
@@ -108,7 +108,7 @@ Configuration AddAG {
             PsDscRunAsCredential = $SQLCredentials
         }
 
-        SqlServerEndpoint HADREndpoint {
+        SqlServerEndpoint 'HADREndpoint' {
             EndPointName         = 'HADR'
             Ensure               = 'Present'
             Port                 = 5022
@@ -117,7 +117,7 @@ Configuration AddAG {
             PsDscRunAsCredential = $SQLCredentials
         }
 
-        SqlAGReplica AddReplica {
+        SqlAGReplica 'AddReplica' {
             Ensure                     = 'Present'
             Name                       = $NetBIOSName
             AvailabilityGroupName      = $AvailabiltyGroupName

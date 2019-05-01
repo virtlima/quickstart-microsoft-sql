@@ -1406,47 +1406,10 @@ Resources:
                 StringEquals: "no"
               - Variable: "{{ThirdAZ}}"
                 StringEquals: "witness"
-              NextStep: 2NodeEnableCredSSP
+              NextStep: 2NodeReconfigureSQL
             - Variable: "{{ThirdAZ}}"
               StringEquals: "full"
-              NextStep: 3NodeEnableCredSSP
-        - name: "2NodeEnableCredSSP"
-          action: "aws:runCommand"
-          onFailure: "step:signalfailure"
-          #nextStep: 
-          inputs:
-            DocumentName: AWS-RunPowerShellScript
-            InstanceIds: 
-              - "{{wsfcNode1InstanceId.InstanceId}}"
-              - "{{wsfcNode2InstanceId.InstanceId}}"
-            CloudWatchOutputConfig:
-              CloudWatchOutputEnabled: "true"
-              CloudWatchLogGroupName: !Ref 'QuickStartLogs'
-            Parameters:
-              commands: 
-                - |
-                   Copy-S3Object -Bucket {{QSS3BucketName}} -key {{QSS3KeyPrefix}}submodules/quickstart-microsoft-utilities/scripts/EnableCredSsp.ps1 -LocalFile C:\cfn\scripts\EnableCredSsp.ps1
-        - name: "2NodeEnableCredSSPReboot"
-          action: "aws:runCommand"
-          onFailure: "step:signalfailure"
-          #nextStep: 
-          inputs:
-            DocumentName: AWS-RunPowerShellScript
-            InstanceIds: 
-              - "{{wsfcNode1InstanceId.InstanceId}}"
-              - "{{wsfcNode2InstanceId.InstanceId}}"
-            CloudWatchOutputConfig:
-              CloudWatchOutputEnabled: "true"
-              CloudWatchLogGroupName: !Ref 'QuickStartLogs'
-            Parameters:
-              commands: 
-                - |
-                   $CredSSPEnabled = Test-Path 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\CredentialsDelegation'
-                   if ($CredSSPEnabled -eq $false) {
-                     C:\cfn\scripts\EnableCredSsp.ps1
-                     'returning 3010, should continue after reboot'
-                      exit 3010
-                   } else {'Next Step'}
+              NextStep: 3NodeReconfigureSQL
         - name: "2NodeReconfigureSQL"
           action: "aws:runCommand"
           onFailure: "step:signalfailure"
@@ -1463,41 +1426,6 @@ Resources:
               sourceType: "S3"
               sourceInfo: '{"path": "https://s3.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/Reconfigure-SQL.ps1"}'
               commandLine: "./Reconfigure-SQL.ps1 -DomainNetBIOSName {{DomainNetBIOSName}} -AdminSecret {{AdminSecrets}} -SQLSecret {{SQLSecrets}}"
-        - name: "3NodeEnableCredSSP"
-          action: "aws:runCommand"
-          onFailure: "step:signalfailure"
-          #nextStep: 
-          inputs:
-            DocumentName: AWS-RunPowerShellScript
-            InstanceIds: 
-              - "{{wsfcnInstanceIds.InstanceIds}}"
-            CloudWatchOutputConfig:
-              CloudWatchOutputEnabled: "true"
-              CloudWatchLogGroupName: !Ref 'QuickStartLogs'
-            Parameters:
-              commands: 
-                - |
-                   Copy-S3Object -Bucket {{QSS3BucketName}} -key {{QSS3KeyPrefix}}submodules/quickstart-microsoft-utilities/scripts/EnableCredSsp.ps1 -LocalFile C:\cfn\scripts\EnableCredSsp.ps1
-        - name: "3NodeEnableCredSSPReboot"
-          action: "aws:runCommand"
-          onFailure: "step:signalfailure"
-          #nextStep: 
-          inputs:
-            DocumentName: AWS-RunPowerShellScript
-            InstanceIds: 
-              - "{{wsfcnInstanceIds.InstanceIds}}"
-            CloudWatchOutputConfig:
-              CloudWatchOutputEnabled: "true"
-              CloudWatchLogGroupName: !Ref 'QuickStartLogs'
-            Parameters:
-              commands: 
-                - |
-                   $CredSSPEnabled = Test-Path 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\CredentialsDelegation'
-                   if ($CredSSPEnabled -eq $false) {
-                     C:\cfn\scripts\EnableCredSsp.ps1
-                     'returning 3010, should continue after reboot'
-                      exit 3010
-                   } else {'Next Step'}
         - name: "3NodeReconfigureSQL"
           action: "aws:runCommand"
           onFailure: "step:signalfailure"

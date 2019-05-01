@@ -165,7 +165,7 @@ Configuration AddAG {
     Import-DscResource -Module SqlServerDsc
 
     Node $AllNodes.NodeName {
-        SqlServerMaxDop Set_SQLServerMaxDop_ToAuto {
+        SqlServerMaxDop 'SQLServerMaxDopAuto' {
             Ensure                  = 'Present'
             DynamicAlloc            = $true
             ServerName              = $NetBIOSName
@@ -222,7 +222,7 @@ Configuration AddAG {
                 Ensure = 'Present'
             }
 
-            xADObjectPermissionEntry ADObjectPermissionEntry {
+            xADObjectPermissionEntry 'ADObjectPermissionEntry' {
                 Ensure                             = 'Present'
                 Path                               = $OUPath
                 IdentityReference                  = $IdentityReference
@@ -235,7 +235,7 @@ Configuration AddAG {
             }
         }
 
-        SqlAG AddSQLAG1 {
+        SqlAG 'AddSQLAG1' {
             Ensure               = 'Present'
             Name                 = $AvailabiltyGroupName
             InstanceName         = 'MSSQLSERVER'
@@ -247,7 +247,7 @@ Configuration AddAG {
         }
 
         if ($AGListener1PrivateIP3) {
-            SqlAGListener AGListener1 {
+            SqlAGListener 'AGListener1' {
                 Ensure               = 'Present'
                 ServerName           = $NetBIOSName
                 InstanceName         = 'MSSQLSERVER'
@@ -259,7 +259,7 @@ Configuration AddAG {
                 PsDscRunAsCredential = $SQLCredentials
             }
         } else {
-            SqlAGListener AGListener1 {
+            SqlAGListener 'AGListener1' {
                 Ensure               = 'Present'
                 ServerName           = $NetBIOSName
                 InstanceName         = 'MSSQLSERVER'

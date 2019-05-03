@@ -17,11 +17,11 @@ $DscCertThumbprint = (get-childitem -path cert:\LocalMachine\My | where { $_.sub
 # Getting Password from Secrets Manager for AD Admin User
 $AdminUser = ConvertFrom-Json -InputObject (Get-SECSecretValue -SecretId $AdminSecret).SecretString
 $SQLUser = ConvertFrom-Json -InputObject (Get-SECSecretValue -SecretId $SQLSecret).SecretString
-$DomainAdminUser = $DomainNetBIOSName + '\' + $AdminUser.UserName
-$SQLAdminUser = $DomainNetBIOSName + '\' + $SQLUser.UserName
+$DomainAdminUser = $DomainNetBIOSName + '\' + $AdminUser.username
+$SQLAdminUser = $DomainNetBIOSName + '\' + $SQLUser.username
 # Creating Credential Object for Administrator
-$Credentials = (New-Object PSCredential($ClusterAdminUser,(ConvertTo-SecureString $AdminUser.Password -AsPlainText -Force)))
-$SQLCredentials = (New-Object PSCredential($SQLAdminUser,(ConvertTo-SecureString $SQLUser.Password -AsPlainText -Force)))
+$Credentials = (New-Object PSCredential($DomainAdminUser,(ConvertTo-SecureString $AdminUser.password -AsPlainText -Force)))
+$SQLCredentials = (New-Object PSCredential($SQLAdminUser,(ConvertTo-SecureString $SQLUser.password -AsPlainText -Force)))
 # Getting the Name Tag of the Instance
 $NameTag = (Get-EC2Tag -Filter @{ Name="resource-id";Values=(Invoke-RestMethod -Method Get -Uri http://169.254.169.254/latest/meta-data/instance-id)}| Where-Object { $_.Key -eq "Name" })
 $NetBIOSName = $NameTag.Value
@@ -35,7 +35,7 @@ $ConfigurationData = @{
             PSDscAllowDomainUser = $true
         },
         @{
-            NodeName = $NetBIOSName
+            NodeName = 'localhost'
         }
     )
 }
@@ -57,7 +57,7 @@ Configuration ReconfigureSQL {
     Import-DscResource -Module PSDesiredStateConfiguration
     Import-DscResource -Module SqlServerDsc
 
-    Node 'localhost'{
+    Node $AllNodes.NodeName {
         SqlServerLogin 'AddSQLAdmin' {
             Ensure               = 'Present'
             Name                 = $SQLAdminUser
@@ -107,6 +107,51 @@ Configuration ReconfigureSQL {
             DestinationPath = 'F:\MSSQL\TempDB'
         }
 
+        Script 'SetAclsOnPaths' {
+            GetScript = {
+                [array]$paths = "D:\MSSQL\DATA","E:\MSSQL\LOG","F:\MSSQL\Backup","F:\MSSQL\TempDB"
+                $aclsSqlSA = New-Object System.Collections.ArrayList
+                ForEach ($path in $paths) {
+                    $acl = Get-Acl $path
+                    if ($acl.Access | Where-Object {$_.IdentityReference -eq "example\sqlsa"}) {
+                        $aclsSqlSA.Add(($acl.Access | Where-Object {$_.IdentityReference -eq "example\sqlsa"}))
+                    } else {
+                        $aclsSqlSA.Add('Empty')
+                    }
+                }
+                Return @{Result = [string]"$($aclsSqlSA)"}
+            }
+            TestScript = {
+                [array]$paths = "D:\MSSQL\DATA","E:\MSSQL\LOG","F:\MSSQL\Backup","F:\MSSQL\TempDB"
+                $aclsSqlSA = New-Object System.Collections.ArrayList
+                ForEach ($path in $paths) {
+                    $acl = Get-Acl $path
+                    if ($acl.Access | Where-Object {$_.IdentityReference -eq "example\sqlsa"}) {
+                        $aclsSqlSA.Add(($acl.Access | Where-Object {$_.IdentityReference -eq "example\sqlsa"}))
+                    } else {
+                        $aclsSqlSA.Add('Empty')
+                    }
+                }
+                if ($aclsSqlSA.Contains('Empty')) {
+                    Write-Verbose 'Acls are not Correct'
+                    Return $false
+                } else {
+                    Write-Verbose 'Acls on SQL Directories Correct'
+                    Return $true
+                }
+            }
+            SetScript = {
+                [array]$paths = "D:\MSSQL\DATA","E:\MSSQL\LOG","F:\MSSQL\Backup","F:\MSSQL\TempDB"
+                ForEach ($path in $paths) {
+                    $rule = new-object System.Security.AccessControl.FileSystemAccessRule($SQLAdminUser,"FullControl",'ContainerInherit, ObjectInherit','InheritOnly',"Allow")
+                    $acl = Get-Acl $path
+                    $acl.SetAccessRule($rule)
+                    Set-ACL -Path $path -AclObject $acl
+                }
+            }
+            DependsOn = '[File]SQLTempDBFolder','[File]SQLBackupFolder','[File]SQLLogFolder','[File]SQLDataFolder'
+        }
+
         SqlDatabaseDefaultLocation 'SqlDatabaseDefaultDataDirectory' {
             ServerName              = $NetBIOSName
             InstanceName            = 'MSSQLSERVER'
@@ -137,18 +182,18 @@ Configuration ReconfigureSQL {
             DependsOn               = '[SqlDatabaseDefaultLocation]SqlDatabaseDefaultDataDirectory', '[SqlDatabaseDefaultLocation]SqlDatabaseDefaultLogDirectory', '[File]SQLTempDBFolder'
         }
 
-        Script UpdateStartupSettings {
+        Script 'UpdateStartupSettings' {
             GetScript = {
                 [System.Reflection.Assembly]::LoadWithPartialName('Microsoft.SqlServer.SqlWmiManagement')| Out-Null
                 $smowmi = New-Object Microsoft.SqlServer.Management.Smo.Wmi.ManagedComputer localhost
                 $SQLService = $smowmi.Services | where {$_.name -eq 'MSSQLSERVER'}
-                Return @{Result = [string]$($SQLService.StartupParameters)
+                Return @{Result = [string]$($SQLService.StartupParameters)}
             }
             TestScript = {
                 [System.Reflection.Assembly]::LoadWithPartialName('Microsoft.SqlServer.SqlWmiManagement')| Out-Null
                 $smowmi = New-Object Microsoft.SqlServer.Management.Smo.Wmi.ManagedComputer localhost
                 $SQLService = $smowmi.Services | where {$_.name -eq 'MSSQLSERVER'}
-                if ($SQLService.StartupParameters - '-dC:\Program Files\Microsoft SQL Server\MSSQL14.MSSQLSERVER\MSSQL\DATA\master.mdf;-eC:\Program Files\Microsoft SQL Server\MSSQL14.MSSQLSERVER\MSSQL\Log\ERRORLOG;-lC:\Program Files\Microsoft SQL Server\MSSQL14.MSSQLSERVER\MSSQL\DATA\mastlog.ldf') {
+                if ($SQLService.StartupParameters -like '-dC:\Program Files\Microsoft SQL Server\MSSQL*.MSSQLSERVER\MSSQL\DATA\master.mdf;-eC:\Program Files\Microsoft SQL Server\MSSQL*.MSSQLSERVER\MSSQL\Log\ERRORLOG;-lC:\Program Files\Microsoft SQL Server\MSSQL*.MSSQLSERVER\MSSQL\DATA\mastlog.ldf') {
                     Write-Verbose 'SQL Service Startup Parameters Still Set to Original Settings'
                     Return $false
                 } else {
@@ -169,48 +214,51 @@ Configuration ReconfigureSQL {
         }
 
         SqlScriptQuery 'UpdatePathTempDB' {
-            ServerInstance = 'localhost\MSSQLSERVER'
+            ServerInstance = 'localhost'
             SetQuery       = "USE master; ALTER DATABASE tempdb MODIFY FILE (NAME = tempdev, FILENAME = 'F:\MSSQL\TempDB\tempdb.mdf'); ALTER DATABASE tempdb MODIFY FILE (NAME = templog, FILENAME = 'F:\MSSQL\TempDB\templog.ldf');"
-            TestQuery      = @'if (SELECT name FROM sys.master_files WHERE physical_name='F:\MSSQL\TempDB\tempdb.mdf' OR physical_name='F:\MSSQL\TempDB\templog.ldf') = 0
+            TestQuery      = "IF NOT EXISTS (SELECT name FROM sys.master_files WHERE physical_name='F:\MSSQL\TempDB\tempdb.mdf' OR physical_name='F:\MSSQL\TempDB\templog.ldf')
             BEGIN
                 RAISERROR ('Database Location is not correct', 16, 1)
             END
             ELSE
             BEGIN
                 PRINT 'Database Location is set correctly'
-            END
-            '@
-            GetQuery       = @'SELECT physical_name FROM sys.master_files WHERE name='tempdev' OR name='templog';'@
+            END"
+            GetQuery       = "SELECT physical_name FROM sys.master_files WHERE name='tempdev' OR name='templog';"
+            PsDscRunAsCredential = $SQLCredentials
+            DependsOn            = '[SqlServerRole]AddSysadminUsers'
         }
 
         SqlScriptQuery 'UpdatePathModel' {
-            ServerInstance = 'localhost\MSSQLSERVER'
-            SetQuery       = @'USE master; ALTER DATABASE model MODIFY FILE (NAME = modeldev, FILENAME = 'D:\MSSQL\DATA\model.mdf'); ALTER DATABASE model MODIFY FILE (NAME = modellog, FILENAME = 'E:\MSSQL\LOG\modellog.ldf');'@
-            TestQuery      = @'if (SELECT name FROM sys.master_files WHERE physical_name='D:\MSSQL\DATA\model.mdf' OR physical_name='E:\MSSQL\LOG\modellog.ldf') = 0
+            ServerInstance = 'localhost'
+            SetQuery       = "USE master; ALTER DATABASE model MODIFY FILE (NAME = modeldev, FILENAME = 'D:\MSSQL\DATA\model.mdf'); ALTER DATABASE model MODIFY FILE (NAME = modellog, FILENAME = 'E:\MSSQL\LOG\modellog.ldf');"
+            TestQuery      = "IF NOT EXISTS (SELECT name FROM sys.master_files WHERE physical_name='D:\MSSQL\DATA\model.mdf' OR physical_name='E:\MSSQL\LOG\modellog.ldf')
             BEGIN
                 RAISERROR ('Database Location is not correct', 16, 1)
             END
             ELSE
             BEGIN
                 PRINT 'Database Location is set correctly'
-            END
-            '@
-            GetQuery       = @'SELECT physical_name FROM sys.master_files WHERE name='modeldev' OR name='modellog';'@
+            END"
+            GetQuery       = "SELECT physical_name FROM sys.master_files WHERE name='modeldev' OR name='modellog';"
+            PsDscRunAsCredential = $SQLCredentials
+            DependsOn            = '[SqlServerRole]AddSysadminUsers'
         }
 
         SqlScriptQuery 'UpdatePathMSDB' {
-            ServerInstance = 'localhost\MSSQLSERVER'
+            ServerInstance = 'localhost'
             SetQuery       = "USE master; ALTER DATABASE MSDB MODIFY FILE (NAME = MSDBData, FILENAME = 'D:\MSSQL\DATA\MSDBData.mdf'); ALTER DATABASE MSDB MODIFY FILE (NAME = MSDBLog, FILENAME = 'E:\MSSQL\LOG\MSDBLog.ldf');"
-            TestQuery      = @'if (SELECT name FROM sys.master_files WHERE physical_name='D:\MSSQL\DATA\MSDBData.mdf' OR physical_name='E:\MSSQL\LOG\MSDBLog.ldf') = 0
+            TestQuery      = "IF NOT EXISTS (SELECT name FROM sys.master_files WHERE physical_name='D:\MSSQL\DATA\MSDBData.mdf' OR physical_name='E:\MSSQL\LOG\MSDBLog.ldf')
             BEGIN
                 RAISERROR ('Database Location is not correct', 16, 1)
             END
             ELSE
             BEGIN
                 PRINT 'Database Location is set correctly'
-            END
-            '@
-            GetQuery       = @'SELECT physical_name FROM sys.master_files WHERE name='MSDBData' OR name='MSDBLog';'@
+            END"
+            GetQuery       = "SELECT physical_name FROM sys.master_files WHERE name='MSDBData' OR name='MSDBLog';"
+            PsDscRunAsCredential = $SQLCredentials
+            DependsOn            = '[SqlServerRole]AddSysadminUsers'
         }
 
         Script MoveDBFiles {
@@ -253,18 +301,17 @@ Configuration ReconfigureSQL {
             DependsOn = '[SqlDatabaseDefaultLocation]SqlDatabaseDefaultBackupDirectory'
         }
 
-        SqlServiceAccount 'SetSQLServiceUser' {
-            ServerName     = $NetBIOSName
-            InstanceName   = 'MSSQLSERVER'
-            ServiceType    = 'DatabaseEngine'
-            ServiceAccount = $SQLCredentials
-            RestartService = $true
-        }
-
         SqlServiceAccount 'SetSQLServerAgentUser' {
             ServerName     = $NetBIOSName
             InstanceName   = 'MSSQLSERVER'
             ServiceType    = 'SQLServerAgent'
+            ServiceAccount = $SQLCredentials
+        }
+
+        SqlServiceAccount 'SetSQLServiceUser' {
+            ServerName     = $NetBIOSName
+            InstanceName   = 'MSSQLSERVER'
+            ServiceType    = 'DatabaseEngine'
             ServiceAccount = $SQLCredentials
             RestartService = $true
         }

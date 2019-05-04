@@ -83,6 +83,20 @@ Configuration ReconfigureSQL {
             DependsOn            = '[SqlServerLogin]AddDomainAdmin', '[SqlServerLogin]AddSQLAdmin'
         }
 
+        SqlServiceAccount 'SetSQLServerAgentUser' {
+            ServerName     = $NetBIOSName
+            InstanceName   = 'MSSQLSERVER'
+            ServiceType    = 'SQLServerAgent'
+            ServiceAccount = $SQLCredentials
+        }
+
+        SqlServiceAccount 'SetSQLServiceUser' {
+            ServerName     = $NetBIOSName
+            InstanceName   = 'MSSQLSERVER'
+            ServiceType    = 'DatabaseEngine'
+            ServiceAccount = $SQLCredentials
+        }
+
         File 'SQLDataFolder' {
             Ensure          = 'Present'
             Type            = 'Directory'
@@ -105,51 +119,6 @@ Configuration ReconfigureSQL {
             Ensure          = 'Present'
             Type            = 'Directory'
             DestinationPath = 'F:\MSSQL\TempDB'
-        }
-
-        Script 'SetAclsOnPaths' {
-            GetScript = {
-                [array]$paths = "D:\MSSQL\DATA","E:\MSSQL\LOG","F:\MSSQL\Backup","F:\MSSQL\TempDB"
-                $aclsSqlSA = New-Object System.Collections.ArrayList
-                ForEach ($path in $paths) {
-                    $acl = Get-Acl $path
-                    if ($acl.Access | Where-Object {$_.IdentityReference -eq "example\sqlsa"}) {
-                        $aclsSqlSA.Add(($acl.Access | Where-Object {$_.IdentityReference -eq "example\sqlsa"}))
-                    } else {
-                        $aclsSqlSA.Add('Empty')
-                    }
-                }
-                Return @{Result = [string]"$($aclsSqlSA)"}
-            }
-            TestScript = {
-                [array]$paths = "D:\MSSQL\DATA","E:\MSSQL\LOG","F:\MSSQL\Backup","F:\MSSQL\TempDB"
-                $aclsSqlSA = New-Object System.Collections.ArrayList
-                ForEach ($path in $paths) {
-                    $acl = Get-Acl $path
-                    if ($acl.Access | Where-Object {$_.IdentityReference -eq "example\sqlsa"}) {
-                        $aclsSqlSA.Add(($acl.Access | Where-Object {$_.IdentityReference -eq "example\sqlsa"}))
-                    } else {
-                        $aclsSqlSA.Add('Empty')
-                    }
-                }
-                if ($aclsSqlSA.Contains('Empty')) {
-                    Write-Verbose 'Acls are not Correct'
-                    Return $false
-                } else {
-                    Write-Verbose 'Acls on SQL Directories Correct'
-                    Return $true
-                }
-            }
-            SetScript = {
-                [array]$paths = "D:\MSSQL\DATA","E:\MSSQL\LOG","F:\MSSQL\Backup","F:\MSSQL\TempDB"
-                ForEach ($path in $paths) {
-                    $rule = new-object System.Security.AccessControl.FileSystemAccessRule($SQLAdminUser,"FullControl",'ContainerInherit, ObjectInherit','InheritOnly',"Allow")
-                    $acl = Get-Acl $path
-                    $acl.SetAccessRule($rule)
-                    Set-ACL -Path $path -AclObject $acl
-                }
-            }
-            DependsOn = '[File]SQLTempDBFolder','[File]SQLBackupFolder','[File]SQLLogFolder','[File]SQLDataFolder'
         }
 
         SqlDatabaseDefaultLocation 'SqlDatabaseDefaultDataDirectory' {
@@ -263,12 +232,8 @@ Configuration ReconfigureSQL {
 
         Script MoveDBFiles {
             GetScript = {
-                [array]$paths = "D:\MSSQL\DATA","E:\MSSQL\LOG","F:\MSSQL\Backup","F:\MSSQL\TempDB"
-                $files = New-Object System.Collections.ArrayList
-                ForEach ($path in $paths){
-                    $files.Add((Get-ChildItem -Path $path -Name))
-                }
-                Return @{Result = [string]$files}
+                [array]$filelocations = "F:\MSSQL\TempDB\tempdb.mdf","F:\MSSQL\TempDB\templog.ldf","D:\MSSQL\DATA\model.mdf","E:\MSSQL\LOG\modellog.ldf","D:\MSSQL\DATA\MSDBData.mdf","E:\MSSQL\LOG\MSDBLog.ldf","D:\MSSQL\DATA\master.mdf","E:\MSSQL\LOG\mastlog.ldf"
+                Return @{Result = [string]$(test-path $filelocations)}
             }
             TestScript = {
                 [array]$filelocations = "F:\MSSQL\TempDB\tempdb.mdf","F:\MSSQL\TempDB\templog.ldf","D:\MSSQL\DATA\model.mdf","E:\MSSQL\LOG\modellog.ldf","D:\MSSQL\DATA\MSDBData.mdf","E:\MSSQL\LOG\MSDBLog.ldf","D:\MSSQL\DATA\master.mdf","E:\MSSQL\LOG\mastlog.ldf"
@@ -294,26 +259,11 @@ Configuration ReconfigureSQL {
                 Move-Item "C:\Program Files\Microsoft SQL Server\MSSQL*.MSSQLSERVER\MSSQL\DATA\MSDBLog.ldf" "E:\MSSQL\LOG\MSDBLog.ldf"
                 Move-Item "C:\Program Files\Microsoft SQL Server\MSSQL*.MSSQLSERVER\MSSQL\DATA\master.mdf" "D:\MSSQL\DATA\master.mdf"
                 Move-Item "C:\Program Files\Microsoft SQL Server\MSSQL*.MSSQLSERVER\MSSQL\DATA\mastlog.ldf" "E:\MSSQL\LOG\mastlog.ldf"
-                # Start service
+                # Start service4
                 $SQLService.Start()
                 $SQLService.WaitForStatus('Running','00:01:00')
             }
             DependsOn = '[SqlDatabaseDefaultLocation]SqlDatabaseDefaultBackupDirectory'
-        }
-
-        SqlServiceAccount 'SetSQLServerAgentUser' {
-            ServerName     = $NetBIOSName
-            InstanceName   = 'MSSQLSERVER'
-            ServiceType    = 'SQLServerAgent'
-            ServiceAccount = $SQLCredentials
-        }
-
-        SqlServiceAccount 'SetSQLServiceUser' {
-            ServerName     = $NetBIOSName
-            InstanceName   = 'MSSQLSERVER'
-            ServiceType    = 'DatabaseEngine'
-            ServiceAccount = $SQLCredentials
-            RestartService = $true
         }
     }
 }

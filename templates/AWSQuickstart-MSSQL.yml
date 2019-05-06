@@ -752,8 +752,8 @@ mainSteps:
       CloudWatchLogGroupName: !Ref 'QuickStartLogs'
     Parameters:
       sourceType: "S3"
-      sourceInfo: '{"path": "https://s3.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/Reconfigure-SQL.ps1"}'
-      commandLine: "./Reconfigure-SQL.ps1 -DomainNetBIOSName {{DomainNetBIOSName}} -AdminSecret {{AdminSecrets}} -SQLSecret {{SQLSecrets}}"
+      sourceInfo: '{"path": "https://s3.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/Reconfigure-SQL-DSC.ps1"}'
+      commandLine: "./Reconfigure-SQL-DSC.ps1 -DomainNetBIOSName {{DomainNetBIOSName}} -AdminSecret {{AdminSecrets}} -SQLSecret {{SQLSecrets}}"
 - name: "3NodeReconfigureSQL"
   action: "aws:runCommand"
   onFailure: "step:signalfailure"
@@ -767,8 +767,8 @@ mainSteps:
       CloudWatchLogGroupName: !Ref 'QuickStartLogs'
     Parameters:
       sourceType: "S3"
-      sourceInfo: '{"path": "https://s3.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/Reconfigure-SQL.ps1"}'
-      commandLine: "./Reconfigure-SQL.ps1 -DomainNetBIOSName {{DomainNetBIOSName}} -AdminSecret {{AdminSecrets}} -SQLSecret {{SQLSecrets}}"
+      sourceInfo: '{"path": "https://s3.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/Reconfigure-SQL-DSC.ps1"}'
+      commandLine: "./Reconfigure-SQL-DSC.ps1 -DomainNetBIOSName {{DomainNetBIOSName}} -AdminSecret {{AdminSecrets}} -SQLSecret {{SQLSecrets}}"
 - name: CreateAGBranch
   action: aws:branch
   inputs:

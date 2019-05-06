@@ -269,3 +269,5 @@ Configuration ReconfigureSQL {
 }
 
 ReconfigureSQL -OutputPath 'C:\AWSQuickstart\ReconfigureSQL' -Credentials $Credentials -SQLCredentials $SQLCredentials -ConfigurationData $ConfigurationData
+
+Start-DscConfiguration 'C:\AWSQuickstart\ReconfigureSQL' -Wait -Verbose -Force

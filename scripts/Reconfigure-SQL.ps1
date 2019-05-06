@@ -2,44 +2,36 @@
 param(
 
     [Parameter(Mandatory=$true)]
-    [string]
-    $NetBIOSName,
+    [string]$DomainNetBIOSName,
 
     [Parameter(Mandatory=$true)]
-    [string]
-    $DomainNetBIOSName,
+    [string]$AdminSecret,
 
     [Parameter(Mandatory=$true)]
-    [string]
-    $SQLServiceAccount,
-
-    [Parameter(Mandatory=$true)]
-    [string]
-    $SQLServiceAccountPassword,
-
-    [Parameter(Mandatory=$true)]
-    [string]
-    $DomainAdminUser,
-
-    [Parameter(Mandatory=$true)]
-    [string]
-    $DomainAdminPassword
+    [string]$SQLSecret
 
 )
 
+# Getting Password from Secrets Manager for AD Admin User
+$AdminUser = ConvertFrom-Json -InputObject (Get-SECSecretValue -SecretId $AdminSecret).SecretString
+$SQLUser = ConvertFrom-Json -InputObject (Get-SECSecretValue -SecretId $SQLSecret).SecretString
+# Getting the Name Tag of the Instance
+$NameTag = (Get-EC2Tag -Filter @{ Name="resource-id";Values=(Invoke-RestMethod -Method Get -Uri http://169.254.169.254/latest/meta-data/instance-id)}| Where-Object { $_.Key -eq "Name" })
+$NetBIOSName = $NameTag.Value
+
 try {
-    Start-Transcript -Path C:\cfn\log\Reconfigure-SQL.ps1.txt -Append
+    Start-Transcript -Path C:\AWSQuickstart\Reconfigure-SQL.ps1.txt -Append
     $ErrorActionPreference = "Stop"
 
     [array]$paths = "D:\MSSQL\DATA","E:\MSSQL\LOG","F:\MSSQL\Backup","F:\MSSQL\TempDB"
     $sqlpath = (Resolve-Path 'C:\Program Files\Microsoft SQL Server\MSSQL*.MSSQLSERVER\').Path
     $params = "-dD:\MSSQL\DATA\master.mdf;-e$sqlpath\MSSQL\Log\ERRORLOG;-lE:\MSSQL\LOG\mastlog.ldf"
 
-    $DomainAdminFullUser = $DomainNetBIOSName + '\' + $DomainAdminUser
-    $DomainAdminSecurePassword = ConvertTo-SecureString $DomainAdminPassword -AsPlainText -Force
+    $DomainAdminFullUser = $DomainNetBIOSName + '\' + $AdminUser.UserName
+    $DomainAdminSecurePassword = ConvertTo-SecureString $AdminUser.Password -AsPlainText -Force
     $DomainAdminCreds = New-Object System.Management.Automation.PSCredential($DomainAdminFullUser, $DomainAdminSecurePassword)
 
-    $SQLFullUser = $DomainNetBIOSName + '\' + $SQLServiceAccount
+    $SQLFullUser = $DomainNetBIOSName + '\' + $SQLUser.UserName
 
     $ConfigureSqlPs={
         $ErrorActionPreference = "Stop"
@@ -69,14 +61,12 @@ try {
         $SQLService.Alter()
 
         # Create account for SQL AD user
-        $SQLUser = "[" + $Using:DomainNetBIOSName + "\" + $Using:SQLServiceAccount + "]"
-        Invoke-Sqlcmd -Query "CREATE LOGIN $SQLUser FROM WINDOWS ;"
-        Invoke-Sqlcmd -Query "ALTER SERVER ROLE [sysadmin] ADD MEMBER $SQLUser ;"
+        Invoke-Sqlcmd -Query "CREATE LOGIN $Using:SQLFullUser FROM WINDOWS ;"
+        Invoke-Sqlcmd -Query "ALTER SERVER ROLE [sysadmin] ADD MEMBER $Using:SQLFullUser ;"
 
         # Add Domain Admins as SQL SysAdmin
-        $DomainAdmins = "[" + $Using:DomainNetBIOSName + "\Domain Admins]"
-        Invoke-Sqlcmd -Query "CREATE LOGIN $DomainAdmins FROM WINDOWS ;"
-        Invoke-Sqlcmd -Query "ALTER SERVER ROLE [sysadmin] ADD MEMBER $DomainAdmins ;"
+        Invoke-Sqlcmd -Query "CREATE LOGIN $Using:DomainAdminFullUser FROM WINDOWS ;"
+        Invoke-Sqlcmd -Query "ALTER SERVER ROLE [sysadmin] ADD MEMBER $Using:DomainAdminFullUser ;"
         
 
         # Update paths for tempdb,model and MSDB
@@ -101,7 +91,7 @@ try {
 
         # Set SQL Server and Agent services user to SQL AD user
         $Services = Get-WmiObject -Class Win32_Service -Filter "Name='SQLSERVERAGENT' OR Name='MSSQLSERVER'"
-        $Services.change($null,$null,$null,$null,$null,$null, $Using:SQLFullUser,$Using:SQLServiceAccountPassword,$null,$null,$null)
+        $Services.change($null,$null,$null,$null,$null,$null, $Using:SQLFullUser,$Using:SQLUser.Password,$null,$null,$null)
 
         # Start service
         $SQLService.Start()
@@ -112,5 +102,6 @@ try {
 
 }
 catch {
-    $_ | Write-AWSQuickStartException
+    $raw = Get-Content -Path C:\AWSQuickstart\Reconfigure-SQL.ps1.txt -Raw
+    Write-Host $raw
 }

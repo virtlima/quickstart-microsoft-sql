@@ -40,6 +40,18 @@
         "ParameterValue": "$[taskcat_genpass_16]"
     },
     {
+        "ParameterKey": "WSFCFileServerNetBIOSName",
+        "ParameterValue": "EC2LI2016-W"
+    },
+    {
+        "ParameterKey": "WSFCNode1NetBIOSName",
+        "ParameterValue": "EC2LI2016-N1"
+    },
+    {
+        "ParameterKey": "WSFCNode2NetBIOSName",
+        "ParameterValue": "EC2LI2016-N2"
+    },
+    {
         "ParameterKey": "QSS3BucketName",
         "ParameterValue": "$[taskcat_autobucket]"
     }

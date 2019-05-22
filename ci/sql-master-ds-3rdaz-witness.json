@@ -36,6 +36,18 @@
         "ParameterValue": "10.0.64.200"
     },
     {
+        "ParameterKey": "WSFCFileServerNetBIOSName",
+        "ParameterValue": "DS3RDAZ-W"
+    },
+    {
+        "ParameterKey": "WSFCNode1NetBIOSName",
+        "ParameterValue": "DS3RDAZW-N1"
+    },
+    {
+        "ParameterKey": "WSFCNode2NetBIOSName",
+        "ParameterValue": "DS3RDAZW-N2"
+    },
+    {
         "ParameterKey": "QSS3BucketName",
         "ParameterValue": "$[taskcat_autobucket]"
     }

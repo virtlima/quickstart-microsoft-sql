@@ -48,6 +48,18 @@
         "ParameterValue": "200"
     },
     {
+        "ParameterKey": "WSFCFileServerNetBIOSName",
+        "ParameterValue": "EBSSQL-W"
+    },
+    {
+        "ParameterKey": "WSFCNode1NetBIOSName",
+        "ParameterValue": "EBSSQL-N1"
+    },
+    {
+        "ParameterKey": "WSFCNode2NetBIOSName",
+        "ParameterValue": "EBSSQL-N2"
+    },
+    {
         "ParameterKey": "QSS3BucketName",
         "ParameterValue": "$[taskcat_autobucket]"
     }

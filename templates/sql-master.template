@@ -78,6 +78,7 @@ Metadata:
           - WSFCNode3PrivateIP1
           - WSFCNode3PrivateIP2
           - WSFCNode3PrivateIP3
+          - WSFCFileServerNetBIOSName
           - WSFCFileServerInstanceType
           - WSFCFileServerPrivateIP
       - Label:
@@ -162,6 +163,8 @@ Metadata:
         default: VPC CIDR
       WSFCFileServerInstanceType:
         default: File Server Instance Type
+      WSFCFileServerNetBIOSName:
+        default: File Server NetBIOS Name
       WSFCFileServerPrivateIP:
         default: File Server Private IP Address
       WSFCNode1NetBIOSName:
@@ -210,7 +213,7 @@ Parameters:
       - m5.xlarge
       - m5.2xlarge
       - m5.4xlarge
-    Default: m4.xlarge
+    Default: m5.xlarge
     Description: Amazon EC2 instance type for the first Active Directory instance
     Type: String
   ADServer1NetBIOSName:
@@ -237,7 +240,7 @@ Parameters:
       - m5.xlarge
       - m5.2xlarge
       - m5.4xlarge
-    Default: m4.xlarge
+    Default: m5.xlarge
     Description: Amazon EC2 instance type for the second Active Directory instance
     Type: String
   ADServer2NetBIOSName:
@@ -470,11 +473,18 @@ Parameters:
     Default: 10.0.0.0/16
     Description: CIDR Block for the VPC
     Type: String
+  WSFCFileServerNetBIOSName:
+    AllowedPattern: '[a-zA-Z0-9\-]+'
+    Default: WSFCFileServer
+    Description: NetBIOS name of the WSFCFileServer (up to 15 characters)
+    MaxLength: '15'
+    MinLength: '1'
+    Type: String
   WSFCFileServerInstanceType:
     AllowedValues:
       - t2.small
       - t3.small
-    Default: t2.small
+    Default: t3.small
     Description: Amazon EC2 instance type for a fileserver used to share install media,
       witness and replication folders
     Type: String
@@ -563,7 +573,7 @@ Parameters:
       - r5.12xlarge
     ConstraintDescription: Only EBS Optimized instance types r4.xlarge, r4.2xlarge,
       r4.4xlarge, r4.8xlarge allowed
-    Default: r4.2xlarge
+    Default: r5.2xlarge
     Description: Amazon EC2 instance type for the WSFC Nodes
     Type: String
 Conditions:
@@ -777,6 +787,7 @@ Resources:
         Volume3Iops: !Ref 'VolumeIops'
         Volume3Size: !Ref 'VolumeSize'
         Volume3Type: !Ref 'VolumeType'
+        WSFCFileServerNetBIOSName: !Ref 'WSFCFileServerNetBIOSName'
         WSFCFileServerPrivateIP: !Ref 'WSFCFileServerPrivateIP'
         WSFCNode1InstanceType: !Ref 'WSFCNodeInstanceType'
         WSFCNode1NetBIOSName: !Ref 'WSFCNode1NetBIOSName'

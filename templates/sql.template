@@ -248,6 +248,21 @@
         }
     },
     "Parameters": {
+        "WS2016FULLBASE": {
+            "Default": "/aws/service/ami-windows-latest/Windows_Server-2016-English-Full-Base",
+            "Type": "AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>",
+            "Description": "DO NOT CHANGE - Microsoft Windows Server 2016 with Desktop Experience Locale English AMI provided by Amazon"
+        },
+        "WS2016FULLSQL2016SP1ENT": {
+            "Default": "/aws/service/ami-windows-latest/Windows_Server-2016-English-Full-SQL_2016_SP1_Enterprise",
+            "Type": "AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>",
+            "Description": "DO NOT CHANGE - Microsoft Windows Server 2016 Full Locale English with SQL Enterprise 2016 SP1 AMI provided by Amazon"
+        },
+        "WS2016FULLSQL2017ENT": {
+            "Default": "/aws/service/ami-windows-latest/Windows_Server-2016-English-Full-SQL_2017_Enterprise",
+            "Type": "AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>",
+            "Description": "DO NOT CHANGE - Microsoft Windows Server 2016 Locale English with SQL Enterprise 2017 AMI provided by Amazon"
+        },
         "DedicatedHostAMI": {
             "Default": "",
             "Description": "If host type is set to \"Dedicated\" or \"Dedicated Host\", you need to specify your imported BYOL AMI id",
@@ -616,16 +631,20 @@
         }
     },
     "Conditions": {
-        "IsThreeAz": {
-            "Fn::Not": [
+        "isVersion2017": {
+            "Fn::Equals": [
                 {
-                    "Fn::Equals": [
-                        {
-                            "Ref": "ThirdAZ"
-                        },
-                        "no"
-                    ]
-                }
+                    "Ref": "SQLServerVersion"
+                },
+                "2017"
+            ]
+        },
+        "isLicenseNotProvided": {
+            "Fn::Equals": [
+                {
+                    "Ref": "SQLLicenseProvided"
+                },
+                "no"
             ]
         },
         "ThirdAzIsWitness": {
@@ -745,110 +764,6 @@
                     "AssertDescription": "All subnets must in the VPC"
                 }
             ]
-        }
-    },
-    "Mappings": {
-        "AWSAMIRegionMap": {
-            "AMI": {
-                "WS2016FULLBASE": "Windows_Server-2016-English-Full-Base-2019.04.10",
-                "WS2016FULLSQL2016SP1ENT": "Windows_Server-2016-English-Full-SQL_2016_SP1_Enterprise-2019.02.13",
-                "WS2016FULLSQL2017ENT": "Windows_Server-2016-English-Full-SQL_2017_Enterprise-2019.04.10"
-            },
-            "ap-northeast-1": {
-                "WS2016FULLBASE": "ami-0fda7ce2b9a492e49",
-                "WS2016FULLSQL2016SP1ENT": "ami-0d67d502d8f74cdd2",
-                "WS2016FULLSQL2017ENT": "ami-002850640ec715194"
-            },
-            "ap-northeast-2": {
-                "WS2016FULLBASE": "ami-07219b6e67e0aed12",
-                "WS2016FULLSQL2016SP1ENT": "ami-047b6a1b01cd54dd8",
-                "WS2016FULLSQL2017ENT": "ami-0fb2dd4fc86829e9f"
-            },
-            "ap-northeast-3": {
-                "WS2016FULLBASE": "ami-0d31e3a17a4759e1e",
-                "WS2016FULLSQL2016SP1ENT": "ami-088fef6ee2a498f12",
-                "WS2016FULLSQL2017ENT": "ami-0ac19dc545fd74a35"
-            },
-            "ap-south-1": {
-                "WS2016FULLBASE": "ami-09f8b8067e81a706d",
-                "WS2016FULLSQL2016SP1ENT": "ami-0a4e5c5230e2f57d8",
-                "WS2016FULLSQL2017ENT": "ami-040717e7766f9029d"
-            },
-            "ap-southeast-1": {
-                "WS2016FULLBASE": "ami-00b06a0971151dce9",
-                "WS2016FULLSQL2016SP1ENT": "ami-0d04888fe33bba900",
-                "WS2016FULLSQL2017ENT": "ami-06bb7e6031fa86645"
-            },
-            "ap-southeast-2": {
-                "WS2016FULLBASE": "ami-0268d6286aac946d9",
-                "WS2016FULLSQL2016SP1ENT": "ami-054db0905be229ea0",
-                "WS2016FULLSQL2017ENT": "ami-0c57aa9adcc0ed934"
-            },
-            "ca-central-1": {
-                "WS2016FULLBASE": "ami-0d5ef77e48a82cd42",
-                "WS2016FULLSQL2016SP1ENT": "ami-01d67a39f7ca62323",
-                "WS2016FULLSQL2017ENT": "ami-0ab6bf8d3c7e46094"
-            },
-            "eu-central-1": {
-                "WS2016FULLBASE": "ami-0ff4a81fee2c82161",
-                "WS2016FULLSQL2016SP1ENT": "ami-0e7227dcbd25906aa",
-                "WS2016FULLSQL2017ENT": "ami-0a2d45755db15a120"
-            },
-            "eu-north-1": {
-                "WS2016FULLBASE": "ami-0c7ea6a798d75e3fd",
-                "WS2016FULLSQL2016SP1ENT": "ami-088c38a0c89476f30",
-                "WS2016FULLSQL2017ENT": "ami-0ee565207d34e98c7"
-            },
-            "eu-west-1": {
-                "WS2016FULLBASE": "ami-0bed345bed1cab473",
-                "WS2016FULLSQL2016SP1ENT": "ami-081b12ff86ac97060",
-                "WS2016FULLSQL2017ENT": "ami-0296ee531cba37c60"
-            },
-            "eu-west-2": {
-                "WS2016FULLBASE": "ami-075a1811b5270e1b2",
-                "WS2016FULLSQL2016SP1ENT": "ami-0e2286224482a1fe7",
-                "WS2016FULLSQL2017ENT": "ami-09e981b46cd017343"
-            },
-            "eu-west-3": {
-                "WS2016FULLBASE": "ami-02a6fa22e1036b9b3",
-                "WS2016FULLSQL2016SP1ENT": "ami-05f018f7dd68aeee5",
-                "WS2016FULLSQL2017ENT": "ami-0d52982e4d1128837"
-            },
-            "sa-east-1": {
-                "WS2016FULLBASE": "ami-0ec7be30c2a61840d",
-                "WS2016FULLSQL2016SP1ENT": "ami-02905b98173fed3de",
-                "WS2016FULLSQL2017ENT": "ami-02399464d9451c00c"
-            },
-            "us-east-1": {
-                "WS2016FULLBASE": "ami-0a7d688fe3e239b69",
-                "WS2016FULLSQL2016SP1ENT": "ami-04927a7e3dd4ff841",
-                "WS2016FULLSQL2017ENT": "ami-03d93a07f93c1f08f"
-            },
-            "us-east-2": {
-                "WS2016FULLBASE": "ami-0fcd1e0bdff03687d",
-                "WS2016FULLSQL2016SP1ENT": "ami-0b10d5c3ae13b8685",
-                "WS2016FULLSQL2017ENT": "ami-04252272a8e95cab2"
-            },
-            "us-west-1": {
-                "WS2016FULLBASE": "ami-04570521f90f1fa06",
-                "WS2016FULLSQL2016SP1ENT": "ami-00e44c002d8641eea",
-                "WS2016FULLSQL2017ENT": "ami-0091ae2708961b83d"
-            },
-            "us-west-2": {
-                "WS2016FULLBASE": "ami-00b5b9e28d3450121",
-                "WS2016FULLSQL2016SP1ENT": "ami-0f4d3b5162a8e3fc2",
-                "WS2016FULLSQL2017ENT": "ami-070938b18fd75b1d1"
-            }
-        },
-        "SQLAMINameMap": {
-            "2016": {
-                "no": "WS2016FULLBASE",
-                "yes": "WS2016FULLSQL2016SP1ENT"
-            },
-            "2017": {
-                "no": "WS2016FULLBASE",
-                "yes": "WS2016FULLSQL2017ENT"
-            }
         }
     },
     "Resources": {
@@ -1313,13 +1228,7 @@
             },
             "Properties": {
                 "ImageId": {
-                    "Fn::FindInMap": [
-                        "AWSAMIRegionMap",
-                        {
-                            "Ref": "AWS::Region"
-                        },
-                        "WS2016FULLBASE"
-                    ]
+                    "Ref": "WS2016FULLBASE"
                 },
                 "IamInstanceProfile": {
                     "Ref": "WSFCProfile"
@@ -1329,8 +1238,8 @@
                 },
                 "NetworkInterfaces": [
                     {
-                        "DeleteOnTermination": "true",
-                        "DeviceIndex": 0,
+                        "DeleteOnTermination": true,
+                        "DeviceIndex": "0",
                         "SubnetId": {
                             "Fn::If": [
                                 "ThirdAzIsWitness",
@@ -1344,7 +1253,7 @@
                         },
                         "PrivateIpAddresses": [
                             {
-                                "Primary": "true",
+                                "Primary": true,
                                 "PrivateIpAddress": {
                                     "Ref": "WSFCFileServerPrivateIP"
                                 }
@@ -1375,7 +1284,7 @@
                     {
                         "DeviceName": "/dev/sda1",
                         "Ebs": {
-                            "VolumeSize": "100",
+                            "VolumeSize": 100,
                             "VolumeType": "gp2"
                         }
                     }
@@ -2074,13 +1983,7 @@
                         "HostTypeIsDediHost",
                         "host",
                         {
-                            "Fn::If": [
-                                "HostTypeIsDefault",
-                                {
-                                    "Ref": "AWS::NoValue"
-                                },
-                                "default"
-                            ]
+                            "Ref": "AWS::NoValue"
                         }
                     ]
                 },
@@ -2115,19 +2018,19 @@
                             "Ref": "DedicatedHostAMI"
                         },
                         {
-                            "Fn::FindInMap": [
-                                "AWSAMIRegionMap",
+                            "Fn::If": [
+                                "isLicenseNotProvided",
                                 {
-                                    "Ref": "AWS::Region"
+                                    "Ref": "WS2016FULLBASE"
                                 },
                                 {
-                                    "Fn::FindInMap": [
-                                        "SQLAMINameMap",
+                                    "Fn::If": [
+                                        "isVersion2017",
                                         {
-                                            "Ref": "SQLServerVersion"
+                                            "Ref": "WS2016FULLSQL2017ENT"
                                         },
                                         {
-                                            "Ref": "SQLLicenseProvided"
+                                            "Ref": "WS2016FULLSQL2016SP1ENT"
                                         }
                                     ]
                                 }
@@ -2141,29 +2044,29 @@
                 "InstanceType": {
                     "Ref": "WSFCNode1InstanceType"
                 },
-                "EbsOptimized": "true",
+                "EbsOptimized": true,
                 "NetworkInterfaces": [
                     {
-                        "DeleteOnTermination": "true",
-                        "DeviceIndex": 0,
+                        "DeleteOnTermination": true,
+                        "DeviceIndex": "0",
                         "SubnetId": {
                             "Ref": "PrivateSubnet1ID"
                         },
                         "PrivateIpAddresses": [
                             {
-                                "Primary": "true",
+                                "Primary": true,
                                 "PrivateIpAddress": {
                                     "Ref": "WSFCNode1PrivateIP1"
                                 }
                             },
                             {
-                                "Primary": "false",
+                                "Primary": false,
                                 "PrivateIpAddress": {
                                     "Ref": "WSFCNode1PrivateIP2"
                                 }
                             },
                             {
-                                "Primary": "false",
+                                "Primary": false,
                                 "PrivateIpAddress": {
                                     "Ref": "WSFCNode1PrivateIP3"
                                 }
@@ -2194,7 +2097,7 @@
                     {
                         "DeviceName": "/dev/sda1",
                         "Ebs": {
-                            "VolumeSize": "100",
+                            "VolumeSize": 100,
                             "VolumeType": "gp2"
                         }
                     },
@@ -2746,13 +2649,7 @@
                         "HostTypeIsDediHost",
                         "host",
                         {
-                            "Fn::If": [
-                                "HostTypeIsDefault",
-                                {
-                                    "Ref": "AWS::NoValue"
-                                },
-                                "default"
-                            ]
+                            "Ref": "AWS::NoValue"
                         }
                     ]
                 },
@@ -2787,19 +2684,19 @@
                             "Ref": "DedicatedHostAMI"
                         },
                         {
-                            "Fn::FindInMap": [
-                                "AWSAMIRegionMap",
+                            "Fn::If": [
+                                "isLicenseNotProvided",
                                 {
-                                    "Ref": "AWS::Region"
+                                    "Ref": "WS2016FULLBASE"
                                 },
                                 {
-                                    "Fn::FindInMap": [
-                                        "SQLAMINameMap",
+                                    "Fn::If": [
+                                        "isVersion2017",
                                         {
-                                            "Ref": "SQLServerVersion"
+                                            "Ref": "WS2016FULLSQL2017ENT"
                                         },
                                         {
-                                            "Ref": "SQLLicenseProvided"
+                                            "Ref": "WS2016FULLSQL2016SP1ENT"
                                         }
                                     ]
                                 }
@@ -2813,29 +2710,29 @@
                 "InstanceType": {
                     "Ref": "WSFCNode3InstanceType"
                 },
-                "EbsOptimized": "true",
+                "EbsOptimized": true,
                 "NetworkInterfaces": [
                     {
-                        "DeleteOnTermination": "true",
-                        "DeviceIndex": 0,
+                        "DeleteOnTermination": true,
+                        "DeviceIndex": "0",
                         "SubnetId": {
                             "Ref": "PrivateSubnet3ID"
                         },
                         "PrivateIpAddresses": [
                             {
-                                "Primary": "true",
+                                "Primary": true,
                                 "PrivateIpAddress": {
                                     "Ref": "WSFCNode3PrivateIP1"
                                 }
                             },
                             {
-                                "Primary": "false",
+                                "Primary": false,
                                 "PrivateIpAddress": {
                                     "Ref": "WSFCNode3PrivateIP2"
                                 }
                             },
                             {
-                                "Primary": "false",
+                                "Primary": false,
                                 "PrivateIpAddress": {
                                     "Ref": "WSFCNode3PrivateIP3"
                                 }
@@ -2866,7 +2763,7 @@
                     {
                         "DeviceName": "/dev/sda1",
                         "Ebs": {
-                            "VolumeSize": "100",
+                            "VolumeSize": 100,
                             "VolumeType": "gp2"
                         }
                     },
@@ -3847,13 +3744,7 @@
                         "HostTypeIsDediHost",
                         "host",
                         {
-                            "Fn::If": [
-                                "HostTypeIsDefault",
-                                {
-                                    "Ref": "AWS::NoValue"
-                                },
-                                "default"
-                            ]
+                            "Ref": "AWS::NoValue"
                         }
                     ]
                 },
@@ -3888,19 +3779,19 @@
                             "Ref": "DedicatedHostAMI"
                         },
                         {
-                            "Fn::FindInMap": [
-                                "AWSAMIRegionMap",
+                            "Fn::If": [
+                                "isLicenseNotProvided",
                                 {
-                                    "Ref": "AWS::Region"
+                                    "Ref": "WS2016FULLBASE"
                                 },
                                 {
-                                    "Fn::FindInMap": [
-                                        "SQLAMINameMap",
+                                    "Fn::If": [
+                                        "isVersion2017",
                                         {
-                                            "Ref": "SQLServerVersion"
+                                            "Ref": "WS2016FULLSQL2017ENT"
                                         },
                                         {
-                                            "Ref": "SQLLicenseProvided"
+                                            "Ref": "WS2016FULLSQL2016SP1ENT"
                                         }
                                     ]
                                 }
@@ -3914,29 +3805,29 @@
                 "InstanceType": {
                     "Ref": "WSFCNode2InstanceType"
                 },
-                "EbsOptimized": "true",
+                "EbsOptimized": true,
                 "NetworkInterfaces": [
                     {
-                        "DeleteOnTermination": "true",
-                        "DeviceIndex": 0,
+                        "DeleteOnTermination": true,
+                        "DeviceIndex": "0",
                         "SubnetId": {
                             "Ref": "PrivateSubnet2ID"
                         },
                         "PrivateIpAddresses": [
                             {
-                                "Primary": "true",
+                                "Primary": true,
                                 "PrivateIpAddress": {
                                     "Ref": "WSFCNode2PrivateIP1"
                                 }
                             },
                             {
-                                "Primary": "false",
+                                "Primary": false,
                                 "PrivateIpAddress": {
                                     "Ref": "WSFCNode2PrivateIP2"
                                 }
                             },
                             {
-                                "Primary": "false",
+                                "Primary": false,
                                 "PrivateIpAddress": {
                                     "Ref": "WSFCNode2PrivateIP3"
                                 }
@@ -3967,7 +3858,7 @@
                     {
                         "DeviceName": "/dev/sda1",
                         "Ebs": {
-                            "VolumeSize": "100",
+                            "VolumeSize": 100,
                             "VolumeType": "gp2"
                         }
                     },
@@ -4387,8 +4278,8 @@
                     "Ref": "WSFCSecurityGroup"
                 },
                 "IpProtocol": "icmp",
-                "FromPort": "-1",
-                "ToPort": "-1"
+                "FromPort": -1,
+                "ToPort": -1
             }
         },
         "WSFCSecurityGroupIngressTcp135": {
@@ -4401,8 +4292,8 @@
                     "Ref": "WSFCSecurityGroup"
                 },
                 "IpProtocol": "tcp",
-                "FromPort": "135",
-                "ToPort": "135"
+                "FromPort": 135,
+                "ToPort": 135
             }
         },
         "WSFCSecurityGroupIngressTcp137": {
@@ -4415,8 +4306,8 @@
                     "Ref": "WSFCSecurityGroup"
                 },
                 "IpProtocol": "tcp",
-                "FromPort": "137",
-                "ToPort": "137"
+                "FromPort": 137,
+                "ToPort": 137
             }
         },
         "WSFCSecurityGroupIngressTcp445": {
@@ -4429,8 +4320,8 @@
                     "Ref": "WSFCSecurityGroup"
                 },
                 "IpProtocol": "tcp",
-                "FromPort": "445",
-                "ToPort": "445"
+                "FromPort": 445,
+                "ToPort": 445
             }
         },
         "WSFCSecurityGroupIngressTcp1433": {
@@ -4443,8 +4334,8 @@
                     "Ref": "WSFCSecurityGroup"
                 },
                 "IpProtocol": "tcp",
-                "FromPort": "1433",
-                "ToPort": "1434"
+                "FromPort": 1433,
+                "ToPort": 1434
             }
         },
         "WSFCSecurityGroupIngressTcp3343": {
@@ -4457,8 +4348,8 @@
                     "Ref": "WSFCSecurityGroup"
                 },
                 "IpProtocol": "tcp",
-                "FromPort": "3343",
-                "ToPort": "3343"
+                "FromPort": 3343,
+                "ToPort": 3343
             }
         },
         "WSFCSecurityGroupIngressTcp5022": {
@@ -4471,8 +4362,8 @@
                     "Ref": "WSFCSecurityGroup"
                 },
                 "IpProtocol": "tcp",
-                "FromPort": "5022",
-                "ToPort": "5022"
+                "FromPort": 5022,
+                "ToPort": 5022
             }
         },
         "WSFCSecurityGroupIngressTcp5985": {
@@ -4485,8 +4376,8 @@
                     "Ref": "WSFCSecurityGroup"
                 },
                 "IpProtocol": "tcp",
-                "FromPort": "5985",
-                "ToPort": "5985"
+                "FromPort": 5985,
+                "ToPort": 5985
             }
         },
         "WSFCSecurityGroupIngressUdp137": {
@@ -4499,8 +4390,8 @@
                     "Ref": "WSFCSecurityGroup"
                 },
                 "IpProtocol": "udp",
-                "FromPort": "137",
-                "ToPort": "137"
+                "FromPort": 137,
+                "ToPort": 137
             }
         },
         "WSFCSecurityGroupIngressUdp3343": {
@@ -4513,8 +4404,8 @@
                     "Ref": "WSFCSecurityGroup"
                 },
                 "IpProtocol": "udp",
-                "FromPort": "3343",
-                "ToPort": "3343"
+                "FromPort": 3343,
+                "ToPort": 3343
             }
         },
         "WSFCSecurityGroupIngressUdp1434": {
@@ -4527,8 +4418,8 @@
                     "Ref": "WSFCSecurityGroup"
                 },
                 "IpProtocol": "udp",
-                "FromPort": "1434",
-                "ToPort": "1434"
+                "FromPort": 1434,
+                "ToPort": 1434
             }
         },
         "WSFCSecurityGroupIngressUdpHighPorts": {
@@ -4541,8 +4432,8 @@
                     "Ref": "WSFCSecurityGroup"
                 },
                 "IpProtocol": "udp",
-                "FromPort": "49152",
-                "ToPort": "65535"
+                "FromPort": 49152,
+                "ToPort": 65535
             }
         },
         "WSFCSecurityGroupIngressTcpHighPorts": {
@@ -4555,8 +4446,8 @@
                     "Ref": "WSFCSecurityGroup"
                 },
                 "IpProtocol": "tcp",
-                "FromPort": "49152",
-                "ToPort": "65535"
+                "FromPort": 49152,
+                "ToPort": 65535
             }
         },
         "SQLServerAccessSecurityGroup": {
@@ -4578,8 +4469,8 @@
                 "SecurityGroupIngress": [
                     {
                         "IpProtocol": "tcp",
-                        "FromPort": "1433",
-                        "ToPort": "1433",
+                        "FromPort": 1433,
+                        "ToPort": 1433,
                         "SourceSecurityGroupId": {
                             "Ref": "SQLServerAccessSecurityGroup"
                         }

@@ -94,6 +94,16 @@
                         "QSS3BucketName",
                         "QSS3KeyPrefix"
                     ]
+                },
+                {
+                    "Label": {
+                        "default": "AWS Systems Manager AMI Parameters"
+                    },
+                    "Parameters": [
+                        "WS2016FULLBASE",
+                        "WS2016FULLSQL2016SP1ENT",
+                        "WS2016FULLSQL2017ENT"
+                    ]
                 }
             ],
             "ParameterLabels": {
@@ -243,6 +253,15 @@
                 },
                 "WSFCNode3PrivateIP3": {
                     "default": "Cluster Node 3 Private IP Address 3"
+                },
+                "WS2016FULLBASE": {
+                    "default": "Microsoft Windows Server 2016 Full Base AMI"
+                },
+                "WS2016FULLSQL2016SP1ENT": {
+                    "default": "Microsoft Windows Server 2016 Full Locale English with SQL Enterprise 2016 SP1 AMI"
+                },
+                "WS2016FULLSQL2017ENT": {
+                    "default": "Microsoft Windows Server 2016 Locale English with SQL Enterprise 2017 AMI"
                 }
             }
         }

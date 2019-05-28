@@ -671,26 +671,6 @@
                 "no"
             ]
         },
-        "HostTypeIsDefault": {
-            "Fn::Equals": [
-                {
-                    "Ref": "HostType"
-                },
-                "Shared"
-            ]
-        },
-        "CreateDediHosts": {
-            "Fn::Not": [
-                {
-                    "Fn::Equals": [
-                        {
-                            "Ref": "HostType"
-                        },
-                        "Shared"
-                    ]
-                }
-            ]
-        },
         "HostTypeIsDediHost": {
             "Fn::Equals": [
                 {
@@ -786,7 +766,6 @@
             }
         },
         "ADStack": {
-            "DependsOn": "VPCStack",
             "Type": "AWS::CloudFormation::Stack",
             "Properties": {
                 "TemplateURL": {
@@ -930,7 +909,6 @@
             }
         },
         "RDGWStack": {
-            "DependsOn": "ADStack",
             "Type": "AWS::CloudFormation::Stack",
             "Properties": {
                 "TemplateURL": {
@@ -1013,7 +991,7 @@
         },
         "DediHostStack": {
             "DependsOn": "VPCStack",
-            "Condition": "CreateDediHosts",
+            "Condition": "HostTypeIsDediHost",
             "Type": "AWS::CloudFormation::Stack",
             "Properties": {
                 "TemplateURL": {
@@ -1060,7 +1038,6 @@
             }
         },
         "SQLStack": {
-            "DependsOn": "ADStack",
             "Type": "AWS::CloudFormation::Stack",
             "Properties": {
                 "TemplateURL": {
@@ -1083,7 +1060,7 @@
                     },
                     "DedicatedHostIDNode1": {
                         "Fn::If": [
-                            "CreateDediHosts",
+                            "HostTypeIsDediHost",
                             {
                                 "Fn::GetAtt": [
                                     "DediHostStack",
@@ -1097,7 +1074,7 @@
                     },
                     "DedicatedHostIDNode2": {
                         "Fn::If": [
-                            "CreateDediHosts",
+                            "HostTypeIsDediHost",
                             {
                                 "Fn::GetAtt": [
                                     "DediHostStack",
@@ -1117,7 +1094,7 @@
                             },
                             {
                                 "Fn::If": [
-                                    "CreateDediHosts",
+                                    "HostTypeIsDediHost",
                                     {
                                         "Fn::GetAtt": [
                                             "DediHostStack",
@@ -1309,6 +1286,9 @@
                                 "Ref": "WSFCNode3PrivateIP3"
                             }
                         ]
+                    },
+                    "WSFCFileServerInstanceType": {
+                        "Ref": "WSFCFileServerInstanceType"
                     }
                 }
             }

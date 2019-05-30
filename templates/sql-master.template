@@ -9,7 +9,7 @@ Metadata:
   AWS::CloudFormation::Interface:
     ParameterGroups:
       - Label:
-          default: Network Configuration
+          default: Network configuration
         Parameters:
           - AvailabilityZones
           - ThirdAZ
@@ -21,20 +21,20 @@ Metadata:
           - PrivateSubnet2CIDR
           - PrivateSubnet3CIDR
       - Label:
-          default: Amazon EC2 Configuration
+          default: Amazon EC2 configuration
         Parameters:
           - KeyPairName
           - HostType
           - DedicatedHostAMI
       - Label:
-          default: Standard Active Directory Configuration
+          default: Standard Active Directory configuration
         Parameters:
           - ADScenarioType
           - DomainDNSName
           - DomainNetBIOSName
           - DomainAdminPassword
       - Label:
-          default: Self-Managed Active Directory Configuration (for non-AWS Directory
+          default: Self-Managed Active Directory configuration (for non-AWS Directory
             Service architecture)
         Parameters:
           - DomainAdminUser
@@ -45,13 +45,13 @@ Metadata:
           - ADServer2NetBIOSName
           - ADServer2PrivateIP
       - Label:
-          default: Remote Desktop Gateway Configuration
+          default: Remote desktop gateway configuration
         Parameters:
           - RDGWCIDR
           - NumberOfRDGWHosts
           - RDGWInstanceType
       - Label:
-          default: Microsoft SQL Server Configuration
+          default: SQL server configuration
         Parameters:
           - SQLServerVersion
           - SQLServiceAccount
@@ -62,7 +62,7 @@ Metadata:
           - VolumeSize
           - VolumeType
       - Label:
-          default: Failover Cluster Configuration
+          default: Failover cluster configuration
         Parameters:
           - ClusterName
           - WSFCNodeInstanceType
@@ -82,117 +82,117 @@ Metadata:
           - WSFCFileServerInstanceType
           - WSFCFileServerPrivateIP
       - Label:
-          default: AWS Quick Start Configuration
+          default: AWS Quick Start configuration
         Parameters:
           - QSS3BucketName
           - QSS3KeyPrefix
     ParameterLabels:
       ADScenarioType:
-        default: AD Scenario Type
+        default: AD scenario type
       ADServer1InstanceType:
-        default: Domain Controller 1 Instance Type
+        default: Domain Controller 1 instance type
       ADServer1NetBIOSName:
-        default: Domain Controller 1 NetBIOS Name
+        default: Domain Controller 1 NetBIOS name
       ADServer1PrivateIP:
-        default: Domain Controller 1 Private IP Address
+        default: Domain Controller 1 private IP address
       ADServer2InstanceType:
-        default: Domain Controller 2 Instance Type
+        default: Domain Controller 2 instance type
       ADServer2NetBIOSName:
-        default: Domain Controller 2 NetBIOS Name
+        default: Domain Controller 2 NetBIOS name
       ADServer2PrivateIP:
-        default: Domain Controller 2 Private IP Address
+        default: Domain Controller 2 private IP address
       AvailabilityZones:
         default: Availability Zones
       AvailabiltyGroupName:
-        default: Availabilty Group Name
+        default: Availabilty group name
       ClusterName:
-        default: Cluster NetBIOS Name
+        default: Cluster NetBIOS name
       DedicatedHostAMI:
-        default: BYOL AMI to Use on Dedicated Host
+        default: BYOL AMI to use on dedicated host
       DomainAdminPassword:
-        default: Domain Admin Password
+        default: Domain admin password
       DomainAdminUser:
-        default: Domain Admin User Name
+        default: Domain admin user name
       DomainDNSName:
-        default: Domain DNS Name
+        default: Domain DNS name
       DomainNetBIOSName:
-        default: Domain NetBIOS Name
+        default: Domain NetBIOS name
       HostType:
         default: Tenancy
       KeyPairName:
-        default: Key Pair Name
+        default: Key pair name
       NumberOfRDGWHosts:
         default: Number of RDGW hosts
       PrivateSubnet1CIDR:
-        default: Private Subnet 1 CIDR
+        default: Private subnet 1 CIDR
       PrivateSubnet2CIDR:
-        default: Private Subnet 2 CIDR
+        default: Private subnet 2 CIDR
       PrivateSubnet3CIDR:
-        default: Private Subnet 3 CIDR
+        default: Private subnet 3 CIDR
       PublicSubnet1CIDR:
-        default: Public Subnet 1 CIDR
+        default: Public subnet 1 CIDR
       PublicSubnet2CIDR:
-        default: Public Subnet 2 CIDR
+        default: Public subnet 2 CIDR
       PublicSubnet3CIDR:
-        default: Public Subnet 3 CIDR
+        default: Public subnet 3 CIDR
       QSS3BucketName:
-        default: Quick Start S3 Bucket Name
+        default: Quick Start S3 bucket name
       QSS3KeyPrefix:
-        default: Quick Start S3 Key Prefix
+        default: Quick Start S3 key prefix
       RDGWInstanceType:
-        default: Remote Desktop Gateway Instance Type
+        default: Remote desktop gateway instance type
       RDGWCIDR:
-        default: Allowed Remote Desktop Gateway External Access CIDR
+        default: Allowed remote desktop gateway external access CIDR
       SQLLicenseProvided:
-        default: Amazon-Provided SQL Server License
+        default: Amazon-provided SQL server license
       SQLServerVersion:
-        default: SQL Server Version
+        default: SQL server version
       SQLServiceAccount:
-        default: Service Account Name
+        default: Service account name
       SQLServiceAccountPassword:
-        default: Service Account Password
+        default: Service account password
       ThirdAZ:
         default: Third AZ
       VolumeIops:
-        default: SQL Server Volume IOPS
+        default: SQL server volume IOPS
       VolumeSize:
-        default: SQL Server Volume Size
+        default: SQL server volume size
       VolumeType:
-        default: SQL Server Volume Type
+        default: SQL server volume type
       VPCCIDR:
         default: VPC CIDR
       WSFCFileServerInstanceType:
-        default: File Server Instance Type
+        default: File server instance type
       WSFCFileServerNetBIOSName:
-        default: File Server NetBIOS Name
+        default: File server NetBIOS name
       WSFCFileServerPrivateIP:
-        default: File Server Private IP Address
+        default: File server private IP address
       WSFCNode1NetBIOSName:
-        default: Cluster Node 1 NetBIOS Name
+        default: Cluster node 1 NetBIOS name
       WSFCNode1PrivateIP1:
-        default: Cluster Node 1 Private IP Address 1
+        default: Cluster node 1 private IP address 1
       WSFCNode1PrivateIP2:
-        default: Cluster Node 1 Private IP Address 2
+        default: Cluster node 1 private IP address 2
       WSFCNode1PrivateIP3:
-        default: Cluster Node 1 Private IP Address 3
+        default: Cluster node 1 Private IP address 3
       WSFCNode2NetBIOSName:
-        default: Cluster Node 2 NetBIOS Name
+        default: Cluster node 2 NetBIOS name
       WSFCNode2PrivateIP1:
-        default: Cluster Node 2 Private IP Address 1
+        default: Cluster node 2 private IP address 1
       WSFCNode2PrivateIP2:
-        default: Cluster Node 2 Private IP Address 2
+        default: Cluster node 2 private IP address 2
       WSFCNode2PrivateIP3:
-        default: Cluster Node 2 Private IP Address 3
+        default: Cluster node 2 private IP address 3
       WSFCNode3NetBIOSName:
-        default: Cluster Node 3 NetBIOS Name
+        default: Cluster node 3 NetBIOS name
       WSFCNode3PrivateIP1:
-        default: Cluster Node 3 Private IP Address 1
+        default: Cluster node 3 private IP address 1
       WSFCNode3PrivateIP2:
-        default: Cluster Node 3 Private IP Address 2
+        default: Cluster node 3 private IP address 2
       WSFCNode3PrivateIP3:
-        default: Cluster Node 3 Private IP Address 3
+        default: Cluster node 3 private IP address 3
       WSFCNodeInstanceType:
-        default: Instance Type for Cluster Nodes
+        default: Instance type for cluster nodes
 Parameters:
   ADScenarioType:
     AllowedValues:
@@ -483,8 +483,13 @@ Parameters:
   WSFCFileServerInstanceType:
     AllowedValues:
       - t2.small
+      - t2.medium
+      - t2.large
       - t3.small
-    Default: t3.small
+      - t3.medium
+      - t3.large
+      - m5.large
+    Default: m5.large
     Description: Amazon EC2 instance type for a fileserver used to share install media,
       witness and replication folders
     Type: String

@@ -32,6 +32,18 @@
         "ParameterValue": "2017"
     },
     {
+        "ParameterKey": "WSFCFileServerNetBIOSName",
+        "ParameterValue": "EC2Base17-W"
+    },
+    {
+        "ParameterKey": "WSFCNode1NetBIOSName",
+        "ParameterValue": "EC2Base17-N1"
+    },
+    {
+        "ParameterKey": "WSFCNode2NetBIOSName",
+        "ParameterValue": "EC2Base17-N2"
+    },
+    {
         "ParameterKey": "SQLServiceAccountPassword",
         "ParameterValue": "$[taskcat_genpass_16]"
     },

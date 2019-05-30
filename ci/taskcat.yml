@@ -45,7 +45,6 @@ tests:
   mssql-ec2-sql-2016:
     parameter_input: sql-master-ec2-sql-2016.json
     regions:
-      - ap-northeast-2
       - ap-southeast-2
       - eu-west-2
       - us-west-1

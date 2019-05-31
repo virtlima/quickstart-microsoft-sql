@@ -743,6 +743,8 @@ Resources:
             - s3
       Parameters:
         ADScenarioType: !Ref 'ADScenarioType'
+        ClusterName: !Ref 'ClusterName'
+        AvailabiltyGroupName: !Ref 'AvailabiltyGroupName'
         DedicatedHostAMI: !Ref 'DedicatedHostAMI'
         DedicatedHostIDNode1: !If
           - CreateDediHosts
@@ -792,6 +794,7 @@ Resources:
         Volume3Iops: !Ref 'VolumeIops'
         Volume3Size: !Ref 'VolumeSize'
         Volume3Type: !Ref 'VolumeType'
+        WSFCFileServerInstanceType: !Ref 'WSFCFileServerInstanceType'
         WSFCFileServerNetBIOSName: !Ref 'WSFCFileServerNetBIOSName'
         WSFCFileServerPrivateIP: !Ref 'WSFCFileServerPrivateIP'
         WSFCNode1InstanceType: !Ref 'WSFCNodeInstanceType'

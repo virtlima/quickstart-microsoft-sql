@@ -1,0 +1,461 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >-
+  This template deploys two Windows Server Failover Clustering (WSFC) and SQL Server
+  AlwaysOn Availability Group nodes. This template is intended to be installed into
+  an existing VPC that was built using the sample reference architecture titled: "Implementing
+  Active Directory Domain Services in the AWS Cloud" **WARNING** This template creates
+  Amazon EC2 Windows instance and related resources. You will be billed for the AWS
+  resources used if you create a stack from this template. QS(0003)
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      - Label:
+          default: Network configuration
+        Parameters:
+          - ThirdAZ
+          - VPCID
+          - PrivateSubnet1ID
+          - PrivateSubnet2ID
+          - PrivateSubnet3ID
+      - Label:
+          default: SQL Server configuration
+        Parameters:
+          - SQLServerVersion
+          - SQLServiceAccount
+          - SQLServiceAccountPassword
+          - VolumeSize
+          - VolumeType
+          - VolumeIops
+      - Label:
+          default: AWS Quick Start configuration
+        Parameters:
+          - QSS3BucketName
+          - QSS3KeyPrefix
+    ParameterLabels:
+      ADScenarioType:
+        default: AD scenario type
+      AvailabiltyGroupName:
+        default: SQL Server availability group name
+      ClusterName:
+        default: Cluster NetBIOS name
+      DedicatedHostAMI:
+        default: BYOL AMI to use on Dedicated Host
+      DedicatedHostIDNode1:
+        default: Dedicated host ID for node 1 (requires tenancy set to Dedicated Host)
+      DedicatedHostIDNode2:
+        default: Dedicated host ID for node 2 (requires tenancy set to Dedicated Host)
+      DedicatedHostIDNode3:
+        default: Dedicated host ID for node 3 (requires tenancy set to Dedicated Host)
+      DomainAdminPassword:
+        default: Domain admin password
+      DomainAdminUser:
+        default: Domain admin user name
+      DomainDNSName:
+        default: Domain DNS name
+      DomainMemberSGID:
+        default: Security group ID for AD domain members
+      DomainNetBIOSName:
+        default: Domain NetBIOS name
+      HostType:
+        default: Tenancy
+      KeyPairName:
+        default: Key pair name
+      PrivateSubnet1ID:
+        default: Private subnet 1 ID
+      PrivateSubnet2ID:
+        default: Private subnet 2 ID
+      PrivateSubnet3ID:
+        default: Private subnet 3 ID
+      QSS3BucketName:
+        default: Quick Start S3 bucket name
+      QSS3KeyPrefix:
+        default: Quick Start S3 key prefix
+      SQLLicenseProvided:
+        default: Amazon-provided SQL Server license
+      SQLServerVersion:
+        default: SQL Server version
+      SQLServiceAccount:
+        default: Service account name
+      SQLServiceAccountPassword:
+        default: Service account password
+      ThirdAZ:
+        default: Third Availability Zone
+      VolumeIops:
+        default: Data volume IOPS
+      VolumeSize:
+        default: Data volume size
+      VolumeType:
+        default: Data volume type
+      VPCID:
+        default: VPC ID
+Parameters:
+  DBInstanceClass:
+    AllowedValues:
+      - db.m5.large
+      - db.m5.xlarge
+      - db.m5.2xlarge
+      - db.m5.4xlarge
+      - db.m5.12xlarge
+      - db.m5.24xlarge
+      - db.r5.large
+      - db.r5.xlarge
+      - db.r5.2xlarge
+      - db.r5.4xlarge
+      - db.r5.12xlarge
+      - db.r5.24xlarge
+      - db.m4.large
+      - db.m4.xlarge
+      - db.m4.2xlarge
+      - db.m4.4xlarge
+      - db.m4.10xlarge
+      - db.m4.16xlarge
+      - db.r4.large
+      - db.r4.xlarge
+      - db.r4.2xlarge
+      - db.r4.4xlarge
+      - db.r4.8xlarge
+      - db.r4.16xlarge
+    ConstraintDescription: "Must select a valid database instance type."
+    Default: db.r5.large
+    Description: "The name of the compute and memory capacity class of the database instance."
+    Type: String
+  SQLEngineEdition:
+    AllowedValues:
+      - sqlserver-ee
+      - sqlserver-se
+      - sqlserver-ex
+      - sqlserver-web
+    ConstraintDescription: "Must select a MSSQL Database Engine Edition."
+    Default: sqlserver-ee
+    Description: "MSSQL Database Engine Edition."
+    Type: String
+  SQLEngineVersion:
+    AllowedValues:
+      - 14.00.3049.1.v1
+      - 14.00.3035.2.v1
+      - 14.00.3015.40.v1
+      - 14.00.1000.169.v1
+      - 13.00.5216.0.v1
+      - 13.00.4522.0.v1
+      - 13.00.4466.4.v1
+      - 13.00.4451.0.v1
+      - 13.00.4422.0.v1
+      - 13.00.2164.0.v1
+      - 12.00.5571.0.v1
+      - 12.00.5546.0.v1
+      - 12.00.5000.0.v1
+      - 11.00.7462.6.v1
+      - 11.00.6594.0.v1
+      - 11.00.6020.0.v1
+      - 11.00.5058.0.v1
+    ConstraintDescription: "Must select a MSSQL Database Engine Version."
+    Default: sqlserver-ee
+    Description: "MSSQL Database Engine Version."
+    Type: String
+  PrivateSubnet1ID:
+    Description: ID of the private subnet 1 in Availability Zone 1 (e.g., subnet-a0246dcd)
+    Type: AWS::EC2::Subnet::Id
+  PrivateSubnet2ID:
+    Description: ID of the private subnet 2 in Availability Zone 2 (e.g., subnet-a0246dcd)
+    Type: AWS::EC2::Subnet::Id
+  PrivateSubnet3ID:
+    Default: ''
+    Description: (Optional) ID of the optional private subnet 3 in Availability Zone
+      3 (e.g., subnet-a0246dcd)
+    Type: String
+  QSS3BucketName:
+    AllowedPattern: ^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$
+    ConstraintDescription: Quick Start bucket name can include numbers, lowercase
+      letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen
+      (-).
+    Default: aws-quickstart
+    Description: S3 bucket name for the Quick Start assets. Quick Start bucket name
+      can include numbers, lowercase letters, uppercase letters, and hyphens (-).
+      It cannot start or end with a hyphen (-).
+    Type: String
+  QSS3KeyPrefix:
+    AllowedPattern: ^[0-9a-zA-Z-/]*$
+    ConstraintDescription: Quick Start key prefix can include numbers, lowercase letters,
+      uppercase letters, hyphens (-), and forward slash (/).
+    Default: quickstart-microsoft-sql/
+    Description: S3 key prefix for the Quick Start assets. Quick Start key prefix
+      can include numbers, lowercase letters, uppercase letters, hyphens (-), and
+      forward slash (/).
+    Type: String
+  SQLLicenseProvided:
+    AllowedValues:
+      - 'yes'
+      - 'no'
+    Default: 'yes'
+    Description: License SQL Server from AWS Marketplace
+    Type: String
+  SQLServerVersion:
+    AllowedValues:
+      - '2017'
+      - '2016'
+    Default: '2017'
+    Description: Version of SQL Server to install on failover cluster nodes
+    Type: String
+  SQLMasterUserName:
+    AllowedPattern: '[a-zA-Z0-9]*'
+    Default: sqlsa
+    Description: User name for the SQL Server service account. This account is a domain
+      user.
+    MaxLength: '25'
+    MinLength: '5'
+    Type: String
+  SQLMasterUserPassword:
+    AllowedPattern: (?=^.{6,255}$)((?=.*\d)(?=.*[A-Z])(?=.*[a-z])|(?=.*\d)(?=.*[^A-Za-z0-9])(?=.*[a-z])|(?=.*[^A-Za-z0-9])(?=.*[A-Z])(?=.*[a-z])|(?=.*\d)(?=.*[A-Z])(?=.*[^A-Za-z0-9]))^.*
+    Description: Password for the SQL Service account. Must be at least 8 characters
+      containing letters, numbers and symbols
+    MaxLength: '32'
+    MinLength: '8'
+    NoEcho: 'true'
+    Type: String
+    VolumeIops:
+    Default: '1000'
+    Description: Provisioned IOPS for the SQL Data, Logs and TempDb volumes. This
+      parameter is only applicable when SQL Server Volume Type is set to "io1"
+    MaxValue: '20000'
+    MinValue: '100'
+    Type: Number
+  VolumeSize:
+    Default: '500'
+    Description: Volume size for the SQL Data, Logs and TempDb volumes, in GiB
+    MaxValue: '16000'
+    MinValue: '100'
+    Type: Number
+  VolumeType:
+    AllowedValues:
+      - gp2
+      - io1
+    Default: gp2
+    Description: Volume type for the SQL Data, Logs and TempDb volumes
+    Type: String
+  VPCID:
+    Description: ID of the VPC (e.g., vpc-0343606e)
+    Type: AWS::EC2::VPC::Id
+Conditions:
+  GovCloudCondition: !Equals
+    - !Ref 'AWS::Region'
+    - us-gov-west-1
+Rules:
+  SubnetsInVPC:
+    Assertions:
+      - Assert: !EachMemberIn
+          - !ValueOfAll
+            - AWS::EC2::Subnet::Id
+            - VpcId
+          - !RefAll 'AWS::EC2::VPC::Id'
+        AssertDescription: All subnets must in the VPC
+Resources:
+  SQLSecrets:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Name: !Sub 'AWSQuickStart/${AWS::StackName}/SQLSecrets'
+      Description: MS SQL Credentials for Quick Start
+      SecretString: !Sub '{ "username" : "${SQLServiceAccount}", "password" : "${SQLServiceAccountPassword}" }'
+  RDSSQL:
+    Type: "AWS::RDS::DBInstance" 
+    Properties: 
+      AllocatedStorage: !Ref VolumeSize
+      DBInstanceClass: !Ref DBInstanceClass
+      Engine: !Ref SQLEngineVersion
+      EngineVersion: !Ref SQLEngineVersion
+      Iops: !Ref VolumeIops
+      MasterUserPassword: !Ref SQLMasterUserPassword
+      MasterUsername: !Ref SQLMasterUserName
+      MultiAZ: True
+  WSFCRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Policies:
+        - PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Action:
+                  - s3:GetObject
+                Resource: !Sub 'arn:${AWS::Partition}:s3:::${QSS3BucketName}/${QSS3KeyPrefix}*'
+                Effect: Allow
+          PolicyName: aws-quick-start-s3-policy
+        - PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - secretsmanager:GetSecretValue
+                  - secretsmanager:DescribeSecret
+                Resource: 
+                  - !Ref 'SQLSecrets'
+                  - !Ref 'ADAdminSecrets'
+              - Effect: Allow
+                Action:
+                  - ssm:StartAutomationExecution
+                Resource: '*'
+          PolicyName: QS-MSSQL-SSM
+        - PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - iam:PassRole
+                Resource: !Sub 'arn:${AWS::Partition}:iam::${AWS::AccountId}:role/${AWSQuickstartMSSQLRole}'
+          PolicyName: QS-MSSQL-SSM-PassRole
+      Path: /
+      ManagedPolicyArns:
+        - !Sub 'arn:${AWS::Partition}:iam::aws:policy/service-role/AmazonEC2RoleforSSM'
+        - !Sub 'arn:${AWS::Partition}:iam::aws:policy/AmazonEC2ReadOnlyAccess'
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action:
+              - sts:AssumeRole
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+                - ssm.amazonaws.com
+            Effect: Allow
+        Version: '2012-10-17'
+  WSFCProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Roles:
+        - !Ref 'WSFCRole'
+      Path: /
+  WSFCSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Enable the WSFC and SQL AlwaysOn Availability Group communications
+      VpcId: !Ref 'VPCID'
+  WSFCSecurityGroupIngressIcmp:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: !Ref 'WSFCSecurityGroup'
+      SourceSecurityGroupId: !Ref 'WSFCSecurityGroup'
+      IpProtocol: icmp
+      FromPort: '-1'
+      ToPort: '-1'
+  WSFCSecurityGroupIngressTcp135:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: !Ref 'WSFCSecurityGroup'
+      SourceSecurityGroupId: !Ref 'WSFCSecurityGroup'
+      IpProtocol: tcp
+      FromPort: '135'
+      ToPort: '135'
+  WSFCSecurityGroupIngressTcp137:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: !Ref 'WSFCSecurityGroup'
+      SourceSecurityGroupId: !Ref 'WSFCSecurityGroup'
+      IpProtocol: tcp
+      FromPort: '137'
+      ToPort: '137'
+  WSFCSecurityGroupIngressTcp445:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: !Ref 'WSFCSecurityGroup'
+      SourceSecurityGroupId: !Ref 'WSFCSecurityGroup'
+      IpProtocol: tcp
+      FromPort: '445'
+      ToPort: '445'
+  WSFCSecurityGroupIngressTcp1433:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: !Ref 'WSFCSecurityGroup'
+      SourceSecurityGroupId: !Ref 'WSFCSecurityGroup'
+      IpProtocol: tcp
+      FromPort: '1433'
+      ToPort: '1434'
+  WSFCSecurityGroupIngressTcp3343:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: !Ref 'WSFCSecurityGroup'
+      SourceSecurityGroupId: !Ref 'WSFCSecurityGroup'
+      IpProtocol: tcp
+      FromPort: '3343'
+      ToPort: '3343'
+  WSFCSecurityGroupIngressTcp5022:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: !Ref 'WSFCSecurityGroup'
+      SourceSecurityGroupId: !Ref 'WSFCSecurityGroup'
+      IpProtocol: tcp
+      FromPort: '5022'
+      ToPort: '5022'
+  WSFCSecurityGroupIngressTcp5985:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: !Ref 'WSFCSecurityGroup'
+      SourceSecurityGroupId: !Ref 'WSFCSecurityGroup'
+      IpProtocol: tcp
+      FromPort: '5985'
+      ToPort: '5985'
+  WSFCSecurityGroupIngressUdp137:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: !Ref 'WSFCSecurityGroup'
+      SourceSecurityGroupId: !Ref 'WSFCSecurityGroup'
+      IpProtocol: udp
+      FromPort: '137'
+      ToPort: '137'
+  WSFCSecurityGroupIngressUdp3343:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: !Ref 'WSFCSecurityGroup'
+      SourceSecurityGroupId: !Ref 'WSFCSecurityGroup'
+      IpProtocol: udp
+      FromPort: '3343'
+      ToPort: '3343'
+  WSFCSecurityGroupIngressUdp1434:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: !Ref 'WSFCSecurityGroup'
+      SourceSecurityGroupId: !Ref 'WSFCSecurityGroup'
+      IpProtocol: udp
+      FromPort: '1434'
+      ToPort: '1434'
+  WSFCSecurityGroupIngressUdpHighPorts:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: !Ref 'WSFCSecurityGroup'
+      SourceSecurityGroupId: !Ref 'WSFCSecurityGroup'
+      IpProtocol: udp
+      FromPort: '49152'
+      ToPort: '65535'
+  WSFCSecurityGroupIngressTcpHighPorts:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: !Ref 'WSFCSecurityGroup'
+      SourceSecurityGroupId: !Ref 'WSFCSecurityGroup'
+      IpProtocol: tcp
+      FromPort: '49152'
+      ToPort: '65535'
+  SQLServerAccessSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      VpcId: !Ref 'VPCID'
+      GroupDescription: Allows access to SQL Servers
+  WSFCClientSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: SQL Client access ports
+      VpcId: !Ref 'VPCID'
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: '1433'
+          ToPort: '1433'
+          SourceSecurityGroupId: !Ref 'SQLServerAccessSecurityGroup'
+Outputs:
+  WSFCNode1NetBIOSName:
+    Value: !Ref 'WSFCNode1NetBIOSName'
+    Description: NetBIOS name of the 1st WSFC Node
+  WSFCNode2NetBIOSName:
+    Value: !Ref 'WSFCNode2NetBIOSName'
+    Description: NetBIOS name of the 2nd WSFC Node
+  WSFCNode3NetBIOSName:
+    Condition: ThirdAzIsFullNode
+    Value: !Ref 'WSFCNode3NetBIOSName'
+    Description: NetBIOS name of the 3rd WSFC Node
+  SQLServerAccessSecurityGroupID:
+    Value: !Ref 'SQLServerAccessSecurityGroup'
+    Description: Add instances that require access to SQL to this Security Group

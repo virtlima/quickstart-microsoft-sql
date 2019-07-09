@@ -34,8 +34,7 @@ Metadata:
           - DomainNetBIOSName
           - DomainAdminPassword
       - Label:
-          default: Self-Managed Active Directory configuration (for non-AWS Directory
-            Service architecture)
+          default: Self-managed Active Directory configuration
         Parameters:
           - DomainAdminUser
           - ADServer1InstanceType
@@ -45,13 +44,13 @@ Metadata:
           - ADServer2NetBIOSName
           - ADServer2PrivateIP
       - Label:
-          default: Remote desktop gateway configuration
+          default: Remote Desktop Gateway configuration
         Parameters:
           - RDGWCIDR
           - NumberOfRDGWHosts
           - RDGWInstanceType
       - Label:
-          default: SQL server configuration
+          default: SQL Server configuration
         Parameters:
           - SQLServerVersion
           - SQLServiceAccount
@@ -90,21 +89,21 @@ Metadata:
       ADScenarioType:
         default: AD scenario type
       ADServer1InstanceType:
-        default: Domain Controller 1 instance type
+        default: Domain controller 1 instance type
       ADServer1NetBIOSName:
-        default: Domain Controller 1 NetBIOS name
+        default: Domain controller 1 NetBIOS name
       ADServer1PrivateIP:
-        default: Domain Controller 1 private IP address
+        default: Domain controller 1 private IP address
       ADServer2InstanceType:
-        default: Domain Controller 2 instance type
+        default: Domain controller 2 instance type
       ADServer2NetBIOSName:
-        default: Domain Controller 2 NetBIOS name
+        default: Domain controller 2 NetBIOS name
       ADServer2PrivateIP:
-        default: Domain Controller 2 private IP address
+        default: Domain controller 2 private IP address
       AvailabilityZones:
         default: Availability Zones
       AvailabiltyGroupName:
-        default: Availabilty group name
+        default: Availability group name
       ClusterName:
         default: Cluster NetBIOS name
       DedicatedHostAMI:
@@ -140,25 +139,25 @@ Metadata:
       QSS3KeyPrefix:
         default: Quick Start S3 key prefix
       RDGWInstanceType:
-        default: Remote desktop gateway instance type
+        default: RDGW instance type
       RDGWCIDR:
-        default: Allowed remote desktop gateway external access CIDR
+        default: Allowed RDGW external access CIDR
       SQLLicenseProvided:
-        default: Amazon-provided SQL server license
+        default: Amazon-provided SQL Server license
       SQLServerVersion:
-        default: SQL server version
+        default: SQL Server version
       SQLServiceAccount:
         default: Service account name
       SQLServiceAccountPassword:
         default: Service account password
       ThirdAZ:
-        default: Third AZ
+        default: Third Availability Zone
       VolumeIops:
-        default: SQL server volume IOPS
+        default: SQL Server volume IOPS
       VolumeSize:
-        default: SQL server volume size
+        default: SQL Server volume size
       VolumeType:
-        default: SQL server volume type
+        default: SQL Server volume type
       VPCCIDR:
         default: VPC CIDR
       WSFCFileServerInstanceType:
@@ -174,7 +173,7 @@ Metadata:
       WSFCNode1PrivateIP2:
         default: Cluster node 1 private IP address 2
       WSFCNode1PrivateIP3:
-        default: Cluster node 1 Private IP address 3
+        default: Cluster node 1 private IP address 3
       WSFCNode2NetBIOSName:
         default: Cluster node 2 NetBIOS name
       WSFCNode2PrivateIP1:
@@ -214,12 +213,12 @@ Parameters:
       - m5.2xlarge
       - m5.4xlarge
     Default: m5.xlarge
-    Description: Amazon EC2 instance type for the first Active Directory instance
+    Description: Amazon EC2 instance type for the first Active Directory instance.
     Type: String
   ADServer1NetBIOSName:
     AllowedPattern: '[a-zA-Z0-9\-]+'
     Default: DC1
-    Description: NetBIOS name of the first Active Directory server (up to 15 characters)
+    Description: NetBIOS name of the first Active Directory server (up to 15 characters).
     MaxLength: '15'
     MinLength: '1'
     Type: String
@@ -227,7 +226,7 @@ Parameters:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$
     Default: 10.0.0.10
     Description: Fixed private IP for the first Active Directory server located in
-      Availability Zone 1
+      Availability Zone 1.
     Type: String
   ADServer2InstanceType:
     AllowedValues:
@@ -241,12 +240,12 @@ Parameters:
       - m5.2xlarge
       - m5.4xlarge
     Default: m5.xlarge
-    Description: Amazon EC2 instance type for the second Active Directory instance
+    Description: Amazon EC2 instance type for the second Active Directory instance.
     Type: String
   ADServer2NetBIOSName:
     AllowedPattern: '[a-zA-Z0-9\-]+'
     Default: DC2
-    Description: NetBIOS name of the second Active Directory server (up to 15 characters)
+    Description: NetBIOS name of the second Active Directory server (up to 15 characters).
     MaxLength: '15'
     MinLength: '1'
     Type: String
@@ -254,37 +253,37 @@ Parameters:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$
     Default: 10.0.32.10
     Description: Fixed private IP for the second Active Directory server located in
-      Availability Zone 2
+      Availability Zone 2.
     Type: String
   AvailabilityZones:
     Description: >-
       List of Availability Zones to use for the subnets in the VPC. Note: The logical
-      order is preserved and that 2 AZ's must be provided unless the Third AZ parameter
-      is specified, in which case 3 AZ's must me provided.
+      order is preserved and 2 zones must be provided unless the Third Availability Zone parameter
+      is specified, in which case 3 zones must be provided.
     Type: List<AWS::EC2::AvailabilityZone::Name>
   ClusterName:
     AllowedPattern: '[a-zA-Z0-9\-]+'
     Default: "WSFCCluster1"
-    Description: "NetBIOS name of the Cluster (up to 15 characters)"
+    Description: "NetBIOS name of the cluster (up to 15 characters)."
     MaxLength: '15'
     MinLength: '1'
     Type: "String"
   AvailabiltyGroupName:
     AllowedPattern: '[a-zA-Z0-9\-]+'
     Default: "SQLAG1"
-    Description: "NetBIOS name of the Availablity Group (up to 15 characters)"
+    Description: "NetBIOS name of the Availablity Group (up to 15 characters)."
     MaxLength: '15'
     MinLength: '1'
     Type: "String"
   DedicatedHostAMI:
     Default: ''
     Description: If host type is set to "Dedicated" or "Dedicated Host", you need
-      to specify your imported BYOL AMI id
+      to specify your imported BYOL AMI ID.
     Type: String
   DomainAdminPassword:
     AllowedPattern: (?=^.{6,255}$)((?=.*\d)(?=.*[A-Z])(?=.*[a-z])|(?=.*\d)(?=.*[^A-Za-z0-9])(?=.*[a-z])|(?=.*[^A-Za-z0-9])(?=.*[A-Z])(?=.*[a-z])|(?=.*\d)(?=.*[A-Z])(?=.*[^A-Za-z0-9]))^.*
     Description: Password for the domain admin user. Must be at least 8 characters
-      containing letters, numbers and symbols
+      containing letters, numbers, and symbols.
     MaxLength: '32'
     MinLength: '8'
     NoEcho: 'true'
@@ -293,8 +292,8 @@ Parameters:
     AllowedPattern: '[a-zA-Z0-9]*'
     Default: StackAdmin
     Description: >-
-      User name for the account that will be added as Domain Administrator. This is
-      separate from the default "Administrator" account. Note: This user will always
+      User name for the account that will be added as domain administrator. This is
+      separate from the default administrator account. Note: This user will always
       default to "Admin" when using AWS Directory Service regardless of the value
       provided.
     MaxLength: '25'
@@ -303,8 +302,7 @@ Parameters:
   DomainDNSName:
     AllowedPattern: '[a-zA-Z0-9\-]+\..+'
     Default: example.com
-    Description: Fully qualified domain name (FQDN) of the forest root domain e.g.
-      example.com
+    Description: Fully qualified domain name (FQDN) of the forest root domain.
     MaxLength: '255'
     MinLength: '2'
     Type: String
@@ -312,7 +310,7 @@ Parameters:
     AllowedPattern: '[a-zA-Z0-9\-]+'
     Default: example
     Description: NetBIOS name of the domain (up to 15 characters) for users of earlier
-      versions of Windows e.g. EXAMPLE
+      versions of Windows.
     MaxLength: '15'
     MinLength: '1'
     Type: String
@@ -322,12 +320,12 @@ Parameters:
       - Dedicated
       - Dedicated Host
     Default: Shared
-    Description: Host Type, If dedicated or Dedicated Host is selected hosts will
-      be created in each AZ
+    Description: Host type. If Dedicated or Dedicated Host is selected, hosts will
+      be created in each Availability Zone.
     Type: String
   KeyPairName:
     Description: Public/private key pairs allow you to securely connect to your instance
-      after it launches
+      after it launches.
     Type: AWS::EC2::KeyPair::KeyName
   NumberOfRDGWHosts:
     AllowedValues:
@@ -336,55 +334,55 @@ Parameters:
       - '3'
       - '4'
     Default: '1'
-    Description: Enter the number of Remote Desktop Gateway hosts to create
+    Description: Enter the number of Remote Desktop Gateway hosts to create.
     Type: String
   PrivateSubnet1CIDR:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
     Default: 10.0.0.0/19
-    Description: CIDR Block for private subnet 1 located in Availability Zone 1.
+    Description: CIDR block for private subnet 1 located in Availability Zone 1.
     Type: String
   PrivateSubnet2CIDR:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
     Default: 10.0.32.0/19
-    Description: CIDR Block for private subnet 2 located in Availability Zone 2.
+    Description: CIDR block for private subnet 2 located in Availability Zone 2.
     Type: String
   PrivateSubnet3CIDR:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
     Default: 10.0.64.0/19
-    Description: (Optional) CIDR Block for optional private subnet 3 located in Availability
+    Description: (Optional) CIDR block for optional private subnet 3 located in Availability
       Zone 3.
     Type: String
   PublicSubnet1CIDR:
     Default: 10.0.128.0/20
-    Description: CIDR Block for the public DMZ subnet 2 located in Availability Zone
-      2
+    Description: CIDR block for the public subnet 2 located in Availability Zone
+      2.
     Type: String
   PublicSubnet2CIDR:
     Default: 10.0.144.0/20
-    Description: CIDR Block for the optional public DMZ subnet 3 located in Availability
-      Zone 3
+    Description: CIDR block for the optional public subnet 3 located in Availability
+      Zone 3.
     Type: String
   PublicSubnet3CIDR:
     Default: 10.0.160.0/20
-    Description: (Optional) CIDR Block for the optional public DMZ subnet 3 located
-      in Availability Zone 3
+    Description: (Optional) CIDR block for the optional public subnet 3 located
+      in Availability Zone 3.
     Type: String
   QSS3BucketName:
     AllowedPattern: ^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$
-    ConstraintDescription: Quick Start bucket name can include numbers, lowercase
+    ConstraintDescription: Can include numbers, lowercase
       letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen
       (-).
     Default: aws-quickstart
-    Description: S3 bucket name for the Quick Start assets. Quick Start bucket name
+    Description: S3 bucket name for the Quick Start assets. This name
       can include numbers, lowercase letters, uppercase letters, and hyphens (-).
       It cannot start or end with a hyphen (-).
     Type: String
   QSS3KeyPrefix:
     AllowedPattern: ^[0-9a-zA-Z-/]*$
-    ConstraintDescription: Quick Start key prefix can include numbers, lowercase letters,
+    ConstraintDescription: Can include numbers, lowercase letters,
       uppercase letters, hyphens (-), and forward slash (/).
     Default: quickstart-microsoft-sql/
-    Description: S3 key prefix for the Quick Start assets. Quick Start key prefix
+    Description: S3 key prefix for the Quick Start assets. This prefix
       can include numbers, lowercase letters, uppercase letters, hyphens (-), and
       forward slash (/).
     Type: String
@@ -399,39 +397,38 @@ Parameters:
       - m4.2xlarge
       - m4.4xlarge
     Default: t2.large
-    Description: Amazon EC2 instance type for the Remote Desktop Gateway instances
+    Description: Amazon EC2 instance type for the Remote Desktop Gateway instances.
     Type: String
   RDGWCIDR:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
     ConstraintDescription: CIDR block parameter must be in the form x.x.x.x/x
-    Description: Allowed CIDR Block for external access to the Remote Desktop Gateways
+    Description: Allowed CIDR block for external access to the Remote Desktop Gateway instances.
     Type: String
   SQLLicenseProvided:
     AllowedValues:
       - 'yes'
       - 'no'
     Default: 'yes'
-    Description: License SQL Server from AWS Marketplace
+    Description: License SQL Server from AWS Marketplace.
     Type: String
   SQLServerVersion:
     AllowedValues:
       - '2017'
       - '2016'
     Default: '2017'
-    Description: Version of SQL Server to install on Failover Cluster Nodes
+    Description: Version of SQL Server to install on failover cluster nodes.
     Type: String
   SQLServiceAccount:
     AllowedPattern: '[a-zA-Z0-9]*'
     Default: sqlsa
-    Description: User name for the SQL Server Service Account. This Account is a Domain
-      User.
+    Description: User name for the SQL Server service account. This account is a domain user.
     MaxLength: '25'
     MinLength: '5'
     Type: String
   SQLServiceAccountPassword:
     AllowedPattern: (?=^.{6,255}$)((?=.*\d)(?=.*[A-Z])(?=.*[a-z])|(?=.*\d)(?=.*[^A-Za-z0-9])(?=.*[a-z])|(?=.*[^A-Za-z0-9])(?=.*[A-Z])(?=.*[a-z])|(?=.*\d)(?=.*[A-Z])(?=.*[^A-Za-z0-9]))^.*
-    Description: Password for the SQL Service account. Must be at least 8 characters
-      containing letters, numbers and symbols
+    Description: Password for the SQL Server service account. Must be at least 8 characters,
+      containing letters, numbers and symbols.
     MaxLength: '32'
     MinLength: '8'
     NoEcho: 'true'
@@ -443,20 +440,20 @@ Parameters:
       - full
     Default: 'no'
     Description: >-
-      Enable a 3 AZ deployment, the 3rd AZ can either be used just for the witness,
-      or can be a full SQL cluster node. Note that if witness is chosen, the WFC File
-      Server Private IP Address parameter must be set to an IP in the 3rd subnet range.
+      Enable a deployment with three Availability Zones. The third Availability Zone can either be used just for the witness,
+      or it can be a full SQL cluster node. Note that if witness is chosen, the file
+      server private IP address parameter must be set to an IP in the third subnet range.
     Type: String
   VolumeIops:
     Default: '1000'
-    Description: Provisioned IOPS for the SQL Data, Logs and TempDb volumes. This
-      parameter is only applicable when SQL Server Volume Type is set to "io1"
+    Description: Provisioned IOPS for the SQL data, logs and tempDb volumes. This
+      parameter is applicable only when the SQL Server volume type is set to "io1".
     MaxValue: '20000'
     MinValue: '100'
     Type: Number
   VolumeSize:
     Default: '500'
-    Description: Volume size for the SQL Data, Logs and TempDb volumes, in GiB
+    Description: Volume size for the SQL data, logs and tempDb volumes, in GiB.
     MaxValue: '16000'
     MinValue: '100'
     Type: Number
@@ -465,18 +462,18 @@ Parameters:
       - gp2
       - io1
     Default: gp2
-    Description: Volume type for the SQL Data, Logs and TempDb volumes
+    Description: Volume type for the SQL data, logs and tempDb volumes.
     Type: String
   VPCCIDR:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(1[6-9]|2[0-8]))$
     ConstraintDescription: CIDR block parameter must be in the form x.x.x.x/16-28
     Default: 10.0.0.0/16
-    Description: CIDR Block for the VPC
+    Description: CIDR block for the VPC.
     Type: String
   WSFCFileServerNetBIOSName:
     AllowedPattern: '[a-zA-Z0-9\-]+'
     Default: WSFCFileServer
-    Description: NetBIOS name of the WSFCFileServer (up to 15 characters)
+    Description: NetBIOS name of the witness file server (up to 15 characters).
     MaxLength: '15'
     MinLength: '1'
     Type: String
@@ -490,80 +487,78 @@ Parameters:
       - t3.large
       - m5.large
     Default: m5.large
-    Description: Amazon EC2 instance type for a fileserver used to share install media,
-      witness and replication folders
+    Description: Amazon EC2 instance type for a fileserver for witness and replication folders.
     Type: String
   WSFCFileServerPrivateIP:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$
     Default: 10.0.0.200
-    Description: Primary private IP for the fileserver located in Availability Zone
-      1
+    Description: Primary private IP for the fileserver located in Availability Zone 1.
     Type: String
   WSFCNode1NetBIOSName:
     AllowedPattern: '[a-zA-Z0-9\-]+'
     Default: WSFCNode1
-    Description: NetBIOS name of the first WSFC Node (up to 15 characters)
+    Description: NetBIOS name of the first failover cluster node (up to 15 characters).
     MaxLength: '15'
     MinLength: '1'
     Type: String
   WSFCNode1PrivateIP1:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$
     Default: 10.0.0.100
-    Description: Primary private IP for WSFC Node 1
+    Description: Primary private IP for the first cluster node located in Availability Zone 1.
     Type: String
   WSFCNode1PrivateIP2:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$
     Default: 10.0.0.101
-    Description: Secondary private IP for WSFC Node 1
+    Description: Secondary private IP for failover cluster on first cluster node.
     Type: String
   WSFCNode1PrivateIP3:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$
     Default: 10.0.0.102
-    Description: Third private IP for WSFC Node 1
+    Description: Third private IP for SQL Server availability group listener on first cluster node.
     Type: String
   WSFCNode2NetBIOSName:
     AllowedPattern: '[a-zA-Z0-9\-]+'
     Default: WSFCNode2
-    Description: NetBIOS name of the second WSFC Node (up to 15 characters)
+    Description: NetBIOS name of the second WSFC node (up to 15 characters).
     MaxLength: '15'
     MinLength: '1'
     Type: String
   WSFCNode2PrivateIP1:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$
     Default: 10.0.32.100
-    Description: Primary private IP for WSFC Node 2
+    Description: Primary private IP for the second cluster node located in Availability Zone 2.
     Type: String
   WSFCNode2PrivateIP2:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$
     Default: 10.0.32.101
-    Description: Secondary private IP for WSFC Node 2
+    Description: Secondary private IP for failover cluster on second cluster node.
     Type: String
   WSFCNode2PrivateIP3:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$
     Default: 10.0.32.102
-    Description: Third private IP for WSFC Node 2
+    Description: Third private IP for SQL Server availability group listener on second cluster node.
     Type: String
   WSFCNode3NetBIOSName:
     AllowedPattern: '[a-zA-Z0-9\-]+'
     Default: WSFCNode3
-    Description: NetBIOS name of the optional third WSFC Node (up to 15 characters)
+    Description: NetBIOS name of the optional third WSFC node (up to 15 characters).
     MaxLength: '15'
     MinLength: '1'
     Type: String
   WSFCNode3PrivateIP1:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$
     Default: 10.0.64.100
-    Description: Primary private IP for optional WSFC Node 3
+    Description: Primary private IP for the optional third cluster node located in Availability Zone 3.
     Type: String
   WSFCNode3PrivateIP2:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$
     Default: 10.0.64.101
-    Description: Secondary private IP for optional WSFC Node 3
+    Description: Secondary private IP for failover cluster on optional third cluster node.
     Type: String
   WSFCNode3PrivateIP3:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$
     Default: 10.0.64.102
-    Description: Third private IP for optional WSFC Node 3
+    Description: Third private IP for SQL Server availability group listener on optional third cluster node.
     Type: String
   WSFCNodeInstanceType:
     AllowedValues:
@@ -579,7 +574,7 @@ Parameters:
     ConstraintDescription: Only EBS Optimized instance types r4.xlarge, r4.2xlarge,
       r4.4xlarge, r4.8xlarge allowed
     Default: r5.2xlarge
-    Description: Amazon EC2 instance type for the WSFC Nodes
+    Description: Amazon EC2 instance type for the failover cluster nodes.
     Type: String
 Conditions:
   UseAWSDirectoryServiceEE: !Equals

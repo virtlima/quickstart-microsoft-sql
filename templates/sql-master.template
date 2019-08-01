@@ -290,7 +290,7 @@ Parameters:
     Type: String
   DomainAdminUser:
     AllowedPattern: '[a-zA-Z0-9]*'
-    Default: StackAdmin
+    Default: Admin
     Description: >-
       User name for the account that will be added as domain administrator. This is
       separate from the default administrator account. Note: This user will always

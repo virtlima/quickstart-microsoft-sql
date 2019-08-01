@@ -1,0 +1,405 @@
+-----------------------------------------------------------------------------
+Region: eu-west-3
+StackName: tcat-tag-mssql-ec2-3rdaz-full-07069fca
+*****************************************************************************
+ResourceStatusReason:  
+The following resource(s) failed to create: [RDGWStack, SQLStack].
+*****************************************************************************
+*****************************************************************************
+Events:  
+TimeStamp                         ResourceStatus      ResourceType                LogicalResourceId                       ResourceStatusReason
+--------------------------------  ------------------  --------------------------  --------------------------------------  -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+2019-08-01 15:25:33.052000+00:00  CREATE_FAILED       AWS::CloudFormation::Stack  tcat-tag-mssql-ec2-3rdaz-full-07069fca  The following resource(s) failed to create: [RDGWStack, SQLStack].
+2019-08-01 15:25:32.384000+00:00  CREATE_FAILED       AWS::CloudFormation::Stack  SQLStack                                Resource creation cancelled
+2019-08-01 15:25:31.870000+00:00  CREATE_FAILED       AWS::CloudFormation::Stack  RDGWStack                               Embedded stack arn:aws:cloudformation:eu-west-3:037498179568:stack/tcat-tag-mssql-ec2-3rdaz-full-07069fca-RDGWStack-NS3IFBZAASU6/f46f8380-b46b-11e9-8220-0e152b111d1c was not successfully created: The following resource(s) failed to create: [RDGWAutoScalingGroup].
+2019-08-01 14:52:17.373000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack  RDGWStack                               Resource creation Initiated
+2019-08-01 14:52:16.999000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack  SQLStack                                Resource creation Initiated
+2019-08-01 14:52:16.222000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack  RDGWStack
+2019-08-01 14:52:15.618000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack  SQLStack
+2019-08-01 14:52:11.415000+00:00  CREATE_COMPLETE     AWS::CloudFormation::Stack  ADStack
+2019-08-01 14:12:52.929000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack  ADStack                                 Resource creation Initiated
+2019-08-01 14:12:51.526000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack  ADStack
+2019-08-01 14:12:48.097000+00:00  CREATE_COMPLETE     AWS::CloudFormation::Stack  VPCStack
+2019-08-01 14:08:44.689000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack  VPCStack                                Resource creation Initiated
+2019-08-01 14:08:43.071000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack  VPCStack
+2019-08-01 14:08:36.499000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack  tcat-tag-mssql-ec2-3rdaz-full-07069fca  User Initiated
+*****************************************************************************
+-----------------------------------------------------------------------------
+Tested on: Thursday, 01. August 2019 10:28AM
+-----------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------
+Region: eu-west-3
+StackName: tcat-tag-mssql-ec2-3rdaz-full-07069fca-ADStack-13J8TJ6S8E5SI
+*****************************************************************************
+ResourceStatusReason:  
+Stack launch was successful
+*****************************************************************************
+*****************************************************************************
+Events:  
+TimeStamp                         ResourceStatus      ResourceType                         LogicalResourceId                                             ResourceStatusReason
+--------------------------------  ------------------  -----------------------------------  ------------------------------------------------------------  ---------------------------------------------------------
+2019-08-01 14:50:33.316000+00:00  CREATE_COMPLETE     AWS::CloudFormation::Stack           tcat-tag-mssql-ec2-3rdaz-full-07069fca-ADStack-13J8TJ6S8E5SI
+2019-08-01 14:50:31.103000+00:00  CREATE_COMPLETE     AWS::EC2::VPCDHCPOptionsAssociation  VPCDHCPOptionsAssociation
+2019-08-01 14:50:30.957000+00:00  CREATE_IN_PROGRESS  AWS::EC2::VPCDHCPOptionsAssociation  VPCDHCPOptionsAssociation                                     Resource creation Initiated
+2019-08-01 14:50:30.576000+00:00  CREATE_IN_PROGRESS  AWS::EC2::VPCDHCPOptionsAssociation  VPCDHCPOptionsAssociation
+2019-08-01 14:50:26.221000+00:00  CREATE_COMPLETE     AWS::EC2::DHCPOptions                DHCPOptions
+2019-08-01 14:50:10.247000+00:00  CREATE_IN_PROGRESS  AWS::EC2::DHCPOptions                DHCPOptions                                                   Resource creation Initiated
+2019-08-01 14:50:09.792000+00:00  CREATE_IN_PROGRESS  AWS::EC2::DHCPOptions                DHCPOptions
+2019-08-01 14:50:05.875000+00:00  CREATE_COMPLETE     AWS::EC2::Instance                   DomainController2
+2019-08-01 14:50:05.196000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Instance                   DomainController2                                             Received SUCCESS signal with UniqueId i-053a9cf9fcf9a67ec
+2019-08-01 14:16:01.627000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Instance                   DomainController2                                             Resource creation Initiated
+2019-08-01 14:16:00.142000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Instance                   DomainController2
+2019-08-01 14:15:56.028000+00:00  CREATE_COMPLETE     AWS::EC2::Instance                   DomainController1
+2019-08-01 14:15:40.254000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Instance                   DomainController1                                             Resource creation Initiated
+2019-08-01 14:15:38.898000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Instance                   DomainController1
+2019-08-01 14:15:34.807000+00:00  CREATE_COMPLETE     AWS::IAM::InstanceProfile            ADServerProfile
+2019-08-01 14:13:41.566000+00:00  CREATE_COMPLETE     AWS::EC2::SecurityGroupIngress       DCSecurityGroupIngress
+2019-08-01 14:13:40.897000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroupIngress       DCSecurityGroupIngress                                        Resource creation Initiated
+2019-08-01 14:13:40.752000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroupIngress       DCSecurityGroupIngress
+2019-08-01 14:13:36.963000+00:00  CREATE_COMPLETE     AWS::EC2::SecurityGroup              DomainControllersSG
+2019-08-01 14:13:34.314000+00:00  CREATE_IN_PROGRESS  AWS::IAM::InstanceProfile            ADServerProfile                                               Resource creation Initiated
+2019-08-01 14:13:33.732000+00:00  CREATE_IN_PROGRESS  AWS::IAM::InstanceProfile            ADServerProfile
+2019-08-01 14:13:30.266000+00:00  CREATE_COMPLETE     AWS::IAM::Role                       ADServerRole
+2019-08-01 14:13:25.298000+00:00  CREATE_COMPLETE     AWS::IAM::Policy                     ADSsmPassRolePolicy
+2019-08-01 14:13:21.098000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroup              DomainControllersSG                                           Resource creation Initiated
+2019-08-01 14:13:17.133000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Policy                     ADSsmPassRolePolicy                                           Resource creation Initiated
+2019-08-01 14:13:16.771000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Role                       ADServerRole                                                  Resource creation Initiated
+2019-08-01 14:13:16.198000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Role                       ADServerRole
+2019-08-01 14:13:16.159000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroup              DomainControllersSG
+2019-08-01 14:13:15.630000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Policy                     ADSsmPassRolePolicy
+2019-08-01 14:13:12.191000+00:00  CREATE_COMPLETE     AWS::EC2::SecurityGroup              DomainMembersSG
+2019-08-01 14:13:12.090000+00:00  CREATE_COMPLETE     AWS::IAM::Role                       AWSQuickstartADDSRole
+2019-08-01 14:13:06.394000+00:00  CREATE_COMPLETE     AWS::SSM::Document                   AWSQuickstartActiveDirectoryDS
+2019-08-01 14:13:05.978000+00:00  CREATE_IN_PROGRESS  AWS::SSM::Document                   AWSQuickstartActiveDirectoryDS                                Resource creation Initiated
+2019-08-01 14:13:04.841000+00:00  CREATE_IN_PROGRESS  AWS::SSM::Document                   AWSQuickstartActiveDirectoryDS
+2019-08-01 14:13:03.995000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroup              DomainMembersSG                                               Resource creation Initiated
+2019-08-01 14:13:02.041000+00:00  CREATE_COMPLETE     AWS::SecretsManager::Secret          RestoreModeSecrets
+2019-08-01 14:13:01.814000+00:00  CREATE_IN_PROGRESS  AWS::SecretsManager::Secret          RestoreModeSecrets                                            Resource creation Initiated
+2019-08-01 14:13:01.616000+00:00  CREATE_COMPLETE     AWS::SecretsManager::Secret          ADAltUserSecrets
+2019-08-01 14:13:01.304000+00:00  CREATE_IN_PROGRESS  AWS::SecretsManager::Secret          ADAltUserSecrets                                              Resource creation Initiated
+2019-08-01 14:13:00.787000+00:00  CREATE_COMPLETE     AWS::SecretsManager::Secret          ADAdminSecrets
+2019-08-01 14:13:00.780000+00:00  CREATE_COMPLETE     AWS::Logs::LogGroup                  QuickStartLogs
+2019-08-01 14:13:00.631000+00:00  CREATE_IN_PROGRESS  AWS::SecretsManager::Secret          ADAdminSecrets                                                Resource creation Initiated
+2019-08-01 14:13:00.375000+00:00  CREATE_IN_PROGRESS  AWS::Logs::LogGroup                  QuickStartLogs                                                Resource creation Initiated
+2019-08-01 14:12:59.934000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Role                       AWSQuickstartADDSRole                                         Resource creation Initiated
+2019-08-01 14:12:59.784000+00:00  CREATE_IN_PROGRESS  AWS::Logs::LogGroup                  QuickStartLogs
+2019-08-01 14:12:59.525000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Role                       AWSQuickstartADDSRole
+2019-08-01 14:12:59.481000+00:00  CREATE_IN_PROGRESS  AWS::SecretsManager::Secret          ADAltUserSecrets
+2019-08-01 14:12:59.415000+00:00  CREATE_IN_PROGRESS  AWS::SecretsManager::Secret          RestoreModeSecrets
+2019-08-01 14:12:59.329000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroup              DomainMembersSG
+2019-08-01 14:12:58.803000+00:00  CREATE_IN_PROGRESS  AWS::SecretsManager::Secret          ADAdminSecrets
+2019-08-01 14:12:52.816000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack           tcat-tag-mssql-ec2-3rdaz-full-07069fca-ADStack-13J8TJ6S8E5SI  User Initiated
+*****************************************************************************
+-----------------------------------------------------------------------------
+Tested on: Thursday, 01. August 2019 10:28AM
+-----------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------
+Region: eu-west-3
+StackName: tcat-tag-mssql-ec2-3rdaz-full-07069fca-RDGWStack-NS3IFBZAASU6
+*****************************************************************************
+ResourceStatusReason:  
+The following resource(s) failed to create: [RDGWAutoScalingGroup].
+*****************************************************************************
+*****************************************************************************
+Events:  
+TimeStamp                         ResourceStatus      ResourceType                           LogicalResourceId                                              ResourceStatusReason
+--------------------------------  ------------------  -------------------------------------  -------------------------------------------------------------  --------------------------------------------------------------------------------------------------------------------
+2019-08-01 15:24:59.341000+00:00  CREATE_FAILED       AWS::CloudFormation::Stack             tcat-tag-mssql-ec2-3rdaz-full-07069fca-RDGWStack-NS3IFBZAASU6  The following resource(s) failed to create: [RDGWAutoScalingGroup].
+2019-08-01 15:24:58.653000+00:00  CREATE_FAILED       AWS::AutoScaling::AutoScalingGroup     RDGWAutoScalingGroup                                           Received 0 SUCCESS signal(s) out of 1.  Unable to satisfy 100% MinSuccessfulInstancesPercent requirement
+2019-08-01 15:24:57.772000+00:00  UPDATE_IN_PROGRESS  AWS::AutoScaling::AutoScalingGroup     RDGWAutoScalingGroup                                           Failed to receive 1 resource signal(s) for the current batch.  Each resource signal timeout is counted as a FAILURE.
+2019-08-01 14:54:56.393000+00:00  CREATE_IN_PROGRESS  AWS::AutoScaling::AutoScalingGroup     RDGWAutoScalingGroup                                           Resource creation Initiated
+2019-08-01 14:54:55.606000+00:00  CREATE_IN_PROGRESS  AWS::AutoScaling::AutoScalingGroup     RDGWAutoScalingGroup
+2019-08-01 14:54:52.075000+00:00  CREATE_COMPLETE     AWS::AutoScaling::LaunchConfiguration  RDGWLaunchConfiguration
+2019-08-01 14:54:51.940000+00:00  CREATE_IN_PROGRESS  AWS::AutoScaling::LaunchConfiguration  RDGWLaunchConfiguration                                        Resource creation Initiated
+2019-08-01 14:54:51.415000+00:00  CREATE_IN_PROGRESS  AWS::AutoScaling::LaunchConfiguration  RDGWLaunchConfiguration
+2019-08-01 14:54:48.192000+00:00  CREATE_COMPLETE     AWS::IAM::InstanceProfile              RDGWHostProfile
+2019-08-01 14:52:47.480000+00:00  CREATE_IN_PROGRESS  AWS::IAM::InstanceProfile              RDGWHostProfile                                                Resource creation Initiated
+2019-08-01 14:52:47.093000+00:00  CREATE_IN_PROGRESS  AWS::IAM::InstanceProfile              RDGWHostProfile
+2019-08-01 14:52:43.393000+00:00  CREATE_COMPLETE     AWS::IAM::Role                         RDGWHostRole
+2019-08-01 14:52:39.261000+00:00  CREATE_COMPLETE     AWS::EC2::EIP                          EIP1
+2019-08-01 14:52:29.861000+00:00  CREATE_COMPLETE     AWS::EC2::SecurityGroup                RemoteDesktopGatewaySG
+2019-08-01 14:52:28.217000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroup                RemoteDesktopGatewaySG                                         Resource creation Initiated
+2019-08-01 14:52:24.255000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Role                         RDGWHostRole                                                   Resource creation Initiated
+2019-08-01 14:52:23.828000+00:00  CREATE_IN_PROGRESS  AWS::EC2::EIP                          EIP1                                                           Resource creation Initiated
+2019-08-01 14:52:23.547000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Role                         RDGWHostRole
+2019-08-01 14:52:23.445000+00:00  CREATE_IN_PROGRESS  AWS::EC2::EIP                          EIP1
+2019-08-01 14:52:23.343000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroup                RemoteDesktopGatewaySG
+2019-08-01 14:52:17.260000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack             tcat-tag-mssql-ec2-3rdaz-full-07069fca-RDGWStack-NS3IFBZAASU6  User Initiated
+*****************************************************************************
+-----------------------------------------------------------------------------
+Tested on: Thursday, 01. August 2019 10:28AM
+-----------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------
+Region: eu-west-3
+StackName: tcat-tag-mssql-ec2-3rdaz-full-07069fca-SQLStack-1J49PPP9EHBXV
+*****************************************************************************
+ResourceStatusReason:  
+Stack launch was successful
+*****************************************************************************
+*****************************************************************************
+Events:  
+TimeStamp                         ResourceStatus      ResourceType                              LogicalResourceId                                              ResourceStatusReason
+--------------------------------  ------------------  ----------------------------------------  -------------------------------------------------------------  ---------------------------
+2019-08-01 14:56:30.523000+00:00  CREATE_COMPLETE     AWS::EC2::VolumeAttachment                WSFCNode2Volume3Attachment
+2019-08-01 14:56:29.168000+00:00  CREATE_COMPLETE     AWS::EC2::VolumeAttachment                WSFCNode3Volume1Attachment
+2019-08-01 14:56:27.566000+00:00  CREATE_COMPLETE     AWS::EC2::VolumeAttachment                WSFCNode2Volume2Attachment
+2019-08-01 14:56:26.655000+00:00  CREATE_COMPLETE     AWS::EC2::VolumeAttachment                WSFCNode2Volume1Attachment
+2019-08-01 14:56:26.330000+00:00  CREATE_COMPLETE     AWS::EC2::VolumeAttachment                WSFCNode1Volume3Attachment
+2019-08-01 14:56:25.904000+00:00  CREATE_COMPLETE     AWS::EC2::VolumeAttachment                WSFCNode1Volume1Attachment
+2019-08-01 14:56:25.668000+00:00  CREATE_COMPLETE     AWS::EC2::VolumeAttachment                WSFCNode1Volume2Attachment
+2019-08-01 14:56:25.575000+00:00  CREATE_COMPLETE     AWS::EC2::VolumeAttachment                WSFCNode3Volume2Attachment
+2019-08-01 14:56:25.075000+00:00  CREATE_COMPLETE     AWS::EC2::VolumeAttachment                WSFCNode3Volume3Attachment
+2019-08-01 14:56:15.073000+00:00  CREATE_IN_PROGRESS  AWS::EC2::VolumeAttachment                WSFCNode2Volume3Attachment                                     Resource creation Initiated
+2019-08-01 14:56:13.776000+00:00  CREATE_IN_PROGRESS  AWS::EC2::VolumeAttachment                WSFCNode3Volume1Attachment                                     Resource creation Initiated
+2019-08-01 14:56:12.090000+00:00  CREATE_IN_PROGRESS  AWS::EC2::VolumeAttachment                WSFCNode2Volume2Attachment                                     Resource creation Initiated
+2019-08-01 14:56:11.158000+00:00  CREATE_IN_PROGRESS  AWS::EC2::VolumeAttachment                WSFCNode2Volume1Attachment                                     Resource creation Initiated
+2019-08-01 14:56:10.681000+00:00  CREATE_IN_PROGRESS  AWS::EC2::VolumeAttachment                WSFCNode1Volume3Attachment                                     Resource creation Initiated
+2019-08-01 14:56:10.561000+00:00  CREATE_IN_PROGRESS  AWS::EC2::VolumeAttachment                WSFCNode1Volume1Attachment                                     Resource creation Initiated
+2019-08-01 14:56:10.205000+00:00  CREATE_IN_PROGRESS  AWS::EC2::VolumeAttachment                WSFCNode1Volume2Attachment                                     Resource creation Initiated
+2019-08-01 14:56:10.156000+00:00  CREATE_IN_PROGRESS  AWS::EC2::VolumeAttachment                WSFCNode3Volume2Attachment                                     Resource creation Initiated
+2019-08-01 14:56:09.613000+00:00  CREATE_IN_PROGRESS  AWS::EC2::VolumeAttachment                WSFCNode3Volume3Attachment                                     Resource creation Initiated
+2019-08-01 14:55:59.591000+00:00  CREATE_IN_PROGRESS  AWS::EC2::VolumeAttachment                WSFCNode2Volume3Attachment
+2019-08-01 14:55:56.580000+00:00  CREATE_IN_PROGRESS  AWS::EC2::VolumeAttachment                WSFCNode2Volume2Attachment
+2019-08-01 14:55:55.626000+00:00  CREATE_IN_PROGRESS  AWS::EC2::VolumeAttachment                WSFCNode2Volume1Attachment
+2019-08-01 14:55:55.153000+00:00  CREATE_IN_PROGRESS  AWS::EC2::VolumeAttachment                WSFCNode1Volume1Attachment
+2019-08-01 14:55:55.124000+00:00  CREATE_IN_PROGRESS  AWS::EC2::VolumeAttachment                WSFCNode1Volume3Attachment
+2019-08-01 14:55:54.695000+00:00  CREATE_IN_PROGRESS  AWS::EC2::VolumeAttachment                WSFCNode3Volume2Attachment
+2019-08-01 14:55:54.518000+00:00  CREATE_IN_PROGRESS  AWS::EC2::VolumeAttachment                WSFCNode1Volume2Attachment
+2019-08-01 14:55:54.139000+00:00  CREATE_IN_PROGRESS  AWS::EC2::VolumeAttachment                WSFCNode3Volume3Attachment
+2019-08-01 14:55:54.024000+00:00  CREATE_IN_PROGRESS  AWS::EC2::VolumeAttachment                WSFCNode3Volume1Attachment
+2019-08-01 14:55:52.819000+00:00  CREATE_COMPLETE     AWS::EC2::Volume                          WSFCNode2Volume3
+2019-08-01 14:55:52.259000+00:00  CREATE_COMPLETE     AWS::EC2::Volume                          WSFCNode2Volume1
+2019-08-01 14:55:52.237000+00:00  CREATE_COMPLETE     AWS::EC2::Volume                          WSFCNode2Volume2
+2019-08-01 14:55:51.349000+00:00  CREATE_COMPLETE     AWS::EC2::Volume                          WSFCNode1Volume1
+2019-08-01 14:55:51.032000+00:00  CREATE_COMPLETE     AWS::EC2::Volume                          WSFCNode1Volume3
+2019-08-01 14:55:50.905000+00:00  CREATE_COMPLETE     AWS::EC2::Volume                          WSFCNode1Volume2
+2019-08-01 14:55:50.556000+00:00  CREATE_COMPLETE     AWS::EC2::Volume                          WSFCNode3Volume2
+2019-08-01 14:55:50.232000+00:00  CREATE_COMPLETE     AWS::EC2::Volume                          WSFCNode3Volume3
+2019-08-01 14:55:49.953000+00:00  CREATE_COMPLETE     AWS::EC2::Volume                          WSFCNode3Volume1
+2019-08-01 14:55:36.835000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Volume                          WSFCNode2Volume3                                               Resource creation Initiated
+2019-08-01 14:55:36.563000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Volume                          WSFCNode2Volume1                                               Resource creation Initiated
+2019-08-01 14:55:36.271000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Volume                          WSFCNode2Volume2                                               Resource creation Initiated
+2019-08-01 14:55:36.156000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Volume                          WSFCNode2Volume3
+2019-08-01 14:55:36.069000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Volume                          WSFCNode2Volume1
+2019-08-01 14:55:35.936000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::WaitCondition        SSMWaitCondition                                               Resource creation Initiated
+2019-08-01 14:55:35.783000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Volume                          WSFCNode2Volume2
+2019-08-01 14:55:35.710000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::WaitCondition        SSMWaitCondition
+2019-08-01 14:55:35.539000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Volume                          WSFCNode1Volume1                                               Resource creation Initiated
+2019-08-01 14:55:35.322000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Volume                          WSFCNode1Volume3                                               Resource creation Initiated
+2019-08-01 14:55:35.204000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Volume                          WSFCNode1Volume2                                               Resource creation Initiated
+2019-08-01 14:55:35.017000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Volume                          WSFCNode1Volume1
+2019-08-01 14:55:34.873000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Volume                          WSFCNode1Volume3
+2019-08-01 14:55:34.768000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Volume                          WSFCNode1Volume2
+2019-08-01 14:55:34.448000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Volume                          WSFCNode3Volume2                                               Resource creation Initiated
+2019-08-01 14:55:34.419000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Volume                          WSFCNode3Volume3                                               Resource creation Initiated
+2019-08-01 14:55:34.229000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Volume                          WSFCNode3Volume1                                               Resource creation Initiated
+2019-08-01 14:55:33.896000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Volume                          WSFCNode3Volume3
+2019-08-01 14:55:33.839000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Volume                          WSFCNode3Volume2
+2019-08-01 14:55:33.662000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Volume                          WSFCNode3Volume1
+2019-08-01 14:55:31.299000+00:00  CREATE_COMPLETE     AWS::EC2::Instance                        WSFCNode2
+2019-08-01 14:55:30.818000+00:00  CREATE_COMPLETE     AWS::EC2::Instance                        WSFCNode1
+2019-08-01 14:55:30.005000+00:00  CREATE_COMPLETE     AWS::EC2::Instance                        WSFCNode3
+2019-08-01 14:55:15.733000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Instance                        WSFCNode2                                                      Resource creation Initiated
+2019-08-01 14:55:14.847000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Instance                        WSFCNode1                                                      Resource creation Initiated
+2019-08-01 14:55:14.402000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Instance                        WSFCNode2
+2019-08-01 14:55:14.198000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Instance                        WSFCNode3                                                      Resource creation Initiated
+2019-08-01 14:55:13.451000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Instance                        WSFCNode1
+2019-08-01 14:55:12.797000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Instance                        WSFCNode3
+2019-08-01 14:55:08.886000+00:00  CREATE_COMPLETE     AWS::IAM::InstanceProfile                 WSFCProfile
+2019-08-01 14:53:08.476000+00:00  CREATE_IN_PROGRESS  AWS::IAM::InstanceProfile                 WSFCProfile                                                    Resource creation Initiated
+2019-08-01 14:53:08.052000+00:00  CREATE_IN_PROGRESS  AWS::IAM::InstanceProfile                 WSFCProfile
+2019-08-01 14:53:03.198000+00:00  CREATE_COMPLETE     AWS::IAM::Role                            WSFCRole
+2019-08-01 14:52:58.557000+00:00  CREATE_COMPLETE     AWS::IAM::Policy                          MSSQLSSMPassRolePolicy
+2019-08-01 14:52:50.268000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Policy                          MSSQLSSMPassRolePolicy                                         Resource creation Initiated
+2019-08-01 14:52:50.082000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Role                            WSFCRole                                                       Resource creation Initiated
+2019-08-01 14:52:49.395000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Role                            WSFCRole
+2019-08-01 14:52:49.097000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Policy                          MSSQLSSMPassRolePolicy
+2019-08-01 14:52:45.121000+00:00  CREATE_COMPLETE     AWS::IAM::Role                            AWSQuickstartMSSQLRole
+2019-08-01 14:52:39.241000+00:00  CREATE_COMPLETE     AWS::EC2::SecurityGroup                   WSFCClientSecurityGroup
+2019-08-01 14:52:38.176000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroup                   WSFCClientSecurityGroup                                        Resource creation Initiated
+2019-08-01 14:52:35.970000+00:00  CREATE_COMPLETE     AWS::EC2::SecurityGroupIngress            WSFCSecurityGroupIngressUdpHighPorts
+2019-08-01 14:52:35.563000+00:00  CREATE_COMPLETE     AWS::EC2::SecurityGroupIngress            WSFCSecurityGroupIngressIcmp
+2019-08-01 14:52:35.518000+00:00  CREATE_COMPLETE     AWS::EC2::SecurityGroupIngress            WSFCSecurityGroupIngressUdp3343
+2019-08-01 14:52:35.410000+00:00  CREATE_COMPLETE     AWS::EC2::SecurityGroupIngress            WSFCSecurityGroupIngressTcpHighPorts
+2019-08-01 14:52:35.403000+00:00  CREATE_COMPLETE     AWS::EC2::SecurityGroupIngress            WSFCSecurityGroupIngressTcp3343
+2019-08-01 14:52:35.343000+00:00  CREATE_COMPLETE     AWS::EC2::SecurityGroupIngress            WSFCSecurityGroupIngressTcp137
+2019-08-01 14:52:35.242000+00:00  CREATE_COMPLETE     AWS::EC2::SecurityGroupIngress            WSFCSecurityGroupIngressTcp135
+2019-08-01 14:52:35.133000+00:00  CREATE_COMPLETE     AWS::EC2::SecurityGroupIngress            WSFCSecurityGroupIngressUdp1434
+2019-08-01 14:52:35.021000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroupIngress            WSFCSecurityGroupIngressUdpHighPorts                           Resource creation Initiated
+2019-08-01 14:52:34.868000+00:00  CREATE_COMPLETE     AWS::EC2::SecurityGroupIngress            WSFCSecurityGroupIngressUdp137
+2019-08-01 14:52:34.726000+00:00  CREATE_COMPLETE     AWS::EC2::SecurityGroupIngress            WSFCSecurityGroupIngressTcp1433
+2019-08-01 14:52:34.692000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroupIngress            WSFCSecurityGroupIngressTcp3343                                Resource creation Initiated
+2019-08-01 14:52:34.682000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroupIngress            WSFCSecurityGroupIngressIcmp                                   Resource creation Initiated
+2019-08-01 14:52:34.615000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroupIngress            WSFCSecurityGroupIngressUdpHighPorts
+2019-08-01 14:52:34.572000+00:00  CREATE_COMPLETE     AWS::EC2::SecurityGroupIngress            WSFCSecurityGroupIngressTcp5985
+2019-08-01 14:52:34.547000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroupIngress            WSFCSecurityGroupIngressTcp135                                 Resource creation Initiated
+2019-08-01 14:52:34.515000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroupIngress            WSFCSecurityGroupIngressTcp3343
+2019-08-01 14:52:34.513000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroupIngress            WSFCSecurityGroupIngressUdp3343                                Resource creation Initiated
+2019-08-01 14:52:34.511000+00:00  CREATE_COMPLETE     AWS::EC2::SecurityGroupIngress            WSFCSecurityGroupIngressTcp5022
+2019-08-01 14:52:34.497000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroupIngress            WSFCSecurityGroupIngressTcp137                                 Resource creation Initiated
+2019-08-01 14:52:34.438000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroupIngress            WSFCSecurityGroupIngressTcpHighPorts                           Resource creation Initiated
+2019-08-01 14:52:34.348000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroupIngress            WSFCSecurityGroupIngressTcp135
+2019-08-01 14:52:34.328000+00:00  CREATE_COMPLETE     AWS::EC2::SecurityGroupIngress            WSFCSecurityGroupIngressTcp445
+2019-08-01 14:52:34.303000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroupIngress            WSFCSecurityGroupIngressUdp3343
+2019-08-01 14:52:34.287000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroupIngress            WSFCSecurityGroupIngressIcmp
+2019-08-01 14:52:34.265000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroupIngress            WSFCSecurityGroupIngressTcpHighPorts
+2019-08-01 14:52:34.250000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroupIngress            WSFCSecurityGroupIngressUdp1434                                Resource creation Initiated
+2019-08-01 14:52:34.195000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroupIngress            WSFCSecurityGroupIngressTcp137
+2019-08-01 14:52:34.161000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroupIngress            WSFCSecurityGroupIngressUdp137                                 Resource creation Initiated
+2019-08-01 14:52:34.020000+00:00  CREATE_COMPLETE     AWS::SSM::Document                        AWSQuickstartMSSQL
+2019-08-01 14:52:33.992000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroupIngress            WSFCSecurityGroupIngressUdp1434
+2019-08-01 14:52:33.946000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroupIngress            WSFCSecurityGroupIngressUdp137
+2019-08-01 14:52:33.916000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroupIngress            WSFCSecurityGroupIngressTcp1433                                Resource creation Initiated
+2019-08-01 14:52:33.745000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroupIngress            WSFCSecurityGroupIngressTcp5022                                Resource creation Initiated
+2019-08-01 14:52:33.743000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroupIngress            WSFCSecurityGroupIngressTcp5985                                Resource creation Initiated
+2019-08-01 14:52:33.733000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroupIngress            WSFCSecurityGroupIngressTcp1433
+2019-08-01 14:52:33.600000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroupIngress            WSFCSecurityGroupIngressTcp445                                 Resource creation Initiated
+2019-08-01 14:52:33.541000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroupIngress            WSFCSecurityGroupIngressTcp5985
+2019-08-01 14:52:33.539000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroupIngress            WSFCSecurityGroupIngressTcp5022
+2019-08-01 14:52:33.429000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroupIngress            WSFCSecurityGroupIngressTcp445
+2019-08-01 14:52:33.413000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroup                   WSFCClientSecurityGroup
+2019-08-01 14:52:33.348000+00:00  CREATE_IN_PROGRESS  AWS::SSM::Document                        AWSQuickstartMSSQL                                             Resource creation Initiated
+2019-08-01 14:52:31.961000+00:00  CREATE_IN_PROGRESS  AWS::SSM::Document                        AWSQuickstartMSSQL
+2019-08-01 14:52:29.369000+00:00  CREATE_COMPLETE     AWS::EC2::SecurityGroup                   WSFCSecurityGroup
+2019-08-01 14:52:29.310000+00:00  CREATE_COMPLETE     AWS::EC2::SecurityGroup                   SQLServerAccessSecurityGroup
+2019-08-01 14:52:29.029000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroup                   WSFCSecurityGroup                                              Resource creation Initiated
+2019-08-01 14:52:28.982000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroup                   SQLServerAccessSecurityGroup                                   Resource creation Initiated
+2019-08-01 14:52:28.061000+00:00  CREATE_COMPLETE     AWS::SecretsManager::Secret               ADAdminSecrets
+2019-08-01 14:52:27.874000+00:00  CREATE_IN_PROGRESS  AWS::SecretsManager::Secret               ADAdminSecrets                                                 Resource creation Initiated
+2019-08-01 14:52:26.923000+00:00  CREATE_COMPLETE     AWS::SecretsManager::Secret               SQLSecrets
+2019-08-01 14:52:26.707000+00:00  CREATE_IN_PROGRESS  AWS::SecretsManager::Secret               SQLSecrets                                                     Resource creation Initiated
+2019-08-01 14:52:25.693000+00:00  CREATE_COMPLETE     AWS::Logs::LogGroup                       QuickStartLogs
+2019-08-01 14:52:25.256000+00:00  CREATE_IN_PROGRESS  AWS::Logs::LogGroup                       QuickStartLogs                                                 Resource creation Initiated
+2019-08-01 14:52:25.251000+00:00  CREATE_IN_PROGRESS  AWS::SecretsManager::Secret               ADAdminSecrets
+2019-08-01 14:52:24.814000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Role                            AWSQuickstartMSSQLRole                                         Resource creation Initiated
+2019-08-01 14:52:24.611000+00:00  CREATE_IN_PROGRESS  AWS::Logs::LogGroup                       QuickStartLogs
+2019-08-01 14:52:24.452000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroup                   WSFCSecurityGroup
+2019-08-01 14:52:24.395000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Role                            AWSQuickstartMSSQLRole
+2019-08-01 14:52:24.364000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroup                   SQLServerAccessSecurityGroup
+2019-08-01 14:52:24.237000+00:00  CREATE_IN_PROGRESS  AWS::SecretsManager::Secret               SQLSecrets
+2019-08-01 14:52:23.784000+00:00  CREATE_COMPLETE     AWS::CloudFormation::WaitConditionHandle  SSMWaitHandle
+2019-08-01 14:52:23.637000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::WaitConditionHandle  SSMWaitHandle                                                  Resource creation Initiated
+2019-08-01 14:52:23.276000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::WaitConditionHandle  SSMWaitHandle
+2019-08-01 14:52:16.885000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack                tcat-tag-mssql-ec2-3rdaz-full-07069fca-SQLStack-1J49PPP9EHBXV  User Initiated
+*****************************************************************************
+-----------------------------------------------------------------------------
+Tested on: Thursday, 01. August 2019 10:28AM
+-----------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------
+Region: eu-west-3
+StackName: tcat-tag-mssql-ec2-3rdaz-full-07069fca-VPCStack-1VRATBC2L43BP
+*****************************************************************************
+ResourceStatusReason:  
+Stack launch was successful
+*****************************************************************************
+*****************************************************************************
+Events:  
+TimeStamp                         ResourceStatus      ResourceType                           LogicalResourceId                                              ResourceStatusReason
+--------------------------------  ------------------  -------------------------------------  -------------------------------------------------------------  ---------------------------
+2019-08-01 14:12:20.244000+00:00  CREATE_COMPLETE     AWS::CloudFormation::Stack             tcat-tag-mssql-ec2-3rdaz-full-07069fca-VPCStack-1VRATBC2L43BP
+2019-08-01 14:12:14.689000+00:00  CREATE_COMPLETE     AWS::EC2::Route                        PrivateSubnet1ARoute
+2019-08-01 14:11:59.215000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Route                        PrivateSubnet1ARoute                                           Resource creation Initiated
+2019-08-01 14:11:58.588000+00:00  CREATE_COMPLETE     AWS::EC2::Route                        PrivateSubnet2ARoute
+2019-08-01 14:11:58.446000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Route                        PrivateSubnet1ARoute
+2019-08-01 14:11:55.087000+00:00  CREATE_COMPLETE     AWS::EC2::NatGateway                   NATGateway1
+2019-08-01 14:11:44.945000+00:00  CREATE_COMPLETE     AWS::EC2::Route                        PrivateSubnet3ARoute
+2019-08-01 14:11:43.031000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Route                        PrivateSubnet2ARoute                                           Resource creation Initiated
+2019-08-01 14:11:42.335000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Route                        PrivateSubnet2ARoute
+2019-08-01 14:11:39.044000+00:00  CREATE_COMPLETE     AWS::EC2::NatGateway                   NATGateway2
+2019-08-01 14:11:29.504000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Route                        PrivateSubnet3ARoute                                           Resource creation Initiated
+2019-08-01 14:11:28.791000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Route                        PrivateSubnet3ARoute
+2019-08-01 14:11:24.873000+00:00  CREATE_COMPLETE     AWS::EC2::NatGateway                   NATGateway3
+2019-08-01 14:09:52.616000+00:00  CREATE_IN_PROGRESS  AWS::EC2::NatGateway                   NATGateway1                                                    Resource creation Initiated
+2019-08-01 14:09:52.541000+00:00  CREATE_IN_PROGRESS  AWS::EC2::NatGateway                   NATGateway3                                                    Resource creation Initiated
+2019-08-01 14:09:52.190000+00:00  CREATE_IN_PROGRESS  AWS::EC2::NatGateway                   NATGateway1
+2019-08-01 14:09:52.092000+00:00  CREATE_IN_PROGRESS  AWS::EC2::NatGateway                   NATGateway3
+2019-08-01 14:09:52.031000+00:00  CREATE_IN_PROGRESS  AWS::EC2::NatGateway                   NATGateway2                                                    Resource creation Initiated
+2019-08-01 14:09:51.548000+00:00  CREATE_IN_PROGRESS  AWS::EC2::NatGateway                   NATGateway2
+2019-08-01 14:09:50.279000+00:00  CREATE_COMPLETE     AWS::EC2::SubnetRouteTableAssociation  PublicSubnet2RouteTableAssociation
+2019-08-01 14:09:49.884000+00:00  CREATE_COMPLETE     AWS::EC2::SubnetRouteTableAssociation  PublicSubnet1RouteTableAssociation
+2019-08-01 14:09:49.818000+00:00  CREATE_COMPLETE     AWS::EC2::SubnetRouteTableAssociation  PrivateSubnet3ARouteTableAssociation
+2019-08-01 14:09:49.531000+00:00  CREATE_COMPLETE     AWS::EC2::SubnetRouteTableAssociation  PublicSubnet3RouteTableAssociation
+2019-08-01 14:09:49.291000+00:00  CREATE_COMPLETE     AWS::EC2::SubnetRouteTableAssociation  PrivateSubnet1ARouteTableAssociation
+2019-08-01 14:09:49.257000+00:00  CREATE_COMPLETE     AWS::EC2::SubnetRouteTableAssociation  PrivateSubnet2ARouteTableAssociation
+2019-08-01 14:09:48.458000+00:00  CREATE_COMPLETE     AWS::EC2::Route                        PublicSubnetRoute
+2019-08-01 14:09:48.108000+00:00  CREATE_COMPLETE     AWS::EC2::EIP                          NAT1EIP
+2019-08-01 14:09:47.878000+00:00  CREATE_COMPLETE     AWS::EC2::EIP                          NAT3EIP
+2019-08-01 14:09:47.459000+00:00  CREATE_COMPLETE     AWS::EC2::EIP                          NAT2EIP
+2019-08-01 14:09:34.869000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SubnetRouteTableAssociation  PublicSubnet2RouteTableAssociation                             Resource creation Initiated
+2019-08-01 14:09:34.567000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SubnetRouteTableAssociation  PublicSubnet1RouteTableAssociation                             Resource creation Initiated
+2019-08-01 14:09:34.346000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SubnetRouteTableAssociation  PrivateSubnet3ARouteTableAssociation                           Resource creation Initiated
+2019-08-01 14:09:34.152000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SubnetRouteTableAssociation  PublicSubnet3RouteTableAssociation                             Resource creation Initiated
+2019-08-01 14:09:33.940000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SubnetRouteTableAssociation  PublicSubnet2RouteTableAssociation
+2019-08-01 14:09:33.937000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SubnetRouteTableAssociation  PrivateSubnet1ARouteTableAssociation                           Resource creation Initiated
+2019-08-01 14:09:33.748000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SubnetRouteTableAssociation  PrivateSubnet2ARouteTableAssociation                           Resource creation Initiated
+2019-08-01 14:09:33.694000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SubnetRouteTableAssociation  PublicSubnet1RouteTableAssociation
+2019-08-01 14:09:33.400000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SubnetRouteTableAssociation  PublicSubnet3RouteTableAssociation
+2019-08-01 14:09:33.336000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SubnetRouteTableAssociation  PrivateSubnet3ARouteTableAssociation
+2019-08-01 14:09:33.165000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SubnetRouteTableAssociation  PrivateSubnet1ARouteTableAssociation
+2019-08-01 14:09:33.058000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Route                        PublicSubnetRoute                                              Resource creation Initiated
+2019-08-01 14:09:32.744000+00:00  CREATE_IN_PROGRESS  AWS::EC2::EIP                          NAT1EIP                                                        Resource creation Initiated
+2019-08-01 14:09:32.697000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SubnetRouteTableAssociation  PrivateSubnet2ARouteTableAssociation
+2019-08-01 14:09:32.513000+00:00  CREATE_IN_PROGRESS  AWS::EC2::EIP                          NAT3EIP                                                        Resource creation Initiated
+2019-08-01 14:09:32.432000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Route                        PublicSubnetRoute
+2019-08-01 14:09:32.336000+00:00  CREATE_IN_PROGRESS  AWS::EC2::EIP                          NAT1EIP
+2019-08-01 14:09:32.093000+00:00  CREATE_IN_PROGRESS  AWS::EC2::EIP                          NAT3EIP
+2019-08-01 14:09:32.048000+00:00  CREATE_IN_PROGRESS  AWS::EC2::EIP                          NAT2EIP                                                        Resource creation Initiated
+2019-08-01 14:09:31.571000+00:00  CREATE_IN_PROGRESS  AWS::EC2::EIP                          NAT2EIP
+2019-08-01 14:09:29.734000+00:00  CREATE_COMPLETE     AWS::EC2::Subnet                       PublicSubnet1
+2019-08-01 14:09:29.666000+00:00  CREATE_COMPLETE     AWS::EC2::Subnet                       PrivateSubnet1A
+2019-08-01 14:09:29.285000+00:00  CREATE_COMPLETE     AWS::EC2::Subnet                       PublicSubnet2
+2019-08-01 14:09:29.135000+00:00  CREATE_COMPLETE     AWS::EC2::Subnet                       PublicSubnet3
+2019-08-01 14:09:28.821000+00:00  CREATE_COMPLETE     AWS::EC2::Subnet                       PrivateSubnet3A
+2019-08-01 14:09:28.577000+00:00  CREATE_COMPLETE     AWS::EC2::Subnet                       PrivateSubnet2A
+2019-08-01 14:09:28.003000+00:00  CREATE_COMPLETE     AWS::EC2::VPCGatewayAttachment         VPCGatewayAttachment
+2019-08-01 14:09:18.620000+00:00  CREATE_COMPLETE     AWS::EC2::VPCEndpoint                  S3VPCEndpoint
+2019-08-01 14:09:18.250000+00:00  CREATE_IN_PROGRESS  AWS::EC2::VPCEndpoint                  S3VPCEndpoint                                                  Resource creation Initiated
+2019-08-01 14:09:17.770000+00:00  CREATE_IN_PROGRESS  AWS::EC2::VPCEndpoint                  S3VPCEndpoint
+2019-08-01 14:09:14.213000+00:00  CREATE_COMPLETE     AWS::EC2::RouteTable                   PrivateSubnet2ARouteTable
+2019-08-01 14:09:14.210000+00:00  CREATE_COMPLETE     AWS::EC2::RouteTable                   PublicSubnetRouteTable
+2019-08-01 14:09:13.861000+00:00  CREATE_COMPLETE     AWS::EC2::RouteTable                   PrivateSubnet3ARouteTable
+2019-08-01 14:09:13.769000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Subnet                       PublicSubnet1                                                  Resource creation Initiated
+2019-08-01 14:09:13.507000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Subnet                       PrivateSubnet1A                                                Resource creation Initiated
+2019-08-01 14:09:13.412000+00:00  CREATE_IN_PROGRESS  AWS::EC2::RouteTable                   PrivateSubnet2ARouteTable                                      Resource creation Initiated
+2019-08-01 14:09:13.235000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Subnet                       PublicSubnet1
+2019-08-01 14:09:13.232000+00:00  CREATE_COMPLETE     AWS::EC2::RouteTable                   PrivateSubnet1ARouteTable
+2019-08-01 14:09:13.227000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Subnet                       PublicSubnet2                                                  Resource creation Initiated
+2019-08-01 14:09:13.136000+00:00  CREATE_IN_PROGRESS  AWS::EC2::RouteTable                   PublicSubnetRouteTable                                         Resource creation Initiated
+2019-08-01 14:09:13.134000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Subnet                       PublicSubnet3                                                  Resource creation Initiated
+2019-08-01 14:09:13.019000+00:00  CREATE_IN_PROGRESS  AWS::EC2::RouteTable                   PrivateSubnet2ARouteTable
+2019-08-01 14:09:12.941000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Subnet                       PrivateSubnet1A
+2019-08-01 14:09:12.925000+00:00  CREATE_IN_PROGRESS  AWS::EC2::RouteTable                   PrivateSubnet3ARouteTable                                      Resource creation Initiated
+2019-08-01 14:09:12.916000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Subnet                       PrivateSubnet3A                                                Resource creation Initiated
+2019-08-01 14:09:12.786000+00:00  CREATE_COMPLETE     AWS::EC2::VPCDHCPOptionsAssociation    VPCDHCPOptionsAssociation
+2019-08-01 14:09:12.747000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Subnet                       PrivateSubnet2A                                                Resource creation Initiated
+2019-08-01 14:09:12.710000+00:00  CREATE_IN_PROGRESS  AWS::EC2::RouteTable                   PublicSubnetRouteTable
+2019-08-01 14:09:12.665000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Subnet                       PublicSubnet3
+2019-08-01 14:09:12.647000+00:00  CREATE_IN_PROGRESS  AWS::EC2::VPCDHCPOptionsAssociation    VPCDHCPOptionsAssociation                                      Resource creation Initiated
+2019-08-01 14:09:12.647000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Subnet                       PublicSubnet2
+2019-08-01 14:09:12.504000+00:00  CREATE_IN_PROGRESS  AWS::EC2::VPCGatewayAttachment         VPCGatewayAttachment                                           Resource creation Initiated
+2019-08-01 14:09:12.446000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Subnet                       PrivateSubnet3A
+2019-08-01 14:09:12.398000+00:00  CREATE_IN_PROGRESS  AWS::EC2::RouteTable                   PrivateSubnet3ARouteTable
+2019-08-01 14:09:12.394000+00:00  CREATE_IN_PROGRESS  AWS::EC2::RouteTable                   PrivateSubnet1ARouteTable                                      Resource creation Initiated
+2019-08-01 14:09:12.293000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Subnet                       PrivateSubnet2A
+2019-08-01 14:09:12.199000+00:00  CREATE_IN_PROGRESS  AWS::EC2::VPCDHCPOptionsAssociation    VPCDHCPOptionsAssociation
+2019-08-01 14:09:12.048000+00:00  CREATE_IN_PROGRESS  AWS::EC2::RouteTable                   PrivateSubnet1ARouteTable
+2019-08-01 14:09:12.003000+00:00  CREATE_IN_PROGRESS  AWS::EC2::VPCGatewayAttachment         VPCGatewayAttachment
+2019-08-01 14:09:08.077000+00:00  CREATE_COMPLETE     AWS::EC2::VPC                          VPC
+2019-08-01 14:09:07.119000+00:00  CREATE_COMPLETE     AWS::EC2::DHCPOptions                  DHCPOptions
+2019-08-01 14:09:06.649000+00:00  CREATE_COMPLETE     AWS::EC2::InternetGateway              InternetGateway
+2019-08-01 14:08:51.490000+00:00  CREATE_IN_PROGRESS  AWS::EC2::VPC                          VPC                                                            Resource creation Initiated
+2019-08-01 14:08:51.190000+00:00  CREATE_IN_PROGRESS  AWS::EC2::DHCPOptions                  DHCPOptions                                                    Resource creation Initiated
+2019-08-01 14:08:51.020000+00:00  CREATE_IN_PROGRESS  AWS::EC2::VPC                          VPC
+2019-08-01 14:08:50.896000+00:00  CREATE_IN_PROGRESS  AWS::EC2::InternetGateway              InternetGateway                                                Resource creation Initiated
+2019-08-01 14:08:50.763000+00:00  CREATE_IN_PROGRESS  AWS::EC2::DHCPOptions                  DHCPOptions
+2019-08-01 14:08:50.560000+00:00  CREATE_IN_PROGRESS  AWS::EC2::InternetGateway              InternetGateway
+2019-08-01 14:08:44.518000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack             tcat-tag-mssql-ec2-3rdaz-full-07069fca-VPCStack-1VRATBC2L43BP  User Initiated
+*****************************************************************************
+-----------------------------------------------------------------------------
+Tested on: Thursday, 01. August 2019 10:28AM
+-----------------------------------------------------------------------------
+

@@ -1880,14 +1880,14 @@ Resources:
       IamInstanceProfile: !Ref 'WSFCProfile'
       InstanceType: !Ref 'WSFCFileServerInstanceType'
       NetworkInterfaces:
-        - DeleteOnTermination: $true
+        - DeleteOnTermination: true
           DeviceIndex: '0'
           SubnetId: !If
             - ThirdAzIsWitness
             - !Ref 'PrivateSubnet3ID'
             - !Ref 'PrivateSubnet1ID'
           PrivateIpAddresses:
-            - Primary: $true
+            - Primary: true
               PrivateIpAddress: !Ref 'WSFCFileServerPrivateIP'
           GroupSet:
             - !Ref 'DomainMemberSGID'
@@ -1935,17 +1935,17 @@ Resources:
             - !Ref WS2019FULLBASE
       IamInstanceProfile: !Ref 'WSFCProfile'
       InstanceType: !Ref 'WSFCNode1InstanceType'
-      EbsOptimized: $true
+      EbsOptimized: true
       NetworkInterfaces:
-        - DeleteOnTermination: $true
+        - DeleteOnTermination: true
           DeviceIndex: '0'
           SubnetId: !Ref 'PrivateSubnet1ID'
           PrivateIpAddresses:
-            - Primary: $true
+            - Primary: true
               PrivateIpAddress: !Ref 'WSFCNode1PrivateIP1'
-            - Primary: $false
+            - Primary: false
               PrivateIpAddress: !Ref 'WSFCNode1PrivateIP2'
-            - Primary: $false
+            - Primary: false
               PrivateIpAddress: !Ref 'WSFCNode1PrivateIP3'
           GroupSet:
             - !Ref 'DomainMemberSGID'
@@ -1996,17 +1996,17 @@ Resources:
             - !Ref WS2019FULLBASE
       IamInstanceProfile: !Ref 'WSFCProfile'
       InstanceType: !Ref 'WSFCNode3InstanceType'
-      EbsOptimized: $true
+      EbsOptimized: true
       NetworkInterfaces:
-        - DeleteOnTermination: $true
+        - DeleteOnTermination: true
           DeviceIndex: '0'
           SubnetId: !Ref 'PrivateSubnet3ID'
           PrivateIpAddresses:
-            - Primary: $true
+            - Primary: true
               PrivateIpAddress: !Ref 'WSFCNode3PrivateIP1'
-            - Primary: $false
+            - Primary: false
               PrivateIpAddress: !Ref 'WSFCNode3PrivateIP2'
-            - Primary: $false
+            - Primary: false
               PrivateIpAddress: !Ref 'WSFCNode3PrivateIP3'
           GroupSet:
             - !Ref 'DomainMemberSGID'
@@ -2056,17 +2056,17 @@ Resources:
             - !Ref WS2019FULLBASE
       IamInstanceProfile: !Ref 'WSFCProfile'
       InstanceType: !Ref 'WSFCNode2InstanceType'
-      EbsOptimized: $true
+      EbsOptimized: true
       NetworkInterfaces:
-        - DeleteOnTermination: $true
+        - DeleteOnTermination: true
           DeviceIndex: '0'
           SubnetId: !Ref 'PrivateSubnet2ID'
           PrivateIpAddresses:
-            - Primary: $true
+            - Primary: true
               PrivateIpAddress: !Ref 'WSFCNode2PrivateIP1'
-            - Primary: $false
+            - Primary: false
               PrivateIpAddress: !Ref 'WSFCNode2PrivateIP2'
-            - Primary: $false
+            - Primary: false
               PrivateIpAddress: !Ref 'WSFCNode2PrivateIP3'
           GroupSet:
             - !Ref 'DomainMemberSGID'

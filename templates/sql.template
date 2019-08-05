@@ -1880,14 +1880,14 @@ Resources:
       IamInstanceProfile: !Ref 'WSFCProfile'
       InstanceType: !Ref 'WSFCFileServerInstanceType'
       NetworkInterfaces:
-        - DeleteOnTermination: 'true'
-          DeviceIndex: 0
+        - DeleteOnTermination: $true
+          DeviceIndex: '0'
           SubnetId: !If
             - ThirdAzIsWitness
             - !Ref 'PrivateSubnet3ID'
             - !Ref 'PrivateSubnet1ID'
           PrivateIpAddresses:
-            - Primary: 'true'
+            - Primary: $true
               PrivateIpAddress: !Ref 'WSFCFileServerPrivateIP'
           GroupSet:
             - !Ref 'DomainMemberSGID'
@@ -1899,7 +1899,7 @@ Resources:
       BlockDeviceMappings:
         - DeviceName: /dev/sda1
           Ebs:
-            VolumeSize: '100'
+            VolumeSize: 100
             VolumeType: gp2
       KeyName: !Ref 'KeyPairName'
   WSFCNode1:
@@ -1935,17 +1935,17 @@ Resources:
             - !Ref WS2019FULLBASE
       IamInstanceProfile: !Ref 'WSFCProfile'
       InstanceType: !Ref 'WSFCNode1InstanceType'
-      EbsOptimized: 'true'
+      EbsOptimized: $true
       NetworkInterfaces:
-        - DeleteOnTermination: 'true'
-          DeviceIndex: 0
+        - DeleteOnTermination: $true
+          DeviceIndex: '0'
           SubnetId: !Ref 'PrivateSubnet1ID'
           PrivateIpAddresses:
-            - Primary: 'true'
+            - Primary: $true
               PrivateIpAddress: !Ref 'WSFCNode1PrivateIP1'
-            - Primary: 'false'
+            - Primary: $false
               PrivateIpAddress: !Ref 'WSFCNode1PrivateIP2'
-            - Primary: 'false'
+            - Primary: $false
               PrivateIpAddress: !Ref 'WSFCNode1PrivateIP3'
           GroupSet:
             - !Ref 'DomainMemberSGID'
@@ -1957,7 +1957,7 @@ Resources:
       BlockDeviceMappings:
         - DeviceName: /dev/sda1
           Ebs:
-            VolumeSize: '100'
+            VolumeSize: 100
             VolumeType: gp2
         - DeviceName: /dev/xvdca
           VirtualName: ephemeral0
@@ -1996,17 +1996,17 @@ Resources:
             - !Ref WS2019FULLBASE
       IamInstanceProfile: !Ref 'WSFCProfile'
       InstanceType: !Ref 'WSFCNode3InstanceType'
-      EbsOptimized: 'true'
+      EbsOptimized: $true
       NetworkInterfaces:
-        - DeleteOnTermination: 'true'
-          DeviceIndex: 0
+        - DeleteOnTermination: $true
+          DeviceIndex: '0'
           SubnetId: !Ref 'PrivateSubnet3ID'
           PrivateIpAddresses:
-            - Primary: 'true'
+            - Primary: $true
               PrivateIpAddress: !Ref 'WSFCNode3PrivateIP1'
-            - Primary: 'false'
+            - Primary: $false
               PrivateIpAddress: !Ref 'WSFCNode3PrivateIP2'
-            - Primary: 'false'
+            - Primary: $false
               PrivateIpAddress: !Ref 'WSFCNode3PrivateIP3'
           GroupSet:
             - !Ref 'DomainMemberSGID'
@@ -2018,7 +2018,7 @@ Resources:
       BlockDeviceMappings:
         - DeviceName: /dev/sda1
           Ebs:
-            VolumeSize: '100'
+            VolumeSize: 100
             VolumeType: gp2
         - DeviceName: /dev/xvdca
           VirtualName: ephemeral0
@@ -2056,17 +2056,17 @@ Resources:
             - !Ref WS2019FULLBASE
       IamInstanceProfile: !Ref 'WSFCProfile'
       InstanceType: !Ref 'WSFCNode2InstanceType'
-      EbsOptimized: 'true'
+      EbsOptimized: $true
       NetworkInterfaces:
-        - DeleteOnTermination: 'true'
-          DeviceIndex: 0
+        - DeleteOnTermination: $true
+          DeviceIndex: '0'
           SubnetId: !Ref 'PrivateSubnet2ID'
           PrivateIpAddresses:
-            - Primary: 'true'
+            - Primary: $true
               PrivateIpAddress: !Ref 'WSFCNode2PrivateIP1'
-            - Primary: 'false'
+            - Primary: $false
               PrivateIpAddress: !Ref 'WSFCNode2PrivateIP2'
-            - Primary: 'false'
+            - Primary: $false
               PrivateIpAddress: !Ref 'WSFCNode2PrivateIP3'
           GroupSet:
             - !Ref 'DomainMemberSGID'
@@ -2078,7 +2078,7 @@ Resources:
       BlockDeviceMappings:
         - DeviceName: /dev/sda1
           Ebs:
-            VolumeSize: '100'
+            VolumeSize: 100
             VolumeType: gp2
         - DeviceName: /dev/xvdca
           VirtualName: ephemeral0
@@ -2318,104 +2318,104 @@ Resources:
       GroupId: !Ref 'WSFCSecurityGroup'
       SourceSecurityGroupId: !Ref 'WSFCSecurityGroup'
       IpProtocol: icmp
-      FromPort: '-1'
-      ToPort: '-1'
+      FromPort: -1
+      ToPort: -1
   WSFCSecurityGroupIngressTcp135:
     Type: AWS::EC2::SecurityGroupIngress
     Properties:
       GroupId: !Ref 'WSFCSecurityGroup'
       SourceSecurityGroupId: !Ref 'WSFCSecurityGroup'
       IpProtocol: tcp
-      FromPort: '135'
-      ToPort: '135'
+      FromPort: 135
+      ToPort: 135
   WSFCSecurityGroupIngressTcp137:
     Type: AWS::EC2::SecurityGroupIngress
     Properties:
       GroupId: !Ref 'WSFCSecurityGroup'
       SourceSecurityGroupId: !Ref 'WSFCSecurityGroup'
       IpProtocol: tcp
-      FromPort: '137'
-      ToPort: '137'
+      FromPort: 137
+      ToPort: 137
   WSFCSecurityGroupIngressTcp445:
     Type: AWS::EC2::SecurityGroupIngress
     Properties:
       GroupId: !Ref 'WSFCSecurityGroup'
       SourceSecurityGroupId: !Ref 'WSFCSecurityGroup'
       IpProtocol: tcp
-      FromPort: '445'
-      ToPort: '445'
+      FromPort: 445
+      ToPort: 445
   WSFCSecurityGroupIngressTcp1433:
     Type: AWS::EC2::SecurityGroupIngress
     Properties:
       GroupId: !Ref 'WSFCSecurityGroup'
       SourceSecurityGroupId: !Ref 'WSFCSecurityGroup'
       IpProtocol: tcp
-      FromPort: '1433'
-      ToPort: '1434'
+      FromPort: 1433
+      ToPort: 1434
   WSFCSecurityGroupIngressTcp3343:
     Type: AWS::EC2::SecurityGroupIngress
     Properties:
       GroupId: !Ref 'WSFCSecurityGroup'
       SourceSecurityGroupId: !Ref 'WSFCSecurityGroup'
       IpProtocol: tcp
-      FromPort: '3343'
-      ToPort: '3343'
+      FromPort: 3343
+      ToPort: 3343
   WSFCSecurityGroupIngressTcp5022:
     Type: AWS::EC2::SecurityGroupIngress
     Properties:
       GroupId: !Ref 'WSFCSecurityGroup'
       SourceSecurityGroupId: !Ref 'WSFCSecurityGroup'
       IpProtocol: tcp
-      FromPort: '5022'
-      ToPort: '5022'
+      FromPort: 5022
+      ToPort: 5022
   WSFCSecurityGroupIngressTcp5985:
     Type: AWS::EC2::SecurityGroupIngress
     Properties:
       GroupId: !Ref 'WSFCSecurityGroup'
       SourceSecurityGroupId: !Ref 'WSFCSecurityGroup'
       IpProtocol: tcp
-      FromPort: '5985'
-      ToPort: '5985'
+      FromPort: 5985
+      ToPort: 5985
   WSFCSecurityGroupIngressUdp137:
     Type: AWS::EC2::SecurityGroupIngress
     Properties:
       GroupId: !Ref 'WSFCSecurityGroup'
       SourceSecurityGroupId: !Ref 'WSFCSecurityGroup'
       IpProtocol: udp
-      FromPort: '137'
-      ToPort: '137'
+      FromPort: 137
+      ToPort: 137
   WSFCSecurityGroupIngressUdp3343:
     Type: AWS::EC2::SecurityGroupIngress
     Properties:
       GroupId: !Ref 'WSFCSecurityGroup'
       SourceSecurityGroupId: !Ref 'WSFCSecurityGroup'
       IpProtocol: udp
-      FromPort: '3343'
-      ToPort: '3343'
+      FromPort: 3343
+      ToPort: 3343
   WSFCSecurityGroupIngressUdp1434:
     Type: AWS::EC2::SecurityGroupIngress
     Properties:
       GroupId: !Ref 'WSFCSecurityGroup'
       SourceSecurityGroupId: !Ref 'WSFCSecurityGroup'
       IpProtocol: udp
-      FromPort: '1434'
-      ToPort: '1434'
+      FromPort: 1434
+      ToPort: 1434
   WSFCSecurityGroupIngressUdpHighPorts:
     Type: AWS::EC2::SecurityGroupIngress
     Properties:
       GroupId: !Ref 'WSFCSecurityGroup'
       SourceSecurityGroupId: !Ref 'WSFCSecurityGroup'
       IpProtocol: udp
-      FromPort: '49152'
-      ToPort: '65535'
+      FromPort: 49152
+      ToPort: 65535
   WSFCSecurityGroupIngressTcpHighPorts:
     Type: AWS::EC2::SecurityGroupIngress
     Properties:
       GroupId: !Ref 'WSFCSecurityGroup'
       SourceSecurityGroupId: !Ref 'WSFCSecurityGroup'
       IpProtocol: tcp
-      FromPort: '49152'
-      ToPort: '65535'
+      FromPort: 49152
+      ToPort: 65535
   SQLServerAccessSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
@@ -2428,8 +2428,8 @@ Resources:
       VpcId: !Ref 'VPCID'
       SecurityGroupIngress:
         - IpProtocol: tcp
-          FromPort: '1433'
-          ToPort: '1433'
+          FromPort: 1433
+          ToPort: 1433
           SourceSecurityGroupId: !Ref 'SQLServerAccessSecurityGroup'
 Outputs:
   WSFCNode1NetBIOSName:

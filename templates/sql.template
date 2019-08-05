@@ -78,7 +78,7 @@ Metadata:
           default: AWS Systems Manager AMI configuration
         Parameters:
           - WS2019FULLBASE
-          - WS2019FULLSQL2016SP2ENT
+          - WS2019FULLSQL2016ENT
           - WS2019FULLSQL2017ENT
       - Label:
           default: AWS Quick Start configuration
@@ -192,8 +192,8 @@ Metadata:
         default: Cluster node 3 private IP address 3
       WS2019FULLBASE: 
         default: Windows Server 2019 full base AMI
-      WS2019FULLSQL2016SP2ENT:
-        default: Windows Server 2019 full locale English with SQL Enterprise 2016 SP1 AMI
+      WS2019FULLSQL2016ENT:
+        default: Windows Server 2019 full locale English with SQL Enterprise 2016 AMI
       WS2019FULLSQL2017ENT:
         default: Windows Server 2019 Locale English with SQL Enterprise 2017 AMI
 Parameters:
@@ -557,9 +557,9 @@ Parameters:
   WS2019FULLBASE:
     Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
     Default: '/aws/service/ami-windows-latest/Windows_Server-2019-English-Full-Base'
-  WS2019FULLSQL2016SP2ENT:
+  WS2019FULLSQL2016ENT:
     Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
-    Default: '/aws/service/ami-windows-latest/Windows_Server-2019-English-Full-SQL_2016_SP2_Enterprise'
+    Default: '/aws/service/ami-windows-latest/Windows_Server-2019-English-Full-SQL_2016_Enterprise'
   WS2019FULLSQL2017ENT:
     Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
     Default: '/aws/service/ami-windows-latest/Windows_Server-2019-English-Full-SQL_2017_Enterprise'
@@ -1931,7 +1931,7 @@ Resources:
             - !If
                 - 'SQLVersion2017'
                 - !Ref WS2019FULLSQL2017ENT
-                - !Ref WS2019FULLSQL2016SP2ENT
+                - !Ref WS2019FULLSQL2016ENT
             - !Ref WS2019FULLBASE
       IamInstanceProfile: !Ref 'WSFCProfile'
       InstanceType: !Ref 'WSFCNode1InstanceType'
@@ -1992,7 +1992,7 @@ Resources:
             - !If
                 - 'SQLVersion2017'
                 - !Ref WS2019FULLSQL2017ENT
-                - !Ref WS2019FULLSQL2016SP2ENT
+                - !Ref WS2019FULLSQL2016ENT
             - !Ref WS2019FULLBASE
       IamInstanceProfile: !Ref 'WSFCProfile'
       InstanceType: !Ref 'WSFCNode3InstanceType'
@@ -2052,7 +2052,7 @@ Resources:
             - !If
                 - 'SQLVersion2017'
                 - !Ref WS2019FULLSQL2017ENT
-                - !Ref WS2019FULLSQL2016SP2ENT
+                - !Ref WS2019FULLSQL2016ENT
             - !Ref WS2019FULLBASE
       IamInstanceProfile: !Ref 'WSFCProfile'
       InstanceType: !Ref 'WSFCNode2InstanceType'

@@ -27,16 +27,16 @@ Metadata:
           - HostType
           - DedicatedHostAMI
       - Label:
-          default: Standard Active Directory configuration
+          default: Active Directory configuration
         Parameters:
           - ADScenarioType
           - DomainDNSName
           - DomainNetBIOSName
+          - DomainAdminUser
           - DomainAdminPassword
       - Label:
           default: Self-managed Active Directory configuration
         Parameters:
-          - DomainAdminUser
           - ADServer1InstanceType
           - ADServer1NetBIOSName
           - ADServer1PrivateIP
@@ -293,8 +293,9 @@ Parameters:
     Default: Admin
     Description: >-
       User name for the account that will be added as domain administrator. This is
-      separate from the default administrator account. Note: This user will always
-      default to "Admin" when using AWS Directory Service regardless of the value
+      separate from the default administrator account. Note: This user is used for Self-Managed
+      AD Scenario, when using AWS Directory Service for Microsoft AD "Admin" is the default
+      regardless of the value provided. 
       provided.
     MaxLength: '25'
     MinLength: '5'

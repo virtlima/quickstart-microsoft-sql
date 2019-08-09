@@ -199,8 +199,8 @@ Metadata:
 Parameters:
   ADScenarioType:
     AllowedValues:
-      - AWS Directory Service for Microsoft AD (Enterprise Edition)
-      - Microsoft AD on Amazon EC2
+      - "AWS Directory Service for Microsoft AD (Enterprise Edition)"
+      - "Microsoft AD on Amazon EC2"
     Default: AWS Directory Service for Microsoft AD (Enterprise Edition)
     Description: 'Select the type of AD DS deployment to use: AWS Directory Service
       for Microsoft AD or managing your own Amazon EC2 AD instances.'

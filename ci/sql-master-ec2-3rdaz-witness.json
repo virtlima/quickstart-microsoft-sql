@@ -21,11 +21,11 @@
     },
     {
         "ParameterKey": "ADServer1NetBIOSName",
-        "ParameterValue": "DC-SQL3AZW-1"
+        "ParameterValue": "DC1"
     },
     {
         "ParameterKey": "ADServer2NetBIOSName",
-        "ParameterValue": "DC-SQL3AZW-2"
+        "ParameterValue": "DC2"
     },
     {
         "ParameterKey": "SQLServiceAccountPassword",
@@ -42,18 +42,6 @@
     {
         "ParameterKey": "WSFCFileServerPrivateIP",
         "ParameterValue": "10.0.64.200"
-    },
-    {
-        "ParameterKey": "WSFCFileServerNetBIOSName",
-        "ParameterValue": "EC23RDAZ-W"
-    },
-    {
-        "ParameterKey": "WSFCNode1NetBIOSName",
-        "ParameterValue": "EC23RDAZW-N1"
-    },
-    {
-        "ParameterKey": "WSFCNode2NetBIOSName",
-        "ParameterValue": "EC23RDAZW-N2"
     },
     {
         "ParameterKey": "QSS3BucketName",

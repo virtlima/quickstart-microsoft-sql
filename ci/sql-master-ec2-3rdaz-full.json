@@ -17,11 +17,11 @@
     },
     {
         "ParameterKey": "ADServer1NetBIOSName",
-        "ParameterValue": "DC-SQL3AZF-1"
+        "ParameterValue": "DC1"
     },
     {
         "ParameterKey": "ADServer2NetBIOSName",
-        "ParameterValue": "DC-SQL3AZF-2"
+        "ParameterValue": "DC2"
     },
     {
         "ParameterKey": "RDGWCIDR",
@@ -38,18 +38,6 @@
     {
         "ParameterKey": "ThirdAZ",
         "ParameterValue": "full"
-    },
-    {
-        "ParameterKey": "WSFCNode3NetBIOSName",
-        "ParameterValue": "EC23RDAZF-N3"
-    },
-    {
-        "ParameterKey": "WSFCNode1NetBIOSName",
-        "ParameterValue": "EC23RDAZF-N2"
-    },
-    {
-        "ParameterKey": "WSFCNode2NetBIOSName",
-        "ParameterValue": "DS3RDAZF-N3"
     },
     {
         "ParameterKey": "QSS3BucketName",

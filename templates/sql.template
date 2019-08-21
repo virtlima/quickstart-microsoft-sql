@@ -791,6 +791,8 @@ Resources:
             Filters:  
             - Name: "tag:Name"
               Values: ["{{WSFCNode1NetBIOSName}}"]
+            - Name: "tag:aws:cloudformation:stack-name"
+              Values: ["{{StackName}}"]
             - Name: "instance-state-name"
               Values: [ "running" ]
           outputs:
@@ -806,6 +808,8 @@ Resources:
             Filters:  
             - Name: "tag:Name"
               Values: ["{{WSFCNode2NetBIOSName}}"]
+            - Name: "tag:aws:cloudformation:stack-name"
+              Values: ["{{StackName}}"]
             - Name: "instance-state-name"
               Values: [ "running" ]
           outputs:
@@ -834,6 +838,8 @@ Resources:
             Filters:  
             - Name: "tag:Name"
               Values: ["{{WSFCNode3NetBIOSName}}"]
+            - Name: "tag:aws:cloudformation:stack-name"
+              Values: ["{{StackName}}"]
             - Name: "instance-state-name"
               Values: [ "running" ]
           outputs:
@@ -849,6 +855,8 @@ Resources:
             Filters:  
             - Name: "tag:Name"
               Values: [ "{{WSFCNode1NetBIOSName}}","{{WSFCNode2NetBIOSName}}", "{{WSFCNode3NetBIOSName}}"]
+            - Name: "tag:aws:cloudformation:stack-name"
+              Values: ["{{StackName}}"]
             - Name: "instance-state-name"
               Values: [ "running" ]
           outputs:
@@ -991,6 +999,8 @@ Resources:
             Filters:  
             - Name: "tag:Name"
               Values: ["{{WSFCFileServerNetBIOSName}}"]
+            - Name: "tag:aws:cloudformation:stack-name"
+              Values: ["{{StackName}}"]
             - Name: "instance-state-name"
               Values: [ "running" ]
           outputs:
@@ -1006,6 +1016,8 @@ Resources:
             Filters:  
             - Name: "tag:Name"
               Values: [ "{{WSFCNode1NetBIOSName}}","{{WSFCNode2NetBIOSName}}", "{{WSFCFileServerNetBIOSName}}"]
+            - Name: "tag:aws:cloudformation:stack-name"
+              Values: ["{{StackName}}"]
             - Name: "instance-state-name"
               Values: [ "running" ]
           outputs:
@@ -1854,7 +1866,8 @@ Resources:
           PolicyName: QS-MSSQL-SSM-PassRole
       Path: /
       ManagedPolicyArns:
-        - !Sub 'arn:${AWS::Partition}:iam::aws:policy/service-role/AmazonEC2RoleforSSM'
+        - !Sub 'arn:${AWS::Partition}:iam::aws:policy/AmazonSSMManagedInstanceCore'
+        - !Sub 'arn:${AWS::Partition}:iam::aws:policy/CloudWatchAgentServerPolicy'
         - !Sub 'arn:${AWS::Partition}:iam::aws:policy/AmazonEC2ReadOnlyAccess'
       AssumeRolePolicyDocument:
         Statement:

@@ -21,11 +21,11 @@
     },
     {
         "ParameterKey": "ADServer1NetBIOSName",
-        "ParameterValue": "DC-SQLebs-1"
+        "ParameterValue": "DC1"
     },
     {
         "ParameterKey": "ADServer2NetBIOSName",
-        "ParameterValue": "DC-SQLebs-2"
+        "ParameterValue": "DC2"
     },
     {
         "ParameterKey": "SQLServiceAccountPassword",
@@ -46,18 +46,6 @@
     {
         "ParameterKey": "VolumeSize",
         "ParameterValue": "200"
-    },
-    {
-        "ParameterKey": "WSFCFileServerNetBIOSName",
-        "ParameterValue": "EBSSQL-W"
-    },
-    {
-        "ParameterKey": "WSFCNode1NetBIOSName",
-        "ParameterValue": "EBSSQL-N1"
-    },
-    {
-        "ParameterKey": "WSFCNode2NetBIOSName",
-        "ParameterValue": "EBSSQL-N2"
     },
     {
         "ParameterKey": "QSS3BucketName",

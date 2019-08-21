@@ -32,18 +32,6 @@
         "ParameterValue": "full"
     },
     {
-        "ParameterKey": "WSFCNode3NetBIOSName",
-        "ParameterValue": "DS3RDAZF-N3"
-    },
-    {
-        "ParameterKey": "WSFCNode1NetBIOSName",
-        "ParameterValue": "DS3RDAZF-N1"
-    },
-    {
-        "ParameterKey": "WSFCNode2NetBIOSName",
-        "ParameterValue": "DS3RDAZF-N2"
-    },
-    {
         "ParameterKey": "QSS3BucketName",
         "ParameterValue": "$[taskcat_autobucket]"
     }

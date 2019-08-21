@@ -17,11 +17,11 @@
     },
     {
         "ParameterKey": "ADServer1NetBIOSName",
-        "ParameterValue": "DC-SQL-1"
+        "ParameterValue": "DC1"
     },
     {
         "ParameterKey": "ADServer2NetBIOSName",
-        "ParameterValue": "DC-SQL-2"
+        "ParameterValue": "DC2"
     },
     {
         "ParameterKey": "RDGWCIDR",
@@ -34,18 +34,6 @@
     {
         "ParameterKey": "SQLServiceAccountPassword",
         "ParameterValue": "$[taskcat_genpass_16]"
-    },
-    {
-        "ParameterKey": "WSFCFileServerNetBIOSName",
-        "ParameterValue": "EC2Defaults-W"
-    },
-    {
-        "ParameterKey": "WSFCNode1NetBIOSName",
-        "ParameterValue": "EC2Defaults-N1"
-    },
-    {
-        "ParameterKey": "WSFCNode2NetBIOSName",
-        "ParameterValue": "EC2Defaults-N2"
     },
     {
         "ParameterKey": "QSS3BucketName",

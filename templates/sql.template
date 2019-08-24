@@ -1838,6 +1838,8 @@ Resources:
             Statement:
               - Action:
                   - s3:GetObject
+                  - s3:GetBucketLocation
+                  - s3:ListBucket
                 Resource: !Sub 'arn:${AWS::Partition}:s3:::${QSS3BucketName}/${QSS3KeyPrefix}*'
                 Effect: Allow
           PolicyName: aws-quick-start-s3-policy

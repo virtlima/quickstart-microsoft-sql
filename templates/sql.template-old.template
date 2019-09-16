@@ -851,9 +851,9 @@
                 "WS2016FULLSQL2017ENT": "ami-033f9d0e35a223d5f"
             },
             "us-west-1": {
-                "WS2016FULLBASE": "ami-0feab9ccd45037ddb",
+                "WS2016FULLBASE": "ami-076ac373ed37322db",
                 "WS2016FULLSQL2016ENT": "ami-041a7a11a24f53358",
-                "WS2016FULLSQL2017ENT": "ami-0fdbc4e1b9be7dbc9"
+                "WS2016FULLSQL2017ENT": "ami-0172a7382e07a11e9"
             },
             "us-west-2": {
                 "WS2016FULLBASE": "ami-06a0d33fc8d328de0",

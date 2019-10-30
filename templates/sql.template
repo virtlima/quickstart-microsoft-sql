@@ -2314,13 +2314,13 @@ Resources:
     Type: AWS::CloudFormation::WaitCondition
     CreationPolicy:
       ResourceSignal:
-        Timeout: PT120M
+        Timeout: "9000"
         Count: 1
     DependsOn: "WSFCNode2"
     Properties: 
       Handle: 
         Ref: "SSMWaitHandle"
-      Timeout: "7200"
+      Timeout: "9000"
       Count: 1
   WSFCSecurityGroup:
     Type: AWS::EC2::SecurityGroup

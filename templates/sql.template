@@ -2314,7 +2314,7 @@ Resources:
     Type: AWS::CloudFormation::WaitCondition
     CreationPolicy:
       ResourceSignal:
-        Timeout: "9000"
+        Timeout: PT180M
         Count: 1
     DependsOn: "WSFCNode2"
     Properties: 

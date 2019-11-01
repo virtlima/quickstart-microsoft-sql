@@ -17,11 +17,11 @@
     },
     {
         "ParameterKey": "ADServer1NetBIOSName",
-        "ParameterValue": "DC-SQL-1"
+        "ParameterValue": "SQLDC11"
     },
     {
         "ParameterKey": "ADServer2NetBIOSName",
-        "ParameterValue": "DC-SQL-2"
+        "ParameterValue": "SQLDC2"
     },
     {
         "ParameterKey": "DMZ1CIDR",
@@ -37,7 +37,7 @@
     },
     {
         "ParameterKey": "DomainAdminUser",
-        "ParameterValue": "StackAdmin"
+        "ParameterValue": "admin"
     },
     {
         "ParameterKey": "DomainDNSName",
@@ -69,7 +69,7 @@
     },
     {
         "ParameterKey": "SQLServerVersion",
-        "ParameterValue": "2014"
+        "ParameterValue": "2017"
     },
     {
         "ParameterKey": "SQLServiceAccount",

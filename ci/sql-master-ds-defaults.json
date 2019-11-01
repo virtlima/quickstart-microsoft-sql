@@ -1,7 +1,7 @@
 [
     {
         "ParameterKey": "ADScenarioType",
-        "ParameterValue": "AWS Directory Service for Microsoft AD (Enterprise Edition)"
+        "ParameterValue": "Microsoft AD on Amazon EC2"
     },
     {
         "ParameterKey": "AvailabilityZones",
@@ -12,12 +12,20 @@
         "ParameterValue": "$[taskcat_genpass_16]"
     },
     {
+        "ParameterKey": "ADServer1NetBIOSName",
+        "ParameterValue": "SQLDC1"
+    },
+    {
+        "ParameterKey": "ADServer2NetBIOSName",
+        "ParameterValue": "SQLDC2"
+    },
+    {
         "ParameterKey": "KeyPairName",
         "ParameterValue": "$[taskcat_getkeypair]"
     },
     {
         "ParameterKey": "RDGWCIDR",
-        "ParameterValue": "10.0.0.0/16"
+        "ParameterValue": "0.0.0.0/0"
     },
     {
         "ParameterKey": "SQLLicenseProvided",

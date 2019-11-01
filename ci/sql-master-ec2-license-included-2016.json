@@ -17,15 +17,15 @@
     },
     {
         "ParameterKey": "RDGWCIDR",
-        "ParameterValue": "10.0.0.0/16"
+        "ParameterValue": "0.0.0.0/0"
     },
     {
         "ParameterKey": "ADServer1NetBIOSName",
-        "ParameterValue": "DC1"
+        "ParameterValue": "SQLDC1"
     },
     {
         "ParameterKey": "ADServer2NetBIOSName",
-        "ParameterValue": "DC2"
+        "ParameterValue": "SQLDC2"
     },
     {
         "ParameterKey": "SQLLicenseProvided",

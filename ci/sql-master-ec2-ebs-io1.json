@@ -12,20 +12,20 @@
         "ParameterValue": "$[taskcat_genpass_16]"
     },
     {
+        "ParameterKey": "ADServer1NetBIOSName",
+        "ParameterValue": "SQLDC1"
+    },
+    {
+        "ParameterKey": "ADServer2NetBIOSName",
+        "ParameterValue": "SQLDC2"
+    },
+    {
         "ParameterKey": "KeyPairName",
         "ParameterValue": "$[taskcat_getkeypair]"
     },
     {
         "ParameterKey": "RDGWCIDR",
-        "ParameterValue": "10.0.0.0/16"
-    },
-    {
-        "ParameterKey": "ADServer1NetBIOSName",
-        "ParameterValue": "DC-SQLebs-1"
-    },
-    {
-        "ParameterKey": "ADServer2NetBIOSName",
-        "ParameterValue": "DC-SQLebs-2"
+        "ParameterValue": "0.0.0.0/0"
     },
     {
         "ParameterKey": "SQLServiceAccountPassword",
@@ -46,18 +46,6 @@
     {
         "ParameterKey": "VolumeSize",
         "ParameterValue": "200"
-    },
-    {
-        "ParameterKey": "WSFCFileServerNetBIOSName",
-        "ParameterValue": "EBSSQL-W"
-    },
-    {
-        "ParameterKey": "WSFCNode1NetBIOSName",
-        "ParameterValue": "EBSSQL-N1"
-    },
-    {
-        "ParameterKey": "WSFCNode2NetBIOSName",
-        "ParameterValue": "EBSSQL-N2"
     },
     {
         "ParameterKey": "QSS3BucketName",

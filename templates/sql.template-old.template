@@ -864,7 +864,7 @@
         "SQLAMINameMap": {
             "2016": {
                 "no": "WS2016FULLBASE",
-                "yes": "WS2016FULLSQL2016SP1ENT"
+                "yes": "WS2016FULLSQL2016ENT"
             },
             "2017": {
                 "no": "WS2016FULLBASE",

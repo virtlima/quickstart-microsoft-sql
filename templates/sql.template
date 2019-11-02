@@ -78,7 +78,7 @@ Metadata:
           default: AWS Systems Manager AMI configuration
         Parameters:
           - WS2019FULLBASE
-          - WS2019FULLSQL2016SP2ENT
+          - WS2019FULLSQL2016ENT
           - WS2019FULLSQL2017ENT
       - Label:
           default: AWS Quick Start configuration
@@ -192,15 +192,15 @@ Metadata:
         default: Cluster node 3 private IP address 3
       WS2019FULLBASE: 
         default: Windows Server 2019 full base AMI
-      WS2019FULLSQL2016SP2ENT:
-        default: Windows Server 2019 full locale English with SQL Enterprise 2016 SP1 AMI
+      WS2019FULLSQL2016ENT:
+        default: Windows Server 2019 full locale English with SQL Enterprise 2016 AMI
       WS2019FULLSQL2017ENT:
         default: Windows Server 2019 Locale English with SQL Enterprise 2017 AMI
 Parameters:
   ADScenarioType:
     AllowedValues:
-      - AWS Directory Service for Microsoft AD (Enterprise Edition)
-      - Microsoft AD on Amazon EC2
+      - "AWS Directory Service for Microsoft AD (Enterprise Edition)"
+      - "Microsoft AD on Amazon EC2"
     Default: AWS Directory Service for Microsoft AD (Enterprise Edition)
     Description: 'Select the type of AD DS deployment to use: AWS Directory Service
       for Microsoft AD or managing your own Amazon EC2 AD instances.'
@@ -557,7 +557,7 @@ Parameters:
   WS2019FULLBASE:
     Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
     Default: '/aws/service/ami-windows-latest/Windows_Server-2019-English-Full-Base'
-  WS2019FULLSQL2016SP2ENT:
+  WS2019FULLSQL2016ENT:
     Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
     Default: '/aws/service/ami-windows-latest/Windows_Server-2019-English-Full-SQL_2016_SP2_Enterprise'
   WS2019FULLSQL2017ENT:
@@ -791,6 +791,8 @@ Resources:
             Filters:  
             - Name: "tag:Name"
               Values: ["{{WSFCNode1NetBIOSName}}"]
+            - Name: "tag:aws:cloudformation:stack-name"
+              Values: ["{{StackName}}"]
             - Name: "instance-state-name"
               Values: [ "running" ]
           outputs:
@@ -806,6 +808,8 @@ Resources:
             Filters:  
             - Name: "tag:Name"
               Values: ["{{WSFCNode2NetBIOSName}}"]
+            - Name: "tag:aws:cloudformation:stack-name"
+              Values: ["{{StackName}}"]
             - Name: "instance-state-name"
               Values: [ "running" ]
           outputs:
@@ -834,6 +838,8 @@ Resources:
             Filters:  
             - Name: "tag:Name"
               Values: ["{{WSFCNode3NetBIOSName}}"]
+            - Name: "tag:aws:cloudformation:stack-name"
+              Values: ["{{StackName}}"]
             - Name: "instance-state-name"
               Values: [ "running" ]
           outputs:
@@ -849,6 +855,8 @@ Resources:
             Filters:  
             - Name: "tag:Name"
               Values: [ "{{WSFCNode1NetBIOSName}}","{{WSFCNode2NetBIOSName}}", "{{WSFCNode3NetBIOSName}}"]
+            - Name: "tag:aws:cloudformation:stack-name"
+              Values: ["{{StackName}}"]
             - Name: "instance-state-name"
               Values: [ "running" ]
           outputs:
@@ -859,15 +867,16 @@ Resources:
           action: "aws:runCommand"
           onFailure: "step:signalfailure" 
           inputs:
-            DocumentName: AWS-RunPowerShellScript
+            DocumentName: AWS-RunRemoteScript
             InstanceIds: 
               - "{{wsfcnInstanceIds.InstanceIds}}"
             CloudWatchOutputConfig:
               CloudWatchOutputEnabled: "true"
             Parameters:
-              commands: 
-                - |
-                   C:\ProgramData\Amazon\EC2-Windows\Launch\Scripts\InitializeDisks.ps1
+              sourceType: "S3"
+              sourceInfo: !Sub ['{"path": "https://${QSS3Region}.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/Initialize-GPT.ps1"}',
+                  {QSS3Region: !If [GovCloudCondition, s3-us-gov-west-1, s3]}]
+              commandLine: "./Initialize-GPT.ps1"
         - name: "wsfcnInstallDscModules"
           action: "aws:runCommand"
           onFailure: "step:signalfailure"
@@ -991,6 +1000,8 @@ Resources:
             Filters:  
             - Name: "tag:Name"
               Values: ["{{WSFCFileServerNetBIOSName}}"]
+            - Name: "tag:aws:cloudformation:stack-name"
+              Values: ["{{StackName}}"]
             - Name: "instance-state-name"
               Values: [ "running" ]
           outputs:
@@ -1006,6 +1017,8 @@ Resources:
             Filters:  
             - Name: "tag:Name"
               Values: [ "{{WSFCNode1NetBIOSName}}","{{WSFCNode2NetBIOSName}}", "{{WSFCFileServerNetBIOSName}}"]
+            - Name: "tag:aws:cloudformation:stack-name"
+              Values: ["{{StackName}}"]
             - Name: "instance-state-name"
               Values: [ "running" ]
           outputs:
@@ -1016,16 +1029,16 @@ Resources:
           action: "aws:runCommand"
           onFailure: "step:signalfailure"
           inputs:
-            DocumentName: AWS-RunPowerShellScript
+            DocumentName: AWS-RunRemoteScript
             InstanceIds: 
               - "{{wsfcwInstanceIds.InstanceIds}}"
             CloudWatchOutputConfig:
               CloudWatchOutputEnabled: "true"
-              CloudWatchLogGroupName: !Ref 'QuickStartLogs'
             Parameters:
-              commands: 
-                - |
-                   C:\ProgramData\Amazon\EC2-Windows\Launch\Scripts\InitializeDisks.ps1
+              sourceType: "S3"
+              sourceInfo: !Sub ['{"path": "https://${QSS3Region}.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/Initialize-GPT.ps1"}',
+                  {QSS3Region: !If [GovCloudCondition, s3-us-gov-west-1, s3]}]
+              commandLine: "./Initialize-GPT.ps1"
         - name: "wsfcwInstallDscModules"
           action: "aws:runCommand"
           onFailure: "step:signalfailure"
@@ -1826,6 +1839,8 @@ Resources:
             Statement:
               - Action:
                   - s3:GetObject
+                  - s3:GetBucketLocation
+                  - s3:ListBucket
                 Resource: !Sub 'arn:${AWS::Partition}:s3:::${QSS3BucketName}/${QSS3KeyPrefix}*'
                 Effect: Allow
           PolicyName: aws-quick-start-s3-policy
@@ -1880,14 +1895,14 @@ Resources:
       IamInstanceProfile: !Ref 'WSFCProfile'
       InstanceType: !Ref 'WSFCFileServerInstanceType'
       NetworkInterfaces:
-        - DeleteOnTermination: 'true'
-          DeviceIndex: 0
+        - DeleteOnTermination: true
+          DeviceIndex: '0'
           SubnetId: !If
             - ThirdAzIsWitness
             - !Ref 'PrivateSubnet3ID'
             - !Ref 'PrivateSubnet1ID'
           PrivateIpAddresses:
-            - Primary: 'true'
+            - Primary: true
               PrivateIpAddress: !Ref 'WSFCFileServerPrivateIP'
           GroupSet:
             - !Ref 'DomainMemberSGID'
@@ -1899,7 +1914,7 @@ Resources:
       BlockDeviceMappings:
         - DeviceName: /dev/sda1
           Ebs:
-            VolumeSize: '100'
+            VolumeSize: 100
             VolumeType: gp2
       KeyName: !Ref 'KeyPairName'
   WSFCNode1:
@@ -1931,21 +1946,21 @@ Resources:
             - !If
                 - 'SQLVersion2017'
                 - !Ref WS2019FULLSQL2017ENT
-                - !Ref WS2019FULLSQL2016SP2ENT
+                - !Ref WS2019FULLSQL2016ENT
             - !Ref WS2019FULLBASE
       IamInstanceProfile: !Ref 'WSFCProfile'
       InstanceType: !Ref 'WSFCNode1InstanceType'
-      EbsOptimized: 'true'
+      EbsOptimized: true
       NetworkInterfaces:
-        - DeleteOnTermination: 'true'
-          DeviceIndex: 0
+        - DeleteOnTermination: true
+          DeviceIndex: '0'
           SubnetId: !Ref 'PrivateSubnet1ID'
           PrivateIpAddresses:
-            - Primary: 'true'
+            - Primary: true
               PrivateIpAddress: !Ref 'WSFCNode1PrivateIP1'
-            - Primary: 'false'
+            - Primary: false
               PrivateIpAddress: !Ref 'WSFCNode1PrivateIP2'
-            - Primary: 'false'
+            - Primary: false
               PrivateIpAddress: !Ref 'WSFCNode1PrivateIP3'
           GroupSet:
             - !Ref 'DomainMemberSGID'
@@ -1957,7 +1972,7 @@ Resources:
       BlockDeviceMappings:
         - DeviceName: /dev/sda1
           Ebs:
-            VolumeSize: '100'
+            VolumeSize: 100
             VolumeType: gp2
         - DeviceName: /dev/xvdca
           VirtualName: ephemeral0
@@ -1992,21 +2007,21 @@ Resources:
             - !If
                 - 'SQLVersion2017'
                 - !Ref WS2019FULLSQL2017ENT
-                - !Ref WS2019FULLSQL2016SP2ENT
+                - !Ref WS2019FULLSQL2016ENT
             - !Ref WS2019FULLBASE
       IamInstanceProfile: !Ref 'WSFCProfile'
       InstanceType: !Ref 'WSFCNode3InstanceType'
-      EbsOptimized: 'true'
+      EbsOptimized: true
       NetworkInterfaces:
-        - DeleteOnTermination: 'true'
-          DeviceIndex: 0
+        - DeleteOnTermination: true
+          DeviceIndex: '0'
           SubnetId: !Ref 'PrivateSubnet3ID'
           PrivateIpAddresses:
-            - Primary: 'true'
+            - Primary: true
               PrivateIpAddress: !Ref 'WSFCNode3PrivateIP1'
-            - Primary: 'false'
+            - Primary: false
               PrivateIpAddress: !Ref 'WSFCNode3PrivateIP2'
-            - Primary: 'false'
+            - Primary: false
               PrivateIpAddress: !Ref 'WSFCNode3PrivateIP3'
           GroupSet:
             - !Ref 'DomainMemberSGID'
@@ -2018,7 +2033,7 @@ Resources:
       BlockDeviceMappings:
         - DeviceName: /dev/sda1
           Ebs:
-            VolumeSize: '100'
+            VolumeSize: 100
             VolumeType: gp2
         - DeviceName: /dev/xvdca
           VirtualName: ephemeral0
@@ -2052,21 +2067,21 @@ Resources:
             - !If
                 - 'SQLVersion2017'
                 - !Ref WS2019FULLSQL2017ENT
-                - !Ref WS2019FULLSQL2016SP2ENT
+                - !Ref WS2019FULLSQL2016ENT
             - !Ref WS2019FULLBASE
       IamInstanceProfile: !Ref 'WSFCProfile'
       InstanceType: !Ref 'WSFCNode2InstanceType'
-      EbsOptimized: 'true'
+      EbsOptimized: true
       NetworkInterfaces:
-        - DeleteOnTermination: 'true'
-          DeviceIndex: 0
+        - DeleteOnTermination: true
+          DeviceIndex: '0'
           SubnetId: !Ref 'PrivateSubnet2ID'
           PrivateIpAddresses:
-            - Primary: 'true'
+            - Primary: true
               PrivateIpAddress: !Ref 'WSFCNode2PrivateIP1'
-            - Primary: 'false'
+            - Primary: false
               PrivateIpAddress: !Ref 'WSFCNode2PrivateIP2'
-            - Primary: 'false'
+            - Primary: false
               PrivateIpAddress: !Ref 'WSFCNode2PrivateIP3'
           GroupSet:
             - !Ref 'DomainMemberSGID'
@@ -2078,7 +2093,7 @@ Resources:
       BlockDeviceMappings:
         - DeviceName: /dev/sda1
           Ebs:
-            VolumeSize: '100'
+            VolumeSize: 100
             VolumeType: gp2
         - DeviceName: /dev/xvdca
           VirtualName: ephemeral0
@@ -2299,13 +2314,13 @@ Resources:
     Type: AWS::CloudFormation::WaitCondition
     CreationPolicy:
       ResourceSignal:
-        Timeout: PT120M
+        Timeout: PT180M
         Count: 1
     DependsOn: "WSFCNode2"
     Properties: 
       Handle: 
         Ref: "SSMWaitHandle"
-      Timeout: "7200"
+      Timeout: "9000"
       Count: 1
   WSFCSecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -2318,104 +2333,104 @@ Resources:
       GroupId: !Ref 'WSFCSecurityGroup'
       SourceSecurityGroupId: !Ref 'WSFCSecurityGroup'
       IpProtocol: icmp
-      FromPort: '-1'
-      ToPort: '-1'
+      FromPort: -1
+      ToPort: -1
   WSFCSecurityGroupIngressTcp135:
     Type: AWS::EC2::SecurityGroupIngress
     Properties:
       GroupId: !Ref 'WSFCSecurityGroup'
       SourceSecurityGroupId: !Ref 'WSFCSecurityGroup'
       IpProtocol: tcp
-      FromPort: '135'
-      ToPort: '135'
+      FromPort: 135
+      ToPort: 135
   WSFCSecurityGroupIngressTcp137:
     Type: AWS::EC2::SecurityGroupIngress
     Properties:
       GroupId: !Ref 'WSFCSecurityGroup'
       SourceSecurityGroupId: !Ref 'WSFCSecurityGroup'
       IpProtocol: tcp
-      FromPort: '137'
-      ToPort: '137'
+      FromPort: 137
+      ToPort: 137
   WSFCSecurityGroupIngressTcp445:
     Type: AWS::EC2::SecurityGroupIngress
     Properties:
       GroupId: !Ref 'WSFCSecurityGroup'
       SourceSecurityGroupId: !Ref 'WSFCSecurityGroup'
       IpProtocol: tcp
-      FromPort: '445'
-      ToPort: '445'
+      FromPort: 445
+      ToPort: 445
   WSFCSecurityGroupIngressTcp1433:
     Type: AWS::EC2::SecurityGroupIngress
     Properties:
       GroupId: !Ref 'WSFCSecurityGroup'
       SourceSecurityGroupId: !Ref 'WSFCSecurityGroup'
       IpProtocol: tcp
-      FromPort: '1433'
-      ToPort: '1434'
+      FromPort: 1433
+      ToPort: 1434
   WSFCSecurityGroupIngressTcp3343:
     Type: AWS::EC2::SecurityGroupIngress
     Properties:
       GroupId: !Ref 'WSFCSecurityGroup'
       SourceSecurityGroupId: !Ref 'WSFCSecurityGroup'
       IpProtocol: tcp
-      FromPort: '3343'
-      ToPort: '3343'
+      FromPort: 3343
+      ToPort: 3343
   WSFCSecurityGroupIngressTcp5022:
     Type: AWS::EC2::SecurityGroupIngress
     Properties:
       GroupId: !Ref 'WSFCSecurityGroup'
       SourceSecurityGroupId: !Ref 'WSFCSecurityGroup'
       IpProtocol: tcp
-      FromPort: '5022'
-      ToPort: '5022'
+      FromPort: 5022
+      ToPort: 5022
   WSFCSecurityGroupIngressTcp5985:
     Type: AWS::EC2::SecurityGroupIngress
     Properties:
       GroupId: !Ref 'WSFCSecurityGroup'
       SourceSecurityGroupId: !Ref 'WSFCSecurityGroup'
       IpProtocol: tcp
-      FromPort: '5985'
-      ToPort: '5985'
+      FromPort: 5985
+      ToPort: 5985
   WSFCSecurityGroupIngressUdp137:
     Type: AWS::EC2::SecurityGroupIngress
     Properties:
       GroupId: !Ref 'WSFCSecurityGroup'
       SourceSecurityGroupId: !Ref 'WSFCSecurityGroup'
       IpProtocol: udp
-      FromPort: '137'
-      ToPort: '137'
+      FromPort: 137
+      ToPort: 137
   WSFCSecurityGroupIngressUdp3343:
     Type: AWS::EC2::SecurityGroupIngress
     Properties:
       GroupId: !Ref 'WSFCSecurityGroup'
       SourceSecurityGroupId: !Ref 'WSFCSecurityGroup'
       IpProtocol: udp
-      FromPort: '3343'
-      ToPort: '3343'
+      FromPort: 3343
+      ToPort: 3343
   WSFCSecurityGroupIngressUdp1434:
     Type: AWS::EC2::SecurityGroupIngress
     Properties:
       GroupId: !Ref 'WSFCSecurityGroup'
       SourceSecurityGroupId: !Ref 'WSFCSecurityGroup'
       IpProtocol: udp
-      FromPort: '1434'
-      ToPort: '1434'
+      FromPort: 1434
+      ToPort: 1434
   WSFCSecurityGroupIngressUdpHighPorts:
     Type: AWS::EC2::SecurityGroupIngress
     Properties:
       GroupId: !Ref 'WSFCSecurityGroup'
       SourceSecurityGroupId: !Ref 'WSFCSecurityGroup'
       IpProtocol: udp
-      FromPort: '49152'
-      ToPort: '65535'
+      FromPort: 49152
+      ToPort: 65535
   WSFCSecurityGroupIngressTcpHighPorts:
     Type: AWS::EC2::SecurityGroupIngress
     Properties:
       GroupId: !Ref 'WSFCSecurityGroup'
       SourceSecurityGroupId: !Ref 'WSFCSecurityGroup'
       IpProtocol: tcp
-      FromPort: '49152'
-      ToPort: '65535'
+      FromPort: 49152
+      ToPort: 65535
   SQLServerAccessSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
@@ -2428,8 +2443,8 @@ Resources:
       VpcId: !Ref 'VPCID'
       SecurityGroupIngress:
         - IpProtocol: tcp
-          FromPort: '1433'
-          ToPort: '1433'
+          FromPort: 1433
+          ToPort: 1433
           SourceSecurityGroupId: !Ref 'SQLServerAccessSecurityGroup'
 Outputs:
   WSFCNode1NetBIOSName:

@@ -17,31 +17,19 @@
     },
     {
         "ParameterKey": "ADServer1NetBIOSName",
-        "ParameterValue": "DC-SQL17-1"
+        "ParameterValue": "SQLDC1"
     },
     {
         "ParameterKey": "ADServer2NetBIOSName",
-        "ParameterValue": "DC-SQL17-2"
+        "ParameterValue": "SQLDC2"
     },
     {
         "ParameterKey": "RDGWCIDR",
-        "ParameterValue": "10.0.0.0/16"
+        "ParameterValue": "0.0.0.0/0"
     },
     {
         "ParameterKey": "SQLServerVersion",
         "ParameterValue": "2017"
-    },
-    {
-        "ParameterKey": "WSFCFileServerNetBIOSName",
-        "ParameterValue": "EC2Base17-W"
-    },
-    {
-        "ParameterKey": "WSFCNode1NetBIOSName",
-        "ParameterValue": "EC2Base17-N1"
-    },
-    {
-        "ParameterKey": "WSFCNode2NetBIOSName",
-        "ParameterValue": "EC2Base17-N2"
     },
     {
         "ParameterKey": "SQLServiceAccountPassword",

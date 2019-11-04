@@ -863,20 +863,6 @@ Resources:
           - Name: InstanceIds
             Selector: "$.Reservations..Instances..InstanceId"
             Type: "StringList"
-        - name: "wsfcnInitializeDisk"
-          action: "aws:runCommand"
-          onFailure: "step:signalfailure" 
-          inputs:
-            DocumentName: AWS-RunRemoteScript
-            InstanceIds: 
-              - "{{wsfcnInstanceIds.InstanceIds}}"
-            CloudWatchOutputConfig:
-              CloudWatchOutputEnabled: "true"
-            Parameters:
-              sourceType: "S3"
-              sourceInfo: !Sub ['{"path": "https://${QSS3Region}.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/Initialize-GPT.ps1"}',
-                  {QSS3Region: !If [GovCloudCondition, s3-us-gov-west-1, s3]}]
-              commandLine: "./Initialize-GPT.ps1"
         - name: "wsfcnInstallDscModules"
           action: "aws:runCommand"
           onFailure: "step:signalfailure"
@@ -892,6 +878,20 @@ Resources:
               sourceInfo: !Sub ['{"path": "https://${QSS3Region}.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/install-sql-modules.ps1"}',
                   {QSS3Region: !If [GovCloudCondition, s3-us-gov-west-1, s3]}]
               commandLine: "./install-sql-modules.ps1"
+        - name: "wsfcnInitializeDisk"
+          action: "aws:runCommand"
+          onFailure: "step:signalfailure" 
+          inputs:
+            DocumentName: AWS-RunRemoteScript
+            InstanceIds: 
+              - "{{wsfcnInstanceIds.InstanceIds}}"
+            CloudWatchOutputConfig:
+              CloudWatchOutputEnabled: "true"
+            Parameters:
+              sourceType: "S3"
+              sourceInfo: !Sub ['{"path": "https://${QSS3Region}.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/Initialize-GPT.ps1"}',
+                  {QSS3Region: !If [GovCloudCondition, s3-us-gov-west-1, s3]}]
+              commandLine: "./Initialize-GPT.ps1"
         - name: "wsfcnLCMConfig"
           action: "aws:runCommand"
           onFailure: "step:signalfailure"
@@ -1025,20 +1025,6 @@ Resources:
           - Name: InstanceIds
             Selector: "$.Reservations..Instances..InstanceId"
             Type: "StringList"
-        - name: "wsfcnodewInitializeDisk"
-          action: "aws:runCommand"
-          onFailure: "step:signalfailure"
-          inputs:
-            DocumentName: AWS-RunRemoteScript
-            InstanceIds: 
-              - "{{wsfcwInstanceIds.InstanceIds}}"
-            CloudWatchOutputConfig:
-              CloudWatchOutputEnabled: "true"
-            Parameters:
-              sourceType: "S3"
-              sourceInfo: !Sub ['{"path": "https://${QSS3Region}.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/Initialize-GPT.ps1"}',
-                  {QSS3Region: !If [GovCloudCondition, s3-us-gov-west-1, s3]}]
-              commandLine: "./Initialize-GPT.ps1"
         - name: "wsfcwInstallDscModules"
           action: "aws:runCommand"
           onFailure: "step:signalfailure"
@@ -1054,6 +1040,21 @@ Resources:
               sourceInfo: !Sub ['{"path": "https://${QSS3Region}.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/install-sql-modules.ps1"}',
                   {QSS3Region: !If [GovCloudCondition, s3-us-gov-west-1, s3]}]
               commandLine: "./install-sql-modules.ps1"
+        - name: "wsfcnodewInitializeDisk"
+          action: "aws:runCommand"
+          onFailure: "step:signalfailure"
+          inputs:
+            DocumentName: AWS-RunRemoteScript
+            InstanceIds: 
+              - "{{wsfcNode1InstanceId.InstanceId}}"
+              - "{{wsfcNode2InstanceId.InstanceId}}"
+            CloudWatchOutputConfig:
+              CloudWatchOutputEnabled: "true"
+            Parameters:
+              sourceType: "S3"
+              sourceInfo: !Sub ['{"path": "https://${QSS3Region}.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/Initialize-GPT.ps1"}',
+                  {QSS3Region: !If [GovCloudCondition, s3-us-gov-west-1, s3]}]
+              commandLine: "./Initialize-GPT.ps1"
         - name: "wsfcwLCMConfig"
           action: "aws:runCommand"
           onFailure: "step:signalfailure"

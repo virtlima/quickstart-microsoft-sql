@@ -31,10 +31,6 @@
         "ParameterKey": "SQLLicenseProvided",
         "ParameterValue": "no"
     },
-    {   
-        "ParameterKey": "SQLServerVersion",
-        "ParameterValue": "2016"
-    },
     {
         "ParameterKey": "SQLServiceAccountPassword",
         "ParameterValue": "$[taskcat_genpass_16]"

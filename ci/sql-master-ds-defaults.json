@@ -35,10 +35,6 @@
         "ParameterKey": "SQLServiceAccountPassword",
         "ParameterValue": "$[taskcat_genpass_16]"
     },
-    {   
-        "ParameterKey": "SQLServerVersion",
-        "ParameterValue": "2016"
-    },
     {
         "ParameterKey": "QSS3BucketName",
         "ParameterValue": "$[taskcat_autobucket]"

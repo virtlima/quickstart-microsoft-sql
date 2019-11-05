@@ -1218,7 +1218,7 @@ Resources:
                 StringEquals: "no"
               - Variable: "{{ThirdAZ}}"
                 StringEquals: "witness"
-              NextStep: FormatDisks
+              NextStep: SqlInstallBranch
             - Variable: "{{ThirdAZ}}"
               StringEquals: "full"
               NextStep: Node3Mof
@@ -1263,37 +1263,6 @@ Resources:
                    Start-DscConfiguration 'C:\AWSQuickstart\AdditionalWSFCNode' -Wait -Verbose -Force
         
                    DscStatusCheck
-        - name: Node3FormatDisks
-          action: "aws:runCommand"
-          onFailure: "step:signalfailure" 
-          inputs:
-            DocumentName: "AWS-RunRemoteScript"
-            InstanceIds:
-              - "{{wsfcNode3InstanceId.InstanceId}}"
-            CloudWatchOutputConfig:
-              CloudWatchOutputEnabled: "true"
-              CloudWatchLogGroupName: !Ref 'QuickStartLogs'
-            Parameters:
-              sourceType: "S3"
-              sourceInfo: !Sub ['{"path": "https://${QSS3Region}.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/FormatVolumes.ps1"}',
-                  {QSS3Region: !If [GovCloudCondition, s3-us-gov-west-1, s3]}]
-              commandLine: "./FormatVolumes.ps1"
-        - name: "FormatDisks"
-          action: "aws:runCommand"
-          onFailure: "step:signalfailure" 
-          inputs:
-            DocumentName: "AWS-RunRemoteScript"
-            InstanceIds:
-              - "{{wsfcNode1InstanceId.InstanceId}}"
-              - "{{wsfcNode2InstanceId.InstanceId}}"
-            CloudWatchOutputConfig:
-              CloudWatchOutputEnabled: "true"
-              CloudWatchLogGroupName: !Ref 'QuickStartLogs'
-            Parameters:
-              sourceType: "S3"
-              sourceInfo: !Sub ['{"path": "https://${QSS3Region}.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/FormatVolumes.ps1"}',
-                  {QSS3Region: !If [GovCloudCondition, s3-us-gov-west-1, s3]}]
-              commandLine: "./FormatVolumes.ps1"
         - name: SqlInstallBranch
           action: aws:branch
           inputs:

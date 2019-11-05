@@ -1,15 +1,72 @@
-try {
-    Start-Transcript -Path C:\AWSQuickstart\log\Initialize-GPT.ps1.txt -Append
+[CmdletBinding()]
+param()
 
-    $newdisk = get-disk | where partitionstyle -eq 'raw'
+# Getting the DSC Cert Encryption Thumbprint to Secure the MOF File
+$DscCertThumbprint = (get-childitem -path cert:\LocalMachine\My | where { $_.subject -eq "CN=AWSQSDscEncryptCert" }).Thumbprint
 
-    foreach ($d in $newdisk){
-        $disknum = $d.Number
-        Initialize-Disk -Number $disknum -PartitionStyle GPT
-        Set-Disk -Number $disknum -IsReadOnly $False
-        New-Partition -DiskNumber $disknum -UseMaximumSize -AssignDriveLetter
+$ConfigurationData = @{
+    AllNodes = @(
+        @{
+            NodeName="*"
+            CertificateFile = "C:\AWSQuickstart\publickeys\AWSQSDscPublicKey.cer"
+            Thumbprint = $DscCertThumbprint
+            PSDscAllowDomainUser = $true
+        },
+        @{
+            NodeName = 'localhost'
+        }
+    )
+}
+
+Configuration Disk_InitializeDataDisk
+{
+    Import-DSCResource -ModuleName StorageDsc
+
+    Node localhost {
+        WaitForDisk Disk1 {
+             DiskId = 1
+             RetryIntervalSec = 60
+             RetryCount = 60
+        }
+
+        Disk DVolume {
+             DiskId = 1
+             DriveLetter = 'D'
+             PartitionStyle = 'GPT'
+             FSFormat = 'NTFS'
+             DependsOn = '[WaitForDisk]Disk2'
+        }
+
+        WaitForDisk Disk2 {
+             DiskId = 2
+             RetryIntervalSec = 60
+             RetryCount = 60
+        }
+
+        Disk EVolume {
+             DiskId = 2
+             DriveLetter = 'E'
+             PartitionStyle = 'GPT'
+             FSFormat = 'NTFS'
+             DependsOn = '[WaitForDisk]Disk2'
+        }
+
+        WaitForDisk Disk3 {
+            DiskId = 3
+            RetryIntervalSec = 60
+            RetryCount = 60
+       }
+
+       Disk FVolume {
+            DiskId = 3
+            DriveLetter = 'F'
+            PartitionStyle = 'GPT'
+            FSFormat = 'NTFS'
+            DependsOn = '[WaitForDisk]Disk3'
+       }
     }
 }
-catch {
-    $_ | Write-AWSQuickStartException
-}
+
+Disk_InitializeDataDisk -OutputPath 'C:\AWSQuickstart\InitializeDisk' -ConfigurationData $ConfigurationData
+
+Start-DscConfiguration 'C:\AWSQuickstart\InitializeDisk' -Wait -Verbose -Force

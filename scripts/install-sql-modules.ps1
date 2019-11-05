@@ -11,6 +11,7 @@ Install-Module -Name ComputerManagementDsc
 Install-Module -Name "xFailOverCluster"
 Install-Module -Name PSDscResources
 Install-Module -Name xSmbShare
+Install-Module -Name StorageDsc
 Install-Module -Name "xActiveDirectory"
 Install-Module SqlServer -Force -AllowClobber
 

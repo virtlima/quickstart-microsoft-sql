@@ -798,7 +798,7 @@ Resources:
           outputs:
           - Name: InstanceId
             Selector: "$.Reservations[0].Instances[0].InstanceId"
-            Type: "String"
+            Type: String
         - name: "wsfcNode2InstanceId"
           action: aws:executeAwsApi
           onFailure: "step:signalfailure"
@@ -815,7 +815,7 @@ Resources:
           outputs:
           - Name: InstanceId
             Selector: "$.Reservations[0].Instances[0].InstanceId"
-            Type: "String"
+            Type: String
         - name: InstanceIdBranch
           action: aws:branch
           inputs:

@@ -34,11 +34,11 @@ tests:
     regions:
       - us-east-1
     template_file: sql-master.template
-  mssql-ec2:
-    parameter_input: sql-master-ec2-defaults.json
-    regions:
-      - eu-central-1
-    template_file: sql-master.template
+#  mssql-ec2:
+#    parameter_input: sql-master-ec2-defaults.json
+#    regions:
+#      - eu-central-1
+#    template_file: sql-master.template
 #  mssql-ec2-sql-2019:
 #    parameter_input: sql-master-ec2-sql-2019.json
 #    regions:

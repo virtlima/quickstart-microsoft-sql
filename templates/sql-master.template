@@ -434,6 +434,7 @@ Parameters:
     Type: String
   SQLServerVersion:
     AllowedValues:
+      - '2016'
       - '2017'
       - '2019'
     Default: '2019'

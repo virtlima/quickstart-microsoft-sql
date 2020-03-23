@@ -49,6 +49,7 @@ tests:
       RDGWCIDR: 0.0.0.0/0
       SQLLicenseProvided: 'no'
       SQLServiceAccountPassword: $[taskcat_genpass_16]
+      SQL2019Media: https://quickstart-ci-media.s3.amazonaws.com/microsoft/sql/SQLServer2019-x64-ENU.iso
       QSS3BucketRegion: $[taskcat_current_region]
     regions:
     - eu-west-1
@@ -66,6 +67,7 @@ tests:
       RDGWCIDR: 0.0.0.0/0
       SQLLicenseProvided: 'no'
       SQLServiceAccountPassword: $[taskcat_genpass_16]
+      SQL2019Media: https://quickstart-ci-media.s3.amazonaws.com/microsoft/sql/SQLServer2019-x64-ENU.iso
       QSS3BucketRegion: $[taskcat_current_region]
       ThirdAZ: full
     regions:
@@ -84,6 +86,7 @@ tests:
       RDGWCIDR: 0.0.0.0/0
       SQLLicenseProvided: 'no'
       SQLServiceAccountPassword: $[taskcat_genpass_16]
+      SQL2019Media: https://quickstart-ci-media.s3.amazonaws.com/microsoft/sql/SQLServer2019-x64-ENU.iso
       QSS3BucketRegion: $[taskcat_current_region]
       ThirdAZ: witness
       WSFCFileServerPrivateIP: 10.0.64.200
@@ -104,6 +107,7 @@ tests:
       RDGWCIDR: 0.0.0.0/0
       SQLLicenseProvided: 'no'
       SQLServiceAccountPassword: $[taskcat_genpass_16]
+      SQL2019Media: https://quickstart-ci-media.s3.amazonaws.com/microsoft/sql/SQLServer2019-x64-ENU.iso
     regions:
     - eu-central-1
     s3_bucket: ''
@@ -121,6 +125,7 @@ tests:
       RDGWCIDR: 10.0.0.0/16
       SQLLicenseProvided: 'no'
       SQLServiceAccountPassword: $[taskcat_genpass_16]
+      SQL2019Media: https://quickstart-ci-media.s3.amazonaws.com/microsoft/sql/SQLServer2019-x64-ENU.iso
       ThirdAZ: full
     regions:
     - eu-west-3
@@ -139,6 +144,7 @@ tests:
       RDGWCIDR: 0.0.0.0/0
       SQLLicenseProvided: 'no'
       SQLServiceAccountPassword: $[taskcat_genpass_16]
+      SQL2019Media: https://quickstart-ci-media.s3.amazonaws.com/microsoft/sql/SQLServer2019-x64-ENU.iso
       ThirdAZ: witness
       WSFCFileServerPrivateIP: 10.0.64.200
     regions:
@@ -158,6 +164,7 @@ tests:
       RDGWCIDR: 0.0.0.0/0
       SQLLicenseProvided: 'no'
       SQLServiceAccountPassword: $[taskcat_genpass_16]
+      SQL2019Media: https://quickstart-ci-media.s3.amazonaws.com/microsoft/sql/SQLServer2019-x64-ENU.iso
       VolumeIops: '1000'
       VolumeSize: '200'
       VolumeType: io1
